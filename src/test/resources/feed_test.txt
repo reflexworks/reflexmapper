@@ -1,0 +1,17 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>/@login,1</id>
+    <link href="/@login" rel="self"/>
+  </entry>
+  <entry>
+    <contributor>
+      <uri>urn:vte.cx:acl:0,CRUD</uri>
+    </contributor>
+    <contributor>
+      <uri>urn:vte.cx:acl:+,R/</uri>
+    </contributor>
+    <id>/@login/_html,1</id>
+    <link href="/@login/_html" rel="self"/>
+    <title>HTMLフォルダ</title>
+  </entry>
+</feed>

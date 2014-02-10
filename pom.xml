@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>jp.reflexworks</groupId>
+  <artifactId>reflexmapper</artifactId>
+  <version>2.0.1</version>
+  <packaging>jar</packaging>
+
+  <description>Reflex Mapper</description>
+  <name>Reflex Mapper</name>
+
+  <organization>
+    <name>Virtual Technology</name>
+    <url>http://www.virtual-tech.net/</url>
+  </organization>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <sourceDirectory>.</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>src/main/java/**/*.java</include>
+            <include>src/main2/java/**/*.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>jp/reflexworks/atom/wrapper/*</exclude>
+          </excludes>
+        </configuration>
+      </plugin> 
+    </plugins>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>jp.reflexworks</groupId>
+      <artifactId>reflexservlet</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.carrotsearch</groupId>
+      <artifactId>java-sizeof</artifactId>
+      <version>0.0.4</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
