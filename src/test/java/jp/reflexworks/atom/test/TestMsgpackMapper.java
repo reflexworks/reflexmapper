@@ -496,7 +496,6 @@ public class TestMsgpackMapper {
 	@Test
 	public void testStaticPackages() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 	
-//		String NAMESPACE_B2 = "b2=http://kuronekoyamato.co.jp/b2/1.0";
 		String NAMESPACE_VT = "vt=http://reflexworks.jp/test/1.0";
 		String NAMESPACE_ATOM = "http://www.w3.org/2005/Atom";
 		
@@ -504,7 +503,6 @@ public class TestMsgpackMapper {
 		MODEL_PACKAGE.put("jp.reflexworks.atom.feed", NAMESPACE_ATOM);
 		MODEL_PACKAGE.put("jp.reflexworks.atom.entry", NAMESPACE_ATOM);
 		//MODEL_PACKAGE.put("jp.reflexworks.atom.source", NAMESPACE_ATOM);
-//		MODEL_PACKAGE.put("jp.co.kuronekoyamato.b2web.model", NAMESPACE_B2);
 		MODEL_PACKAGE.put("jp.reflexworks.test.model", NAMESPACE_VT);
 	
 		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE);		
@@ -512,7 +510,7 @@ public class TestMsgpackMapper {
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
 
-		String dataXmlFile = FileUtil.getResourceFilename("feed_test.txt");
+		String dataXmlFile = FileUtil.getResourceFilename("feed1.txt");
 		FileReader fi = new FileReader(dataXmlFile);
 	
 		// XMLにシリアライズ
@@ -542,7 +540,7 @@ public class TestMsgpackMapper {
 		Date d6 = new Date();
 		System.out.println("\n=== JSON Feed シリアライズ ===");
 		System.out.println("json size:"+json.length()+" time:"+(d6.getTime()-d5.getTime()));
-//		System.out.println(json);
+		System.out.println(json);
 		Date d7 = new Date();
 		Object json2 = mp.fromJSON(json);
 		Date d8 = new Date();
