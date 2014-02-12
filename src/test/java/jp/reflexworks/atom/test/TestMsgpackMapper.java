@@ -87,6 +87,19 @@ public class TestMsgpackMapper {
 		"rights#=@+RW,/$admin+RW"
 	};
 
+	public static String entityAcls2[] = {
+		"title:/*",
+		"Idx:/[0-9]+/(self|alias)",
+		"error=@+RW,1+W,/grp1+RW,/grp3+RW",
+		"subInfo.favorite.food#=@+W,1+W,/grp1+W,/grp3+RW,/grp4+R",
+		"subInfo.favorite.music=@+W,1+W,/grp4+R,/grp1+W",
+		//"contributor=@+RW,/$admin+RW",
+		"contributor=/$admin+RW",
+		"contributor.uri#",
+		//"rights#=@+RW,/$admin+RW"
+		"rights#=/$admin+RW"
+	};
+
 	public static String entitytempl2[] = {
 		// {}がMap, []がArray　, {} [] は末尾に一つだけ付けられる。*が必須項目
 		"import{2}",        //  0行目はパッケージ名(service名)
@@ -252,6 +265,7 @@ public class TestMsgpackMapper {
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_COMPRESSION, true);
 		
 		String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 		
 		/*
@@ -954,6 +968,55 @@ public class TestMsgpackMapper {
         	System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
         } 
 
+	}
+
+	@Test
+	public void testMaskprop() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp,entityAcls2,30);
+
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+
+//		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\"}]}}";
+		FeedBase feed = (FeedBase) mp.fromJSON(json);
+		String xml = null;
+		
+		/*
+		// MessagePack test
+		System.out.println("\n=== XML Feed シリアライズ ===");
+		xml = mp.toXML(feed);
+		System.out.println(xml);
+		*/
+
+		// maskprop test
+		String ucode = "7";
+		List<String> groups = new ArrayList<String>();
+
+		// グループ参加なし
+		feed.maskprop(ucode, groups);
+		System.out.println("\n=== maskprop (グループ参加なし) ===");
+		xml = mp.toXML(feed);
+		System.out.println(xml);
+
+		boolean isMatch = false;
+		if (feed != null && feed._entry != null && feed._entry.size() > 0) {
+			EntryBase entry0 = feed._entry.get(0);
+			if (entry0._contributor == null) {
+				isMatch = true;
+			}
+		}
+
+		/*
+		// /$admin グループ
+		feed = (FeedBase) mp.fromJSON(json);
+		groups.add("/$admin");
+		feed.maskprop(ucode, groups);
+		System.out.println("\n=== maskprop (/$admin グループ) ===");
+		xml = mp.toXML(feed);
+		System.out.println(xml);
+		*/
+
+		assertTrue(isMatch);
 	}
 
 	/**
