@@ -972,12 +972,11 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testMaskprop() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp,entityAcls2,30);
 
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		//String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 
-//		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\"}]}}";
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
 		String xml = null;
 		
@@ -1005,6 +1004,14 @@ public class TestMsgpackMapper {
 				isMatch = true;
 			}
 		}
+
+		// 別グループに参加
+		feed = (FeedBase) mp.fromJSON(json);
+		groups.add("/othergroup");
+		feed.maskprop(ucode, groups);
+		System.out.println("\n=== maskprop (別グループに参加) ===");
+		xml = mp.toXML(feed);
+		System.out.println(xml);
 
 		/*
 		// /$admin グループ
