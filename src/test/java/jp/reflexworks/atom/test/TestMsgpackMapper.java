@@ -510,7 +510,7 @@ public class TestMsgpackMapper {
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
 
-		String dataXmlFile = FileUtil.getResourceFilename("feed1.txt");
+		String dataXmlFile = FileUtil.getResourceFilename("feed_test.txt");
 		FileReader fi = new FileReader(dataXmlFile);
 	
 		// XMLにシリアライズ
