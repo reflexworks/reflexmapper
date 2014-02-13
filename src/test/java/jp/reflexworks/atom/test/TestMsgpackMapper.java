@@ -164,6 +164,20 @@ public class TestMsgpackMapper {
 		"  $$text"				// テキストノード
 	};
 
+	public static String entityValidate[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"testservice2{100}",        //  0行目はパッケージ名(service名)
+		"contributor", 
+		" uri=^urn:vte.cx:auth:[0-9a-zA-Z_$@-]*,(?=.*¥d)(?=.*[a-z])(?=.*[A-Z])¥w{8,}$|^urn:vte.cx:acl:/?[0-9]*[¥*¥+-]?,[CRUDE/.]{1,5}$|^urn:vte.cx:secret:.+$"
+	};
+
+	public static String entityAclsValidate[] = {
+		"title:/*",
+		"contributor=@+RW,/@testservice/$admin+RW",
+		//"contributor=/@testservice/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/@testservice/$admin+RW"
+	};
 	
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
@@ -975,7 +989,7 @@ public class TestMsgpackMapper {
 
 		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 
-		FeedBase feed = (FeedBase) mp.fromJSON(json);
+		FeedBase feed = (FeedBase)mp.fromJSON(json);
 		String xml = null;
 
 		// maskprop test
@@ -999,7 +1013,7 @@ public class TestMsgpackMapper {
 		}
 
 		// 別グループに参加
-		feed = (FeedBase) mp.fromJSON(json);
+		feed = (FeedBase)mp.fromJSON(json);
 		groups.add("/othergroup");
 		feed.maskprop(ucode, groups);
 		System.out.println("\n=== maskprop (別グループに参加) ===");
@@ -1007,7 +1021,7 @@ public class TestMsgpackMapper {
 		System.out.println(xml);
 
 		// /$admin グループ
-		feed = (FeedBase) mp.fromJSON(json);
+		feed = (FeedBase)mp.fromJSON(json);
 		groups.add("/@testservice/$admin");
 		feed.maskprop(ucode, groups);
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
@@ -1015,6 +1029,28 @@ public class TestMsgpackMapper {
 		System.out.println(xml);
 
 		assertTrue(isMatch);
+	}
+
+	@Test
+	public void testValidate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		// TODO contributor.uri のフォーマットチェック指定方法を要確認
+		
+		FeedTemplateMapper mp = new FeedTemplateMapper(entityValidate, entityAclsValidate, 30);
+
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
+
+		FeedBase feed = (FeedBase)mp.fromJSON(json);
+		String xml = null;
+	
+		//String ucode = "6";
+		String ucode = "7";
+		List<String> groups = new ArrayList<String>();
+
+		// validate test
+		feed.validate(ucode, groups);
+
+		assertTrue(true);
 	}
 
 	/**
