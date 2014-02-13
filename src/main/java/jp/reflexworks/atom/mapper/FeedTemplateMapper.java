@@ -945,9 +945,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 		String line = ""; 
 		if (meta.aclR != null) {
 			// ACLが設定されていて項目に値が存在している
-			line += "if (groups!=null&&groups.size()>0&&"+ meta.self + "!=null) {";
+			line += "if ("+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
+			line += "if (groups==null) groups = new java.util.ArrayList();";
 			line += "groups.add(\"\"+ucode);";
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("@")) line += "if (ucode != null && ucode.equals(myself)) ex=true;";
@@ -960,7 +961,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "}";
 			line += "if (!ex) "+ meta.self +"=null;";
 			line += "}";
-			line += "else if (groups==null||groups.size() == 0) "+ meta.self +"=null;";
 		}
 		return line;
 	}
