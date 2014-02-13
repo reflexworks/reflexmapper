@@ -10,21 +10,20 @@ import jp.reflexworks.atom.mapper.ConditionContext;
  * 認証・認可情報定義.
  * <p>
  * <b>WSSE指定</b><br><br>
- * /_user/{username} をキーとするエントリーのｃontributorタグのuriタグに、以下の書式でACLを設定します。
  * <ul>
- * <li>urn:virtual-tech.net:wsse:{username},{password}</li>
+ * <li>urn:vte.cx:auth:{username},{password}</li>
  * </ul>
  * <br>
  * <b>ACL指定</b><br><br>
  * uriタグに、以下の書式でACLを設定します。<br>
  * <ul>
- * <li>urn:virtual-tech.net:acl:{username},{C|R|U|D|A|E}</li>
+ * <li>urn:vte.cx:acl:{UID},{C|R|U|D|E|.|/}</li>
  * </ul><br>
  * このACLは、配下のエントリーに対し有効です。<br>
  * 配下のエントリーにACLの設定がある場合、上位階層で設定されたACLは全て無効となり、配下のACLのみ有効となります。<br>
  * <ul>
- * <li><b>username</b><br><br>
- * ログインユーザを指定します。先頭と末尾にワイルドカード(*)が指定できます。<br>
+ * <li><b>UID</b><br><br>
+ * ログインユーザのUIDを指定します。<br>
  * *のみを指定した場合、ログインしていないユーザを含むすべてのユーザに対しACLが適用されます。<br>
  * ?を指定した場合、ログインしているすべてのユーザに対しACLが適用されます。<br>
  * <br></li>
@@ -35,7 +34,6 @@ import jp.reflexworks.atom.mapper.ConditionContext;
  * <li>R : 検索処理を許可</li>
  * <li>U : 更新処理を許可</li>
  * <li>D : 削除処理を許可</li>
- * <li>A : 管理者 (CRUD権限に加え、権限の付与および参照が可能)</li>
  * <li>E : 外部サービス呼び出しからのみデータ操作可で、Reflexサービスから直接データ操作が不可。</li>
  * </ul>
  * </li>
@@ -44,8 +42,6 @@ import jp.reflexworks.atom.mapper.ConditionContext;
 public class Contributor implements Serializable, Cloneable, SoftSchema {
 
 	private static final long serialVersionUID = 1L;
-
-	public static final String URI_SECRETKEY = "$201311131503";
 
 	public String _$xml$lang;
 	public String _$xml$base;
@@ -105,11 +101,11 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher) {
-		if (_uri != null) _uri = (String)CipherUtil.doEncrypt("" + _uri, URI_SECRETKEY + id, cipher);
+	public void encrypt(String id, Object cipher, String secretkey) {
+		if (_uri != null) _uri = (String)CipherUtil.doEncrypt("" + _uri, secretkey + id, cipher);
 	}
-	public void decrypt(String id, Object cipher) {
-		if (_uri != null) _uri = (String)CipherUtil.doDecrypt("" + _uri, URI_SECRETKEY + id, cipher);
+	public void decrypt(String id, Object cipher, String secretkey) {
+		if (_uri != null) _uri = (String)CipherUtil.doDecrypt("" + _uri, secretkey + id, cipher);
 	}
 	
 	public void isMatch(ConditionContext context) {

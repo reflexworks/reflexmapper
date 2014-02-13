@@ -23,8 +23,6 @@ public abstract class EntryBase implements Serializable {
 	public static final String SVC_PREFIX_VAL = "@";
 	public static final String SVC_PREFIX = "/" + SVC_PREFIX_VAL;
 
-	public static final String RIGHTS_SECRETKEY = "$201311131503";
-
 	/**
 	 * デフォルトの名前空間
 	 */

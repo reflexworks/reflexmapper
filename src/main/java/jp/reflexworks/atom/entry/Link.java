@@ -22,10 +22,6 @@ import jp.reflexworks.atom.mapper.ConditionContext;
  * rel="related"の場合、href属性に外部コンテンツのURLを指定します。<br>
  * GETでURLにリダイレクトすることができます。<br>
  * <br>
- * <b>Blobstore　(GAE用)</b><br><br>
- * rel="related"で、type="blobstore"の場合、Blobstoreのデータを表します。<br>
- * href属性にBlobKeyの文字列、title属性に名前を指定できます。<br>
- * <br>
  * <b>WebHook</b><br><br>
  * rel="via"、type="webhook"の場合、href属性に指定されたURLにリクエストします。<br>
  * リクエストのタイミングは、エントリーの登録・更新後です。<br>
@@ -133,8 +129,8 @@ public class Link implements Serializable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher) {}
-	public void decrypt(String id, Object cipher) {}
+	public void encrypt(String id, Object cipher, String secretkey) {}
+	public void decrypt(String id, Object cipher, String secretkey) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$href != null) {

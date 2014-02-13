@@ -9,7 +9,7 @@ import jp.reflexworks.atom.mapper.ConditionContext;
  * 更新者.
  * <p>
  * Reflex内で登録・更新時、uriに更新者情報を設定します。<br>
- * urn:virtual-tech.net:{created|updated|deleted}:{username} の形式です。
+ * urn:vte.cx:{created|updated|deleted}:{username} の形式です。
  * </p>
  */
 public class Author implements Serializable, Cloneable, SoftSchema {
@@ -74,8 +74,8 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher) {}
-	public void decrypt(String id, Object cipher) {}
+	public void encrypt(String id, Object cipher, String secretkey) {}
+	public void decrypt(String id, Object cipher, String secretkey) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_name != null) {

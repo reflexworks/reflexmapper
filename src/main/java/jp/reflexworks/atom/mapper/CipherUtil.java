@@ -130,7 +130,7 @@ public final class CipherUtil {
 	 * @param sourceEntry エントリー
 	 * @return 暗号化されたエントリー
 	 */
-	public EntryBase encryptAtom(EntryBase sourceEntry)
+	public EntryBase encryptAtom(EntryBase sourceEntry, String secretkey)
 			throws GeneralSecurityException {
 		if (sourceEntry == null) {
 			return null;
@@ -139,7 +139,7 @@ public final class CipherUtil {
 		// Contributor
 		if (sourceEntry.getContributor() != null) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					Contributor.URI_SECRETKEY, sourceEntry._id));
+					secretkey, sourceEntry._id));
 			for (Contributor contributor : sourceEntry.getContributor()) {
 				if (contributor != null && !StringUtils.isBlank(contributor._uri)) {
 					String str = encryptProc(contributor._uri, key);
@@ -151,7 +151,7 @@ public final class CipherUtil {
 		// rights
 		if (!StringUtils.isBlank(sourceEntry._rights)) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					EntryBase.RIGHTS_SECRETKEY, sourceEntry._id));
+					secretkey, sourceEntry._id));
 			String str = encryptProc(sourceEntry._rights, key);
 			sourceEntry._rights = str;
 		}
@@ -183,7 +183,7 @@ public final class CipherUtil {
 	 * @param sourceEntry エントリー
 	 * @return 復号化されたエントリー
 	 */
-	public EntryBase decryptAtom(EntryBase sourceEntry)
+	public EntryBase decryptAtom(EntryBase sourceEntry, String secretkey)
 			throws GeneralSecurityException {
 		if (sourceEntry == null) {
 			return null;
@@ -192,7 +192,7 @@ public final class CipherUtil {
 		// Contributor
 		if (sourceEntry.getContributor() != null) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					Contributor.URI_SECRETKEY, sourceEntry._id));
+					secretkey, sourceEntry._id));
 			for (Contributor contributor : sourceEntry.getContributor()) {
 				if (contributor != null && !StringUtils.isBlank(contributor._uri)) {
 					String str = decryptProc(contributor._uri, key);
@@ -204,7 +204,7 @@ public final class CipherUtil {
 		// rights
 		if (!StringUtils.isBlank(sourceEntry._rights)) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					EntryBase.RIGHTS_SECRETKEY, sourceEntry._id));
+					secretkey, sourceEntry._id));
 			String str = decryptProc(sourceEntry._rights, key);
 			sourceEntry._rights = str;
 		}

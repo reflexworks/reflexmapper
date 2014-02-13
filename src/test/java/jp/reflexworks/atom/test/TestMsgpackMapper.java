@@ -163,24 +163,10 @@ public class TestMsgpackMapper {
 		" hobby{}",
 		"  $$text"				// テキストノード
 	};
-
-	public static String entityValidate[] = {
-		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
-		"testservice2{100}",        //  0行目はパッケージ名(service名)
-		"contributor", 
-		" uri=^urn:vte.cx:auth:[0-9a-zA-Z_$@-]*,(?=.*¥d)(?=.*[a-z])(?=.*[A-Z])¥w{8,}$|^urn:vte.cx:acl:/?[0-9]*[¥*¥+-]?,[CRUDE/.]{1,5}$|^urn:vte.cx:secret:.+$"
-	};
-
-	public static String entityAclsValidate[] = {
-		"title:/*",
-		"contributor=@+RW,/@testservice/$admin+RW",
-		//"contributor=/@testservice/$admin+RW",
-		"contributor.uri#",
-		"rights#=@+RW,/@testservice/$admin+RW"
-	};
 	
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
+	private static String SECRETKEY = "testsecret123";
 
 	/**
 	 * 項目追加テスト用
@@ -206,7 +192,7 @@ public class TestMsgpackMapper {
 	
 	@Test
 	public void testJSONEntry() throws ParseException, JSONException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
@@ -222,7 +208,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testXMLEntry() throws ParseException, JSONException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls, 30, SECRETKEY);
 		
 		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -273,7 +259,7 @@ public class TestMsgpackMapper {
 	*/
 	@Test
 	public void testMsgPackEntryWithDeflateAndValidate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_COMPRESSION, true);
 		
@@ -336,7 +322,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testFeedWithValidate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		
 		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}]}}";
@@ -358,7 +344,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testArrayEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		
 		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -381,8 +367,8 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testChangeTemplateFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// 変更前
-		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl2);	// 項目追加後	
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
+		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl2, SECRETKEY);	// 項目追加後	
 		
 		String json = "{ \"feed\" : {\"entry\" : [{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}]}}";
 		FeedBase entry = (FeedBase) mp.fromJSON(json);
@@ -413,7 +399,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testMapEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
 	    String json = "{ \"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		// 正常ケース
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -435,7 +421,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testBooleanEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);
 
 		String json = "{\"entry\" : {\"verified_email\" : false}}";
 		// 正常ケース
@@ -466,7 +452,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testTextNodeEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp);		// 変更前
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, SECRETKEY);		// 変更前
 
 		String json = "{\"entry\" : {\"public\" : {\"int\" : \"予約語\"},\"subInfo\" : {\"hobby\" : [{\"$$text\" : \"テキストノード\"}]},\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}]}}";
 //		String json = "{\"entry\" : {\"subInfo\" : {\"hobby\" : [{\"_$$text\" : \"テキストノード\"}]},\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}]}}";
@@ -490,7 +476,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testTextNodeFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// 変更前
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
 //		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,null,30,"/Users/stakezaki/git/taggingservicecore/src/test/resources");		// 変更前
 		
 		// for static class test
@@ -532,7 +518,7 @@ public class TestMsgpackMapper {
 		//MODEL_PACKAGE.put("jp.reflexworks.atom.source", NAMESPACE_ATOM);
 		MODEL_PACKAGE.put("jp.reflexworks.test.model", NAMESPACE_VT);
 	
-		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);		
 //		FeedTemplateMapper mp = new FeedTemplateMapper(new String[]{"jp.reflexworks.test.model"});		
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
@@ -608,7 +594,7 @@ public class TestMsgpackMapper {
 	throws ParseException, JSONException, IOException, ClassNotFoundException {
 
 		// default
-		FeedTemplateMapper defmp = new FeedTemplateMapper(new String[]{"default"});
+		FeedTemplateMapper defmp = new FeedTemplateMapper(new String[]{"default"}, SECRETKEY);
 		//String defjson = "{\"entry\" : {\"title\" : \"Titleテスト\",\"subtitle\" : \"Subtitleテスト\"}}";
 		String defjson = "{\"entry\" : {\"updated\" : null}}";
 		String defjsonFeed = "{ \"feed\" : {\"entry\" : [null]}}";
@@ -641,7 +627,7 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== [default] title=" + title);
         
 		// template
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);
 		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -702,7 +688,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testBasicFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(new String[] {"_"});		// ATOM Feed/Entryのみ。パッケージは_
+		FeedTemplateMapper mp = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
 
 //		String json = "{\"feed\" : {\"entry\" : [{\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"}]}]}}";
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"\"}]}}";
@@ -741,7 +727,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testArrayFeed2() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
 
 //		String json = "{\"feed\" : {\"entry\" : [{\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"}]}]}}";
 //		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"test\"}]}}";
@@ -786,8 +772,8 @@ public class TestMsgpackMapper {
 	@Test
 	public void testIgnoreCustomTag() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"});		// ATOM Feed/Entryのみ。パッケージは_
-		FeedTemplateMapper mp1 = new FeedTemplateMapper(entitytempl);		// 変更前
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
+		FeedTemplateMapper mp1 = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
 
 		String json1 = "{\"entry\" : {\"subInfo\" : {\"hobby\" : [{\"$$text\" : \"テキストノード\"}]},\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"updated\" : \"2013-10-22T10:50:30+09:00\"}}";
 		EntryBase entry = (EntryBase) mp1.fromJSON(json1);
@@ -819,7 +805,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testGetSetvalue() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 //		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
 		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
@@ -941,7 +927,7 @@ public class TestMsgpackMapper {
 			"test1"				// 最後尾に追加はOK
 		};
 
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"});	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
 		boolean precheck = mp0.precheckTemplate(entitytempl, entitytempl_new);
 		System.out.println("precheck:"+precheck);
 		assertTrue(precheck);
@@ -951,7 +937,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testMsgPackFeedWithDeflate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
 
@@ -985,7 +971,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testMaskprop() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30, SECRETKEY);
 
 		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 
@@ -993,8 +979,8 @@ public class TestMsgpackMapper {
 		String xml = null;
 
 		// maskprop test
-		String uid = "6";
-		//String uid = "7";
+		//String uid = "6";
+		String uid = "7";
 		List<String> groups = new ArrayList<String>();
 
 		// グループ参加なし
@@ -1007,7 +993,8 @@ public class TestMsgpackMapper {
 		boolean isMatch = false;
 		if (feed != null && feed._entry != null && feed._entry.size() > 0) {
 			EntryBase entry0 = feed._entry.get(0);
-			if (entry0._contributor == null) {
+			//if (entry0._contributor == null) {
+			if (entry0._contributor != null) {
 				isMatch = true;
 			}
 		}
@@ -1034,9 +1021,10 @@ public class TestMsgpackMapper {
 	@Test
 	public void testValidate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
-		// TODO contributor.uri のフォーマットチェック指定方法を要確認
+		/*
+		// TODO Contributor#validate 実装後に要確認
 		
-		FeedTemplateMapper mp = new FeedTemplateMapper(entityValidate, entityAclsValidate, 30);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30);
 
 		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 
@@ -1049,6 +1037,7 @@ public class TestMsgpackMapper {
 
 		// validate test
 		feed.validate(uid, groups);
+		*/
 
 		assertTrue(true);
 	}

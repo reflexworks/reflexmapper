@@ -93,8 +93,8 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher) {}
-	public void decrypt(String id, Object cipher) {}
+	public void encrypt(String id, Object cipher, String secretkey) {}
+	public void decrypt(String id, Object cipher, String secretkey) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$$text != null) {

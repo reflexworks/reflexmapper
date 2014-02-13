@@ -7,8 +7,8 @@ import jp.reflexworks.atom.mapper.ConditionContext;
 public interface SoftSchema {
 	
 	public Object getValue(String fldname);
-	public void encrypt(String id, Object cipher);
-	public void decrypt(String id, Object cipher);
+	public void encrypt(String id, Object cipher, String secretkey);
+	public void decrypt(String id, Object cipher, String secretkey);
 	public void isMatch(ConditionContext context);
 	public boolean validate(String ucode, List<String> groups, String myself) 
 			throws java.text.ParseException;

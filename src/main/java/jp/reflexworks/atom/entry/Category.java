@@ -7,20 +7,6 @@ import jp.reflexworks.atom.mapper.ConditionContext;
 
 /**
  * カテゴリ.
- * <p>
- * termにプロパティ名、labelに値をセットすることで、検索項目に使用できます。<br>
- * termに型を指定することもできます。型とプロパティ名をコロンでつないでください。指定できる型は以下の通りです。
- * <ul>
- * <li>String</li>
- * <li>Integer</li>
- * <li>long</li>
- * <li>Long</li>
- * <li>float</li>
- * <li>Float</li>
- * <li>double</li>
- * <li>Double</li>
- * </ul>
- * </p>
  */
 public class Category implements Serializable, Cloneable, SoftSchema {
 
@@ -85,8 +71,8 @@ public class Category implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher) {}
-	public void decrypt(String id, Object cipher) {}
+	public void encrypt(String id, Object cipher, String secretkey) {}
+	public void decrypt(String id, Object cipher, String secretkey) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$term != null) {
