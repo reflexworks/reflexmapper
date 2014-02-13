@@ -960,6 +960,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "}";
 			line += "if (!ex) "+ meta.self +"=null;";
 			line += "}";
+			line += "if (groups==null||groups.size() == 0) "+ meta.self +"=null;";
 		}
 		return line;
 	}
