@@ -789,9 +789,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 						decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(id, cipher);}"); 
 						if (!isFeed(classname)) {
 							ismatch.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}"); 
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(ucode,groups,myself);}"); 
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(uid,groups,myself);}"); 
 						} else {
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(ucode,groups);}"); 
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
 						}
 					} else {
 						getvalue.append("if (" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname); if (value!=null) return value;}");
@@ -799,9 +799,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(id, cipher);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
 						if (!isFeed(classname)) {
-							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(ucode,groups,myself);");
+							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(uid,groups,myself);");
 						} else {
-							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(ucode,groups);");
+							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(uid,groups);");
 						}
 					}
 				} else {
@@ -821,15 +821,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (meta.hasChild()) {
 						if (meta.isMap) {
 							if (!isFeed(classname)) {
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(ucode,groups,myself);}"); 
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(uid,groups,myself);}"); 
 							} else {
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(ucode,groups);}"); 
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(uid,groups);}"); 
 							}
 						} else {
 							if (!isFeed(classname)) {
-								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(ucode,groups,myself);");
+								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(uid,groups,myself);");
 							} else {
-								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(ucode,groups);");
+								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(uid,groups);");
 							}
 						}
 					}
@@ -909,14 +909,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param meta
 	 * @return
 	 */
-	private final String validateFuncS = "public boolean validate(String ucode, java.util.List groups, String myself) throws java.text.ParseException {";
-	private final String validateFuncS2 = "public boolean validate(String ucode, java.util.List groups) throws java.text.ParseException {String myself = getMyself();";
-	private final String validateFuncS3 = "public boolean validate(String ucode, java.util.List groups) throws java.text.ParseException {String myself = null;";
+	private final String validateFuncS = "public boolean validate(String uid, java.util.List groups, String myself) throws java.text.ParseException {";
+	private final String validateFuncS2 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = getMyself();";
+	private final String validateFuncS3 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = null;";
 
 	private final String validateFuncE = "return true;}";
-	private final String maskpropFuncS = "public void maskprop(String ucode, java.util.List groups, String myself) {";
-	private final String maskpropFuncS2 = "public void maskprop(String ucode, java.util.List groups) {String myself = getMyself();";
-	private final String maskpropFuncS3 = "public void maskprop(String ucode, java.util.List groups) {String myself = null;";
+	private final String maskpropFuncS = "public void maskprop(String uid, java.util.List groups, String myself) {";
+	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {String myself = getMyself();";
+	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {String myself = null;";
 	
 	private String getValidatorPropW(Meta meta) {
 		String line = ""; 
@@ -925,9 +925,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "if (groups!=null&&groups.size()>0&&"+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければエラー
 			line += "boolean ex=false;";
-			line += "groups.add(\"\"+ucode);";
+			line += "groups.add(\"\"+uid);";
 			for(String aclw:meta.aclW) {
-				if (aclw.equals("@")) line += "if (ucode != null && ucode.equals(myself)) ex=true;";
+				if (aclw.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
 			}
 			line += "for(int i=0;i<groups.size();i++) {";
 			for(String aclw:meta.aclW) {
@@ -949,9 +949,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
 			line += "if (groups==null) groups = new java.util.ArrayList();";
-			line += "groups.add(\"\"+ucode);";
+			line += "groups.add(\"\"+uid);";
 			for(String aclr:meta.aclR) {
-				if (aclr.equals("@")) line += "if (ucode != null && ucode.equals(myself)) ex=true;";
+				if (aclr.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
 			}
 			line += "for(int i=0;i<groups.size();i++) {";
 			for(String aclr:meta.aclR) {

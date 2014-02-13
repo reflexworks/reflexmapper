@@ -993,12 +993,12 @@ public class TestMsgpackMapper {
 		String xml = null;
 
 		// maskprop test
-		//String ucode = "6";
-		String ucode = "7";
+		String uid = "6";
+		//String uid = "7";
 		List<String> groups = new ArrayList<String>();
 
 		// グループ参加なし
-		feed.maskprop(ucode, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (グループ参加なし) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
@@ -1015,7 +1015,7 @@ public class TestMsgpackMapper {
 		// 別グループに参加
 		feed = (FeedBase)mp.fromJSON(json);
 		groups.add("/othergroup");
-		feed.maskprop(ucode, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (別グループに参加) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
@@ -1023,7 +1023,7 @@ public class TestMsgpackMapper {
 		// /$admin グループ
 		feed = (FeedBase)mp.fromJSON(json);
 		groups.add("/@testservice/$admin");
-		feed.maskprop(ucode, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
@@ -1043,12 +1043,12 @@ public class TestMsgpackMapper {
 		FeedBase feed = (FeedBase)mp.fromJSON(json);
 		String xml = null;
 	
-		//String ucode = "6";
-		String ucode = "7";
+//		String uid = "6";
+		String uid = "7";
 		List<String> groups = new ArrayList<String>();
 
 		// validate test
-		feed.validate(ucode, groups);
+		feed.validate(uid, groups);
 
 		assertTrue(true);
 	}
