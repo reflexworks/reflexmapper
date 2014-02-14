@@ -164,6 +164,23 @@ public class TestMsgpackMapper {
 		"  $$text"				// テキストノード
 	};
 	
+	public static String entitytempl3[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"simple{100}",        //  0行目はパッケージ名(service名)
+		"name",
+		"brand",
+		"size",
+		"color",
+		"price"
+	};
+
+	public static String entityAcls3[] = {
+		"title:/*",
+		"contributor=/@testservice/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/@testservice/$admin+RW"
+	};
+
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
 	private static String SECRETKEY = "testsecret123";
@@ -814,7 +831,7 @@ public class TestMsgpackMapper {
 		
 		// MessagePack test
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
-        String xml = mp.toXML(feed);
+		String xml = mp.toXML(feed);
 		System.out.println(xml);
 
 		EntryBase entry = feed._entry.get(0);
@@ -1014,6 +1031,29 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
+
+		assertTrue(isMatch);
+	}
+
+	@Test
+	public void testXmlFormat() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp3 = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
+
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
+		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"POST\",\"subtitle\" : \"201\",\"summary\" : \"Registered.\"}]}}";
+
+		FeedBase feed0 = (FeedBase)mp0.fromJSON(json);
+		String xml = null;
+
+		System.out.println("\n=== デフォルトMapperで作成したオブジェクトを、Template mapperでシリアライズ ===");
+		xml = mp3.toXML(feed0);
+		System.out.println(xml);
+		
+		boolean isMatch = false;
+		if (xml.indexOf("_") == -1) {
+			isMatch = true;
+		}
 
 		assertTrue(isMatch);
 	}

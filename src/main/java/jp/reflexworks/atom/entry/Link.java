@@ -183,7 +183,6 @@ public class Link implements Serializable, SoftSchema {
 
 	public boolean validate(String uid, List<String> groups, String myself) 
 	throws java.text.ParseException {
-			
 		if (_$title != null) {
 			if (uid == null) 
 				throw new java.text.ParseException("Property 'link#title' is not writeable.", 0);
@@ -201,8 +200,9 @@ public class Link implements Serializable, SoftSchema {
 	}
 
 	public void addSvcname(String svcname) {
-		if (_$href != null && !_$href.startsWith(EntryBase.SVC_PREFIX)) {
-			//_$href = "/@"+svcname+_$href;
+		// rel="self" または "alternate" の場合のみサービス名編集
+		if ((Link.REL_SELF.equals(_$rel) || Link.REL_ALTERNATE.equals(_$rel)) &&
+				_$href != null && !_$href.startsWith(EntryBase.SVC_PREFIX)) {
 			StringBuilder buf = new StringBuilder();
 			buf.append(EntryBase.SVC_PREFIX);
 			buf.append(svcname);
@@ -215,8 +215,9 @@ public class Link implements Serializable, SoftSchema {
 
 	public void cutSvcname(String svcname) {
 		String serviceTopUri = EntryBase.SVC_PREFIX + svcname;
-		if (_$href != null && _$href.startsWith(serviceTopUri)) {
-			//_$href = _$href.substring(svcname.length()+2);
+		// rel="self" または "alternate" の場合のみサービス名編集
+		if ((Link.REL_SELF.equals(_$rel) || Link.REL_ALTERNATE.equals(_$rel)) &&
+				_$href != null && _$href.startsWith(serviceTopUri)) {
 			_$href = _$href.substring(serviceTopUri.length());
 			if (_$href.length() == 0) {
 				_$href = "/";
