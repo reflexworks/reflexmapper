@@ -14,7 +14,7 @@ public abstract class ConditionBase {
 	public static final String REGEX = "rg";
 
 	// 互換性のためfinalにしない。(継承クラスで編集)
-	protected static String DELIMITER = "-";
+	public static String DELIMITER = "-";
 	
 	public static final String PREFIX_MATCHING  = "*";
 	public static final String PREFIX_MATCHING_END = "\ufffd";
