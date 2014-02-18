@@ -11,6 +11,10 @@ import jp.reflexworks.atom.wrapper.base.ConditionBase;
 import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.StringUtils;
 
+/**
+ * エンティティオブジェクトが検索条件に合致するか調べるために使われるコンテキスト
+ * 
+ */
 public class ConditionContext {
 
 	public ConditionBase[] conditions;
@@ -26,6 +30,11 @@ public class ConditionContext {
 		this.isFetchs = new Boolean[conditions.length];
 	}
 	
+	/**
+	 * 検索条件に合致していたかについてのチェック結果の判定
+	 * 
+	 * @return 合致していればtrue
+	 */
 	public boolean isMatch() {
 		for (Boolean value : isFetchs) {
 			if (value==null||!value) return false;
@@ -37,6 +46,11 @@ public class ConditionContext {
 		return true;
 	}
 
+	/**
+	 * すべての項目の検索条件について合致しているかどうかチェックする
+	 * 
+	 * @param context
+	 */
 	public static void checkCondition(ConditionContext context) {
 		for (int i=0;i<context.conditions.length;i++) {
 			ConditionBase cond = context.conditions[i];
@@ -51,6 +65,14 @@ public class ConditionContext {
 		}
 	}
 
+	/**
+	 * 個々の項目について検索条件に合致しているかどうかチェックする
+	 * 
+	 * @param obj
+	 * @param cond
+	 * @param type
+	 * @return 合致していればtrue
+	 */
 	private static boolean checkCondition(Object obj, ConditionBase cond, String type) {
 		String equal = cond.getEquations();
 

@@ -67,7 +67,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	public String toString() {
 		return "Content [" + _$$text + "]";
 	}
-
+	
 	public boolean validate(String ucode, List<String> groups, String myself) 
 	throws java.text.ParseException {
 		/*
