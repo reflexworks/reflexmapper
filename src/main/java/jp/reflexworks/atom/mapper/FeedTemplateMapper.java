@@ -194,7 +194,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public FeedTemplateMapper(Object jo_packages, String secretkey) 
 	throws ParseException {
-		this(jo_packages, null, 0, false, false, null, secretkey);
+		this(jo_packages, null, 0, false, false, null, null, secretkey);
+	}
+	
+	public FeedTemplateMapper(Object jo_packages, ReflectionProvider reflectionProvider,
+			String secretkey) 
+	throws ParseException {
+		this(jo_packages, null, 0, false, false, reflectionProvider, null,
+				secretkey);
 	}
 
 	/**

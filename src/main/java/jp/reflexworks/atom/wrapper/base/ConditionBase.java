@@ -1,6 +1,6 @@
 package jp.reflexworks.atom.wrapper.base;
 
-import jp.reflexworks.servlet.util.URLDecoderPlus;
+import jp.sourceforge.reflex.util.URLDecoderPlus;
 import jp.sourceforge.reflex.util.StringUtils;
 
 public abstract class ConditionBase {
@@ -12,7 +12,9 @@ public abstract class ConditionBase {
 	public static final String LESS_THAN_OR_EQUAL = "le";
 	public static final String NOT_EQUAL = "ne";
 	public static final String REGEX = "rg";
-	public static final String DELIMITER = "-";
+
+	// 互換性のためfinalにしない。(継承クラスで編集)
+	public static String DELIMITER = "-";
 	
 	public static final String PREFIX_MATCHING  = "*";
 	public static final String PREFIX_MATCHING_END = "\ufffd";
