@@ -113,7 +113,7 @@ public abstract class ConditionBase {
 		}
 	}
 	
-	private void setDecodeValue() {
+	private void setDecodeValue() { 
 		if (this.originalValue != null) {
 			this.value = URLDecoderPlus.urlDecode(this.originalValue);
 		}

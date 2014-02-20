@@ -639,7 +639,7 @@ public class TestMsgpackMapper {
         EntryBase defentry2 = (EntryBase) defmp.fromMessagePack(defbytes, ENTRY);	// false でEntryをデシリアライズ
         String title = null;
         if (defentry2 != null) {
-        	title = defentry2._title;
+        	title = defentry2.title;
         }
 		System.out.println("\n=== [default] title=" + title);
         
@@ -673,7 +673,7 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== [default (2回目)] MessagePack Entry デシリアライズ ===");
         defentry2 = (EntryBase) defmp.fromMessagePack(defbytes, ENTRY);	// false でEntryをデシリアライズ
         if (defentry2 != null) {
-        	title = defentry2._title;
+        	title = defentry2.title;
         }
 		System.out.println("\n=== [default (2回目)] title=" + title);
 		
@@ -834,7 +834,7 @@ public class TestMsgpackMapper {
 		String xml = mp.toXML(feed);
 		System.out.println(xml);
 
-		EntryBase entry = feed._entry.get(0);
+		EntryBase entry = feed.entry.get(0);
 		System.out.println("\n==== getValue test ====");
 		System.out.println("email value="+entry.getValue("email"));
 		System.out.println("verified_email value="+entry.getValue("verified_email"));
@@ -851,13 +851,13 @@ public class TestMsgpackMapper {
 		
 		// TODO contributor
 		Contributor contributor = new Contributor();
-		entry._contributor.add(contributor);
-		contributor._uri = getAclUrn("888", "CRUD");
-		contributor._name = "テストネーム";
+		entry.contributor.add(contributor);
+		contributor.uri = getAclUrn("888", "CRUD");
+		contributor.name = "テストネーム";
 		contributor = new Contributor();
-		entry._contributor.add(contributor);
-		contributor._uri = getAclUrn("889", "CRUD");
-		contributor._name = "てすと";
+		entry.contributor.add(contributor);
+		contributor.uri = getAclUrn("889", "CRUD");
+		contributor.name = "てすと";
 
 		Cipher cipher = CipherUtil.getInstance();
 		System.out.println("---(before encrypted)---");
@@ -1008,10 +1008,10 @@ public class TestMsgpackMapper {
 
 		// 結果判定
 		boolean isMatch = false;
-		if (feed != null && feed._entry != null && feed._entry.size() > 0) {
-			EntryBase entry0 = feed._entry.get(0);
+		if (feed != null && feed.entry != null && feed.entry.size() > 0) {
+			EntryBase entry0 = feed.entry.get(0);
 			//if (entry0._contributor == null) {
-			if (entry0._contributor != null) {
+			if (entry0.contributor != null) {
 				isMatch = true;
 			}
 		}
@@ -1038,7 +1038,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testXmlFormat() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp3 = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"simple"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
 
 		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"POST\",\"subtitle\" : \"201\",\"summary\" : \"Registered.\"}]}}";

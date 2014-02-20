@@ -49,19 +49,19 @@ public class Link implements Serializable, SoftSchema {
 	public String _$title;
 	public String _$length;
 
-	public String get$xml$lang() {
+	public String get_$xml$lang() {
 		return _$xml$lang;
 	}
 
-	public void set$xml$lang(String _$xml$lang) {
+	public void set_$xml$lang(String _$xml$lang) {
 		this._$xml$lang = _$xml$lang;
 	}
 
-	public String get$xml$base() {
+	public String get_$xml$base() {
 		return _$xml$base;
 	}
 
-	public void set$xml$base(String _$xml$base) {
+	public void set_$xml$base(String _$xml$base) {
 		this._$xml$base = _$xml$base;
 	}
 

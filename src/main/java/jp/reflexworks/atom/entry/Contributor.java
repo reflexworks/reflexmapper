@@ -45,86 +45,86 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 
 	public String _$xml$lang;
 	public String _$xml$base;
-	public String _name;
-	public String _uri;
-	public String _email;
+	public String name;
+	public String uri;
+	public String email;
 
-	public String get$xml$lang() {
+	public String get_$xml$lang() {
 		return _$xml$lang;
 	}
 
-	public void set$xml$lang(String _$xml$lang) {
+	public void set_$xml$lang(String _$xml$lang) {
 		this._$xml$lang = _$xml$lang;
 	}
 
-	public String get$xml$base() {
+	public String get_$xml$base() {
 		return _$xml$base;
 	}
 
-	public void set$xml$base(String _$xml$base) {
+	public void set_$xml$base(String _$xml$base) {
 		this._$xml$base = _$xml$base;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
 
 	public String getUri() {
-		return _uri;
+		return uri;
 	}
 
 	public void setUri(String uri) {
-		this._uri = uri;
+		this.uri = uri;
 	}
 
 	public String getEmail() {
-		return _email;
+		return email;
 	}
 
 	public void setEmail(String email) {
-		this._email = email;
+		this.email = email;
 	}
 
 	@Override
 	public String toString() {
-		return "Contributor [uri=" + _uri + ", email=" + _email + ", name=" + _name + "]";
+		return "Contributor [uri=" + uri + ", email=" + email + ", name=" + name + "]";
 	}
 	
 	public Object getValue(String fldname) {
-		if (fldname.equals("contributor.name")) return _name;
-		if (fldname.equals("contributor.uri")) return _uri;
-		if (fldname.equals("contributor.email")) return _email;
+		if (fldname.equals("contributor.name")) return name;
+		if (fldname.equals("contributor.uri")) return uri;
+		if (fldname.equals("contributor.email")) return email;
 		return null;
 	}
 
 	public void encrypt(String id, Object cipher, String secretkey) {
-		if (_uri != null) _uri = (String)CipherUtil.doEncrypt("" + _uri, secretkey + id, cipher);
+		if (uri != null) uri = (String)CipherUtil.doEncrypt("" + uri, secretkey + id, cipher);
 	}
 	public void decrypt(String id, Object cipher, String secretkey) {
-		if (_uri != null) _uri = (String)CipherUtil.doDecrypt("" + _uri, secretkey + id, cipher);
+		if (uri != null) uri = (String)CipherUtil.doDecrypt("" + uri, secretkey + id, cipher);
 	}
 	
 	public void isMatch(ConditionContext context) {
-		if (_name != null) {
+		if (name != null) {
 			context.fldname = "contributor.name";
 			context.type = "String";
-			context.obj = _name;
+			context.obj = name;
 			ConditionContext.checkCondition(context);
 		}
-		if (_uri != null) {
+		if (uri != null) {
 			context.fldname = "contributor.uri";
 			context.type = "String";
-			context.obj = _uri;
+			context.obj = uri;
 			ConditionContext.checkCondition(context);
 		}
-		if (_email != null) {
+		if (email != null) {
 			context.fldname = "contributor.email";
 			context.type = "String";
-			context.obj = _email;
+			context.obj = email;
 			ConditionContext.checkCondition(context);
 		}
 	}
@@ -135,34 +135,34 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 	public void maskprop(String ucode, List<String> groups, String myself) {}
 
 	public void addSvcname(String svcname) {
-		if (_uri != null && svcname != null && svcname.length() > 0) {
-			int s = _uri.indexOf(":acl:/");
+		if (uri != null && svcname != null && svcname.length() > 0) {
+			int s = uri.indexOf(":acl:/");
 			if (s >= 0) {
 				s += 5;
-				String r = _uri.substring(s);
+				String r = uri.substring(s);
 				//_uri = l + ":/@" + svcname + r;
 				if (!r.startsWith(EntryBase.SVC_PREFIX)) {
-					String l = _uri.substring(0, s);
+					String l = uri.substring(0, s);
 					StringBuilder buf = new StringBuilder();
 					buf.append(l);
 					buf.append(EntryBase.SVC_PREFIX);
 					buf.append(svcname);
 					buf.append(r);
-					_uri = buf.toString();
+					uri = buf.toString();
 				}
 			}
 		}
 	}
 
 	public void cutSvcname(String svcname) {
-		if (_uri != null && svcname != null && svcname.length() > 0) {
+		if (uri != null && svcname != null && svcname.length() > 0) {
 			String serviceName = EntryBase.SVC_PREFIX + svcname;
-			int s = _uri.indexOf(":acl:" + serviceName);
+			int s = uri.indexOf(":acl:" + serviceName);
 			if (s >= 0) {
 				s += s + 5;
-				String l = _uri.substring(0, s);
-				String r = _uri.substring(s + serviceName.length());
-				_uri = l + r;
+				String l = uri.substring(0, s);
+				String r = uri.substring(s + serviceName.length());
+				uri = l + r;
 				//int s2 = r.indexOf("/");
 				//String svc = r.substring(1, s2);
 				//if (svc.equals(svcname) && s2 >= 0) { // svcnameが一致していたら省略
