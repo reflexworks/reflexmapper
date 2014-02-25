@@ -181,7 +181,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private ClassPool pool;
 	private Loader loader;
 	protected String packagename;
-	private boolean isSettingTemplate;
+	private boolean isDefaultTemplate;
 	private String folderpath;
 	private String secretkey;
 	
@@ -380,8 +380,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}
 			
 			registerClasses();
-			if (((String[])jo_packages).length > 1) {
-				isSettingTemplate = true;
+			if (((String[])jo_packages).length == 1) {
+				isDefaultTemplate = true;
 			}
 			
 		} else if (jo_packages instanceof Map | jo_packages instanceof String) {
@@ -1693,8 +1693,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return metalist;
 	}
 
-	public boolean isSettingTemplate() {
-		return isSettingTemplate;
+	public boolean isDefaultTemplate() {
+		return isDefaultTemplate;
 	}
 	
 	/**
