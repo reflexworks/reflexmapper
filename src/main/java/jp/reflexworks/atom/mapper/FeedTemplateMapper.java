@@ -378,6 +378,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				Set<Class<?>> registSet = new HashSet<Class<?>>();
 				for (String classname : classnames) {
 					try {
+						System.out.println(classname);
 						loader.delegateLoadingOf(classname);			// 既存classは先に読めるようにする
 						registerClass(classname);
 					} catch (CannotCompileException e) {
@@ -404,7 +405,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private List<String> getClasses(String entry) throws ClassNotFoundException {
 		int idx = entry.lastIndexOf(".");
 		String packagename = entry.substring(0, idx + 1);
-		Class entryclass = loader.loadClass(entry);
+		Class entryclass = Class.forName(entry);
 		List<String> result = new ArrayList<String>();
 		Field fields[] = entryclass.getDeclaredFields();
 		for (Field field : fields) {
@@ -424,7 +425,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 			  result.addAll(child);
 		  }
 		}
+		for(String a:result) {
+			System.out.println("x="+a);
+		}
+
 		return result;
+		
 	}
 	
 	private boolean isClass(Field field) {
@@ -1540,6 +1546,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					cls = loader.loadClass(ENTRYBASE);
 					registry.register(cls, template);
 				}
+				
 				// EntryやFeedの場合はmsgpackに登録
 				if (isEntry(classname) || isFeed(classname)) {
 					msgpack.register(cls, template);
