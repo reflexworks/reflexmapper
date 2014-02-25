@@ -424,10 +424,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 			  result.addAll(child);
 		  }
 		}
-		for(String a:result) {
-			System.out.println("x="+a);
-		}
-
 		return result;
 		
 	}
