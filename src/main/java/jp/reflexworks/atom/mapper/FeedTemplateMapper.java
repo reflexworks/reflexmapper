@@ -378,7 +378,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 				Set<Class<?>> registSet = new HashSet<Class<?>>();
 				for (String classname : classnames) {
 					try {
-						System.out.println(classname);
 						loader.delegateLoadingOf(classname);			// 既存classは先に読めるようにする
 						registerClass(classname);
 					} catch (CannotCompileException e) {
