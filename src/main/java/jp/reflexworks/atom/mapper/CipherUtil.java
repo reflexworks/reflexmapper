@@ -330,7 +330,7 @@ public final class CipherUtil {
 		}
 		return null;
 	}
-		
+	
 	/*
 	 * 暗号化
 	 */
@@ -340,8 +340,8 @@ public final class CipherUtil {
 			return null;
 		}
 		cipher.init(Cipher.ENCRYPT_MODE, sk);
-        // 暗号化
-        byte[] encrypted = cipher.doFinal(value);
+		// 暗号化
+		byte[] encrypted = cipher.doFinal(value);
 		return encrypted;
 	}
 	
@@ -373,7 +373,7 @@ public final class CipherUtil {
 			return null;
 		}
 		cipher.init(Cipher.DECRYPT_MODE, sk);
-        byte[] decrypted = cipher.doFinal(value);
+		byte[] decrypted = cipher.doFinal(value);
 		return decrypted;
 	}
 	
