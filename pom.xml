@@ -14,11 +14,11 @@
     <name>Virtual Technology</name>
     <url>http://www.virtual-tech.net/</url>
   </organization>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>jp.sourceforge.reflex</groupId>
