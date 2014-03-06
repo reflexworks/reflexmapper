@@ -610,8 +610,17 @@ public class TestMsgpackMapper {
 		
 		jp.reflexworks.test2.model.Feed feed = createTest2Feed();
 		String xml = mp.toXML(feed);
-		System.out.println("--- testStaticPackages2 ---");
+		System.out.println("--- testStaticPackages2 (XML) ---");
 		System.out.println(xml);
+		
+		String json = mp.toJSON(feed);
+		System.out.println("--- testStaticPackages2 (JSON) ---");
+		System.out.println(json);
+
+		byte[] msgData = mp.toMessagePack(feed);
+		System.out.println("--- testStaticPackages2 (MessagePack) ---");
+		System.out.println(msgData);
+		
 		System.out.println("------");
 
 		int idx = xml.indexOf("<test2:");
