@@ -21,17 +21,11 @@ import javax.xml.bind.DatatypeConverter;
 import org.json.JSONException;
 import org.junit.Test;
 
-//import _default.Entry;
-//import _default.Favorite;
-//import _default.SubInfo;
-
-
-
-
 import com.carrotsearch.sizeof.ObjectTree;
 
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.FileUtil;
+import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.Link;
@@ -514,12 +508,12 @@ public class TestMsgpackMapper {
 		System.out.println(xml);
 		
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
-        byte[] msgpack = mp.toMessagePack(feed);
-        for(int i=0;i<msgpack.length;i++) { 
-        	System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-        } 
+		byte[] msgpack = mp.toMessagePack(feed);
+		for(int i=0;i<msgpack.length;i++) { 
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
+		} 
 
-        
+
 		assertEquals(json, mp.toJSON(mp.fromXML(xml)));
 	}
 
@@ -605,6 +599,66 @@ public class TestMsgpackMapper {
 		
 		assertTrue(true);
 	}
+
+	@Test
+	public void testStaticPackages2() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+	
+		Map<String, String> MODEL_PACKAGE = new HashMap<String, String>();
+		MODEL_PACKAGE.putAll(AtomConst.ATOM_PACKAGE);
+		MODEL_PACKAGE.put("jp.reflexworks.test2.model", "test2=http://jp.reflexworks/test2");
+		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);
+		
+		jp.reflexworks.test2.model.Feed feed = createTest2Feed();
+		String xml = mp.toXML(feed);
+		System.out.println("--- testStaticPackages2 ---");
+		System.out.println(xml);
+		System.out.println("------");
+
+		int idx = xml.indexOf("<test2:");
+		assertTrue(idx == -1);
+	}
+	
+	private jp.reflexworks.test2.model.Feed createTest2Feed() {
+		jp.reflexworks.test2.model.Feed feed = new jp.reflexworks.test2.model.Feed();
+		feed._entry = new ArrayList<EntryBase>();
+		
+		String code = "100001";
+		jp.reflexworks.test2.model.Entry entry = createTest2Entry(code);
+		feed._entry.add(entry);
+		code = "100002";
+		entry = createTest2Entry(code);
+		feed._entry.add(entry);
+		
+		return feed;
+	}
+	
+	private jp.reflexworks.test2.model.Entry createTest2Entry(String code) {
+		jp.reflexworks.test2.model.Entry entry = new jp.reflexworks.test2.model.Entry();
+		entry.setMyUri("/1/item/" + code);
+		entry.setTitle("商品" + code);
+		entry._deleteFlg = "0";
+
+		jp.reflexworks.test2.model.Info info = new jp.reflexworks.test2.model.Info();
+		info.name = "えんぴつ";
+		info.color = "緑";
+		info.size = "15cm";
+		info.category = "文房具";
+		entry._info = info;
+		
+		List<jp.reflexworks.test2.model.Comment> comments = new ArrayList<jp.reflexworks.test2.model.Comment>();
+		jp.reflexworks.test2.model.Comment comment = new jp.reflexworks.test2.model.Comment();
+		comment._nickname = "なまえ1";
+		comment._$$text = "普通のえんぴつです。";
+		comments.add(comment);
+		comment = new jp.reflexworks.test2.model.Comment();
+		comment._nickname = "なまえ2";
+		comment._$$text = "良い感じのえんぴつです。";
+		comments.add(comment);
+		entry._comment = comments;
+		
+		return entry;
+	}
+
 	
 	@Test
 	public void testDefaultAtom() 

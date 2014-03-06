@@ -192,7 +192,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages,String secretkey) 
+	public FeedTemplateMapper(Object jo_packages, String secretkey) 
 	throws ParseException {
 		this(jo_packages, null, 0, false, false, false, null, null, secretkey);
 	}
@@ -205,9 +205,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, boolean compatible,String secretkey) 
+	public FeedTemplateMapper(Object jo_packages, boolean compatible, String secretkey) 
 	throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible,null, null, secretkey);
+		this(jo_packages, null, 0, false, false, compatible, null, null, secretkey);
 	}
 	
 	/**
@@ -219,10 +219,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, boolean compatible,ReflectionProvider reflectionProvider,
-			String secretkey) 
+	public FeedTemplateMapper(Object jo_packages, boolean compatible, 
+			ReflectionProvider reflectionProvider, String secretkey) 
 	throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible,reflectionProvider, null,
+		this(jo_packages, null, 0, false, false, compatible, reflectionProvider, null,
 				secretkey);
 	}
 
@@ -238,7 +238,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			String secretkey) 
 	throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, false,null, null, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, false, null, null, secretkey);
 	}
 
 	/**
@@ -251,10 +251,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax,boolean compatible, 
-			String secretkey) 
+	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
+			boolean compatible, String secretkey) 
 	throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible,null, null, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, compatible, null, null, secretkey);
 	}
 
 	/**
@@ -268,10 +268,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, boolean compatible,
-			String folderpath, String secretkey) 
+	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
+			boolean compatible, String folderpath, String secretkey) 
 	throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false,compatible, null, folderpath, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, compatible, null, folderpath, 
+				secretkey);
 	}
 
 	/**
@@ -287,9 +288,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean compatible,String folderpath, String secretkey) 
+			boolean isCamel, boolean compatible, String folderpath, String secretkey) 
 	throws ParseException {
-		this(jo_packages, propAcls, indexmax, isCamel, false,compatible, folderpath, secretkey);
+		this(jo_packages, propAcls, indexmax, isCamel, false, compatible, folderpath, 
+				secretkey);
 	}
 
 	/**
@@ -304,10 +306,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax,boolean compatible, 
-			ReflectionProvider reflectionProvider, String folderpath, String secretkey) 
+	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax,
+			boolean compatible, ReflectionProvider reflectionProvider, String folderpath, 
+			String secretkey) 
 	throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible,reflectionProvider, 
+		this(jo_packages, propAcls, indexmax, false, false, compatible, reflectionProvider, 
 				folderpath, secretkey);
 	}
 
@@ -325,7 +328,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, String secretkey) 
+			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, 
+			String secretkey) 
 	throws ParseException {
 		this(jo_packages, propAcls, indexmax, isCamel, useSingleQuote, compatible, null, folderpath,
 				secretkey);
@@ -346,10 +350,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible,ReflectionProvider reflectionProvider, 
-			String folderpath, String secretkey) 
+			boolean isCamel, boolean useSingleQuote, boolean compatible,
+			ReflectionProvider reflectionProvider,  String folderpath, String secretkey) 
 	throws ParseException {
-		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible,reflectionProvider);
+		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible,
+				reflectionProvider);
 
 		this.folderpath = folderpath;
 		this.secretkey = secretkey;

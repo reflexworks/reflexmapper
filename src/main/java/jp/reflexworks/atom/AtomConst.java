@@ -17,7 +17,7 @@ public class AtomConst {
 	/** ATOM : Source package */
 	public static final String ATOM_PACKAGE_SOURCE = "jp.reflexworks.atom.source";
 	/** ATOM : Package map */
-	public static Map<String, String> ATOM_PACKAGE;
+	public static final Map<String, String> ATOM_PACKAGE;
 	static {
 		ATOM_PACKAGE = new HashMap<String, String>();
 		ATOM_PACKAGE.put(ATOM_PACKAGE_FEED, ATOM_NAMESPACE);
