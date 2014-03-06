@@ -820,6 +820,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	/**
+	 * MessagePackからオブジェクトにデシリアライズする.
+	 * <p>
+	 * Feed形式のデータを設定してください。
+	 * </p>
+	 * @param msg MessagePackデータ
+	 * @return オブジェクト
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public Object fromMessagePack(byte[] msg) 
+	throws IOException, ClassNotFoundException  {
+		return fromMessagePack(msg, true);
+	}
+
+	/**
 	 * MessagePackからオブジェクトにデシリアライズする
 	 * @param msg
 	 * @param isFeed
