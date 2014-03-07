@@ -8,6 +8,8 @@ import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 public class Entry extends EntryBase {
 	
+	private static final long serialVersionUID = 1L;
+
 	public Info _info;
 	public List<Comment> _comment;
 	public String _deleteFlg;

@@ -605,7 +605,9 @@ public class TestMsgpackMapper {
 	
 		Map<String, String> MODEL_PACKAGE = new HashMap<String, String>();
 		MODEL_PACKAGE.putAll(AtomConst.ATOM_PACKAGE);
-		MODEL_PACKAGE.put("jp.reflexworks.test2.model", "test2=http://jp.reflexworks/test2");
+		// 名前空間の指定なし
+		//MODEL_PACKAGE.put("jp.reflexworks.test2.model", "test2=http://jp.reflexworks/test2");
+		MODEL_PACKAGE.put("jp.reflexworks.test2.model", "");
 		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);
 		
 		jp.reflexworks.test2.model.Feed feed = createTest2Feed();
@@ -648,10 +650,10 @@ public class TestMsgpackMapper {
 		entry._deleteFlg = "0";
 
 		jp.reflexworks.test2.model.Info info = new jp.reflexworks.test2.model.Info();
-		info.name = "えんぴつ";
-		info.color = "緑";
-		info.size = "15cm";
-		info.category = "文房具";
+		info._name = "えんぴつ";
+		info._color = "緑";
+		info._size = "15cm";
+		info._category = "文房具";
 		entry._info = info;
 		
 		List<jp.reflexworks.test2.model.Comment> comments = new ArrayList<jp.reflexworks.test2.model.Comment>();
