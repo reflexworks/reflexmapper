@@ -396,7 +396,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 			// package名からregistClass
 			// パッケージ名からクラス一覧を取得
-//			ClassFinder classFinder = new ClassFinder(loader);
 			Set<String> classnames = null;  
 			if (jo_packages != null) {
 				try {
@@ -700,7 +699,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 * 必須項目
 		 */
 		public boolean isMandatory; 
-		
+
+		/**
+		 * 降順
+		 */
+		public boolean isDesc; 
+
 		/**
 		 * バリーデーション用正規表現
 		 */
@@ -1238,6 +1242,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 	
 	private String getValidatorLogic(Meta meta) {
 		String line = "";
+		if (meta.isDesc) {
+			line = "if (" + meta.self + "!=null) "+ meta.self + "= new java.lang.Long(java.lang.Long.MAX_VALUE-" + meta.self + ".longValue());"; 
+		}
+		
 		if (meta.isMandatory) {
 			line = "if (" + meta.self + "==null) throw new java.text.ParseException(\"Required property '" + meta.self + "' not specified.\",0);";
 		}
@@ -1435,6 +1443,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 				meta.self = "_"+meta.self;
 				
+				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
 					String typestr = matcherf.group(4).toLowerCase();
 					if (typestr.equals("date")) {
@@ -1450,6 +1459,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} else if (typestr.equals("boolean")) {
 						meta.type = "Boolean";
 						if (meta.min != null) throw new ParseException("Can't specify (Type) for Boolean type:" + line, 0);
+					} else if (typestr.equals("desc")) {
+						meta.type = "Long";
+						meta.isDesc = true;
 					} else {
 						meta.type = "String"; // その他
 					}
@@ -1687,7 +1699,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	        					isCreated = true;
 	        				}
 	                		if (e.getValue().isBooleanValue()) f.set(parent, e.getValue().asBooleanValue().getBoolean());
-	                		else if (e.getValue().isIntegerValue()) f.set(parent, e.getValue().asIntegerValue().getInt());
+	                		else if (e.getValue().isIntegerValue()) {
+	                			if (f.getType().getName().equals("java.lang.Integer")) f.set(parent, e.getValue().asIntegerValue().getInt());
+	                			if (f.getType().getName().equals("java.lang.Long")) f.set(parent, e.getValue().asIntegerValue().getLong());
+	                			if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
+	                		}
 	                		else if (e.getValue().isFloatValue()) f.set(parent, e.getValue().asFloatValue().getFloat());
 	                		else if (e.getValue().isRawValue()) {
 	                			String v = e.getValue().toString().substring(1,e.getValue().toString().length()-1);
@@ -1708,6 +1724,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	        }
 	    	return parent;
 		} catch (Exception e) {
+			e.printStackTrace();
         	throw new JSONException(e);
 		}
 	}
