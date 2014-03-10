@@ -1774,6 +1774,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return secretkey;
 	}
 
+	/**
+	 * テンプレートファイルからEntityBeanを生成する
+	 * 
+	 * <pre>
+	 * Usage: Java FeedTemplateMapper templatefile folderpath (aclfile)
+	 * </pre>
+	 * 
+	 * @param args
+	 * @throws ParseException
+	 */
 	public static void main(String args[]) throws ParseException {
 
 		if (args.length<2) {
@@ -1783,11 +1793,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 		String[] aclfile = null;
 		if (args.length==3&&args[2]!=null) aclfile = readtemplatefile(args[2]);
 		
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,aclfile,30,false,args[1],"");		
+		new FeedTemplateMapper(entitytempl,aclfile,30,false,args[1],"");		
 
 	}
 	
-	  public static String[] readtemplatefile(String filename) {
+	
+	private static String[] readtemplatefile(String filename) {
 		    List<String> tempfile = new ArrayList<String>();
 	        BufferedReader br = null;
 	        try {
