@@ -1,5 +1,8 @@
 package jp.reflexworks.atom.mapper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -1770,5 +1773,51 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public String getSecretkey() {
 		return secretkey;
 	}
+
+	/**
+	 * テンプレートファイルからEntityBeanを生成する
+	 * 
+	 * <pre>
+	 * Usage: Java FeedTemplateMapper templatefile folderpath (aclfile)
+	 * </pre>
+	 * 
+	 * @param args
+	 * @throws ParseException
+	 */
+	public static void main(String args[]) throws ParseException {
+
+		if (args.length<2) {
+			System.out.println("Usage: Java FeedTemplateMapper <templatefile> <folderpath> (<aclfile>)");
+		}
+		String[] entitytempl = readtemplatefile(args[0]);
+		String[] aclfile = null;
+		if (args.length==3&&args[2]!=null) aclfile = readtemplatefile(args[2]);
+		
+		new FeedTemplateMapper(entitytempl,aclfile,30,false,args[1],"");		
+
+	}
+	
+	
+	private static String[] readtemplatefile(String filename) {
+		    List<String> tempfile = new ArrayList<String>();
+	        BufferedReader br = null;
+	        try {
+	            File file = new File(filename);
+	            
+	            br = new BufferedReader(new FileReader(file));
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                tempfile.add(line);
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                br.close();
+	            } catch (IOException e) {
+	            }
+	        }
+            return (String[]) tempfile.toArray(new String[0]);
+	    }
 
 }
