@@ -2,7 +2,6 @@ package jp.reflexworks.atom.test;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -28,12 +27,10 @@ import jp.sourceforge.reflex.util.FileUtil;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
-import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.wrapper.Condition;
-import jp.reflexworks.test.model.Feed;
 
 public class TestMsgpackMapper {
 
@@ -66,7 +63,8 @@ public class TestMsgpackMapper {
 		"  food",
 		"  updated(date)",
 		" hobby{}",
-		"  $$text"				// テキストノード
+		"  $$text",				// テキストノード
+		"seq(desc)"
 	};
 
 	public static String entityAcls[] = {
@@ -336,7 +334,8 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}]}}";
+		// desc(降順プロパティ付き）
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}},\"seq\" :1}]}}";
 
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
         List groups = new ArrayList<String>();
