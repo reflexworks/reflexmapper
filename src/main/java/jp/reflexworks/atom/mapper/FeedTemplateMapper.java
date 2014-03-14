@@ -777,6 +777,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}
 		}
 		
+		@Override
+		public String toString() {
+			return name;
+		}
 	}
 	
 	private Class getClass(String classname) throws ClassNotFoundException {
