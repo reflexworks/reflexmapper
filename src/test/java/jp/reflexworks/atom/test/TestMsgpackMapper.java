@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.carrotsearch.sizeof.ObjectTree;
 
 import jp.sourceforge.reflex.util.DeflateUtil;
+import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -166,6 +167,20 @@ public class TestMsgpackMapper {
 		"price"
 	};
 
+	public static String entitytempl4[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"androidhello{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" name",
+		" category",
+		" color",
+		" size",
+		"comment{}",
+		" $$text",
+		" nickname",
+		"deleteFlg",
+	};
+		
 	public static String entityAcls3[] = {
 		"title:/*",
 		"contributor=/@testservice/$admin+RW",
@@ -1120,6 +1135,122 @@ public class TestMsgpackMapper {
 		}
 
 		assertTrue(isMatch);
+	}
+
+	@Test
+	public void testFieldMapper() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
+
+		String json = createJsonTempl4_1();
+		FeedBase feed1 = (FeedBase)mp4.fromJSON(json);
+		json = createJsonTempl4_2();
+		FeedBase feed2 = (FeedBase)mp4.fromJSON(json);
+		
+		// feed1の先頭エントリー(target)と、feed2の先頭エントリー(source)の内容を比較し、
+		// 異なっていればtargetにsourceの内容をセットする。
+		EntryBase targetEntry = feed1._entry.get(0);
+		EntryBase sourceEntry = feed2._entry.get(0);
+		
+		// バックアップ
+		String sDeleteFlg = (String)sourceEntry.getValue("deleteFlg");
+		String sInfoName = (String)sourceEntry.getValue("info.name");
+		String sCommentText = (String)sourceEntry.getValue("comment.$$text");
+		String tDeleteFlg = (String)targetEntry.getValue("deleteFlg");
+		String tInfoName = (String)targetEntry.getValue("info.name");
+		String tCommentText = (String)targetEntry.getValue("comment.$$text");
+
+		System.out.println("--- 実行前 ---");
+		System.out.println("sDeleteFlg = " + sDeleteFlg);
+		System.out.println("sInfoName = " + sInfoName);
+		System.out.println("sCommentText = " + sCommentText);
+		System.out.println("tDeleteFlg = " + tDeleteFlg);
+		System.out.println("tInfoName = " + tInfoName);
+		System.out.println("tCommentText = " + tCommentText);
+		
+		// 項目移送
+		FieldMapper fieldMapper = new FieldMapper(true);
+		fieldMapper.setValue(sourceEntry, targetEntry);
+
+		// 結果チェック
+		System.out.println("--- 実行後 ---");
+		tDeleteFlg = (String)targetEntry.getValue("deleteFlg");
+		tInfoName = (String)targetEntry.getValue("info.name");
+		tCommentText = (String)targetEntry.getValue("comment.$$text");
+		
+		System.out.println("tDeleteFlg = " + tDeleteFlg);
+		System.out.println("tInfoName = " + tInfoName);
+		System.out.println("tCommentText = " + tCommentText);
+
+		assertTrue(sDeleteFlg.equals(tDeleteFlg) && sInfoName.equals(tInfoName) &&
+				sCommentText.equals(tCommentText));
+	}
+
+	private String createJsonTempl4_1() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("{\"feed\" : {");
+		buf.append("\"entry\" : [");
+		buf.append("{");
+		buf.append("\"comment\" : [");
+		buf.append("{\"$$text\" : \"普通のえんぴつです。\",\"nickname\" : \"なまえ1\"},");
+		buf.append("{\"$$text\" : \"良い感じのえんぴつです。\",\"nickname\" : \"なまえ2\"}],");
+		buf.append("\"deleteFlg\" : \"0\",");
+		buf.append("\"info\" : {");
+		buf.append("\"category\" : \"文房具\",");
+		buf.append("\"color\" : \"緑\",");
+		buf.append("\"name\" : \"えんぴつ\",");
+		buf.append("\"size\" : \"15cm\"},");
+		buf.append("\"link\" : [{\"$href\" : \"/1/item/100001\",\"$rel\" : \"self\"}],");
+		buf.append("\"title\" : \"商品100001\"");
+		buf.append("},");
+		buf.append("{");
+		buf.append("\"comment\" : [");
+		buf.append("{\"$$text\" : \"普通のえんぴつです。\",\"nickname\" : \"なまえ1\"},");
+		buf.append("{\"$$text\" : \"良い感じのえんぴつです。\",\"nickname\" : \"なまえ2\"}],");
+		buf.append("\"deleteFlg\" : \"0\",");
+		buf.append("\"info\" : {");
+		buf.append("\"category\" : \"文房具\",");
+		buf.append("\"color\" : \"緑\",");
+		buf.append("\"name\" : \"えんぴつ\",");
+		buf.append("\"size\" : \"15cm\"},");
+		buf.append("\"link\" : [{\"$href\" : \"/1/item/100002\",\"$rel\" : \"self\"}],");
+		buf.append("\"title\" : \"商品100002\"");
+		buf.append("}");
+		buf.append("]}}");
+		return buf.toString();
+	}
+
+	private String createJsonTempl4_2() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("{\"feed\" : {");
+		buf.append("\"entry\" : [");
+		buf.append("{");
+		buf.append("\"comment\" : [");
+		buf.append("{\"$$text\" : \"コメント修正。\",\"nickname\" : \"なまえ修正\"},");
+		buf.append("{\"$$text\" : \"良い感じのえんぴつです。\",\"nickname\" : \"なまえ2\"}],");
+		buf.append("\"deleteFlg\" : \"delete update\",");
+		buf.append("\"info\" : {");
+		buf.append("\"category\" : \"カテゴリ修正\",");
+		buf.append("\"color\" : \"色修正\",");
+		buf.append("\"name\" : \"名前修正\",");
+		buf.append("\"size\" : \"15cm\"},");
+		buf.append("\"link\" : [{\"$href\" : \"/1/item/100001\",\"$rel\" : \"self\"}],");
+		buf.append("\"title\" : \"商品100001\"");
+		buf.append("},");
+		buf.append("{");
+		buf.append("\"comment\" : [");
+		buf.append("{\"$$text\" : \"普通のえんぴつです。\",\"nickname\" : \"なまえ1\"},");
+		buf.append("{\"$$text\" : \"良い感じのえんぴつです。\",\"nickname\" : \"なまえ2\"}],");
+		buf.append("\"deleteFlg\" : \"0\",");
+		buf.append("\"info\" : {");
+		buf.append("\"category\" : \"文房具\",");
+		buf.append("\"color\" : \"緑\",");
+		buf.append("\"name\" : \"えんぴつ\",");
+		buf.append("\"size\" : \"15cm\"},");
+		buf.append("\"link\" : [{\"$href\" : \"/1/item/100002\",\"$rel\" : \"self\"}],");
+		buf.append("\"title\" : \"商品100002\"");
+		buf.append("}");
+		buf.append("]}}");
+		return buf.toString();
 	}
 
 	@Test
