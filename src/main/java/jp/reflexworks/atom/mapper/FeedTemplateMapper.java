@@ -1014,6 +1014,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
 							cc.addField(arrayfld);
 							
+							// getter/setterはTaggingServiceの更新処理で使用
+							CtMethod m = CtNewMethod.make("public java.util.List get" + meta.getSelf()
+									+ "() {" + "  return " + meta.self + "; }", cc);
+							cc.addMethod(m);
+							m = CtNewMethod.make("public void set" + meta.getSelf()
+								+ "(java.util.List " + meta.self + ") { this."
+								+ meta.self + "=" + meta.self + ";}", cc);
+							cc.addMethod(m);
+
 						} catch (NotFoundException e) {
 							throw new CannotCompileException(e);
 						} catch (BadBytecode e) {
@@ -1029,7 +1038,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(getSignature(packagename+"."+meta.getSelf()));
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
 							cc.addField(arrayfld);
-							
+
+							// getter/setterはTaggingServiceの更新処理で使用
+							CtMethod m = CtNewMethod.make("public java.util.List get" + meta.getSelf()
+									+ "() {" + "  return " + meta.self + "; }", cc);
+							cc.addMethod(m);
+							m = CtNewMethod.make("public void set" + meta.getSelf()
+								+ "(java.util.List " + meta.self + ") { this."
+								+ meta.self + "=" + meta.self + ";}", cc);
+							cc.addMethod(m);
+
 						} catch (NotFoundException e) {
 							throw new CannotCompileException(e);
 						} catch (BadBytecode e) {
@@ -1039,7 +1057,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} else {
 						CtField f2 = CtField.make(type + field, cc); // フィールドの定義
 						cc.addField(f2);
-						// getter/setterは不要か?
+
+						// getter/setterはTaggingServiceの更新処理で使用
 						CtMethod m = CtNewMethod.make(type + "get" + meta.getSelf()
 								+ "() {" + "  return " + meta.self + "; }", cc);
 						cc.addMethod(m);
