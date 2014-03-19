@@ -1167,12 +1167,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 			cc.addMethod(m6);
 
 			/* 静的classFile作成 */
-			if (folderpath != null && cc.getName().equals("Author")
-					&& cc.getName().equals("Category") 
-					&& cc.getName().equals("Content") 
-					&& cc.getName().equals("Link") 
-					&& cc.getName().equals("Element") 
-					&& cc.getName().equals("Contributor")) {
+			if (folderpath != null && !cc.getName().equals("Author")
+					&& !cc.getName().equals("Category") 
+					&& !cc.getName().equals("Content") 
+					&& !cc.getName().equals("Link") 
+					&& !cc.getName().equals("Element") 
+					&& !cc.getName().equals("Contributor")) {
 			try {
 					cc.writeFile(folderpath);
 			} catch (IOException e) {
