@@ -1020,6 +1020,7 @@ public class TestMsgpackMapper {
 			"  test2",
 			" hobby",			//{}を外すのはOK
 			"  $$text",				// テキストノード
+			"seq(desc)",
 			"test1"				// 最後尾に追加はOK
 		};
 
