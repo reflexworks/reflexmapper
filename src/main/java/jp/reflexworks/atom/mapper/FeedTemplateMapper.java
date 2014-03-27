@@ -1463,7 +1463,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 				
 				if (meta.self.length() < 2) throw new ParseException("Property name is too short.:" + meta.name, 0);
 
-				meta.self = "_"+meta.self;
+				if (folderpath!=null) {
+					// 静的クラスを作成する場合はデフォルトが_なし
+					meta.self = addUnderscore(meta.self);
+				}else {
+					meta.self = "_"+meta.self;
+				}
 				
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
@@ -1858,5 +1863,68 @@ public class FeedTemplateMapper extends ResourceMapper {
 	        }
             return (String[]) tempfile.toArray(new String[0]);
 	    }
+
+	private static String addUnderscore(String prop) {
+		String[] words = new String[] {
+				"abstract",
+				"boolean",
+				"break",
+				"byte",
+				"case",
+				"catch",
+				"char",
+				"class",
+				"const",
+				"continue",
+				"default",
+				"do",
+				"double",
+				"else",
+				"extends",
+				"final",
+				"finally",
+				"float",
+				"for",
+				"goto",
+				"if",
+				"implements",
+				"import",
+				"instanceof",
+				"int",
+				"interface",
+				"long",
+				"native",
+				"new",
+				"package",
+				"private",
+				"protected",
+				"public",
+				"return",
+				"short",
+				"static",
+				"strictfp",
+				"super",
+				"switch",
+				"synchronized",
+				"this",
+				"throw",
+				"throws",
+				"transient",
+				"try",
+				"void",
+				"volatile",
+				"while",
+				"widefp",
+				"true",
+				"false",
+				"null"
+		};
+
+		for (String word:words) {
+			if (prop.equals(word)) return "_"+prop;
+		}
+		return prop;
+
+	}
 
 }
