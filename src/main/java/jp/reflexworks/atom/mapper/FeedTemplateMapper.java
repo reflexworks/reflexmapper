@@ -1864,7 +1864,7 @@ public class FeedTemplateMapper extends ResourceMapper {
             return (String[]) tempfile.toArray(new String[0]);
 	    }
 
-	private static String addUnderscore(String prop) {
+	private  String addUnderscore(String prop) {
 		String[] words = new String[] {
 				"abstract",
 				"boolean",
@@ -1920,6 +1920,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				"null"
 		};
 
+		if (prop.startsWith("$")) return "_"+prop;
 		for (String word:words) {
 			if (prop.equals(word)) return "_"+prop;
 		}
