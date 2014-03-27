@@ -1118,7 +1118,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testXmlFormat() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp3 = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"simple"}, SECRETKEY);		// ATOM Feed/Entryのみ。パッケージは_
 
 		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"POST\",\"subtitle\" : \"201\",\"summary\" : \"Registered.\"}]}}";
