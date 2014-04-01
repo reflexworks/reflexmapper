@@ -1791,8 +1791,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 		List<Meta> metalistprev = getMetalist(mergeAtomEntry(jo_packages_old));
 		List<Meta> metalistnew = getMetalist(mergeAtomEntry(jo_packages_new));
 
-		for (int i = 0, j = 0; i < metalistnew.size(); i++) {
-			if (j>=metalistprev.size()) return true;	// チェック完了
+		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
+			if (j>=metalistprev.size()) return true;	// チェック完了(OK)
+			if (i>=metalistnew.size()) return false;	// チェック完了(NG)
 
 			// 同じ階層でかつ同じタイプであればOK
 			if (metalistnew.get(i).level == metalistprev.get(j).level) {
