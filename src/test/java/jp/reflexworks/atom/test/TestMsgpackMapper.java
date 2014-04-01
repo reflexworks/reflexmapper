@@ -1027,8 +1027,14 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
 		boolean precheck = mp0.precheckTemplate(entitytempl, entitytempl_new);
 		System.out.println("precheck:"+precheck);
-		assertTrue(precheck);
+		
+		// 全く同じ内容のテスト
+		String[] tmpl1 = new String[]{"androidservice{100}", "info", " name", " category", " color", " size", "comment{}", " $$text", " nickname", "deleteFlg", "deleteFlg2"};
+		String[] tmpl2 = new String[]{"androidservice{100}", "info", " name", " category", " color", " size", "comment{}", " $$text", " nickname", "deleteFlg", "deleteFlg2"};
+		
+		precheck = mp0.precheckTemplate(tmpl1, tmpl2);
 
+		assertTrue(precheck);
 	}
 
 	@Test
