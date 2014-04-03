@@ -1294,4 +1294,72 @@ public class TestMsgpackMapper {
 		return "urn:vte.cx:acl:" + user + "," + aclType;
 	}
 
+	@Test
+	public void testAddSvcname() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
+
+		String json = createJsonTempl4_1();
+		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		EntryBase entry = feed.getEntry().get(0);
+		String serviceName = "service1";
+
+		String myUri = "/1/folders/001";
+		entry = addSvcname(entry, serviceName, myUri);
+		
+		myUri = "/";
+		entry = addSvcname(entry, serviceName, myUri);
+		
+		myUri = null;
+		entry = addSvcname(entry, serviceName, myUri);
+		
+		myUri = "";
+		entry = addSvcname(entry, serviceName, myUri);
+		
+		assertTrue(!"/".equals(entry.getMyUri().substring(entry.getMyUri().length() - 1)));
+	}
+	
+	private EntryBase addSvcname(EntryBase entry, String serviceName, String myUri) {
+		entry.setMyUri(myUri);
+		entry.setId(myUri + ",1");
+		Contributor contributor = new Contributor();
+		contributor.setUri("urn:vte.cx:acl:" + myUri + ",R");
+		entry._contributor = new ArrayList<Contributor>();
+		entry._contributor.add(contributor);
+		entry.addSvcname(serviceName);
+		System.out.println("[before uri]" + myUri + ", [add servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry._contributor.get(0).getUri());
+		return entry;
+	}
+
+	@Test
+	public void testCutSvcname() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
+
+		String json = createJsonTempl4_1();
+		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		EntryBase entry = feed.getEntry().get(0);
+		String serviceName = "service1";
+		String atServiceName = "/@" + serviceName;
+
+		String myUri = atServiceName + "/1/folders/001";
+		entry = cutSvcname(entry, serviceName, myUri);
+
+		myUri = atServiceName;
+		entry = cutSvcname(entry, serviceName, myUri);
+		
+		assertTrue("/,1".equals(entry.getId()));
+	}
+	
+	private EntryBase cutSvcname(EntryBase entry, String serviceName, String myUri) {
+		entry.setMyUri(myUri);
+		entry.setId(myUri + ",1");
+		Contributor contributor = new Contributor();
+		contributor.setUri("urn:vte.cx:acl:" + myUri + ",R");
+		entry._contributor = new ArrayList<Contributor>();
+		entry._contributor.add(contributor);
+		entry.cutSvcname(serviceName);
+		System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry._contributor.get(0).getUri());
+		//System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId());
+		return entry;
+	}
+
 }
