@@ -206,7 +206,7 @@ public class Link implements Serializable, SoftSchema {
 			StringBuilder buf = new StringBuilder();
 			buf.append(EntryBase.SVC_PREFIX);
 			buf.append(svcname);
-			if (!EntryBase.isTop(_$href)) {
+			if (!EntryBase.isSlash(_$href)) {
 				buf.append(_$href);
 			}
 			_$href = buf.toString();

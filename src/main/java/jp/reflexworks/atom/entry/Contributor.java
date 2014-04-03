@@ -147,7 +147,11 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 					buf.append(l);
 					buf.append(EntryBase.SVC_PREFIX);
 					buf.append(svcname);
-					buf.append(r);
+					if (r.indexOf("/,")>=0) {
+						buf.append(r.substring(1));
+					}else {
+						buf.append(r);
+					}
 					_uri = buf.toString();
 				}
 			}

@@ -714,6 +714,18 @@ public abstract class EntryBase implements Serializable {
 	}
 
 	/**
+	 * URIが/か""かnullかどうかを判定します.
+	 * @param uri URI
+	 * @return URIが最上位の場合true
+	 */
+	public static boolean isSlash(String uri) {
+		if (uri == null || uri.length() == 0 || "/".equals(uri)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * IDからリビジョンを取得します.
 	 * @param id ID
 	 * @return リビジョン
@@ -791,7 +803,7 @@ public abstract class EntryBase implements Serializable {
 			buf.append(SVC_PREFIX);
 			buf.append(svcname);
 			String[] uriAndRev = getUriAndRevisionFromId(_id);
-			if (!isTop(uriAndRev[0])) {
+			if (!isSlash(uriAndRev[0])) {
 				buf.append(_id);
 			} else {
 				buf.append(",");
