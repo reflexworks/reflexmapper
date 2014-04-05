@@ -832,7 +832,11 @@ public abstract class EntryBase implements Serializable {
 			//_id = _id.substring(svcname.length() + 2);
 			String[] uriAndRev = getUriAndRevisionFromId(_id);
 			if (!isTop(uriAndRev[0])) {
-				_id = _id.substring(serviceTopUri.length());
+				if (_id.indexOf(serviceTopUri+"/")<0) {
+					_id = "/"+_id.substring(serviceTopUri.length());
+				}else {
+					_id = _id.substring(serviceTopUri.length());
+				}
 			} else {
 				StringBuilder buf = new StringBuilder();
 				buf.append(serviceTopUri);

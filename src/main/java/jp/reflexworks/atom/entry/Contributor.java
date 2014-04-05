@@ -161,19 +161,15 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 	public void cutSvcname(String svcname) {
 		if (_uri != null && svcname != null && svcname.length() > 0) {
 			String serviceName = EntryBase.SVC_PREFIX + svcname;
-			int s = _uri.indexOf(":acl:" + serviceName);
-			if (s >= 0) {
-				s += s + 5;
-				String l = _uri.substring(0, s);
-				String r = _uri.substring(s + serviceName.length());
-				_uri = l + r;
-				//int s2 = r.indexOf("/");
-				//String svc = r.substring(1, s2);
-				//if (svc.equals(svcname) && s2 >= 0) { // svcnameが一致していたら省略
-				//	String r2 = r.substring(s2);
-				//	_uri = l + ":" + r2;
-				//}
+
+			String oldstr = ":acl:" + serviceName;
+			String newstr = ":acl:";
+			
+			// servicenameだけの場合、cut後のservicenameは/
+			if (_uri.indexOf(oldstr+"/")<0) {
+				newstr += "/";
 			}
+			_uri = _uri.replace(oldstr, newstr);
 		}
 	}
 
