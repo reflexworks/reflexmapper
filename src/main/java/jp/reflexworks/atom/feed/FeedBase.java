@@ -22,28 +22,28 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	 */
 	public String _$xmlns;
 	public String _$xmlns$rx;
-	public List<Author> _author;
-	public List<Category> _category;
-	public List<Contributor> _contributor;
-	public Generator _generator;
-	public String _icon;
-	public String _id;
+	public List<Author> author;
+	public List<Category> category;
+	public List<Contributor> contributor;
+	public Generator generator;
+	public String icon;
+	public String id;
 	/**
 	 * 次ページカーソル.
 	 * <p>
 	 * 属性rel="next"の、href属性に設定された値が次ページ検索のためのカーソルです。
 	 * </p>
 	 */
-	public List<Link> _link;
-	public String _logo;
-	public String _rights;
-	public String _title;
-	public String _title_$type;
-	public String _subtitle;
-	public String _subtitle_$type;
-	public String _updated;
+	public List<Link> link;
+	public String logo;
+	public String rights;
+	public String title;
+	public String title_$type;
+	public String subtitle;
+	public String subtitle_$type;
+	public String updated;
 	/** エントリーリスト */
-	public List<EntryBase> _entry;
+	public List<EntryBase> entry;
 
 	public String get$xmlns() {
 		return _$xmlns;
@@ -62,128 +62,128 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	}
 
 	public List<Author> getAuthor() {
-		return _author;
+		return author;
 	}
 
 	public void setAuthor(List<Author> author) {
-		this._author = author;
+		this.author = author;
 	}
 
 	public List<Category> getCategory() {
-		return _category;
+		return category;
 	}
 
 	public void setCategory(List<Category> category) {
-		this._category = category;
+		this.category = category;
 	}
 
 	public List<Contributor> getContributor() {
-		return _contributor;
+		return contributor;
 	}
 
 	public void setContributor(List<Contributor> contributor) {
-		this._contributor = contributor;
+		this.contributor = contributor;
 	}
 
 	public Generator getGenerator() {
-		return _generator;
+		return generator;
 	}
 
 	public void setGenerator(Generator generator) {
-		this._generator = generator;
+		this.generator = generator;
 	}
 
 	public String getIcon() {
-		return _icon;
+		return icon;
 	}
 
 	public void setIcon(String icon) {
-		this._icon = icon;
+		this.icon = icon;
 	}
 
 	public String getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(String id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public List<Link> getLink() {
-		return _link;
+		return link;
 	}
 
 	public void setLink(List<Link> link) {
-		this._link = link;
+		this.link = link;
 	}
 
 	public String getLogo() {
-		return _logo;
+		return logo;
 	}
 
 	public void setLogo(String logo) {
-		this._logo = logo;
+		this.logo = logo;
 	}
 
 	public String getRights() {
-		return _rights;
+		return rights;
 	}
 
 	public void setRights(String rights) {
-		this._rights = rights;
+		this.rights = rights;
 	}
 
 	public String getTitle() {
-		return _title;
+		return title;
 	}
 
 	public void setTitle(String title) {
-		this._title = title;
+		this.title = title;
 	}
 
 	public String getTitle_$type() {
-		return _title_$type;
+		return title_$type;
 	}
 
 	public void setTitle_$type(String title_$type) {
-		this._title_$type = title_$type;
+		this.title_$type = title_$type;
 	}
 
 	public String getSubtitle() {
-		return _subtitle;
+		return subtitle;
 	}
 
 	public void setSubtitle(String subtitle) {
-		this._subtitle = subtitle;
+		this.subtitle = subtitle;
 	}
 
 	public String getSubtitle_$type() {
-		return _subtitle_$type;
+		return subtitle_$type;
 	}
 
 	public void setSubtitle_$type(String subtitle_$type) {
-		this._subtitle_$type = subtitle_$type;
+		this.subtitle_$type = subtitle_$type;
 	}
 
 	public String getUpdated() {
-		return _updated;
+		return updated;
 	}
 
 	public void setUpdated(String updated) {
-		this._updated = updated;
+		this.updated = updated;
 	}
 
 	public List<EntryBase> getEntry() {
-		return _entry;
+		return entry;
 	}
 
 	public void setEntry(List<EntryBase> entry) {
-		this._entry = entry;
+		this.entry = entry;
 	}
 
 	@Override
 	public String toString() {
-		return "Feed [entry=" + _entry + "]";
+		return "Feed [entry=" + entry + "]";
 	}
 
 	/**
@@ -202,8 +202,8 @@ public abstract class FeedBase implements Serializable, Cloneable {
 		if (svcname == null) {
 			return;
 		}
-		if (_entry != null) {
-			for (EntryBase _e : _entry) {
+		if (entry != null) {
+			for (EntryBase _e : entry) {
 				_e.addSvcname(svcname);
 			}
 		}
@@ -217,8 +217,8 @@ public abstract class FeedBase implements Serializable, Cloneable {
 		if (svcname == null) {
 			return;
 		}
-		if (_entry != null) {
-			for (EntryBase _e : _entry) {
+		if (entry != null) {
+			for (EntryBase _e : entry) {
 				_e.cutSvcname(svcname);
 			}
 		}

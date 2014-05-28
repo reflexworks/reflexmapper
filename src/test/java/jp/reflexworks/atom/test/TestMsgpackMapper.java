@@ -290,7 +290,7 @@ public class TestMsgpackMapper {
 		String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		/*
 		Entry entry2 = new Entry();
 		entry2._id = "xxx";
@@ -645,14 +645,14 @@ public class TestMsgpackMapper {
 	
 	private jp.reflexworks.test2.model.Feed createTest2Feed() {
 		jp.reflexworks.test2.model.Feed feed = new jp.reflexworks.test2.model.Feed();
-		feed._entry = new ArrayList<EntryBase>();
+		feed.entry = new ArrayList<EntryBase>();
 		
 		String code = "100001";
 		jp.reflexworks.test2.model.Entry entry = createTest2Entry(code);
-		feed._entry.add(entry);
+		feed.entry.add(entry);
 		code = "100002";
 		entry = createTest2Entry(code);
-		feed._entry.add(entry);
+		feed.entry.add(entry);
 		
 		return feed;
 	}
@@ -718,7 +718,7 @@ public class TestMsgpackMapper {
         EntryBase defentry2 = (EntryBase) defmp.fromMessagePack(defbytes, ENTRY);	// false でEntryをデシリアライズ
         String title = null;
         if (defentry2 != null) {
-        	title = defentry2._title;
+        	title = defentry2.title;
         }
 		System.out.println("\n=== [default] title=" + title);
         
@@ -752,7 +752,7 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== [default (2回目)] MessagePack Entry デシリアライズ ===");
         defentry2 = (EntryBase) defmp.fromMessagePack(defbytes, ENTRY);	// false でEntryをデシリアライズ
         if (defentry2 != null) {
-        	title = defentry2._title;
+        	title = defentry2.title;
         }
 		System.out.println("\n=== [default (2回目)] title=" + title);
 		
@@ -913,7 +913,7 @@ public class TestMsgpackMapper {
 		String xml = mp.toXML(feed);
 		System.out.println(xml);
 
-		EntryBase entry = feed._entry.get(0);
+		EntryBase entry = feed.entry.get(0);
 		System.out.println("\n==== getValue test ====");
 		System.out.println("email value="+entry.getValue("email"));
 		System.out.println("verified_email value="+entry.getValue("verified_email"));
@@ -930,13 +930,13 @@ public class TestMsgpackMapper {
 		
 		// TODO contributor
 		Contributor contributor = new Contributor();
-		entry._contributor.add(contributor);
-		contributor._uri = getAclUrn("888", "CRUD");
-		contributor._name = "テストネーム";
+		entry.contributor.add(contributor);
+		contributor.uri = getAclUrn("888", "CRUD");
+		contributor.name = "テストネーム";
 		contributor = new Contributor();
-		entry._contributor.add(contributor);
-		contributor._uri = getAclUrn("889", "CRUD");
-		contributor._name = "てすと";
+		entry.contributor.add(contributor);
+		contributor.uri = getAclUrn("889", "CRUD");
+		contributor.name = "てすと";
 
 		Cipher cipher = CipherUtil.getInstance();
 		System.out.println("---(before encrypted)---");
@@ -1094,10 +1094,10 @@ public class TestMsgpackMapper {
 
 		// 結果判定
 		boolean isMatch = false;
-		if (feed != null && feed._entry != null && feed._entry.size() > 0) {
-			EntryBase entry0 = feed._entry.get(0);
+		if (feed != null && feed.entry != null && feed.entry.size() > 0) {
+			EntryBase entry0 = feed.entry.get(0);
 			//if (entry0._contributor == null) {
-			if (entry0._contributor != null) {
+			if (entry0.contributor != null) {
 				isMatch = true;
 			}
 		}
@@ -1155,8 +1155,8 @@ public class TestMsgpackMapper {
 		
 		// feed1の先頭エントリー(target)と、feed2の先頭エントリー(source)の内容を比較し、
 		// 異なっていればtargetにsourceの内容をセットする。
-		EntryBase targetEntry = feed1._entry.get(0);
-		EntryBase sourceEntry = feed2._entry.get(0);
+		EntryBase targetEntry = feed1.entry.get(0);
+		EntryBase sourceEntry = feed2.entry.get(0);
 		
 		// バックアップ
 		String sDeleteFlg = (String)sourceEntry.getValue("deleteFlg");
@@ -1323,10 +1323,10 @@ public class TestMsgpackMapper {
 		entry.setId(myUri + ",1");
 		Contributor contributor = new Contributor();
 		contributor.setUri("urn:vte.cx:acl:" + myUri + ",R");
-		entry._contributor = new ArrayList<Contributor>();
-		entry._contributor.add(contributor);
+		entry.contributor = new ArrayList<Contributor>();
+		entry.contributor.add(contributor);
 		entry.addSvcname(serviceName);
-		System.out.println("[before uri]" + myUri + ", [add servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry._contributor.get(0).getUri());
+		System.out.println("[before uri]" + myUri + ", [add servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry.contributor.get(0).getUri());
 		return entry;
 	}
 
@@ -1354,10 +1354,10 @@ public class TestMsgpackMapper {
 		entry.setId(myUri + ",1");
 		Contributor contributor = new Contributor();
 		contributor.setUri("urn:vte.cx:acl:" + myUri + ",R");
-		entry._contributor = new ArrayList<Contributor>();
-		entry._contributor.add(contributor);
+		entry.contributor = new ArrayList<Contributor>();
+		entry.contributor.add(contributor);
 		entry.cutSvcname(serviceName);
-		System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry._contributor.get(0).getUri());
+		System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry.contributor.get(0).getUri());
 		//System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId());
 		return entry;
 	}

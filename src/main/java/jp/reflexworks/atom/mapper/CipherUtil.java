@@ -139,21 +139,21 @@ public final class CipherUtil {
 		// Contributor
 		if (sourceEntry.getContributor() != null) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					secretkey, sourceEntry._id));
+					secretkey, sourceEntry.id));
 			for (Contributor contributor : sourceEntry.getContributor()) {
-				if (contributor != null && !StringUtils.isBlank(contributor._uri)) {
-					String str = encryptProc(contributor._uri, key);
-					contributor._uri = str;
+				if (contributor != null && !StringUtils.isBlank(contributor.uri)) {
+					String str = encryptProc(contributor.uri, key);
+					contributor.uri = str;
 				}
 			}
 		}
 		
 		// rights
-		if (!StringUtils.isBlank(sourceEntry._rights)) {
+		if (!StringUtils.isBlank(sourceEntry.rights)) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					secretkey, sourceEntry._id));
-			String str = encryptProc(sourceEntry._rights, key);
-			sourceEntry._rights = str;
+					secretkey, sourceEntry.id));
+			String str = encryptProc(sourceEntry.rights, key);
+			sourceEntry.rights = str;
 		}
 		
 		return sourceEntry;
@@ -192,21 +192,21 @@ public final class CipherUtil {
 		// Contributor
 		if (sourceEntry.getContributor() != null) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					secretkey, sourceEntry._id));
+					secretkey, sourceEntry.id));
 			for (Contributor contributor : sourceEntry.getContributor()) {
-				if (contributor != null && !StringUtils.isBlank(contributor._uri)) {
-					String str = decryptProc(contributor._uri, key);
-					contributor._uri = str;
+				if (contributor != null && !StringUtils.isBlank(contributor.uri)) {
+					String str = decryptProc(contributor.uri, key);
+					contributor.uri = str;
 				}
 			}
 		}
 		
 		// rights
-		if (!StringUtils.isBlank(sourceEntry._rights)) {
+		if (!StringUtils.isBlank(sourceEntry.rights)) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
-					secretkey, sourceEntry._id));
-			String str = decryptProc(sourceEntry._rights, key);
-			sourceEntry._rights = str;
+					secretkey, sourceEntry.id));
+			String str = decryptProc(sourceEntry.rights, key);
+			sourceEntry.rights = str;
 		}
 		
 		return sourceEntry;

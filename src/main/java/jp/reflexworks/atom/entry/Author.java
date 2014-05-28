@@ -18,9 +18,9 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 
 	public String _$xml$lang;
 	public String _$xml$base;
-	public String _name;
-	public String _uri;
-	public String _email;
+	public String name;
+	public String uri;
+	public String email;
 
 	public String get$xml$lang() {
 		return _$xml$lang;
@@ -39,38 +39,38 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
 
 	public String getUri() {
-		return _uri;
+		return uri;
 	}
 
 	public void setUri(String uri) {
-		this._uri = uri;
+		this.uri = uri;
 	}
 
 	public String getEmail() {
-		return _email;
+		return email;
 	}
 
 	public void setEmail(String email) {
-		this._email = email;
+		this.email = email;
 	}
 
 	@Override
 	public String toString() {
-		return "Author [uri=" + _uri + ", email=" + _email + ", name=" + _name + "]";
+		return "Author [uri=" + uri + ", email=" + email + ", name=" + name + "]";
 	}
 	
 	public Object getValue(String fldname) {
-		if (fldname.equals("author.name")) return _name;
-		if (fldname.equals("author.uri")) return _uri;
-		if (fldname.equals("author.email")) return _email;
+		if (fldname.equals("author.name")) return name;
+		if (fldname.equals("author.uri")) return uri;
+		if (fldname.equals("author.email")) return email;
 		return null;
 	}
 
@@ -78,22 +78,22 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 	public void decrypt(String id, Object cipher, String secretkey) {}
 	
 	public void isMatch(ConditionContext context) {
-		if (_name != null) {
+		if (name != null) {
 			context.fldname = "author.name";
 			context.type = "String";
-			context.obj = _name;
+			context.obj = name;
 			ConditionContext.checkCondition(context);
 		}
-		if (_uri != null) {
+		if (uri != null) {
 			context.fldname = "author.uri";
 			context.type = "String";
-			context.obj = _uri;
+			context.obj = uri;
 			ConditionContext.checkCondition(context);
 		}
-		if (_email != null) {
+		if (email != null) {
 			context.fldname = "author.email";
 			context.type = "String";
-			context.obj = _email;
+			context.obj = email;
 			ConditionContext.checkCondition(context);
 		}
 	}

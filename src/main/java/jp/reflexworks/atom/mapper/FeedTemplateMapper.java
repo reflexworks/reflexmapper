@@ -1134,7 +1134,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 				// 項目ACL(R)
 				maskprop.append(getValidatorPropR(meta));
 			}
-
 			// Validation Method追加
 			validation.append(validateFuncE);
 			CtMethod m = CtNewMethod.make(validation.toString(), cc);
@@ -1179,6 +1178,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				e.printStackTrace();
 			}
 			}
+			
 		}
 		
 		return classnames;
@@ -1187,11 +1187,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
 	private final String getvalueFuncE = "return null;}";
 	private final String encryptFuncS = "public void encrypt(String id, Object cipher, String secretkey) {";
-	private final String encryptFuncS2 = "public void encrypt(Object cipher) { String id=this._id;";
+	private final String encryptFuncS2 = "public void encrypt(Object cipher) { String id=this.id;";
 	private final String encryptFuncS3_1 = "String secretkey=\"";
 	private final String encryptFuncS3_2 = "\";";
 	private final String decryptFuncS = "public void decrypt(String id, Object cipher, String secretkey) {";
-	private final String decryptFuncS2 = "public void decrypt(Object cipher) { String id=this._id;";
+	private final String decryptFuncS2 = "public void decrypt(Object cipher) { String id=this.id;";
 	private final String decryptFuncS3_1 = encryptFuncS3_1;
 	private final String decryptFuncS3_2 = encryptFuncS3_2;
 	private final String endFuncE = "}";
@@ -1463,12 +1463,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 				
 				if (meta.self.length() < 2) throw new ParseException("Property name is too short.:" + meta.name, 0);
 
-				if (folderpath!=null) {
+//				if (folderpath!=null) {
 					// 静的クラスを作成する場合はデフォルトが_なし
 					meta.self = addUnderscore(meta.self);
-				}else {
-					meta.self = "_"+meta.self;
-				}
+//				}else {
+//					meta.self = "_"+meta.self;
+//				}
 				
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
@@ -1683,9 +1683,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	        		if (!classname.isEmpty()) {
 	        			cc = this.getClass(classname);
 	        			try {
-	        				f = cc.getField("_"+fld);
-	        			}catch(NoSuchFieldException ns) {
 	        				f = cc.getField(fld);
+	        			}catch(NoSuchFieldException ns) {
+	        				f = cc.getField("_"+fld);
 	        			}
 	        		}
 	        		

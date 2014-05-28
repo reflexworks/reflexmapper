@@ -38,7 +38,7 @@ public abstract class EntryBase implements Serializable {
 	 * urn:virtual-tech.net:{created|updated|deleted}:{username} の形式です。
 	 * </p>
 	 */
-	public List<Author> _author;
+	public List<Author> author;
 
 	/**
 	 * カテゴリ.
@@ -57,7 +57,7 @@ public abstract class EntryBase implements Serializable {
 	 * </ul>
 	 * </p>
 	 */
-	public List<Category> _category;
+	public List<Category> category;
 
 	/**
 	 * コンテンツ.
@@ -65,7 +65,7 @@ public abstract class EntryBase implements Serializable {
 	 * HTMLなどのテキストコンテンツや、画像のリンク先を設定します。
 	 * </p>
 	 */
-	public Content _content;
+	public Content content;
 
 	/**
 	 * 認証・認可情報定義.
@@ -107,7 +107,7 @@ public abstract class EntryBase implements Serializable {
 	 * </ul>
 	 * </p>
 	 */
-	public List<Contributor> _contributor;
+	public List<Contributor> contributor;
 
 	/**
 	 * ID.
@@ -117,11 +117,11 @@ public abstract class EntryBase implements Serializable {
 	 * DELETEの場合、idのリビジョンで楽観的排他チェックを行います。<br>
 	 * </p>
 	 */
-	public String _id;
+	public String id;
 
-	public String _id_$xml$lang;
+	public String id_$xml$lang;
 
-	public String _id_$xml$base;
+	public String id_$xml$base;
 
 	/**
 	 * Link.
@@ -162,7 +162,7 @@ public abstract class EntryBase implements Serializable {
 	 * で指定されたエントリーのcontentをJavascriptのコードに加えることができます。<br>
 	 * </p>
 	 */
-	public List<Link> _link;
+	public List<Link> link;
 
 	/**
 	 * 作成日時.
@@ -170,19 +170,19 @@ public abstract class EntryBase implements Serializable {
 	 * yyyy-MM-dd'T'hh:mm:ss.SSS+99:99 形式です。<br>
 	 * </p>
 	 */
-	public String _published;
+	public String published;
 
-	public String _published_$xml$lang;
+	public String published_$xml$lang;
 
-	public String _published_$xml$base;
+	public String published_$xml$base;
 
-	public String _rights;
+	public String rights;
 
-	public String _rights_$type;
+	public String rights_$type;
 
-	public String _rights_$xml$lang;
+	public String rights_$xml$lang;
 
-	public String _rights_$xml$base;
+	public String rights_$xml$base;
 
 	/**
 	 * サマリー.
@@ -190,13 +190,13 @@ public abstract class EntryBase implements Serializable {
 	 * Reflexでは、登録・更新時やエラー時のメッセージを設定します。
 	 * </p>
 	 */
-	public String _summary;
+	public String summary;
 
-	public String _summary_$type;
+	public String summary_$type;
 
-	public String _summary_$xml$lang;
+	public String summary_$xml$lang;
 
-	public String _summary_$xml$base;
+	public String summary_$xml$base;
 
 	/**
 	 * タイトル.
@@ -205,13 +205,13 @@ public abstract class EntryBase implements Serializable {
 	 * Index項目です。
 	 * </p>
 	 */
-	public String _title;
+	public String title;
 
-	public String _title_$type;
+	public String title_$type;
 
-	public String _title_$xml$lang;
+	public String title_$xml$lang;
 
-	public String _title_$xml$base;
+	public String title_$xml$base;
 
 	/**
 	 * サブタイトル.
@@ -219,13 +219,13 @@ public abstract class EntryBase implements Serializable {
 	 * Reflexでは、ステータスコードを設定します。
 	 * </p>
 	 */
-	public String _subtitle;
+	public String subtitle;
 
-	public String _subtitle_$type;
+	public String subtitle_$type;
 
-	public String _subtitle_$xml$lang;
+	public String subtitle_$xml$lang;
 
-	public String _subtitle_$xml$base;
+	public String subtitle_$xml$base;
 
 	/**
 	 * 更新日時.
@@ -234,11 +234,11 @@ public abstract class EntryBase implements Serializable {
 	 * Index項目です。
 	 * </p>
 	 */
-	public String _updated;
+	public String updated;
 
-	public String _updated_$xml$lang;
+	public String updated_$xml$lang;
 
-	public String _updated_$xml$base;
+	public String updated_$xml$base;
 
 	public String get$xmlns() {
 		return _$xmlns;
@@ -265,243 +265,243 @@ public abstract class EntryBase implements Serializable {
 	}
 
 	public List<Author> getAuthor() {
-		return _author;
+		return author;
 	}
 
 	public void setAuthor(List<Author> author) {
-		this._author = author;
+		this.author = author;
 	}
 
 	public List<Category> getCategory() {
-		return _category;
+		return category;
 	}
 
 	public void setCategory(List<Category> category) {
-		this._category = category;
+		this.category = category;
 	}
 
 	public Content getContent() {
-		return _content;
+		return content;
 	}
 
 	public void setContent(Content content) {
-		this._content = content;
+		this.content = content;
 	}
 
 	public List<Contributor> getContributor() {
-		return _contributor;
+		return contributor;
 	}
 
 	public void setContributor(List<Contributor> contributor) {
-		this._contributor = contributor;
+		this.contributor = contributor;
 	}
 
 	public String getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(String id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getId_$xml$lang() {
-		return _id_$xml$lang;
+		return id_$xml$lang;
 	}
 
 	public void setId_$xml$lang(String id_$xml$lang) {
-		this._id_$xml$lang = id_$xml$lang;
+		this.id_$xml$lang = id_$xml$lang;
 	}
 
 	public String getId_$xml$base() {
-		return _id_$xml$base;
+		return id_$xml$base;
 	}
 
 	public void setId_$xml$base(String id_$xml$base) {
-		this._id_$xml$base = id_$xml$base;
+		this.id_$xml$base = id_$xml$base;
 	}
 
 	public List<Link> getLink() {
-		return _link;
+		return link;
 	}
 
 	public void setLink(List<Link> link) {
-		this._link = link;
+		this.link = link;
 	}
 
 	public String getPublished() {
-		return _published;
+		return published;
 	}
 
 	public void setPublished(String published) {
-		this._published = published;
+		this.published = published;
 	}
 
 	public String getPublished_$xml$lang() {
-		return _published_$xml$lang;
+		return published_$xml$lang;
 	}
 
 	public void setPublished_$xml$lang(String published_$xml$lang) {
-		this._published_$xml$lang = published_$xml$lang;
+		this.published_$xml$lang = published_$xml$lang;
 	}
 
 	public String getPublished_$xml$base() {
-		return _published_$xml$base;
+		return published_$xml$base;
 	}
 
 	public void setPublished_$xml$base(String published_$xml$base) {
-		this._published_$xml$base = published_$xml$base;
+		this.published_$xml$base = published_$xml$base;
 	}
 
 	public String getRights() {
-		return _rights;
+		return rights;
 	}
 
 	public void setRights(String rights) {
-		this._rights = rights;
+		this.rights = rights;
 	}
 
 	public String getRights_$type() {
-		return _rights_$type;
+		return rights_$type;
 	}
 
 	public void setRights_$type(String rights_$type) {
-		this._rights_$type = rights_$type;
+		this.rights_$type = rights_$type;
 	}
 
 	public String getRights_$xml$lang() {
-		return _rights_$xml$lang;
+		return rights_$xml$lang;
 	}
 
 	public void setRights_$xml$lang(String rights_$xml$lang) {
-		this._rights_$xml$lang = rights_$xml$lang;
+		this.rights_$xml$lang = rights_$xml$lang;
 	}
 
 	public String getRights_$xml$base() {
-		return _rights_$xml$base;
+		return rights_$xml$base;
 	}
 
 	public void setRights_$xml$base(String rights_$xml$base) {
-		this._rights_$xml$base = rights_$xml$base;
+		this.rights_$xml$base = rights_$xml$base;
 	}
 
 	public String getSummary() {
-		return _summary;
+		return summary;
 	}
 
 	public void setSummary(String summary) {
-		this._summary = summary;
+		this.summary = summary;
 	}
 
 	public String getSummary_$type() {
-		return _summary_$type;
+		return summary_$type;
 	}
 
 	public void setSummary_$type(String summary_$type) {
-		this._summary_$type = summary_$type;
+		this.summary_$type = summary_$type;
 	}
 
 	public String getSummary_$xml$lang() {
-		return _summary_$xml$lang;
+		return summary_$xml$lang;
 	}
 
 	public void setSummary_$xml$lang(String summary_$xml$lang) {
-		this._summary_$xml$lang = summary_$xml$lang;
+		this.summary_$xml$lang = summary_$xml$lang;
 	}
 
 	public String getSummary_$xml$base() {
-		return _summary_$xml$base;
+		return summary_$xml$base;
 	}
 
 	public void setSummary_$xml$base(String summary_$xml$base) {
-		this._summary_$xml$base = summary_$xml$base;
+		this.summary_$xml$base = summary_$xml$base;
 	}
 
 	public String getTitle() {
-		return _title;
+		return title;
 	}
 
 	public void setTitle(String title) {
-		this._title = title;
+		this.title = title;
 	}
 
 	public String getTitle_$type() {
-		return _title_$type;
+		return title_$type;
 	}
 
 	public void setTitle_$type(String title_$type) {
-		this._title_$type = title_$type;
+		this.title_$type = title_$type;
 	}
 
 	public String getTitle_$xml$lang() {
-		return _title_$xml$lang;
+		return title_$xml$lang;
 	}
 
 	public void setTitle_$xml$lang(String title_$xml$lang) {
-		this._title_$xml$lang = title_$xml$lang;
+		this.title_$xml$lang = title_$xml$lang;
 	}
 
 	public String getTitle_$xml$base() {
-		return _title_$xml$base;
+		return title_$xml$base;
 	}
 
 	public void setTitle_$xml$base(String title_$xml$base) {
-		this._title_$xml$base = title_$xml$base;
+		this.title_$xml$base = title_$xml$base;
 	}
 
 	public String getSubtitle() {
-		return _subtitle;
+		return subtitle;
 	}
 
 	public void setSubtitle(String subtitle) {
-		this._subtitle = subtitle;
+		this.subtitle = subtitle;
 	}
 
 	public String getSubtitle_$type() {
-		return _subtitle_$type;
+		return subtitle_$type;
 	}
 
 	public void setSubtitle_$type(String subtitle_$type) {
-		this._subtitle_$type = subtitle_$type;
+		this.subtitle_$type = subtitle_$type;
 	}
 
 	public String getSubtitle_$xml$lang() {
-		return _subtitle_$xml$lang;
+		return subtitle_$xml$lang;
 	}
 
 	public void setSubtitle_$xml$lang(String subtitle_$xml$lang) {
-		this._subtitle_$xml$lang = subtitle_$xml$lang;
+		this.subtitle_$xml$lang = subtitle_$xml$lang;
 	}
 
 	public String getSubtitle_$xml$base() {
-		return _subtitle_$xml$base;
+		return subtitle_$xml$base;
 	}
 
 	public void setSubtitle_$xml$base(String subtitle_$xml$base) {
-		this._subtitle_$xml$base = subtitle_$xml$base;
+		this.subtitle_$xml$base = subtitle_$xml$base;
 	}
 
 	public String getUpdated() {
-		return _updated;
+		return updated;
 	}
 
 	public void setUpdated(String updated) {
-		this._updated = updated;
+		this.updated = updated;
 	}
 
 	public String getUpdated_$xml$lang() {
-		return _updated_$xml$lang;
+		return updated_$xml$lang;
 	}
 
 	public void setUpdated_$xml$lang(String updated_$xml$lang) {
-		this._updated_$xml$lang = updated_$xml$lang;
+		this.updated_$xml$lang = updated_$xml$lang;
 	}
 
 	public String getUpdated_$xml$base() {
-		return _updated_$xml$base;
+		return updated_$xml$base;
 	}
 
 	public void setUpdated_$xml$base(String updated_$xml$base) {
-		this._updated_$xml$base = updated_$xml$base;
+		this.updated_$xml$base = updated_$xml$base;
 	}
 
 	/**
@@ -514,8 +514,8 @@ public abstract class EntryBase implements Serializable {
 	 */
 	public String getMyUri() {
 		String myUri = null;
-		if (_link != null) {
-			for (Link childLink : _link) {
+		if (link != null) {
+			for (Link childLink : link) {
 				if (Link.REL_SELF.equals(childLink._$rel)) {
 					myUri = childLink._$href;
 				}
@@ -581,10 +581,10 @@ public abstract class EntryBase implements Serializable {
 		if (uri == null || uri.trim().length() == 0) {
 			return;
 		}
-		if (_link == null) {
-			_link = new ArrayList<Link>();
+		if (link == null) {
+			link = new ArrayList<Link>();
 		}
-		for (Link childLink : _link) {
+		for (Link childLink : link) {
 			if (Link.REL_SELF.equals(childLink._$rel)) {
 				childLink._$href = uri;
 				return;
@@ -593,7 +593,7 @@ public abstract class EntryBase implements Serializable {
 		Link childLink = new Link();
 		childLink._$rel = Link.REL_SELF;
 		childLink._$href = uri;
-		_link.add(childLink);
+		link.add(childLink);
 	}
 
 	/**
@@ -606,12 +606,12 @@ public abstract class EntryBase implements Serializable {
 		if (isTop(uri)) {
 			return;
 		}
-		if (_link == null) {
-			_link = new ArrayList<Link>();
+		if (link == null) {
+			link = new ArrayList<Link>();
 		}
 
 		boolean isExist = false;
-		for (Link li : _link) {
+		for (Link li : link) {
 			if (Link.REL_ALTERNATE.equals(li.get$rel())
 					&& uri.equals(li.get$href())) {
 				isExist = true;
@@ -621,7 +621,7 @@ public abstract class EntryBase implements Serializable {
 			Link li = new Link();
 			li.set$rel(Link.REL_ALTERNATE);
 			li.set$href(uri);
-			_link.add(li);
+			link.add(li);
 		}
 	}
 
@@ -635,15 +635,15 @@ public abstract class EntryBase implements Serializable {
 		if (isTop(uri)) {
 			return;
 		}
-		if (_link == null) {
+		if (link == null) {
 			return;
 		}
 
-		for (int i = 0; i < _link.size(); i++) {
-			Link li = _link.get(i);
+		for (int i = 0; i < link.size(); i++) {
+			Link li = link.get(i);
 			if (Link.REL_ALTERNATE.equals(li.get$rel())
 					&& uri.equals(li.get$href())) {
-				_link.remove(i);
+				link.remove(i);
 				break;
 			}
 		}
@@ -653,11 +653,11 @@ public abstract class EntryBase implements Serializable {
 	 * エイリアス一覧を取得します。
 	 */
 	public List<String> getAlternate() {
-		if (_link == null) {
+		if (link == null) {
 			return null;
 		}
 		List<String> aliases = new ArrayList<String>();
-		for (Link li : _link) {
+		for (Link li : link) {
 			if (Link.REL_ALTERNATE.equals(li.get$rel()) && li._$href != null
 					&& li._$href.length() > 0) {
 				aliases.add(li.get$href());
@@ -679,10 +679,10 @@ public abstract class EntryBase implements Serializable {
 		if (ln == null) {
 			return;
 		}
-		if (_link == null) {
-			_link = new ArrayList<Link>();
+		if (link == null) {
+			link = new ArrayList<Link>();
 		}
-		_link.add(ln);
+		link.add(ln);
 	}
 
 	/**
@@ -695,10 +695,10 @@ public abstract class EntryBase implements Serializable {
 		if (cont == null) {
 			return;
 		}
-		if (_contributor == null) {
-			_contributor = new ArrayList<Contributor>();
+		if (contributor == null) {
+			contributor = new ArrayList<Contributor>();
 		}
-		_contributor.add(cont);
+		contributor.add(cont);
 	}
 
 	/**
@@ -780,12 +780,12 @@ public abstract class EntryBase implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Entry [myUri=" + getMyUri() + ", title=" + _title + "]";
+		return "Entry [myUri=" + getMyUri() + ", title=" + title + "]";
 	}
 
 	public String getMyself() {
-		if (_id != null) {
-			String token[] = _id.split("/");
+		if (id != null) {
+			String token[] = id.split("/");
 			if (token.length > 2) { // /@{サービス名}/{uid}
 				return token[2];
 			}
@@ -797,28 +797,28 @@ public abstract class EntryBase implements Serializable {
 		if (svcname == null || svcname.length() == 0) {
 			return;
 		}
-		if (_id != null && !_id.startsWith(SVC_PREFIX)) {
+		if (id != null && !id.startsWith(SVC_PREFIX)) {
 			//_id = "/@" + svcname + _id;
 			StringBuilder buf = new StringBuilder();
 			buf.append(SVC_PREFIX);
 			buf.append(svcname);
-			String[] uriAndRev = getUriAndRevisionFromId(_id);
+			String[] uriAndRev = getUriAndRevisionFromId(id);
 			if (!isSlash(uriAndRev[0])) {
-				buf.append(_id);
+				buf.append(id);
 			} else {
 				buf.append(",");
 				buf.append(uriAndRev[1]);
 			}
-			_id = buf.toString();
+			id = buf.toString();
 		}
-		if (_link != null) {
-			for (Link link : _link) {
-				link.addSvcname(svcname);
+		if (link != null) {
+			for (Link l : link) {
+				l.addSvcname(svcname);
 			}
 		}
-		if (_contributor != null) {
-			for (Contributor contributor : _contributor) {
-				contributor.addSvcname(svcname);
+		if (contributor != null) {
+			for (Contributor cont : contributor) {
+				cont.addSvcname(svcname);
 			}
 		}
 	}
@@ -828,31 +828,31 @@ public abstract class EntryBase implements Serializable {
 			return;
 		}
 		String serviceTopUri = SVC_PREFIX + svcname;
-		if (_id != null && _id.startsWith(serviceTopUri)) {
+		if (id != null && id.startsWith(serviceTopUri)) {
 			//_id = _id.substring(svcname.length() + 2);
-			String[] uriAndRev = getUriAndRevisionFromId(_id);
+			String[] uriAndRev = getUriAndRevisionFromId(id);
 			if (!isTop(uriAndRev[0])) {
-				if (_id.indexOf(serviceTopUri+"/")<0) {
-					_id = "/"+_id.substring(serviceTopUri.length());
+				if (id.indexOf(serviceTopUri+"/")<0) {
+					id = "/"+id.substring(serviceTopUri.length());
 				}else {
-					_id = _id.substring(serviceTopUri.length());
+					id = id.substring(serviceTopUri.length());
 				}
 			} else {
 				StringBuilder buf = new StringBuilder();
 				buf.append(serviceTopUri);
 				buf.append(",");
 				buf.append(uriAndRev[1]);
-				_id = buf.toString();
+				id = buf.toString();
 			}
 		}
-		if (_link != null) {
-			for (Link link : _link) {
-				link.cutSvcname(svcname);
+		if (link != null) {
+			for (Link l : link) {
+				l.cutSvcname(svcname);
 			}
 		}
-		if (_contributor != null) {
-			for (Contributor contributor : _contributor) {
-				contributor.cutSvcname(svcname);
+		if (contributor != null) {
+			for (Contributor cont : contributor) {
+				cont.cutSvcname(svcname);
 			}
 		}
 	}
