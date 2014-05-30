@@ -1096,7 +1096,7 @@ public class TestMsgpackMapper {
 		boolean isMatch = false;
 		if (feed != null && feed.entry != null && feed.entry.size() > 0) {
 			EntryBase entry0 = feed.entry.get(0);
-			//if (entry0._contributor == null) {
+			//if (entry0.contributor == null) {
 			if (entry0.contributor != null) {
 				isMatch = true;
 			}
