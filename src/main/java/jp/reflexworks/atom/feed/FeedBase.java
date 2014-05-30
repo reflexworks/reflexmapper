@@ -21,13 +21,13 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	 * デフォルトの名前空間
 	 */
 	public String _$xmlns;
-	public String _$xmlns$rx;
 	public List<Author> author;
 	public List<Category> category;
 	public List<Contributor> contributor;
 	public Generator generator;
 	public String icon;
 	public String id;
+
 	/**
 	 * 次ページカーソル.
 	 * <p>
@@ -51,14 +51,6 @@ public abstract class FeedBase implements Serializable, Cloneable {
 
 	public void set$xmlns(String _$xmlns) {
 		this._$xmlns = _$xmlns;
-	}
-
-	public String get$xmlns$rx() {
-		return _$xmlns$rx;
-	}
-
-	public void set$xmlns$rx(String _$xmlns$rx) {
-		this._$xmlns$rx = _$xmlns$rx;
 	}
 
 	public List<Author> getAuthor() {
