@@ -1272,7 +1272,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line = "if (" + meta.self + "==null) throw new java.text.ParseException(\"Required property '" + meta.self + "' not specified.\",0);";
 		}
 		if (meta.regex != null && !meta.regex.isEmpty()) {
-			line += "if ("+meta.self+"!=null) {";
+			line += "if ("+meta.self+"!=null&&"+meta.self+".length()>0) {";
 			line += "java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(\"" + meta.regex + "\");";
 			line += "java.util.regex.Matcher matcher = pattern.matcher(\"\"+" + meta.self + ");";
 			line += "if (!matcher.find()) throw new java.text.ParseException(\"Property '" + meta.self + "' is not valid.(regex=" + meta.regex + ", value=\"+" + meta.self + "+\")\",0);";
@@ -1293,8 +1293,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(\"" + meta.regex + "\");";
 			line += "String val=((" + ELEMENTCLASS + ")" + meta.self + ".get(i))._$$text;";
 			line += "java.util.regex.Matcher matcher = pattern.matcher(\"+val+\");";
-			line += "if (!matcher.find()) throw new java.text.ParseException(\"Property '" + meta.self + "' is not valid.(regex=" + meta.regex + ", value=\"+val+\")\",0);";
-			line += "}";			
+			line += "if (!matcher.find()&&val!=null&&val.length()>0) throw new java.text.ParseException(\"Property '" + meta.self + "' is not valid.(regex=" + meta.regex + ", value=\"+val+\")\",0);";
+			line += "}";
 		}
 		
 		line += getMinmax(meta);
