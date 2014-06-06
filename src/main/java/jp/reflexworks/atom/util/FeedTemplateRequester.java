@@ -172,7 +172,7 @@ public class FeedTemplateRequester extends Requester implements ReflexServletCon
 			byte[] tmpData = mapper.toMessagePack(feed);
 			if (deflateUtil != null) {
 				data = deflateUtil.deflate(tmpData);
-				contentEncoding = HEADER_CONTENT_ENCODING_DEFLATE;
+				contentEncoding = HEADER_VALUE_DEFLATE;
 			} else {
 				data = tmpData;
 			}
