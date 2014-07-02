@@ -287,7 +287,7 @@ public class TestMsgpackMapper {
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_COMPRESSION, true);
 		
-		String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$type\" : \"image/gif\",\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
@@ -334,7 +334,7 @@ public class TestMsgpackMapper {
         groups.add("/grp2");
         groups.add("/grp1");
         groups.add("1");
-        groups.add("/_group/$content");	// contentに書込できるグループ
+//        groups.add("/_group/$content");	// contentに書込できるグループ
         System.out.println("Validtion:"+muserinfo.validate("123",groups));	
 
         System.out.println("Before Masked:"+mp.toJSON(muserinfo));	

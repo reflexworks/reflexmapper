@@ -70,7 +70,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	
 	public boolean validate(String ucode, List<String> groups, String myself) 
 	throws java.text.ParseException {
-		/*
+		
 		if (this._$$text != null || this._$type != null || this._$src != null) {
 			if (groups != null && groups.size() > 0) {
 				boolean ex = false;
@@ -78,11 +78,12 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 					// $contentグループでなければ更新できない -> /@{サービス名}/_group/$content
 					if (groups.get(i).equals("/_group/$content")) ex=true;
 				}
+				if (_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif")) ex=true;
 				if (!ex) throw new java.text.ParseException(
 						"Property 'content' is not writeable.", 0);
 			}
 		}
-		*/
+		
 		return true;
 	}
 
