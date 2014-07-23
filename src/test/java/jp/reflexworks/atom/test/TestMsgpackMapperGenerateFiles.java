@@ -17,6 +17,7 @@ public class TestMsgpackMapperGenerateFiles {
 		
 		args[0] = FileUtil.getResourceFilename("template_sample.txt");
 		args[1] = "./";
+		args[2] = "";  // secretkey
 		
 		FeedTemplateMapper.main(args);
 		

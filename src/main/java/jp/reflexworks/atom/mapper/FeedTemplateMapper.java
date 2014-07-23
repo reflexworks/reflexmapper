@@ -1833,13 +1833,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		if (args.length<3) {
 			System.out.println("Usage: Java FeedTemplateMapper <templatefile> <folderpath> <secretkey> (<aclfile>)");
-		}
-		String[] entitytempl = readtemplatefile(args[0]);
-		String[] aclfile = null;
-		if (args.length==4&&args[3]!=null) aclfile = readtemplatefile(args[3]);
+		}else {
+			String[] entitytempl = readtemplatefile(args[0]);
+			String[] aclfile = null;
+			if (args.length==4&&args[3]!=null) aclfile = readtemplatefile(args[3]);
 		
-		new FeedTemplateMapper(entitytempl,aclfile,30,false,args[1],args[2]);		
-
+			new FeedTemplateMapper(entitytempl,aclfile,30,false,args[1],args[2]);		
+		}
 	}
 	
 	private static String[] readtemplatefile(String filename) {
