@@ -2,4 +2,4 @@ content=/*+R,/@/_group/$content+RW
 contributor=@+RW,/@/_group/$admin+RW
 contributor.uri#
 rights#=@+RW,/@/_group/$admin+RW
-title:^/$|^/@jevic$
+title:^/$|^/@xxxxx$
