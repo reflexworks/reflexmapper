@@ -13,7 +13,7 @@ public class TestMsgpackMapperGenerateFiles {
 	@Test
 	public void testGenerateFiles() throws FileNotFoundException, ParseException {
 		
-		String[] args = new String[2];
+		String[] args = new String[3];
 		
 		args[0] = FileUtil.getResourceFilename("template_sample.txt");
 		args[1] = "./";
