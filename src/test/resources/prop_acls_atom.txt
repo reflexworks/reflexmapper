@@ -1,5 +1,5 @@
-content=/*+R,/@/_group/$content+RW
-contributor=@+RW,/@/_group/$admin+RW
+content=/*+R,/@xxxxx/_group/$content+RW
+contributor=@+RW,/@xxxxx/_group/$admin+RW
 contributor.uri#
-rights#=@+RW,/@/_group/$admin+RW
+rights#=@+RW,/@xxxxx/_group/$admin+RW
 title:^/$|^/@xxxxx$
