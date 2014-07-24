@@ -84,7 +84,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 				}
 				if (_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif")) ex=true;
 				if (!ex) throw new java.text.ParseException(
-						"Property 'content' is not writeable.", 0);
+						"Property 'content' is not writeable."+ex, 0);
 			}
 		}
 		
