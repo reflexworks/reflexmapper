@@ -331,8 +331,8 @@ public class TestMsgpackMapper {
 
         EntryBase  muserinfo = (EntryBase) mp.fromMessagePack(in,ENTRY);	// false でEntryをデシリアライズ
         List groups = new ArrayList<String>();
-        groups.add("/grp2");
-        groups.add("/grp1");
+        groups.add("/@hoge/grp2");
+        groups.add("/@hoge/grp1");
         groups.add("1");
 //        groups.add("/_group/$content");	// contentに書込できるグループ
         System.out.println("Validtion:"+muserinfo.validate("123",groups));	

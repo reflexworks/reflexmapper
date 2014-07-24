@@ -2,6 +2,8 @@ package jp.reflexworks.atom.entry;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
 
@@ -76,7 +78,9 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 				boolean ex = false;
 				for (int i = 0; i < groups.size(); i++) {
 					// $contentグループでなければ更新できない -> /@{サービス名}/_group/$content
-					if (groups.get(i).equals("/_group/$content")) ex=true;
+					Pattern p = Pattern.compile("^/@[^/]+/_group/\\$content$");
+					Matcher m = p.matcher(groups.get(i));
+					if (m.find()) ex=true;
 				}
 				if (_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif")) ex=true;
 				if (!ex) throw new java.text.ParseException(

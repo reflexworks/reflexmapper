@@ -1228,7 +1228,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "for(int i=0;i<groups.size();i++) {";
 			for(String aclw:meta.aclW) {
 				if (aclw.equals("/*")) line += "ex=true;";
-				else line += "if (groups.get(i).equals(\""+aclw+"\")) ex=true;";
+				else if (aclw.startsWith("/")) {
+					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]+"+aclw.replace("$", "\\$") +"$\");";
+					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
+					line += "if (m.find()) ex=true;";
+				}else 
+					line += "if (groups.get(i).equals(\""+aclw+"\")) ex=true;";
 			}
 			line += "}";
 			line += "if (!ex) throw new java.text.ParseException(\"Property '" + meta.name + "' is not writeable.\",0);";
@@ -1252,6 +1257,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "for(int i=0;i<groups.size();i++) {";
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("/*")) line += "ex=true;";
+				else if (aclr.startsWith("/")) {
+					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]+"+aclr.replace("$", "\\$") +"$\");";
+					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
+					line += "if (m.find()) ex=true;";
+				}
 				else line += "if (groups.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
 			line += "}";
