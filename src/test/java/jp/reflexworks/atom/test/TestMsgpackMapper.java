@@ -104,9 +104,9 @@ public class TestMsgpackMapper {
 		"error=@+RW,1+W,/grp1+RW,/grp3+RW",
 		"subInfo.favorite.food#=@+W,1+W,/grp1+W,/grp3+RW,/grp4+R",
 		"subInfo.favorite.music=@+W,1+W,/grp4+R,/grp1+W",
-		"contributor=@+RW,/_group/$admin+RW",
+		"contributor=@+RW,/@/_group/$admin+RW",
 		"contributor.uri#",
-		"rights#=@+RW,/_group/$admin+RW"
+		"rights#=@+RW,/@/_group/$admin+RW"
 	};
 
 	public static String entitytempl2[] = {

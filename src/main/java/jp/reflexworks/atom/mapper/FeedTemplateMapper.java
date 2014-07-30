@@ -1229,7 +1229,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			for(String aclw:meta.aclW) {
 				if (aclw.equals("/*")) line += "ex=true;";
 				else if (aclw.startsWith("/")) {
-					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclw.replace("$", "\\\\$") +"$\");";
+					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclw.replace("$", "\\\\$") +"$|^"+aclw.replace("$", "\\\\$")+"$\");";
 					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
 					line += "if (m.find()) ex=true;";
 				}else 
@@ -1258,7 +1258,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("/*")) line += "ex=true;";
 				else if (aclr.startsWith("/")) {
-					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclr.replace("$", "\\\\$") +"$\");";
+					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclr.replace("$", "\\\\$") +"$|^"+aclr.replace("$", "\\\\$")+"$\");";
 					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
 					line += "if (m.find()) ex=true;";
 				}
