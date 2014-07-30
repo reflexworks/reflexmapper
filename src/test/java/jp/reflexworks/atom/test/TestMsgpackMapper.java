@@ -1135,16 +1135,18 @@ public class TestMsgpackMapper {
 	@Test
 	public void testMaskprop2() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls4, 30, SECRETKEY);
+		//FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30, SECRETKEY);
 
 		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@/_system/admin,2\",\"link\" : [{\"$href\" : \"/@/_system/admin\",\"$rel\" : \"self\"}],\"rights\" : \"key=value\nprop=暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
-		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/1/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/1/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/1/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 
 		FeedBase feed = (FeedBase)mp.fromJSON(json);
 		String xml = null;
 
 		// maskprop test
-		//String uid = "6";
 		String uid = "0";
+		//String uid = "1";
+		//String uid = "6";
 		List<String> groups = new ArrayList<String>();
 		
 		// 管理者権限
