@@ -1261,7 +1261,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclr.replace("$", "\\\\$") +"$\");";
 					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
 					line += "if (m.find()) ex=true;";
-					line += "System.out.println(\"aclr="+aclr+" gr=\"+groups.get(i)+\" flg=\"+ex);";
 				}
 				else line += "if (groups.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
