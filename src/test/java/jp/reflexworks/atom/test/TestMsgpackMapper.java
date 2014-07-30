@@ -1112,7 +1112,7 @@ public class TestMsgpackMapper {
 
 		// /$admin グループ
 		feed = (FeedBase)mp.fromJSON(json);
-		groups.add("/@testservice/$admin");
+		groups.add("/@testservice/_group/$admin");
 		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
 		xml = mp.toXML(feed);
