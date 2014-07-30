@@ -86,10 +86,28 @@ public class TestMsgpackMapper {
 		"error=@+RW,1+W,/grp1+RW,/grp3+RW",
 		"subInfo.favorite.food#=@+W,1+W,/grp1+W,/grp3+RW,/grp4+R",
 		"subInfo.favorite.music=@+W,1+W,/grp4+R,/grp1+W",
-		"contributor=@+RW,/@testservice/$admin+RW",
-		//"contributor=/@testservice/$admin+RW",
+		"contributor=@+RW,/@testservice/_group/$admin+RW",
+		//"contributor=/@testservice/_group/$admin+RW",
 		"contributor.uri#",
-		"rights#=@+RW,/@testservice/$admin+RW"
+		"rights#=@+RW,/@testservice/_group/$admin+RW"
+	};
+
+	public static String entityAcls3[] = {
+		"title:/*",
+		"contributor=/@testservice/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/@testservice/_group/$admin+RW"
+	};
+
+	public static String entityAcls4[] = {
+		"title:/*",
+		"Idx:/[0-9]+/(self|alias)",
+		"error=@+RW,1+W,/grp1+RW,/grp3+RW",
+		"subInfo.favorite.food#=@+W,1+W,/grp1+W,/grp3+RW,/grp4+R",
+		"subInfo.favorite.music=@+W,1+W,/grp4+R,/grp1+W",
+		"contributor=@+RW,/@/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/@/_group/$admin+RW"
 	};
 
 	public static String entitytempl2[] = {
@@ -179,13 +197,6 @@ public class TestMsgpackMapper {
 		" $$text",
 		" nickname",
 		"deleteFlg",
-	};
-
-	public static String entityAcls3[] = {
-		"title:/*",
-		"contributor=/@testservice/$admin+RW",
-		"contributor.uri#",
-		"rights#=@+RW,/@testservice/$admin+RW"
 	};
 
 	private static boolean FEED = true;
@@ -1123,7 +1134,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testMaskprop2() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30, SECRETKEY);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls4, 30, SECRETKEY);
 
 		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@/_system/admin,2\",\"link\" : [{\"$href\" : \"/@/_system/admin\",\"$rel\" : \"self\"}],\"rights\" : \"key=value\nprop=暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
 		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/1/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
