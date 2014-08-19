@@ -109,6 +109,14 @@ public class TestMsgpackMapper {
 		"rights#=@+RW,/@/_group/$admin+RW"
 	};
 
+	public static String entityAcls5[] = {
+		"title:/*",
+		"contributor=/@testservice/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/@testservice/_group/$admin+RW",
+		"info.category=/@testservice/1/group/office+RW"
+	};
+
 	public static String entitytempl2[] = {
 		// {}がMap, []がArray　, {} [] は末尾に一つだけ付けられる。*が必須項目
 		"import{2}",        //  0行目はパッケージ名(service名)
@@ -188,10 +196,10 @@ public class TestMsgpackMapper {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"androidhello{100}",        //  0行目はパッケージ名(service名)
 		"info",
-		" name",
+		" name!",
 		" category",
 		" color",
-		" size",
+		" size=^[a-zA-Z0-9]{1,2}$",
 		"comment{}",
 		" $$text",
 		" nickname",
@@ -1314,24 +1322,137 @@ public class TestMsgpackMapper {
 	@Test
 	public void testValidate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
-		/*
-		// TODO Contributor#validate 実装後に要確認
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
 
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30);
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
 
-		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
-
-		FeedBase feed = (FeedBase)mp.fromJSON(json);
-		String xml = null;
-
-//		String uid = "6";
-		String uid = "7";
+		String uid = "6";	// 別ユーザ
 		List<String> groups = new ArrayList<String>();
 
-		// validate test
-		feed.validate(uid, groups);
-		 */
+		// validate test (1) : validateエラーあり
+		System.out.println("testValidate (1) validate start.");
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
+		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		
+		boolean errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// validateエラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (1) validate OK.");
 
+		// validate test (2) : validateエラー無し、content追加
+		System.out.println("testValidate (2) content start.");
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"content\" : {\"$$text\":\"あああ\"},\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		feed = (FeedBase)mp4.fromJSON(json);
+
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// content編集エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (2) content OK.");
+
+		// validate test (3) : validateエラー無し、content追加、content ACL追加
+		System.out.println("testValidate (3) content start.");
+		groups.add("/@testservice/_group/$content");
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// 正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (3) content OK.");
+
+		// validate test (4) : validateエラー無し、right追加
+		System.out.println("testValidate (4) admin right (Another user) start.");
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		feed = (FeedBase)mp4.fromJSON(json);
+		errorFlg = false;
+		try {
+			// groupsはcontentが入った状態
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// adminエラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (4) admin right (Another user) OK.");
+
+		// validate test (5) : validateエラー無し、right追加
+		System.out.println("testValidate (5) admin right (Another user) start.");
+		// groupsをnullにする。
+		groups = null;
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// groups=null は項目ACLチェックしないため正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (5) admin right (Another user) OK.");
+
+		// validate test (6) : validateエラー無し、right追加
+		System.out.println("testValidate (6) admin right (Another user) start.");
+		// groupsを空リストにする。
+		groups = new ArrayList<String>();
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// adminエラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (6) admin right (Another user) OK.");
+
+		// validate test (7) : validateエラー無し、right追加
+		System.out.println("testValidate (7) admin right (Another user) start.");
+		// adminグループに参加
+		groups.add("/@testservice/_group/$admin");
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// 項目ACLが合致するため正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (7) admin right (Another user) OK.");
+
+		// validate test (8) : validateエラー無し、right追加
+		System.out.println("testValidate (8) admin right (Own user) start.");
+		// groupsをnullにする。
+		groups = new ArrayList<String>();
+		uid = "7";
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// UIDが合致するため正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (8) admin right (Own user) OK.");
+
+		
 		assertTrue(true);
 	}
 
