@@ -1438,7 +1438,7 @@ public class TestMsgpackMapper {
 
 		// validate test (8) : validateエラー無し、right追加
 		System.out.println("testValidate (8) admin right (Own user) start.");
-		// groupsをnullにする。
+		// groupsを空にする。
 		groups = new ArrayList<String>();
 		uid = "7";
 		errorFlg = false;
@@ -1452,6 +1452,130 @@ public class TestMsgpackMapper {
 		assertTrue(errorFlg);
 		System.out.println("testValidate (8) admin right (Own user) OK.");
 
+		// validate test (9) : validateエラー無し、contributor追加
+		System.out.println("testValidate (9) admin contributor start.");
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"contributor\" : [{\"email\":\"abc@example.com\"},{\"uri\":\"urn:vte.cx:abc@example.com,CRUD\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		feed = (FeedBase)mp4.fromJSON(json);
+		// groupsをnullにする。
+		groups = null;
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// チェックしないので正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (9) admin contributor OK.");
+
+		// validate test (10) : validateエラー無し、contributor追加
+		System.out.println("testValidate (10) admin contributor start.");
+		// groupsを空にする。
+		groups = new ArrayList<String>();
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// adminエラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (10) admin contributor OK.");
+
+		// validate test (11) : validateエラー無し、contributor追加
+		System.out.println("testValidate (11) admin contributor start.");
+		// 別のグループに参加
+		groups.add("/@testservice/_group/$content");
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (11) admin contributor OK.");
+
+		// validate test (12) : validateエラー無し、contributor追加
+		System.out.println("testValidate (12) admin contributor start.");
+		// adminグループに参加
+		groups.add("/@testservice/_group/$admin");
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// 正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (12) admin contributor OK.");
+
+		// validate test (13) : validateエラー無し、info.category追加
+		System.out.println("testValidate (13) admin info.category start.");
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		feed = (FeedBase)mp4.fromJSON(json);
+		// groupsはcontentとadminに参加中。
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (13) admin info.category OK.");
+
+		// validate test (14) : validateエラー無し、info.category追加
+		System.out.println("testValidate (14) admin info.category start.");
+		// groupsはnull。
+		groups = null;
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// 正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (14) admin info.category OK.");
+
+		// validate test (15) : validateエラー無し、info.category追加
+		System.out.println("testValidate (15) admin info.category start.");
+		// groupsは空。
+		groups = new ArrayList<String>();
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			// エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (15) admin info.category OK.");
+
+		// validate test (16) : validateエラー無し、info.category追加
+		System.out.println("testValidate (16) admin info.category start.");
+		// 権限のあるグループに参加。
+		groups.add("/@testservice/1/group/office");
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// 正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (16) admin info.category OK.");
+
+		
 		
 		// TODO 以下の項目ACLチェックを要確認
 		// contributor
