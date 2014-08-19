@@ -74,7 +74,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	throws java.text.ParseException {
 		
 		if (this._$$text != null || this._$type != null || this._$src != null) {
-			if (groups != null && groups.size() > 0) {
+			if (groups != null && groups.size() >= 0) {
 				boolean ex = false;
 				for (int i = 0; i < groups.size(); i++) {
 					// $contentグループでなければ更新できない -> /@{サービス名}/_group/$content
@@ -82,7 +82,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 					Matcher m = p.matcher(groups.get(i));
 					if (m.find()) ex=true;
 				}
-				if (_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif")) ex=true;
+				if (_$type!=null&&(_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif"))) ex=true;
 				if (!ex) throw new java.text.ParseException(
 						"Property 'content' is not writeable."+ex, 0);
 			}

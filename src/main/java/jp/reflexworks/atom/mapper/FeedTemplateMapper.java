@@ -1218,7 +1218,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		String line = ""; 
 		if (meta.aclW!=null) {
 			// ACLが設定されていて項目に値が存在している
-			line += "if (groups!=null&&groups.size()>0&&"+ meta.self + "!=null) {";
+			line += "if (groups!=null&&groups.size()>=0&&"+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければエラー
 			line += "boolean ex=false;";
 			line += "groups.add(\"\"+uid);";
