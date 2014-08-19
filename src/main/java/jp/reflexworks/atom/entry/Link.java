@@ -196,7 +196,7 @@ public class Link implements Serializable, SoftSchema {
 		return true;
 	}
 
-	public void maskprop(String ucode, List<String> groups, String myself) {
+	public void maskprop(String uid, List<String> groups, String myself) {
 	}
 
 	public void addSvcname(String svcname) {

@@ -70,7 +70,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 		return "Content [" + _$$text + "]";
 	}
 	
-	public boolean validate(String ucode, List<String> groups, String myself) 
+	public boolean validate(String uid, List<String> groups, String myself) 
 	throws java.text.ParseException {
 		
 		if (this._$$text != null || this._$type != null || this._$src != null) {
@@ -122,6 +122,6 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 		}
 	}
 
-	public void maskprop(String ucode, List<String> groups, String myself) {}
+	public void maskprop(String uid, List<String> groups, String myself) {}
 
 }

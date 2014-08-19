@@ -179,12 +179,16 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	}
 
 	/**
-	 * 項目チェック
+	 * 項目チェック.
+	 * @param uid UID
+	 * @param groups 参加グループリスト.<br>
+	 *               nullの場合、項目ACLチェックを行いません。<br>
+	 *               空リストの場合、項目ACLチェックを行います。
 	 */
-	public abstract boolean validate(String ucode, List<String> groups)
+	public abstract boolean validate(String uid, List<String> groups)
 			throws java.text.ParseException;
 
-	public abstract void maskprop(String ucode, List<String> groups);
+	public abstract void maskprop(String uid, List<String> groups);
 
 	/**
 	 * キーにサービス名を付加します.

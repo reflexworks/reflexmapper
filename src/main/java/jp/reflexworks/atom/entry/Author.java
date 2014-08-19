@@ -98,9 +98,9 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 		}
 	}
 
-	public boolean validate(String ucode, List<String> groups, String myself) 
+	public boolean validate(String uid, List<String> groups, String myself) 
 	throws java.text.ParseException {return true;}
 
-	public void maskprop(String ucode, List<String> groups, String myself) {}
+	public void maskprop(String uid, List<String> groups, String myself) {}
 
 }

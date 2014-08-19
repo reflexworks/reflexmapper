@@ -42,22 +42,22 @@ public interface SoftSchema {
 	/**
 	 * 項目のバリデーションを行う
 	 * 
-	 * @param ucode
+	 * @param uid
 	 * @param groups
 	 * @param myself
 	 * @return validであればtrue
 	 * @throws java.text.ParseException
 	 */
-	public boolean validate(String ucode, List<String> groups, String myself) 
+	public boolean validate(String uid, List<String> groups, String myself) 
 			throws java.text.ParseException;
 	
 	/**
 	 * 項目の値をマスクする
 	 * 
-	 * @param ucode
+	 * @param uid
 	 * @param groups
 	 * @param myself
 	 */
-	public void maskprop(String ucode, List<String> groups, String myself);
+	public void maskprop(String uid, List<String> groups, String myself);
 
 }
