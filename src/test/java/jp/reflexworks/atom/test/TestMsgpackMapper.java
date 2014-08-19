@@ -1453,7 +1453,11 @@ public class TestMsgpackMapper {
 		System.out.println("testValidate (8) admin right (Own user) OK.");
 
 		
-		assertTrue(true);
+		// TODO 以下の項目ACLチェックを要確認
+		// contributor
+		// info.category (追加項目)
+		
+		
 	}
 
 	/**
