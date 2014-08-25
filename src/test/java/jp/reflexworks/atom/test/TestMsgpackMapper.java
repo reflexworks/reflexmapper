@@ -114,7 +114,8 @@ public class TestMsgpackMapper {
 		"contributor=/@testservice/_group/$admin+RW",
 		"contributor.uri#",
 		"rights#=@+RW,/@testservice/_group/$admin+RW",
-		"info.category=/@testservice/1/group/office+RW"
+		"info.category=/@testservice/1/group/office+RW",
+		"comment=7+RW"
 	};
 
 	public static String entitytempl2[] = {
@@ -1338,7 +1339,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// validateエラーでOK
 			errorFlg = true;
 		}
@@ -1354,7 +1355,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// content編集エラーでOK
 			errorFlg = true;
 		}
@@ -1384,7 +1385,7 @@ public class TestMsgpackMapper {
 			// groupsはcontentが入った状態
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// adminエラーでOK
 			errorFlg = true;
 		}
@@ -1414,7 +1415,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// adminエラーでOK
 			errorFlg = true;
 		}
@@ -1477,7 +1478,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// adminエラーでOK
 			errorFlg = true;
 		}
@@ -1492,7 +1493,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// エラーでOK
 			errorFlg = true;
 		}
@@ -1523,7 +1524,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// エラーでOK
 			errorFlg = true;
 		}
@@ -1553,7 +1554,7 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			// エラーでOK
 			errorFlg = true;
 		}
@@ -1574,6 +1575,25 @@ public class TestMsgpackMapper {
 		}
 		assertTrue(errorFlg);
 		System.out.println("testValidate (16) admin info.category OK.");
+
+		// validate test (17) : validateエラー無し、項目ACLにUID設定
+		System.out.println("testValidate (17) field acl uid start.");
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"},\"comment\" : [{\"nickname\" : \"foo\",\"$$text\" : \"コメント。\"},{\"nickname\" : \"aaa\",\"$$text\" : \"あいうえお\"}]}]}}";
+		feed = (FeedBase)mp4.fromJSON(json);
+		// groupsをnullにする。
+		groups = null;
+		// uidを6にする。
+		uid = "6";
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+			// commentはuid=7のみ参照・編集可のため、エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (17) field acl uid OK.");
 
 		
 		
