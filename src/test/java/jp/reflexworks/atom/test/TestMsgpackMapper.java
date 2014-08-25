@@ -1637,20 +1637,13 @@ public class TestMsgpackMapper {
 		errorFlg = false;
 		try {
 			feed.validate(uid, groups);
-		} catch (ParseException e) {
-			System.out.println(e.getMessage());
-			// エラーでOK
+			// チェックしないため正常でOK
 			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		assertTrue(errorFlg);
 		System.out.println("testValidate (20) field acl uid OK.");
-
-		
-		
-		// TODO 以下の項目ACLチェックを要確認
-		// contributor
-		// info.category (追加項目)
-		
 		
 	}
 
