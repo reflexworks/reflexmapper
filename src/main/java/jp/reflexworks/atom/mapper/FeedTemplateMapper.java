@@ -1218,22 +1218,23 @@ public class FeedTemplateMapper extends ResourceMapper {
 		String line = ""; 
 		if (meta.aclW!=null) {
 			// ACLが設定されていて項目に値が存在している
-			line += "if (groups!=null&&groups.size()>=0&&"+ meta.self + "!=null) {";
+			line += "if (uid!=null&&groups!=null&&groups.size()>=0&&"+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければエラー
 			line += "boolean ex=false;";
-			line += "groups.add(\"\"+uid);";
+			line += "java.util.ArrayList groups2 = new java.util.ArrayList(groups);";
+			line += "groups2.add(\"\"+uid);";
 			for(String aclw:meta.aclW) {
 				if (aclw.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
 			}
-			line += "for(int i=0;i<groups.size();i++) {";
+			line += "for(int i=0;i<groups2.size();i++) {";
 			for(String aclw:meta.aclW) {
 				if (aclw.equals("/*")) line += "ex=true;";
 				else if (aclw.startsWith("/")) {
 					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclw.replace("$", "\\\\$") +"$|^"+aclw.replace("$", "\\\\$")+"$\");";
-					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
+					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups2.get(i));";
 					line += "if (m.find()) ex=true;";
 				}else 
-					line += "if (groups.get(i).equals(\""+aclw+"\")) ex=true;";
+					line += "if (groups2.get(i).equals(\""+aclw+"\")) ex=true;";
 			}
 			line += "}";
 			line += "if (!ex) throw new java.text.ParseException(\"Property '" + meta.name + "' is not writeable.\",0);";
@@ -1250,19 +1251,20 @@ public class FeedTemplateMapper extends ResourceMapper {
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
 			line += "if (groups==null) groups = new java.util.ArrayList();";
-			line += "groups.add(\"\"+uid);";
+			line += "java.util.ArrayList groups2 = new java.util.ArrayList(groups);";
+			line += "groups2.add(\"\"+uid);";
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
 			}
-			line += "for(int i=0;i<groups.size();i++) {";
+			line += "for(int i=0;i<groups2.size();i++) {";
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("/*")) line += "ex=true;";
 				else if (aclr.startsWith("/")) {
 					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclr.replace("$", "\\\\$") +"$|^"+aclr.replace("$", "\\\\$")+"$\");";
-					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups.get(i));";
+					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups2.get(i));";
 					line += "if (m.find()) ex=true;";
 				}
-				else line += "if (groups.get(i).equals(\""+aclr+"\")) ex=true;";
+				else line += "if (groups2.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
 			line += "}";
 			line += "if (!ex) "+ meta.self +"=null;";

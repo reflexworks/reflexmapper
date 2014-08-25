@@ -74,7 +74,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	throws java.text.ParseException {
 		
 		if (this._$$text != null || this._$type != null || this._$src != null) {
-			if (groups != null && groups.size() >= 0) {
+			if (uid!=null && groups != null && groups.size() >= 0) {
 				boolean ex = false;
 				for (int i = 0; i < groups.size(); i++) {
 					// $contentグループでなければ更新できない -> /@{サービス名}/_group/$content
