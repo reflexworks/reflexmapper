@@ -1580,8 +1580,9 @@ public class TestMsgpackMapper {
 		System.out.println("testValidate (17) field acl uid start.");
 		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"},\"comment\" : [{\"nickname\" : \"foo\",\"$$text\" : \"コメント。\"},{\"nickname\" : \"aaa\",\"$$text\" : \"あいうえお\"}]}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
-		// groupsをnullにする。
-		groups = null;
+		// info権限のグループを設定
+		groups = new ArrayList<String>();
+		groups.add("/@testservice/1/group/office");
 		// uidを6にする。
 		uid = "6";
 		errorFlg = false;
@@ -1593,7 +1594,56 @@ public class TestMsgpackMapper {
 			errorFlg = true;
 		}
 		assertTrue(errorFlg);
+		
+		// groupsが変更されていないこと
+		assertTrue(groups.size() == 1);
+		
 		System.out.println("testValidate (17) field acl uid OK.");
+
+		// validate test (18) : validateエラー無し、項目ACLにUID設定
+		System.out.println("testValidate (18) field acl uid start.");
+		// uidを""にする。
+		uid = "";
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+			// commentはuid=7のみ参照・編集可のため、エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (18) field acl uid OK.");
+
+		// validate test (19) : validateエラー無し、項目ACLにUID設定
+		System.out.println("testValidate (19) field acl uid start.");
+		// uidを7にする。
+		uid = "7";
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+			// 正常でOK
+			errorFlg = true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (19) field acl uid OK.");
+
+		// validate test (20) : validateエラー無し、項目ACLにUID設定
+		System.out.println("testValidate (20) field acl uid start.");
+		// uidをnullにする。
+		uid = null;
+		errorFlg = false;
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+			// エラーでOK
+			errorFlg = true;
+		}
+		assertTrue(errorFlg);
+		System.out.println("testValidate (20) field acl uid OK.");
 
 		
 		
