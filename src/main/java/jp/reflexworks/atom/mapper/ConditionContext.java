@@ -1,12 +1,14 @@
 package jp.reflexworks.atom.mapper;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.wrapper.base.ConditionBase;
 import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.StringUtils;
@@ -66,6 +68,65 @@ public class ConditionContext {
 	}
 
 	/**
+	 * Stringの項目について検索条件に合致しているかどうかチェックする
+	 * 
+	 * @param obj
+	 * @param cond
+	 * @param type
+	 * @return 合致していればtrue
+	 */
+	private static boolean checkConditionString(String src,ConditionBase cond,String type) {
+		String value = cond.getValue();
+		String equal = cond.getEquations();
+
+		if (ConditionBase.REGEX.equals(equal)) {
+			Pattern pattern = Pattern.compile(value);
+			Matcher matcher = pattern.matcher(src);
+			if (!matcher.find()) {
+				return false;
+			}
+		}
+		else 
+		if (!cond.isPrefixMatching() && !cond.isLikeForward()) {
+			int compare = src.compareTo(value);
+			
+			if (ConditionBase.EQUAL.equals(equal) && compare != 0) {
+				return false;
+			} else if (ConditionBase.NOT_EQUAL.equals(equal) && compare == 0) {
+				return false;
+			} else if (ConditionBase.GREATER_THAN.equals(equal) && compare <= 0) {
+				return false;
+			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && compare < 0) {
+				return false;
+			} else if (ConditionBase.LESS_THAN.equals(equal) && compare >= 0) {
+				return false;
+			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && compare > 0) {
+				return false;
+			}
+
+		} else if (cond.isPrefixMatching() && cond.isLikeForward()) {
+			// あいまい検索
+			if (src.indexOf(value) < 0) {
+				return false;
+			}
+
+		} else if (cond.isPrefixMatching() && !cond.isLikeForward()) {
+			// 前方一致検索
+			if (!src.startsWith(value)) {
+				return false;
+			}
+
+		} else {
+			// 後方一致検索
+			if (!src.endsWith(value)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	/**
 	 * 個々の項目について検索条件に合致しているかどうかチェックする
 	 * 
 	 * @param obj
@@ -78,52 +139,15 @@ public class ConditionContext {
 
 		if (obj==null) return false;
 		if (type.equals("String")) {
-			String src = (String) obj;
-			String value = cond.getValue();
-			if (ConditionBase.REGEX.equals(equal)) {
-				Pattern pattern = Pattern.compile(value);
-				Matcher matcher = pattern.matcher(src);
-				if (!matcher.find()) {
-					return false;
+			if (obj instanceof ArrayList) {
+				for(Element element:(ArrayList<Element>) obj){
+					// 配列要素のどれか一つに合致していればtrue
+					if (checkConditionString(element._$$text, cond, type)) return true;
 				}
-			}
-			else 
-			if (!cond.isPrefixMatching() && !cond.isLikeForward()) {
-				int compare = src.compareTo(value);
 				
-				if (ConditionBase.EQUAL.equals(equal) && compare != 0) {
-					return false;
-				} else if (ConditionBase.NOT_EQUAL.equals(equal) && compare == 0) {
-					return false;
-				} else if (ConditionBase.GREATER_THAN.equals(equal) && compare <= 0) {
-					return false;
-				} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && compare < 0) {
-					return false;
-				} else if (ConditionBase.LESS_THAN.equals(equal) && compare >= 0) {
-					return false;
-				} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && compare > 0) {
-					return false;
-				}
-
-			} else if (cond.isPrefixMatching() && cond.isLikeForward()) {
-				// あいまい検索
-				if (src.indexOf(value) < 0) {
-					return false;
-				}
-
-			} else if (cond.isPrefixMatching() && !cond.isLikeForward()) {
-				// 前方一致検索
-				if (!src.startsWith(value)) {
-					return false;
-				}
-
-			} else {
-				// 後方一致検索
-				if (!src.endsWith(value)) {
-					return false;
-				}
+			}else {
+				return checkConditionString((String)obj, cond, type);
 			}
-
 		} else if (type.equals("Integer")) {
 			int src = (Integer)obj;
 			int value = StringUtils.intValue(cond.getValue());

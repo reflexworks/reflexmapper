@@ -972,7 +972,7 @@ public class TestMsgpackMapper {
 		System.out.println(mp.toXML(entry));
 		System.out.println("--------------");
 
-		Condition[] conditions = new Condition[19];
+		Condition[] conditions = new Condition[20];
 
 		conditions[0] = new Condition("subInfo.favorite.food", "カレー");
 		conditions[1] = new Condition("subInfo.favorite3.food", "うどん");
@@ -993,6 +993,7 @@ public class TestMsgpackMapper {
 		conditions[16] = new Condition("author.uri", "http://xyz");	
 		conditions[17] = new Condition("author.name", "fuga");	
 		conditions[18] = new Condition("public.int", "email1");	// java予約語項目
+		conditions[19] = new Condition("subInfo.favorite.music", "ポップス1");	// java予約語項目
 
 		boolean ismatch = entry.isMatch(conditions);
 		System.out.println("isMatch="+ismatch);
