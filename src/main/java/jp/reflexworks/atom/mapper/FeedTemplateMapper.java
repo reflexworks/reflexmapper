@@ -1304,7 +1304,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {";
 			line += "java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(\"" + meta.regex + "\");";
 			line += "String val=((" + ELEMENTCLASS + ")" + meta.self + ".get(i))._$$text;";
-			line += "java.util.regex.Matcher matcher = pattern.matcher(\"+val+\");";
+			line += "java.util.regex.Matcher matcher = pattern.matcher(val);";
 			line += "if (!matcher.find()&&val!=null&&val.length()>0) throw new java.text.ParseException(\"Property '" + meta.self + "' is not valid.(regex=" + meta.regex + ", value=\"+val+\")\",0);";
 			line += "}";
 		}

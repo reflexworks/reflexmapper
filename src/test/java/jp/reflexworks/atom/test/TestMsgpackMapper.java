@@ -932,6 +932,13 @@ public class TestMsgpackMapper {
 		String xml = mp.toXML(feed);
 		System.out.println(xml);
 
+		FeedBase feed2 = (FeedBase) mp.fromXML(xml);
+		List groups = new ArrayList<String>();
+		groups.add("/$admin");
+		groups.add("/@default/_group/$content");
+		groups.add("1");
+		System.out.println("Validtion:"+feed2.validate("123",groups));	
+
 		EntryBase entry = feed.entry.get(0);
 		System.out.println("\n==== getValue test ====");
 		System.out.println("email value="+entry.getValue("email"));
