@@ -144,6 +144,7 @@ public class ConditionContext {
 					// 配列要素のどれか一つに合致していればtrue
 					if (checkConditionString(element._$$text, cond, type)) return true;
 				}
+				return false;
 				
 			}else {
 				return checkConditionString((String)obj, cond, type);
