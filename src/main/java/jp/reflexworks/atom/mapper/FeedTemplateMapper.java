@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -894,6 +896,23 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return parseValue("", v);
 	}
 
+	public Object fromJSON(Reader json) throws JSONException {
+
+		BufferedReader br = new BufferedReader(json);
+		try {
+			String jsonstring = "";
+			for (;;) {
+				String line = br.readLine();
+				if (line == null)
+					break;
+				jsonstring = jsonstring + line;
+			}
+			return fromJSON(jsonstring);
+		} catch (IOException e) {
+			throw new JSONException(e);
+		}
+	}
+	
 	/* (非 Javadoc)
 	 * @see jp.sourceforge.reflex.core.ResourceMapper#fromArray(java.lang.String, boolean)
 	 */
