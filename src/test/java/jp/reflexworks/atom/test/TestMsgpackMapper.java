@@ -17,11 +17,11 @@ import java.util.zip.Deflater;
 import javax.crypto.Cipher;
 import javax.xml.bind.DatatypeConverter;
 
-import org.json.JSONException;
 import org.junit.Test;
 
 import com.carrotsearch.sizeof.ObjectTree;
 
+import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
