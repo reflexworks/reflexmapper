@@ -40,7 +40,6 @@ import javassist.NotFoundException;
 import javassist.bytecode.BadBytecode;
 import javassist.bytecode.SignatureAttribute;
 
-import org.json.JSONException;
 import org.msgpack.MessagePack;
 import org.msgpack.template.Template;
 import org.msgpack.template.TemplateRegistry;
@@ -56,6 +55,7 @@ import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.sourceforge.reflex.core.RXMapper;
 import jp.sourceforge.reflex.core.ResourceMapper;
+import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
 

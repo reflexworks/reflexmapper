@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.zip.DataFormatException;
 
-import org.json.JSONException;
 
+import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.Requester;
 import jp.reflexworks.servlet.ReflexServletConst;
