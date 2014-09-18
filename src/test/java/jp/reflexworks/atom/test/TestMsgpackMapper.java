@@ -305,62 +305,67 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_COMPRESSION, true);
+		try {
 
-		String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$type\" : \"image/gif\",\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
-		//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
-		EntryBase entry = (EntryBase) mp.fromJSON(json);
-
-		/*
-		Entry entry2 = new Entry();
-		entry2._id = "xxx";
-		entry2._family_name = "aaaa";
-		entry2._link = new ArrayList();
-		Link link = new Link();
-		entry2._link.add(link);
-		entry2._subInfo = new SubInfo();
-		entry2._subInfo._favorite = new Favorite();
-		entry2._subInfo._favorite._food = "xxx";
-
-		String xml =  mp.toXML(entry2);
-		System.out.println(xml);
-		 */
-
-		// MessagePack test
-		System.out.println("\n=== MessagePack Entry シリアライズ ===");
-		byte[] mbytes = mp.toMessagePack(entry);
-		System.out.println("len:"+mbytes.length);
-		for(int i=0;i<mbytes.length;i++) { 
-			System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
-		} 
-		System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
-		byte[] de = deflateUtil.deflate(mbytes);
-		System.out.println("len:"+de.length+" 圧縮率："+(de.length*100/mbytes.length)+"%");
-		for(int i=0;i<de.length;i++) { 
-			System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
-		} 
-
-		System.out.println("\n=== MessagePack Entry infrate解凍 ===");
-		byte[] in = deflateUtil.inflate(de);
-		System.out.println("len:"+in.length);
-		for(int i=0;i<in.length;i++) { 
-			System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
-		} 
-
-		System.out.println("\n=== MessagePack Entry デシリアライズ ===");
-
-		EntryBase  muserinfo = (EntryBase) mp.fromMessagePack(in,ENTRY);	// false でEntryをデシリアライズ
-		List groups = new ArrayList<String>();
-		groups.add("/@hoge/grp2");
-		groups.add("/@hoge/grp1");
-		groups.add("1");
-		//        groups.add("/_group/$content");	// contentに書込できるグループ
-		System.out.println("Validtion:"+muserinfo.validate("123",groups));	
-
-		System.out.println("Before Masked:"+mp.toJSON(muserinfo));	
-		muserinfo.maskprop("123",groups);	
-		System.out.println("After  Masked:"+mp.toJSON(muserinfo));	
-
-		assertNotSame(json, mp.toJSON(muserinfo));
+			String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$type\" : \"image/gif\",\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+			//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+			EntryBase entry = (EntryBase) mp.fromJSON(json);
+	
+			/*
+			Entry entry2 = new Entry();
+			entry2._id = "xxx";
+			entry2._family_name = "aaaa";
+			entry2._link = new ArrayList();
+			Link link = new Link();
+			entry2._link.add(link);
+			entry2._subInfo = new SubInfo();
+			entry2._subInfo._favorite = new Favorite();
+			entry2._subInfo._favorite._food = "xxx";
+	
+			String xml =  mp.toXML(entry2);
+			System.out.println(xml);
+			 */
+	
+			// MessagePack test
+			System.out.println("\n=== MessagePack Entry シリアライズ ===");
+			byte[] mbytes = mp.toMessagePack(entry);
+			System.out.println("len:"+mbytes.length);
+			for(int i=0;i<mbytes.length;i++) { 
+				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
+			} 
+			System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
+			byte[] de = deflateUtil.deflate(mbytes);
+			System.out.println("len:"+de.length+" 圧縮率："+(de.length*100/mbytes.length)+"%");
+			for(int i=0;i<de.length;i++) { 
+				System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
+			} 
+	
+			System.out.println("\n=== MessagePack Entry infrate解凍 ===");
+			byte[] in = deflateUtil.inflate(de);
+			System.out.println("len:"+in.length);
+			for(int i=0;i<in.length;i++) { 
+				System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
+			} 
+	
+			System.out.println("\n=== MessagePack Entry デシリアライズ ===");
+	
+			EntryBase  muserinfo = (EntryBase) mp.fromMessagePack(in,ENTRY);	// false でEntryをデシリアライズ
+			List groups = new ArrayList<String>();
+			groups.add("/@hoge/grp2");
+			groups.add("/@hoge/grp1");
+			groups.add("1");
+			//        groups.add("/_group/$content");	// contentに書込できるグループ
+			System.out.println("Validtion:"+muserinfo.validate("123",groups));	
+	
+			System.out.println("Before Masked:"+mp.toJSON(muserinfo));	
+			muserinfo.maskprop("123",groups);	
+			System.out.println("After  Masked:"+mp.toJSON(muserinfo));	
+	
+			assertNotSame(json, mp.toJSON(muserinfo));
+		
+		} finally {
+			deflateUtil.end();
+		}
 	}
 
 	@Test
@@ -567,68 +572,73 @@ public class TestMsgpackMapper {
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
 
-		String dataXmlFile = FileUtil.getResourceFilename("feed_test.txt");
-		FileReader fi = new FileReader(dataXmlFile);
-
-		// XMLにシリアライズ
-		Date d1 = new Date();
-		Object obj = mp.fromXML(fi);
-
-		FeedBase feedobj = null;
-		if (obj instanceof FeedBase) {
-			feedobj = (FeedBase)obj;
-		} else {
-			System.out.println("The text is not feed : " + obj.getClass().getName());
+		try {
+			String dataXmlFile = FileUtil.getResourceFilename("feed_test.txt");
+			FileReader fi = new FileReader(dataXmlFile);
+	
+			// XMLにシリアライズ
+			Date d1 = new Date();
+			Object obj = mp.fromXML(fi);
+	
+			FeedBase feedobj = null;
+			if (obj instanceof FeedBase) {
+				feedobj = (FeedBase)obj;
+			} else {
+				System.out.println("The text is not feed : " + obj.getClass().getName());
+			}
+	
+			Date d2 = new Date();
+	
+			Date d3 = new Date();
+			String xml = mp.toXML(feedobj);
+			Date d4 = new Date();
+			System.out.println("\n=== XML Feed シリアライズ ===");
+			System.out.println("xml size:"+xml.length()+" time:"+(d4.getTime()-d3.getTime()));
+			System.out.println("\n=== XML Feed デシリアライズ ===");
+			System.out.println("time:"+(d2.getTime()-d1.getTime()));
+			System.out.println(xml);
+	
+			Date d5 = new Date();
+			String json = mp.toJSON(feedobj);
+			Date d6 = new Date();
+			System.out.println("\n=== JSON Feed シリアライズ ===");
+			System.out.println("json size:"+json.length()+" time:"+(d6.getTime()-d5.getTime()));
+			System.out.println(json);
+			Date d7 = new Date();
+			Object json2 = mp.fromJSON(json);
+			Date d8 = new Date();
+			System.out.println("\n=== JSON Feed デシリアライズ ===");
+			System.out.println("time:"+(d8.getTime()-d7.getTime()));
+	
+			//		System.out.println("object size:"+ObjectTree.dump(feedobj));
+	
+			System.out.println("\n=== Messagepack Feed シリアライズ ===");
+			Date d9 = new Date();
+			byte[] msgpack = mp.toMessagePack(feedobj);
+			Date d10 = new Date();
+			//        for(int i=0;i<msgpack.length;i++) { 
+			//        	System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
+			//        } 
+			System.out.println("\nmsgpack size:"+msgpack.length+" time:"+(d10.getTime()-d9.getTime()));
+			Date d11 = new Date();
+			FeedBase msgpack2 = (FeedBase) mp.fromMessagePack(msgpack,true);
+			Date d12 = new Date();
+			System.out.println("\n=== Messagepack Feed デシリアライズ ===");
+			System.out.println("time:"+(d12.getTime()-d11.getTime()));
+	
+			System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
+			Date d13 = new Date();
+			byte[] de = deflateUtil.deflate(msgpack);
+			Date d14 = new Date();
+			System.out.println("defleted size:"+de.length+" 圧縮率(対msgpack)："+(de.length*100/msgpack.length)+"% 圧縮率(対json)："+(de.length*100/json.length())+"% 圧縮率(対xml)："+(de.length*100/xml.length())+"%");
+			//        for(int i=0;i<de.length;i++) { 
+			//        	System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
+			//        } 
+			System.out.println("time:"+(d14.getTime()-d13.getTime()));
+			
+		} finally {
+			deflateUtil.end();
 		}
-
-		Date d2 = new Date();
-
-		Date d3 = new Date();
-		String xml = mp.toXML(feedobj);
-		Date d4 = new Date();
-		System.out.println("\n=== XML Feed シリアライズ ===");
-		System.out.println("xml size:"+xml.length()+" time:"+(d4.getTime()-d3.getTime()));
-		System.out.println("\n=== XML Feed デシリアライズ ===");
-		System.out.println("time:"+(d2.getTime()-d1.getTime()));
-		System.out.println(xml);
-
-		Date d5 = new Date();
-		String json = mp.toJSON(feedobj);
-		Date d6 = new Date();
-		System.out.println("\n=== JSON Feed シリアライズ ===");
-		System.out.println("json size:"+json.length()+" time:"+(d6.getTime()-d5.getTime()));
-		System.out.println(json);
-		Date d7 = new Date();
-		Object json2 = mp.fromJSON(json);
-		Date d8 = new Date();
-		System.out.println("\n=== JSON Feed デシリアライズ ===");
-		System.out.println("time:"+(d8.getTime()-d7.getTime()));
-
-		//		System.out.println("object size:"+ObjectTree.dump(feedobj));
-
-		System.out.println("\n=== Messagepack Feed シリアライズ ===");
-		Date d9 = new Date();
-		byte[] msgpack = mp.toMessagePack(feedobj);
-		Date d10 = new Date();
-		//        for(int i=0;i<msgpack.length;i++) { 
-		//        	System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		//        } 
-		System.out.println("\nmsgpack size:"+msgpack.length+" time:"+(d10.getTime()-d9.getTime()));
-		Date d11 = new Date();
-		FeedBase msgpack2 = (FeedBase) mp.fromMessagePack(msgpack,true);
-		Date d12 = new Date();
-		System.out.println("\n=== Messagepack Feed デシリアライズ ===");
-		System.out.println("time:"+(d12.getTime()-d11.getTime()));
-
-		System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
-		Date d13 = new Date();
-		byte[] de = deflateUtil.deflate(msgpack);
-		Date d14 = new Date();
-		System.out.println("defleted size:"+de.length+" 圧縮率(対msgpack)："+(de.length*100/msgpack.length)+"% 圧縮率(対json)："+(de.length*100/json.length())+"% 圧縮率(対xml)："+(de.length*100/xml.length())+"%");
-		//        for(int i=0;i<de.length;i++) { 
-		//        	System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
-		//        } 
-		System.out.println("time:"+(d14.getTime()-d13.getTime()));
 
 		assertTrue(true);
 	}
@@ -1071,32 +1081,41 @@ public class TestMsgpackMapper {
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
 
-		String json = "{\"feed\" : {\"entry\" : [{ \"verified_email\": false,\"family_name\" : \"f\",\"Idx\" : \"1\",\"title\" : \"hello\", \"subInfo\" : { \"favorite2\": { \"food\" : { \"food1\" : \"ラーメン\"}}},\"link\" : [{\"$href\" : \"/test/1\",\"$rel\" : \"self\"}] }]}}";
+		try {
+			String json = "{\"feed\" : {\"entry\" : [{ \"verified_email\": false,\"family_name\" : \"f\",\"Idx\" : \"1\",\"title\" : \"hello\", \"subInfo\" : { \"favorite2\": { \"food\" : { \"food1\" : \"ラーメン\"}}},\"link\" : [{\"$href\" : \"/test/1\",\"$rel\" : \"self\"}] }]}}";
+	
+			FeedBase feed = (FeedBase) mp.fromJSON(json);
+	
+			// MessagePack test
+			System.out.println("\n=== MessagePack Feed シリアライズ ===");
+			byte[] mbytes = mp.toMessagePack(feed);
+			System.out.println("len:"+mbytes.length);
+			System.out.println("array:"+ mp.toArray(mbytes));
+			for(int i=0;i<mbytes.length;i++) { 
+				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
+			} 
+			System.out.println("\n=== MessagePack Feed deflate圧縮 ===");
+			byte[] de = deflateUtil.deflate(mbytes);
+			System.out.println("len:"+de.length+" 圧縮率："+(de.length*100/mbytes.length)+"%");
+			for(int i=0;i<de.length;i++) { 
+				System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
+			} 
+	
+			System.out.println("\n=== MessagePack Feed infrate解凍 ===");
+			byte[] in = deflateUtil.inflate(de);
+			System.out.println("len:"+in.length);
+			for(int i=0;i<in.length;i++) { 
+				System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
+			} 
 
-		FeedBase feed = (FeedBase) mp.fromJSON(json);
+			FeedBase muserinfo = (FeedBase) mp.fromMessagePack(in,FEED);	// false でEntryをデシリアライズ
 
-		// MessagePack test
-		System.out.println("\n=== MessagePack Entry シリアライズ ===");
-		byte[] mbytes = mp.toMessagePack(feed);
-		System.out.println("len:"+mbytes.length);
-		System.out.println("array:"+ mp.toArray(mbytes));
-		for(int i=0;i<mbytes.length;i++) { 
-			System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
-		} 
-		System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
-		byte[] de = deflateUtil.deflate(mbytes);
-		System.out.println("len:"+de.length+" 圧縮率："+(de.length*100/mbytes.length)+"%");
-		for(int i=0;i<de.length;i++) { 
-			System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
-		} 
+			System.out.println("\n=== MessagePack Feed infrate解凍 Feedオブジェクトに戻す ===");
+			System.out.println(muserinfo);
 
-		System.out.println("\n=== MessagePack Entry infrate解凍 ===");
-		byte[] in = deflateUtil.inflate(de);
-		System.out.println("len:"+in.length);
-		for(int i=0;i<in.length;i++) { 
-			System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
-		} 
-
+		} finally {
+			deflateUtil.end();
+		}
 	}
 
 	@Test
