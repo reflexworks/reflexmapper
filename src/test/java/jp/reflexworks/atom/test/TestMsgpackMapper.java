@@ -4,6 +4,10 @@ import static org.junit.Assert.*;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -1750,6 +1754,78 @@ public class TestMsgpackMapper {
 		System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId() + ", [contributor]" + entry.contributor.get(0).getUri());
 		//System.out.println("[before uri]" + myUri + ", [cut servicename uri]" + entry.getMyUri() + ", [id]" + entry.getId());
 		return entry;
+	}
+
+	@Test
+	public void testNull() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		// コンストラクタにnull。NullPointerExceptionがスローされなければOK。
+		FeedTemplateMapper mp1 = new FeedTemplateMapper(null, null, 0, null);
+		
+		// 正しくMapperを生成
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
+
+		String dummyStr = null;
+		byte[] dummyBytes = null;
+		Object obj = null;
+
+		// fromMessagePack
+		obj = mp4.fromMessagePack(dummyBytes);
+		assertTrue(obj == null);
+		// fromXML
+		obj = mp4.fromXML(dummyStr);
+		assertTrue(obj == null);
+		// fromJson
+		obj = mp4.fromJSON(dummyStr);
+		assertTrue(obj == null);
+
+		InputStream in = null;
+		Reader reader = null;
+		// fromMessagePack
+		obj = mp4.fromMessagePack(in, true);
+		assertTrue(obj == null);
+		// fromXML
+		obj = mp4.fromXML(reader);
+		assertTrue(obj == null);
+		// fromJson
+		obj = mp4.fromJSON(reader);
+		assertTrue(obj == null);
+		
+		FeedBase feed = null;
+		// toMessagePack
+		obj = mp4.toMessagePack(feed);
+		assertTrue(obj == null);
+		// toJSON
+		obj = mp4.toJSON(feed);
+		assertTrue(obj == null);
+		// toXML
+		obj = mp4.toXML(feed);
+		assertTrue(obj == null);
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		StringWriter writer = new StringWriter();
+		// toMessagePack
+		mp4.toMessagePack(feed, out);
+		byte[] msg = out.toByteArray();
+		assertTrue(msg == null);
+		// toJSON
+		mp4.toJSON(feed, writer);
+		String json = writer.toString();
+		assertTrue(json == null);
+		// toXML
+		mp4.toXML(feed, writer);
+		String xml = writer.toString();
+		assertTrue(xml == null);
+
+		out = null;
+		writer = null;
+		// toMessagePack
+		mp4.toMessagePack(feed, out);
+		// toJSON
+		mp4.toJSON(feed, writer);
+		// toXML
+		mp4.toXML(feed, writer);
+
 	}
 
 }
