@@ -57,12 +57,12 @@ public class ConditionContext {
 		for (int i=0;i<context.conditions.length;i++) {
 			ConditionBase cond = context.conditions[i];
 			if (cond.getProp().equals(context.fldname)) { // 項目名が一致するかどうか
-				context.isFetchs[i] = true;
-				Boolean value = context.isMatchs.get(context.fldname+"-"+cond.getEquations());
+				Boolean value = context.isMatchs.get(context.fldname+"-"+cond.getEquations()+"-"+i);
 				if (value == null || !value) {
-					context.isMatchs.put(context.fldname+"-"+cond.getEquations(), 
+					context.isMatchs.put(context.fldname+"-"+cond.getEquations()+"-"+i, 
 							checkCondition(context.obj, cond, context.type));
 				}
+				context.isFetchs[i] = true;
 			}
 		}
 	}

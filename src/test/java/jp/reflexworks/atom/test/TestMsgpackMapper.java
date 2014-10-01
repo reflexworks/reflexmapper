@@ -999,8 +999,8 @@ public class TestMsgpackMapper {
 		conditions[1] = new Condition("subInfo.favorite3.food", "うどん");
 		conditions[2] = new Condition("verified_email", "false");		// boolean
 		conditions[3] = new Condition("subInfo.favorite3.updated", "2013-09-30 14:06:30");	// date(Tや+09:00は省略可能)
-		conditions[4] = new Condition("error.errors.domain", "com.google.auth3");	// List検索
-		conditions[5] = new Condition("error.errors.domain", "com.google.auth");	// List検索(どれか一つでも合致すればtrue)
+		conditions[4] = new Condition("error.errors.domain", "com.google.auth2");	// List検索
+		conditions[5] = new Condition("error.errors.domain", "com.google.auth");	// List検索(全て合致すればtrue)
 		conditions[6] = new Condition("title-rg-^タイトル$");							// 正規表現検索
 		conditions[7] = new Condition("content.$$text", "あああ");	
 		conditions[8] = new Condition("contributor.email", "abc@def");	
