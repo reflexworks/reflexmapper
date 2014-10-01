@@ -58,9 +58,9 @@ public class ConditionContext {
 			ConditionBase cond = context.conditions[i];
 			if (cond.getProp().equals(context.fldname)) { // 項目名が一致するかどうか
 				context.isFetchs[i] = true;
-				Boolean value = context.isMatchs.get(context.fldname);
+				Boolean value = context.isMatchs.get(context.fldname+"-"+cond.getEquations());
 				if (value == null || !value) {
-					context.isMatchs.put(context.fldname, 
+					context.isMatchs.put(context.fldname+"-"+cond.getEquations(), 
 							checkCondition(context.obj, cond, context.type));
 				}
 			}

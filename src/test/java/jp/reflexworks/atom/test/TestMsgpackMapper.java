@@ -936,7 +936,7 @@ public class TestMsgpackMapper {
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
 		//		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\"}]}}";
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
@@ -993,7 +993,7 @@ public class TestMsgpackMapper {
 		System.out.println(mp.toXML(entry));
 		System.out.println("--------------");
 
-		Condition[] conditions = new Condition[20];
+		Condition[] conditions = new Condition[21];
 
 		conditions[0] = new Condition("subInfo.favorite.food", "カレー");
 		conditions[1] = new Condition("subInfo.favorite3.food", "うどん");
@@ -1012,9 +1012,10 @@ public class TestMsgpackMapper {
 		conditions[14] = new Condition("link.$href", "/0762678511-/@/spool/759188985520");	// ATOM標準Entry List検索
 		conditions[15] = new Condition("author.email", "xyz@def");	
 		conditions[16] = new Condition("author.uri", "http://xyz");	
-		conditions[17] = new Condition("author.name", "fuga");	
+		conditions[17] = new Condition("author.name-le-2014/10/04");	
 		conditions[18] = new Condition("public.int", "email1");	// java予約語項目
-		conditions[19] = new Condition("subInfo.favorite.music", "ポップス1");	// java予約語項目
+		conditions[19] = new Condition("subInfo.favorite.music", "ポップス3");	// java予約語項目
+		conditions[20] = new Condition("author.name-ge-2014/10/03");	
 
 		boolean ismatch = entry.isMatch(conditions);
 		System.out.println("isMatch="+ismatch);
@@ -1807,15 +1808,15 @@ public class TestMsgpackMapper {
 		// toMessagePack
 		mp4.toMessagePack(feed, out);
 		byte[] msg = out.toByteArray();
-		assertTrue(msg == null);
+		assertTrue(msg.length == 0);
 		// toJSON
 		mp4.toJSON(feed, writer);
 		String json = writer.toString();
-		assertTrue(json == null);
+		assertTrue(json.equals(""));
 		// toXML
 		mp4.toXML(feed, writer);
 		String xml = writer.toString();
-		assertTrue(xml == null);
+		assertTrue(xml.equals(""));
 
 		out = null;
 		writer = null;
