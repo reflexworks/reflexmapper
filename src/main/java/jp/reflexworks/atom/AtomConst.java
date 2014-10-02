@@ -15,14 +15,14 @@ public class AtomConst {
 	/** ATOM : Entry package */
 	public static final String ATOM_PACKAGE_ENTRY = "jp.reflexworks.atom.entry";
 	/** ATOM : Source package */
-	public static final String ATOM_PACKAGE_SOURCE = "jp.reflexworks.atom.source";
+	//public static final String ATOM_PACKAGE_SOURCE = "jp.reflexworks.atom.source";
 	/** ATOM : Package map */
 	public static final Map<String, String> ATOM_PACKAGE;
 	static {
 		ATOM_PACKAGE = new HashMap<String, String>();
 		ATOM_PACKAGE.put(ATOM_PACKAGE_FEED, "");
 		ATOM_PACKAGE.put(ATOM_PACKAGE_ENTRY, "");
-		ATOM_PACKAGE.put(ATOM_PACKAGE_SOURCE, "");
+		//ATOM_PACKAGE.put(ATOM_PACKAGE_SOURCE, "");
 	}
 
 }

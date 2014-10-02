@@ -821,7 +821,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @see jp.sourceforge.reflex.core.ResourceMapper#toMessagePack(java.lang.Object)
 	 */
 	public byte[] toMessagePack(Object entity) throws IOException {
-		return msgpack.write(entity);
+		if (entity==null) return null;
+		else return msgpack.write(entity);
 	}
 
 	/* (非 Javadoc)
@@ -829,7 +830,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public void toMessagePack(Object entity, OutputStream out)
 			throws IOException {
-		msgpack.write(out, entity);
+		if (entity==null) return;
+		else msgpack.write(out, entity);
 	}
 
 	/**
@@ -857,7 +859,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public Object fromMessagePack(byte[] msg, boolean isFeed) 
 			throws IOException, ClassNotFoundException  {
-		return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
+		if (msg==null) return null;
+		else return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
 	}
 
 	/* (非 Javadoc)
@@ -878,13 +881,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public Object fromMessagePack(InputStream msg, boolean isFeed) 
 			throws IOException, ClassNotFoundException {
-		return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
+		if (msg==null) return null;
+		else return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
 	}
 
 	/* (非 Javadoc)
 	 * @see jp.sourceforge.reflex.core.ResourceMapper#fromJSON(java.lang.String)
 	 */
 	public Object fromJSON(String json) throws JSONException {
+		if (json==null) return null;
 		JSONBufferUnpacker u = new JSONBufferUnpacker(msgpack).wrap(json.getBytes());
 		Value v;
 		try {
@@ -898,6 +903,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	public Object fromJSON(Reader json) throws JSONException {
 
+		if (json==null) return null;
 		BufferedReader br = new BufferedReader(json);
 		try {
 			String jsonstring = "";
@@ -1296,7 +1302,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private String getValidatorLogic(Meta meta) {
 		String line = "";
 		if (meta.isDesc) {
-			line = "if (" + meta.self + "!=null) "+ meta.self + "= new java.lang.Long(java.lang.Long.MAX_VALUE-" + meta.self + ".longValue());"; 
+			line = "if (" + meta.self + "!=null) "+ meta.self + "= \"\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + meta.self + "));"; 
 		}
 
 		if (meta.isMandatory) {
@@ -1518,7 +1524,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						meta.type = "Boolean";
 						if (meta.min != null) throw new ParseException("Can't specify (Type) for Boolean type:" + line, 0);
 					} else if (typestr.equals("desc")) {
-						meta.type = "Long";
+						meta.type = "String";
 						meta.isDesc = true;
 					} else {
 						meta.type = "String"; // その他
