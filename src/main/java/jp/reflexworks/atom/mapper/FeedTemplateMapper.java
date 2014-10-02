@@ -1302,7 +1302,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private String getValidatorLogic(Meta meta) {
 		String line = "";
 		if (meta.isDesc) {
-			line = "if (" + meta.self + "!=null) "+ meta.self + "= new java.lang.Long(java.lang.Long.MAX_VALUE-" + meta.self + ".longValue());"; 
+			line = "if (" + meta.self + "!=null) "+ meta.self + "= \"\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + meta.self + "));"; 
 		}
 
 		if (meta.isMandatory) {
@@ -1524,7 +1524,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						meta.type = "Boolean";
 						if (meta.min != null) throw new ParseException("Can't specify (Type) for Boolean type:" + line, 0);
 					} else if (typestr.equals("desc")) {
-						meta.type = "Long";
+						meta.type = "String";
 						meta.isDesc = true;
 					} else {
 						meta.type = "String"; // その他
