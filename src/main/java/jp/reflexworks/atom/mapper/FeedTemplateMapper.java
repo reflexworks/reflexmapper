@@ -396,6 +396,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		} else if (jo_packages instanceof Map | jo_packages instanceof String) {
 
+			metalist = getMetalistFromPropAcls(propAcls);
 			// package名からregistClass
 			// パッケージ名からクラス一覧を取得
 			Set<String> classnames = null;  
@@ -442,6 +443,40 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}
 
 		}
+	}
+
+	private List<Meta> getMetalistFromPropAcls(String[] propAcls) {
+		
+		List<Meta> result = new ArrayList<Meta>();
+		if (propAcls==null) return result;
+		
+		for (String propacl : propAcls) {
+			String token[] = propacl.split("=");
+			String token2[] = token[0].split(":");	// Index項目
+			if (token2.length > 1) {
+				Meta meta = new Meta();
+				meta.name = token2[0]; // key
+				meta.index = convertFullpathIndex(token2[1]); // index
+//				meta.index = token2[1]; // index
+				result.add(meta);
+			}
+			
+		}
+		return result;
+	}
+	
+	// 先頭に任意のサービス名の条件を付与
+	private String convertFullpathIndex(String org) {
+		String token[] = org.split("\\|");
+		StringBuffer result = new StringBuffer();
+		
+		for (int i=0;i<token.length;i++) {
+			result.append("^/@[^/]*"+token[i]+"$");
+			if (i+1<token.length) {
+				result.append("|");
+			}
+		}
+		return result.toString();
 	}
 
 	private List<String> getClassNamesFromPackage(String packagename) throws ClassNotFoundException {
@@ -1270,6 +1305,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private String getValidatorPropR(Meta meta) {
 		String line = ""; 
+		if (meta.isDesc) {
+			// desc項目は表示しない
+			line += meta.self +"=null;";
+		}
 		if (meta.aclR != null) {
 			// ACLが設定されていて項目に値が存在している
 			line += "if ("+ meta.self + "!=null) {";
