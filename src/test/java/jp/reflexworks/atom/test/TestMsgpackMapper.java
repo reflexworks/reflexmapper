@@ -35,6 +35,7 @@ import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
+import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.wrapper.Condition;
 
 public class TestMsgpackMapper {
@@ -119,7 +120,8 @@ public class TestMsgpackMapper {
 		"contributor.uri#",
 		"rights#=@+RW,/@testservice/_group/$admin+RW",
 		"info.category=/@testservice/1/group/office+RW",
-		"comment=7+RW"
+		"comment=7+RW",
+		"info.name:/@testservice/item"
 	};
 
 	public static String entitytempl2[] = {
@@ -1829,4 +1831,43 @@ public class TestMsgpackMapper {
 
 	}
 
+	@Test
+	public void testMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
+
+		System.out.println("--- Template Metalist ---");
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
+		List<Meta> metalist = mp.getMetalist();
+		boolean existsMetalist = printMetalist(metalist);
+		assertTrue(existsMetalist);
+
+		System.out.println("--- Package Metalist ---");
+		Map<String, String> modelPackage = new HashMap<String, String>();
+		modelPackage.putAll(AtomConst.ATOM_PACKAGE);
+		modelPackage.put("jp.reflexworks.test.model", "");
+
+		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);		
+		metalist = mp.getMetalist();
+		existsMetalist = printMetalist(metalist);
+		assertTrue(existsMetalist);
+	}
+	
+	private boolean printMetalist(List<Meta> metalist) {
+		boolean existsMetalist = false;
+		StringBuilder prn = new StringBuilder();
+		if (metalist != null && metalist.size() > 0) {
+			existsMetalist = true;
+			for (Meta meta : metalist) {
+				prn.append(meta);
+				prn.append(" : index=");
+				prn.append(meta.index);
+				prn.append("\n");
+			}
+		} else {
+			prn.append("metalist is nothing : " + metalist);
+		}
+		System.out.println(prn.toString());
+		return existsMetalist;
+	}
 }
