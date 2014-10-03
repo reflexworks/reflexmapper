@@ -121,7 +121,8 @@ public class TestMsgpackMapper {
 		"rights#=@+RW,/@testservice/_group/$admin+RW",
 		"info.category=/@testservice/1/group/office+RW",
 		"comment=7+RW",
-		"info.name:/@testservice/item"
+		"info.name:/@testservice/item",
+		"comment.secret#"
 	};
 
 	public static String entitytempl2[] = {
@@ -210,6 +211,7 @@ public class TestMsgpackMapper {
 		"comment{}",
 		" $$text",
 		" nickname",
+		" secret",
 		"deleteFlg",
 	};
 
@@ -696,25 +698,25 @@ public class TestMsgpackMapper {
 		jp.reflexworks.test2.model.Entry entry = new jp.reflexworks.test2.model.Entry();
 		entry.setMyUri("/1/item/" + code);
 		entry.setTitle("商品" + code);
-		entry._deleteFlg = "0";
+		entry.deleteFlg = "0";
 
 		jp.reflexworks.test2.model.Info info = new jp.reflexworks.test2.model.Info();
-		info._name = "えんぴつ";
-		info._color = "緑";
-		info._size = "15cm";
-		info._category = "文房具";
-		entry._info = info;
+		info.name = "えんぴつ";
+		info.color = "緑";
+		info.size = "15cm";
+		info.category = "文房具";
+		entry.info = info;
 
 		List<jp.reflexworks.test2.model.Comment> comments = new ArrayList<jp.reflexworks.test2.model.Comment>();
 		jp.reflexworks.test2.model.Comment comment = new jp.reflexworks.test2.model.Comment();
-		comment._nickname = "なまえ1";
+		comment.nickname = "なまえ1";
 		comment._$$text = "普通のえんぴつです。";
 		comments.add(comment);
 		comment = new jp.reflexworks.test2.model.Comment();
-		comment._nickname = "なまえ2";
+		comment.nickname = "なまえ2";
 		comment._$$text = "良い感じのえんぴつです。";
 		comments.add(comment);
-		entry._comment = comments;
+		entry.comment = comments;
 
 		return entry;
 	}
@@ -1845,7 +1847,7 @@ public class TestMsgpackMapper {
 		System.out.println("--- Package Metalist ---");
 		Map<String, String> modelPackage = new HashMap<String, String>();
 		modelPackage.putAll(AtomConst.ATOM_PACKAGE);
-		modelPackage.put("jp.reflexworks.test.model", "");
+		modelPackage.put("jp.reflexworks.test2.model", "");
 
 		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);		
 		metalist = mp.getMetalist();
