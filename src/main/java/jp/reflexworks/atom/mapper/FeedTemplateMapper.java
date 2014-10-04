@@ -471,7 +471,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 		StringBuffer result = new StringBuffer();
 		
 		for (int i=0;i<token.length;i++) {
-			result.append("^/@[^/]*"+token[i]+"$");
+			// サービス名が指定されている場合はそのまま
+			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0) {
+				result.append(token[i]);
+			}else {
+				String t = token[i].replace("^", "");
+				result.append("^/@[^/]*"+t);
+			}
 			if (i+1<token.length) {
 				result.append("|");
 			}

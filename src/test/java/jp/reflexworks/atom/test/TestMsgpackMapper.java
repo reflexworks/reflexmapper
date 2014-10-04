@@ -115,13 +115,13 @@ public class TestMsgpackMapper {
 	};
 
 	public static String entityAcls5[] = {
-		"title:/*",
+		"title:^/$|^/@XXXX$",
 		"contributor=/@testservice/_group/$admin+RW",
 		"contributor.uri#",
 		"rights#=@+RW,/@testservice/_group/$admin+RW",
 		"info.category=/@testservice/1/group/office+RW",
 		"comment=7+RW",
-		"info.name:/@testservice/item",
+		"info.name:/item",
 		"comment.secret#"
 	};
 
