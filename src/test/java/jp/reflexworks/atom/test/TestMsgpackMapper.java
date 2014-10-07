@@ -1840,7 +1840,7 @@ public class TestMsgpackMapper {
 
 		System.out.println("--- Template Metalist ---");
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
-		List<Meta> metalist = mp.getMetalist();
+		List<Meta> metalist = mp.getMetalist("testservice");
 		boolean existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
 
@@ -1850,7 +1850,7 @@ public class TestMsgpackMapper {
 		modelPackage.put("jp.reflexworks.test2.model", "");
 
 		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);		
-		metalist = mp.getMetalist();
+		metalist = mp.getMetalist("testservice");
 		existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
 	}
