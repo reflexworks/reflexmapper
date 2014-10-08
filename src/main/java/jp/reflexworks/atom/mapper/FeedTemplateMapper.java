@@ -1354,7 +1354,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private String getValidatorLogic(Meta meta) {
 		String line = "";
 		if (meta.isDesc) {
-			line = "if (" + meta.self + "!=null) "+ meta.self + "= \"\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + meta.self + "));"; 
+			line = "if (" + meta.self + "!=null) { try{"+ meta.self + "= \"\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + meta.self + "));}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + meta.self + "' is not valid.(NumberFormatException, value=\"+" + meta.self + "+\")\",0);};}"; 
 		}
 
 		if (meta.isMandatory) {
