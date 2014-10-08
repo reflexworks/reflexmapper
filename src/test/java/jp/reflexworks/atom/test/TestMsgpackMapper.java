@@ -1836,11 +1836,13 @@ public class TestMsgpackMapper {
 	@Test
 	public void testMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
-		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
+		//String serviceName = "testservice";
+		//String serviceName = null;
+		String serviceName = "";
 
 		System.out.println("--- Template Metalist ---");
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
-		List<Meta> metalist = mp.getMetalist("testservice");
+		List<Meta> metalist = mp.getMetalist(serviceName);
 		boolean existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
 
@@ -1850,7 +1852,7 @@ public class TestMsgpackMapper {
 		modelPackage.put("jp.reflexworks.test2.model", "");
 
 		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);		
-		metalist = mp.getMetalist("testservice");
+		metalist = mp.getMetalist(serviceName);
 		existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
 	}
@@ -1862,8 +1864,14 @@ public class TestMsgpackMapper {
 			existsMetalist = true;
 			for (Meta meta : metalist) {
 				prn.append(meta);
-				prn.append(" : index=");
-				prn.append(meta.index);
+				if (meta.index != null) {
+					prn.append(" : index=");
+					prn.append(meta.index);
+				}
+				if (meta.privatekey != null) {
+					prn.append(", privatekey=");
+					prn.append(meta.privatekey);
+				}
 				prn.append("\n");
 			}
 		} else {
