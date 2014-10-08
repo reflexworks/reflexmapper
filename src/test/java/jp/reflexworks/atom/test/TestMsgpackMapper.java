@@ -668,22 +668,30 @@ public class TestMsgpackMapper {
 		Map<String, String> MODEL_PACKAGE = new HashMap<String, String>();
 		MODEL_PACKAGE.putAll(AtomConst.ATOM_PACKAGE);
 		// 名前空間の指定なし
-		//MODEL_PACKAGE.put("jp.reflexworks.test2.model", "test2=http://jp.reflexworks/test2");
 		MODEL_PACKAGE.put("jp.reflexworks.test2.model", "");
 		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);
 
 		jp.reflexworks.test2.model.Feed feed = createTest2Feed();
 		String xml = mp.toXML(feed);
-		System.out.println("--- testStaticPackages2 (XML) ---");
+		System.out.println("--- testStaticPackages2 (to XML) ---");
 		System.out.println(xml);
+		FeedBase retFeed = (FeedBase)mp.fromXML(xml);
+		System.out.println("--- testStaticPackages2 (from XML) ---");
+		System.out.println(retFeed);
 
 		String json = mp.toJSON(feed);
-		System.out.println("--- testStaticPackages2 (JSON) ---");
+		System.out.println("--- testStaticPackages2 (to JSON) ---");
 		System.out.println(json);
+		retFeed = (FeedBase)mp.fromJSON(json);
+		System.out.println("--- testStaticPackages2 (from JSON) ---");
+		System.out.println(retFeed);
 
 		byte[] msgData = mp.toMessagePack(feed);
-		System.out.println("--- testStaticPackages2 (MessagePack) ---");
+		System.out.println("--- testStaticPackages2 (to MessagePack) ---");
 		System.out.println(msgData);
+		retFeed = (FeedBase)mp.fromMessagePack(msgData);
+		System.out.println("--- testStaticPackages2 (from MessagePack) ---");
+		System.out.println(retFeed);
 
 		System.out.println("------");
 
