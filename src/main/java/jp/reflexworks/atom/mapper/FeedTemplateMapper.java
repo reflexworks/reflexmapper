@@ -456,8 +456,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (token2.length > 1) {
 				Meta meta = new Meta();
 				meta.name = token2[0]; // key
-				meta.index = convertFullpathIndex(token2[1]); // index
-//				meta.index = token2[1]; // index
+//				meta.index = convertIndex(token2[1],svc); // index
+				meta.index = token2[1]; // index
 				result.add(meta);
 			}
 			
@@ -465,13 +465,26 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return result;
 	}
 	
-	// 先頭に任意のサービス名の条件を付与
-	private String convertFullpathIndex(String org) {
-		String token[] = org.split("\\|");
+	public List<Meta> getMetalist(String svc) {
+		for (Meta meta:metalist) {
+			meta.index = convertIndex(meta.index, svc);
+		}
+		return metalist;
+	}
+
+	private String convertIndex(String propAcl,String svc) {
+		if (propAcl==null) return null;
+		String token[] = propAcl.split("\\|");
 		StringBuffer result = new StringBuffer();
 		
 		for (int i=0;i<token.length;i++) {
-			result.append("^/@[^/]*"+token[i]+"$");
+			// サービス名が指定されている場合はそのまま
+			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0) {
+				result.append(token[i]);
+			}else {
+				String t = token[i].replace("^", "");
+				result.append("^/@"+svc+t);
+			}
 			if (i+1<token.length) {
 				result.append("|");
 			}
@@ -1830,10 +1843,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 			e.printStackTrace();
 			throw new JSONException(e);
 		}
-	}
-
-	public List<Meta> getMetalist() {
-		return metalist;
 	}
 
 	public boolean isDefaultTemplate() {
