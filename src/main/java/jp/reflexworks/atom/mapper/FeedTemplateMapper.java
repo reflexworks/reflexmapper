@@ -479,7 +479,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		
 		for (int i=0;i<token.length;i++) {
 			// サービス名が指定されている場合はそのまま
-			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0) {
+			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0||svc==null) {
 				result.append(token[i]);
 			}else {
 				String t = token[i].replace("^", "");
