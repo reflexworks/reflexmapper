@@ -3,6 +3,8 @@ package jp.reflexworks.atom.feed;
 import java.io.Serializable;
 import java.util.List;
 
+import org.msgpack.annotation.Index;
+
 import jp.reflexworks.atom.entry.EntryBase;
 
 /**
@@ -20,12 +22,19 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	/**
 	 * デフォルトの名前空間
 	 */
+	@Index(0)
 	public String _$xmlns;
+	@Index(1)
 	public List<Author> author;
+	@Index(2)
 	public List<Category> category;
+	@Index(3)
 	public List<Contributor> contributor;
+	@Index(4)
 	public Generator generator;
+	@Index(5)
 	public String icon;
+	@Index(6)
 	public String id;
 
 	/**
@@ -34,15 +43,24 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	 * 属性rel="next"の、href属性に設定された値が次ページ検索のためのカーソルです。
 	 * </p>
 	 */
+	@Index(7)
 	public List<Link> link;
+	@Index(8)
 	public String logo;
+	@Index(9)
 	public String rights;
+	@Index(10)
 	public String title;
+	@Index(11)
 	public String title_$type;
+	@Index(12)
 	public String subtitle;
+	@Index(13)
 	public String subtitle_$type;
+	@Index(14)
 	public String updated;
 	/** エントリーリスト */
+	@Index(15)
 	public List<EntryBase> entry;
 
 	public String get$xmlns() {

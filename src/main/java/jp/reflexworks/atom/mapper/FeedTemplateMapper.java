@@ -37,8 +37,12 @@ import javassist.CtNewMethod;
 import javassist.Loader;
 import javassist.Modifier;
 import javassist.NotFoundException;
+import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.BadBytecode;
+import javassist.bytecode.ConstPool;
 import javassist.bytecode.SignatureAttribute;
+import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.annotation.IntegerMemberValue;
 
 import org.msgpack.MessagePack;
 import org.msgpack.template.Template;
@@ -1085,8 +1089,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 							arrayfld.setModifiers(Modifier.PUBLIC);
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(ELEMENTSIG);
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
-							cc.addField(arrayfld);
 
+							// create the annotation
+							ConstPool constpool = cc.getClassFile().getConstPool();
+							AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
+							Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
+							annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
+							attr.addAnnotation(annot);
+							// add the annotation 
+							arrayfld.getFieldInfo().addAttribute(attr);
+
+							cc.addField(arrayfld);
+							
 							// getter/setterはTaggingServiceの更新処理で使用
 							CtMethod m = CtNewMethod.make("public java.util.List get" + meta.getSelf()
 									+ "() {" + "  return " + meta.self + "; }", cc);
@@ -1110,6 +1124,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 							arrayfld.setModifiers(Modifier.PUBLIC);
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(getSignature(packagename+"."+meta.getSelf()));
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
+							
+							// create the annotation
+							ConstPool constpool = cc.getClassFile().getConstPool();
+							AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
+							Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
+							annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
+							attr.addAnnotation(annot);
+							// add the annotation 
+							arrayfld.getFieldInfo().addAttribute(attr);
+
 							cc.addField(arrayfld);
 
 							// getter/setterはTaggingServiceの更新処理で使用
@@ -1129,6 +1153,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 					} else {
 						CtField f2 = CtField.make(type + field, cc); // フィールドの定義
+
+						// create the annotation
+						ConstPool constpool = cc.getClassFile().getConstPool();
+						AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
+						Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
+						annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
+						attr.addAnnotation(annot);
+						// add the annotation 
+						f2.getFieldInfo().addAttribute(attr);
+
 						cc.addField(f2);
 
 						// getter/setterはTaggingServiceの更新処理で使用

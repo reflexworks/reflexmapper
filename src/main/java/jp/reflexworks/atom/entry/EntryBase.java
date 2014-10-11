@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.msgpack.annotation.Index;
+
 import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 /**
@@ -26,10 +28,13 @@ public abstract class EntryBase implements Serializable {
 	/**
 	 * デフォルトの名前空間
 	 */
+	@Index(0)
 	public String _$xmlns;
 
+	@Index(1)
 	public String _$xml$lang;
 
+	@Index(2)
 	public String _$xml$base;
 
 	/**
@@ -38,6 +43,7 @@ public abstract class EntryBase implements Serializable {
 	 * urn:virtual-tech.net:{created|updated|deleted}:{username} の形式です。
 	 * </p>
 	 */
+	@Index(3)
 	public List<Author> author;
 
 	/**
@@ -57,6 +63,7 @@ public abstract class EntryBase implements Serializable {
 	 * </ul>
 	 * </p>
 	 */
+	@Index(4)
 	public List<Category> category;
 
 	/**
@@ -65,6 +72,7 @@ public abstract class EntryBase implements Serializable {
 	 * HTMLなどのテキストコンテンツや、画像のリンク先を設定します。
 	 * </p>
 	 */
+	@Index(5)
 	public Content content;
 
 	/**
@@ -107,6 +115,7 @@ public abstract class EntryBase implements Serializable {
 	 * </ul>
 	 * </p>
 	 */
+	@Index(6)
 	public List<Contributor> contributor;
 
 	/**
@@ -117,10 +126,13 @@ public abstract class EntryBase implements Serializable {
 	 * DELETEの場合、idのリビジョンで楽観的排他チェックを行います。<br>
 	 * </p>
 	 */
+	@Index(7)
 	public String id;
 
+	@Index(8)
 	public String id_$xml$lang;
 
+	@Index(9)
 	public String id_$xml$base;
 
 	/**
@@ -162,6 +174,7 @@ public abstract class EntryBase implements Serializable {
 	 * で指定されたエントリーのcontentをJavascriptのコードに加えることができます。<br>
 	 * </p>
 	 */
+	@Index(10)
 	public List<Link> link;
 
 	/**
@@ -170,18 +183,25 @@ public abstract class EntryBase implements Serializable {
 	 * yyyy-MM-dd'T'hh:mm:ss.SSS+99:99 形式です。<br>
 	 * </p>
 	 */
+	@Index(11)
 	public String published;
 
+	@Index(12)
 	public String published_$xml$lang;
 
+	@Index(13)
 	public String published_$xml$base;
 
+	@Index(14)
 	public String rights;
 
+	@Index(15)
 	public String rights_$type;
 
+	@Index(16)
 	public String rights_$xml$lang;
 
+	@Index(17)
 	public String rights_$xml$base;
 
 	/**
@@ -190,12 +210,16 @@ public abstract class EntryBase implements Serializable {
 	 * Reflexでは、登録・更新時やエラー時のメッセージを設定します。
 	 * </p>
 	 */
+	@Index(18)
 	public String summary;
 
+	@Index(19)
 	public String summary_$type;
 
+	@Index(20)
 	public String summary_$xml$lang;
 
+	@Index(21)
 	public String summary_$xml$base;
 
 	/**
@@ -205,12 +229,16 @@ public abstract class EntryBase implements Serializable {
 	 * Index項目です。
 	 * </p>
 	 */
+	@Index(22)
 	public String title;
 
+	@Index(23)
 	public String title_$type;
 
+	@Index(24)
 	public String title_$xml$lang;
 
+	@Index(25)
 	public String title_$xml$base;
 
 	/**
@@ -219,12 +247,16 @@ public abstract class EntryBase implements Serializable {
 	 * Reflexでは、ステータスコードを設定します。
 	 * </p>
 	 */
+	@Index(26)
 	public String subtitle;
 
+	@Index(27)
 	public String subtitle_$type;
 
+	@Index(28)
 	public String subtitle_$xml$lang;
 
+	@Index(29)
 	public String subtitle_$xml$base;
 
 	/**
@@ -234,10 +266,13 @@ public abstract class EntryBase implements Serializable {
 	 * Index項目です。
 	 * </p>
 	 */
+	@Index(30)
 	public String updated;
 
+	@Index(31)
 	public String updated_$xml$lang;
 
+	@Index(32)
 	public String updated_$xml$base;
 
 	public String get$xmlns() {
