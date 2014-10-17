@@ -1389,7 +1389,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		String line = "";
 		String metaorg = meta.self.replace("_desc", "");
 		if (meta.isDesc) {
-			line = "if (" + metaorg + "!=null) { try{"+ meta.self + "= \"\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + metaorg + ".replaceAll(\"\\\\.|/|,|-\", \"\")));}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"; 
+			line = "if (" + metaorg + "!=null) { try{ String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + metaorg + ".replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"; 
 		}
 
 		if (meta.isMandatory) {
