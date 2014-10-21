@@ -2,19 +2,29 @@ package jp.reflexworks.atom.feed;
 
 import java.io.Serializable;
 
+import org.msgpack.annotation.Index;
+
 public class Link implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String REL_NEXT = "next";
 
+	@Index(0)
 	public String _$xml$lang;
+	@Index(1)
 	public String _$xml$base;
+	@Index(2)
 	public String _$href;
+	@Index(3)
 	public String _$rel;
+	@Index(4)
 	public String _$type;
+	@Index(5)
 	public String _$hreflang;
+	@Index(6)
 	public String _$title;
+	@Index(7)
 	public String _$length;
 
 	public String get$xml$lang() {

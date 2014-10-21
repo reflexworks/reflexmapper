@@ -3,6 +3,8 @@ package jp.reflexworks.atom.entry;
 import java.io.Serializable;
 import java.util.List;
 
+import org.msgpack.annotation.Index;
+
 import jp.reflexworks.atom.mapper.ConditionContext;
 
 /**
@@ -12,10 +14,15 @@ public class Category implements Serializable, Cloneable, SoftSchema {
 
 	private static final long serialVersionUID = 1L;
 
+	@Index(0)
 	public String _$xml$lang;
+	@Index(1)
 	public String _$xml$base;
+	@Index(2)
 	public String _$term;
+	@Index(3)
 	public String _$scheme;
+	@Index(4)
 	public String _$label;
 
 	public String get$xml$lang() {

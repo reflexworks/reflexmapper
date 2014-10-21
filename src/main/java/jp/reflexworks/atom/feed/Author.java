@@ -2,14 +2,21 @@ package jp.reflexworks.atom.feed;
 
 import java.io.Serializable;
 
+import org.msgpack.annotation.Index;
+
 public class Author implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Index(0)
 	public String _$xml$lang;
+	@Index(1)
 	public String _$xml$base;
+	@Index(2)
 	public String name;
+	@Index(3)
 	public String uri;
+	@Index(4)
 	public String email;
 
 	public String get$xml$lang() {

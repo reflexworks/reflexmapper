@@ -37,8 +37,12 @@ import javassist.CtNewMethod;
 import javassist.Loader;
 import javassist.Modifier;
 import javassist.NotFoundException;
+import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.BadBytecode;
+import javassist.bytecode.ConstPool;
 import javassist.bytecode.SignatureAttribute;
+import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.annotation.IntegerMemberValue;
 
 import org.msgpack.MessagePack;
 import org.msgpack.template.Template;
@@ -479,7 +483,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		
 		for (int i=0;i<token.length;i++) {
 			// サービス名が指定されている場合はそのまま
-			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0) {
+			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0||svc==null) {
 				result.append(token[i]);
 			}else {
 				String t = token[i].replace("^", "");
@@ -1085,8 +1089,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 							arrayfld.setModifiers(Modifier.PUBLIC);
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(ELEMENTSIG);
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
-							cc.addField(arrayfld);
 
+							// create the annotation
+							ConstPool constpool = cc.getClassFile().getConstPool();
+							AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
+							Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
+							annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
+							attr.addAnnotation(annot);
+							// add the annotation 
+							arrayfld.getFieldInfo().addAttribute(attr);
+
+							cc.addField(arrayfld);
+							
 							// getter/setterはTaggingServiceの更新処理で使用
 							CtMethod m = CtNewMethod.make("public java.util.List get" + meta.getSelf()
 									+ "() {" + "  return " + meta.self + "; }", cc);
@@ -1110,6 +1124,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 							arrayfld.setModifiers(Modifier.PUBLIC);
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(getSignature(packagename+"."+meta.getSelf()));
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
+							
+							// create the annotation
+							ConstPool constpool = cc.getClassFile().getConstPool();
+							AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
+							Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
+							annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
+							attr.addAnnotation(annot);
+							// add the annotation 
+							arrayfld.getFieldInfo().addAttribute(attr);
+
 							cc.addField(arrayfld);
 
 							// getter/setterはTaggingServiceの更新処理で使用
@@ -1129,6 +1153,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 					} else {
 						CtField f2 = CtField.make(type + field, cc); // フィールドの定義
+
+						// create the annotation
+						ConstPool constpool = cc.getClassFile().getConstPool();
+						AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
+						Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
+						annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
+						attr.addAnnotation(annot);
+						// add the annotation 
+						f2.getFieldInfo().addAttribute(attr);
+
 						cc.addField(f2);
 
 						// getter/setterはTaggingServiceの更新処理で使用
@@ -1353,8 +1387,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private String getValidatorLogic(Meta meta) {
 		String line = "";
+		String metaorg = meta.self.replace("_desc", "");
 		if (meta.isDesc) {
-			line = "if (" + meta.self + "!=null) "+ meta.self + "= \"\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + meta.self + "));"; 
+			line = "if (" + metaorg + "!=null) { try{ String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(" + metaorg + ".replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"; 
 		}
 
 		if (meta.isMandatory) {

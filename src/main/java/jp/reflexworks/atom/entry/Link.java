@@ -3,6 +3,8 @@ package jp.reflexworks.atom.entry;
 import java.io.Serializable;
 import java.util.List;
 
+import org.msgpack.annotation.Index;
+
 import jp.reflexworks.atom.mapper.ConditionContext;
 
 /**
@@ -40,13 +42,21 @@ public class Link implements Serializable, SoftSchema {
 	public static final String REL_ENCLOSURE = "enclosure";
 	public static final String NUMBERING = "#";
 
+	@Index(0)
 	public String _$xml$lang;
+	@Index(1)
 	public String _$xml$base;
+	@Index(2)
 	public String _$href;
+	@Index(3)
 	public String _$rel;
+	@Index(4)
 	public String _$type;
+	@Index(5)
 	public String _$hreflang;
+	@Index(6)
 	public String _$title;
+	@Index(7)
 	public String _$length;
 
 	public String get$xml$lang() {
