@@ -47,6 +47,8 @@ public interface RequestType {
 	public static final String PARAM_ADDIDS = "_addids";
 	/** URLパラメータ : 自動採番の値設定 */
 	public static final String PARAM_SETIDS = "_setids";
+	/** URLパラメータ : 自動採番の枠設定 */
+	public static final String PARAM_RANGEIDS = "_rangeids";
 	/** URLパラメータ : 認証チェックサービス */
 	public static final String PARAM_AUTHCHECK = "_authcheck";
 	/** URLパラメータ : Dataスキームで取得 */
