@@ -20,11 +20,11 @@ public class GenerateEntity {
 		String[] args2 = new String[4];
 		
 		// templateファイルを指定
-		if (args.length > 3) {
-			args2[0] = FileUtil.getResourceFilename(args[3]); // templatefile
+		if (args.length > 4) {
+			args2[0] = FileUtil.getResourceFilename(args[0]); // templatefile
 			args2[1] = args[1]; // folderpath
 			args2[2] = args[2]; // secretkey
-			args2[3] = FileUtil.getResourceFilename(args[0]); // propaclfile
+			args2[3] = FileUtil.getResourceFilename(args[3]); // propaclfile
 
 			FeedTemplateMapper.main(args2);
 		} 
@@ -33,16 +33,16 @@ public class GenerateEntity {
 			FeedTemplateMapper mp = new FeedTemplateMapper(
 					new String[] { "default" }, "");
 
-			String dataXmlFile = FileUtil.getResourceFilename("systeminit.xml");
+			String dataXmlFile = FileUtil.getResourceFilename(args[0]); // templatefile
 			FileReader fi = new FileReader(dataXmlFile);
 			FeedBase feed = (FeedBase) mp.fromXML(fi);
 
 			String secretkey = args[2]; // secretkey
-			String folderpath = args[1];
+			String folderpath = args[1]; // folderpath
 
 			String[] entitytempl = null;
 			List<String> acl = readtemplatefile(FileUtil
-					.getResourceFilename(args[0]));
+					.getResourceFilename(args[3]));	// propaclfile
 
 			for (EntryBase entry : feed.entry) {
 				if (entry.link.get(0)._$href.contains("/_settings/template")) {
