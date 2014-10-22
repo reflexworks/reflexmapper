@@ -3,6 +3,8 @@ package jp.reflexworks.atom;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.sourceforge.reflex.util.BinaryUtil;
+
 public class AtomConst {
 	
 	/** エンコード */
@@ -24,5 +26,49 @@ public class AtomConst {
 		ATOM_PACKAGE.put(ATOM_PACKAGE_ENTRY, "");
 		//ATOM_PACKAGE.put(ATOM_PACKAGE_SOURCE, "");
 	}
+	
+	/** MessagePack byte配列 最初の1バイト */
+	public static final byte MSGPACK_PREFIX = -36;
+	/** MessagePack Entry byte配列 16進数表記 */
+	public static final String MSGPACK_BYTES_HEX_ENTRY = 
+			"DC0020C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+	/** MessagePack Entry byte配列 */
+	public static final byte[] MSGPACK_BYTES_ENTRY = 
+			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_ENTRY);
+	/** MessagePack Feed byte配列 16進数表記 */
+	public static final String MSGPACK_BYTES_HEX_FEED = 
+			"DC0011C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+	/** MessagePack Feed byte配列 */
+	public static final byte[] MSGPACK_BYTES_FEED = 
+			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_FEED);
+	
+	/** MessaaePack Entry class */
+	public static final boolean MSGPACK_ENTRY = false;
+	/** MessaaePack Feed class */
+	public static final boolean MSGPACK_FEED = true;
+	/** MessagePack template default name */
+	public static final String TEMPLATE_DEFAULT = "_";
+	/** MessagePack template(rights) Field ACL start */
+	public static final String TEMPLATE_FIELD_ACL_START = "=";
+	/** MessagePack template(rights) Index start */
+	public static final String TEMPLATE_INDEX_START = ":";
+	/** MessagePack template(rights) Encryption start */
+	public static final String TEMPLATE_ENCRYPTION_START = "#";
 
+	/** Field ACL self */
+	public static final String FIELD_ACL_MYSELF = "@";
+	/** Field ACL all */
+	public static final String FIELD_ACL_ALL = "/*";
+	/** Field ACL Read */
+	public static final String FIELD_ACL_READ = "R";
+	/** Field ACL Write */
+	public static final String FIELD_ACL_WRITE = "W";
+	/** Field ACL Read Write */
+	public static final String FIELD_ACL_RW = FIELD_ACL_READ + FIELD_ACL_WRITE;
+	/** Field ACL give */
+	public static final String FIELD_ACL_REQUIRED = "+";
+	/** Field ACL Delimiter */
+	public static final String FIELD_ACL_DELIMITER = ",";
+	/** デフォルトテンプレート */
+	public static final String[] TEMPLATE_DEFAULT_ARRAY = new String[]{TEMPLATE_DEFAULT};
 }
