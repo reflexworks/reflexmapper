@@ -1,11 +1,10 @@
 package jp.reflexworks.atom;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import jp.sourceforge.reflex.util.BinaryUtil;
 
-public class AtomConst {
+public interface AtomConst {
 	
 	/** エンコード */
 	public static final String ENCODING = "UTF-8";
@@ -16,16 +15,18 @@ public class AtomConst {
 	public static final String ATOM_PACKAGE_FEED = "jp.reflexworks.atom.feed";
 	/** ATOM : Entry package */
 	public static final String ATOM_PACKAGE_ENTRY = "jp.reflexworks.atom.entry";
+	
 	/** ATOM : Source package */
 	//public static final String ATOM_PACKAGE_SOURCE = "jp.reflexworks.atom.source";
 	/** ATOM : Package map */
-	public static final Map<String, String> ATOM_PACKAGE;
-	static {
-		ATOM_PACKAGE = new HashMap<String, String>();
-		ATOM_PACKAGE.put(ATOM_PACKAGE_FEED, "");
-		ATOM_PACKAGE.put(ATOM_PACKAGE_ENTRY, "");
-		//ATOM_PACKAGE.put(ATOM_PACKAGE_SOURCE, "");
-	}
+	//public static final Map<String, String> ATOM_PACKAGE;
+	//static {
+	//	ATOM_PACKAGE = new HashMap<String, String>();
+	//	ATOM_PACKAGE.put(ATOM_PACKAGE_FEED, "");
+	//	ATOM_PACKAGE.put(ATOM_PACKAGE_ENTRY, "");
+	//}
+	public static final Map<String, String> ATOM_PACKAGE = 
+			AtomConstSupporter.createModelPackage();
 	
 	/** MessagePack byte配列 最初の1バイト */
 	public static final byte MSGPACK_PREFIX = -36;
@@ -71,4 +72,22 @@ public class AtomConst {
 	public static final String FIELD_ACL_DELIMITER = ",";
 	/** デフォルトテンプレート */
 	public static final String[] TEMPLATE_DEFAULT_ARRAY = new String[]{TEMPLATE_DEFAULT};
+
+	/** URN : 接頭辞 */
+	public static final String URN_PREFIX = "urn:vte.cx:";
+	/** URN : created */
+	public static final String URN_PREFIX_CREATED = URN_PREFIX + "created:";
+	/** URN : updated */
+	public static final String URN_PREFIX_UPDATED = URN_PREFIX + "updated:";
+	/** URN : deleted */
+	public static final String URN_PREFIX_DELETED = URN_PREFIX + "deleted:";
+	/** URN : username */
+	public static final String URN_PREFIX_SERVICE = URN_PREFIX + "username:";
+	/** URN : acl */
+	public static final String URN_PREFIX_ACL = URN_PREFIX + "acl:";
+	/** URN : auth */
+	public static final String URN_PREFIX_AUTH = URN_PREFIX + "auth:";
+	/** URN : usersecret */
+	public static final String URN_PREFIX_USERSECRET = URN_PREFIX + "usersecret:";
+
 }
