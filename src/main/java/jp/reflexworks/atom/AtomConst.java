@@ -90,4 +90,31 @@ public interface AtomConst {
 	/** URN : usersecret */
 	public static final String URN_PREFIX_USERSECRET = URN_PREFIX + "usersecret:";
 
+	
+	/** 登録権限 */
+	public static final String ACL_TYPE_CREATE = "C";
+	/** 参照権限 */
+	public static final String ACL_TYPE_RETRIEVE = "R";
+	/** 更新権限 */
+	public static final String ACL_TYPE_UPDATE = "U";
+	/** 削除権限 */
+	public static final String ACL_TYPE_DELETE = "D";
+	/** CRUD権限 */
+	public static final String ACL_TYPE_CRUD = ACL_TYPE_CREATE + ACL_TYPE_RETRIEVE + 
+			ACL_TYPE_UPDATE + ACL_TYPE_DELETE;
+	/** サービスからのみアクセス可能な権限 */
+	public static final String ACL_TYPE_EXTERNAL = "E";
+	/** 配下のエントリーより有効である権限 */
+	public static final String ACL_TYPE_LOW = "/";
+	/** 指定されたエントリーのみ有効である権限 */
+	public static final String ACL_TYPE_OWN = ".";
+	/** 指定されたエントリーとその配下のエントリーが有効である権限 */
+	public static final String ACL_TYPE_OWN_AND_LOW = ACL_TYPE_OWN + ACL_TYPE_LOW;
+	/** 任意の文字列 */
+	public static final String ACL_USER_ANY = "*";
+	/** ログインユーザ */
+	public static final String ACL_USER_LOGGEDIN = "+";
+	/** selfまたはエイリアスのユーザトップエントリーのuidがログイン情報のuidと等しい */
+	public static final String ACL_USER_SELFALIAS = "-";
+	
 }
