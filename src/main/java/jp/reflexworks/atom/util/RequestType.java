@@ -87,6 +87,8 @@ public interface RequestType {
 	public static final String PARAM_CHANGEPASS = "_changephash";
 	/** URLパラメータ : 管理者によるユーザ登録オプション */
 	public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
+	/** URLパラメータ : サービス作成 */
+	public static final String PARAM_CREATESERVICE = "_createservice";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
 	public static final String SIGN_RELATED = "+";

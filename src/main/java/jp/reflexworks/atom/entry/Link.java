@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.msgpack.annotation.Index;
 
+import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.ConditionContext;
 
 /**
@@ -212,9 +213,9 @@ public class Link implements Serializable, SoftSchema {
 	public void addSvcname(String svcname) {
 		// rel="self" または "alternate" の場合のみサービス名編集
 		if ((Link.REL_SELF.equals(_$rel) || Link.REL_ALTERNATE.equals(_$rel)) &&
-				_$href != null && !_$href.startsWith(EntryBase.SVC_PREFIX)) {
+				_$href != null && !_$href.startsWith(AtomConst.SVC_PREFIX)) {
 			StringBuilder buf = new StringBuilder();
-			buf.append(EntryBase.SVC_PREFIX);
+			buf.append(AtomConst.SVC_PREFIX);
 			buf.append(svcname);
 			if (!EntryBase.isSlash(_$href)) {
 				buf.append(_$href);
@@ -224,7 +225,7 @@ public class Link implements Serializable, SoftSchema {
 	}
 
 	public void cutSvcname(String svcname) {
-		String serviceTopUri = EntryBase.SVC_PREFIX + svcname;
+		String serviceTopUri = AtomConst.SVC_PREFIX + svcname;
 		// rel="self" または "alternate" の場合のみサービス名編集
 		if ((Link.REL_SELF.equals(_$rel) || Link.REL_ALTERNATE.equals(_$rel)) &&
 				_$href != null && _$href.startsWith(serviceTopUri)) {

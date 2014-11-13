@@ -89,7 +89,6 @@ public interface AtomConst {
 	public static final String URN_PREFIX_AUTH = URN_PREFIX + "auth:";
 	/** URN : usersecret */
 	public static final String URN_PREFIX_USERSECRET = URN_PREFIX + "usersecret:";
-
 	
 	/** 登録権限 */
 	public static final String ACL_TYPE_CREATE = "C";
@@ -117,4 +116,9 @@ public interface AtomConst {
 	/** selfまたはエイリアスのユーザトップエントリーのuidがログイン情報のuidと等しい */
 	public static final String ACL_USER_SELFALIAS = "-";
 	
+	/** サービスエントリーの先頭文字の値 */
+	public static final String SVC_PREFIX_VAL = "@";
+	/** サービスエントリーの先頭 */
+	public static final String SVC_PREFIX = "/" + SVC_PREFIX_VAL;
+
 }

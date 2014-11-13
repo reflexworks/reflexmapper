@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.msgpack.annotation.Index;
 
+import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 /**
@@ -22,8 +23,6 @@ public abstract class EntryBase implements Serializable {
 
 	public static final String KIND = "Entry";
 	public static final String TOP = ":";
-	public static final String SVC_PREFIX_VAL = "@";
-	public static final String SVC_PREFIX = "/" + SVC_PREFIX_VAL;
 
 	/**
 	 * デフォルトの名前空間
@@ -832,10 +831,10 @@ public abstract class EntryBase implements Serializable {
 		if (svcname == null || svcname.length() == 0) {
 			return;
 		}
-		if (id != null && !id.startsWith(SVC_PREFIX)) {
+		if (id != null && !id.startsWith(AtomConst.SVC_PREFIX)) {
 			//_id = "/@" + svcname + _id;
 			StringBuilder buf = new StringBuilder();
-			buf.append(SVC_PREFIX);
+			buf.append(AtomConst.SVC_PREFIX);
 			buf.append(svcname);
 			String[] uriAndRev = getUriAndRevisionFromId(id);
 			if (!isSlash(uriAndRev[0])) {
@@ -862,7 +861,7 @@ public abstract class EntryBase implements Serializable {
 		if (svcname == null || svcname.length() == 0) {
 			return;
 		}
-		String serviceTopUri = SVC_PREFIX + svcname;
+		String serviceTopUri = AtomConst.SVC_PREFIX + svcname;
 		if (id != null && id.startsWith(serviceTopUri)) {
 			//_id = _id.substring(svcname.length() + 2);
 			String[] uriAndRev = getUriAndRevisionFromId(id);

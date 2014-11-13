@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import jp.sourceforge.reflex.util.StringUtils;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
+import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 
@@ -200,6 +202,30 @@ public class EntryUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * エントリーから指定されたURIの署名({revision},{署名})を取得します.
+	 */
+	public static String getSignature(EntryBase entry, String uri) {
+		if (!StringUtils.isBlank(uri) && entry != null && entry.link != null) {
+			String idUri = getUriFromId(entry.id);
+			if (uri.equals(idUri)) {
+				for (Link link : entry.link) {
+					if (Link.REL_SELF.equals(link._$rel)) {
+						return link._$title;
+					}
+				}
+			} else {
+				for (Link link : entry.link) {
+					if (Link.REL_ALTERNATE.equals(link._$rel) &&
+							uri.equals(link._$href)) {
+						return link._$title;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 }
