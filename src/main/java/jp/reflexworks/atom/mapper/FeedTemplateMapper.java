@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.lang.reflect.Field;
@@ -169,6 +168,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
+	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
 
 	private static final int AUTHOR = 0;
 	private static final int CATEGORY = 1;
@@ -376,6 +376,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
+		loader.delegateLoadingOf(ATOMCONST);
 		loader.delegateLoadingOf(ENTRYBASE);
 		loader.delegateLoadingOf(FEEDBASE);
 

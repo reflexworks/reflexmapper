@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.msgpack.annotation.Index;
 
+import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.ConditionContext;
 
@@ -148,11 +149,11 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 				s += 5;
 				String r = uri.substring(s);
 				//_uri = l + ":/@" + svcname + r;
-				if (!r.startsWith(EntryBase.SVC_PREFIX)) {
+				if (!r.startsWith(AtomConst.SVC_PREFIX)) {
 					String l = uri.substring(0, s);
 					StringBuilder buf = new StringBuilder();
 					buf.append(l);
-					buf.append(EntryBase.SVC_PREFIX);
+					buf.append(AtomConst.SVC_PREFIX);
 					buf.append(svcname);
 					if (r.indexOf("/,")>=0) {
 						buf.append(r.substring(1));
@@ -167,7 +168,7 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 
 	public void cutSvcname(String svcname) {
 		if (uri != null && svcname != null && svcname.length() > 0) {
-			String serviceName = EntryBase.SVC_PREFIX + svcname;
+			String serviceName = AtomConst.SVC_PREFIX + svcname;
 
 			String oldstr = ":acl:" + serviceName;
 			String newstr = ":acl:";
