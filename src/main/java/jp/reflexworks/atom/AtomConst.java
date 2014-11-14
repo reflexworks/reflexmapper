@@ -121,4 +121,13 @@ public interface AtomConst {
 	/** サービスエントリーの先頭 */
 	public static final String SVC_PREFIX = "/" + SVC_PREFIX_VAL;
 
+	/** サービスステータス : 新規作成中 */
+	public static final String SERVICE_STATUS_CREATING = "creating";
+	/** サービスステータス : 非公開 */
+	public static final String SERVICE_STATUS_INACTIVE = "inactive";
+	/** サービスステータス : 公開中 */
+	public static final String SERVICE_STATUS_RUNNING = "running";
+	/** サービスステータス : 強制停止 */
+	public static final String SERVICE_STATUS_BLOCKED = "blocked";
+
 }
