@@ -130,4 +130,44 @@ public interface AtomConst {
 	/** サービスステータス : 強制停止 */
 	public static final String SERVICE_STATUS_BLOCKED = "blocked";
 
+	/** URI : settings (value) */
+	public static final String URI_SETTINGS_VAL = "_settings";
+	/** URI : settings */
+	public static final String URI_SETTINGS = "/" + URI_SETTINGS_VAL;
+	/** URI : settings - admin */
+	public static final String URI_SETTINGS_ADMIN = URI_SETTINGS + "/admin";
+	/** URI : settings - adduser */
+	public static final String URI_SETTINGS_ADDUSER = URI_SETTINGS + "/adduser";
+	/** URI : settings - passreset */
+	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
+	/** URI : settings - errorpage */
+	public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
+	/** URI : user init (value) */
+	//public static final String URI_USERINIT_VAL = "userinit";
+	public static final String URI_USERINIT_VAL = "userinit.xml";
+	/** URI : settings - user init */
+	public static final String URI_SETTINGS_USERINIT = URI_SETTINGS + "/" + URI_USERINIT_VAL;
+	/** URI : feed template (value) */
+	public static final String URI_TEMPLATE_VAL = "template";
+	/** URI : settings - feed template */
+	public static final String URI_SETTINGS_TEMPLATE = URI_SETTINGS + "/" + URI_TEMPLATE_VAL;
+	/** URI : group */
+	public static final String URI_GROUP = "/_group";
+	/** URI : $admin */
+	public static final String URI_$ADMIN = "/$admin";
+	/** URI : $content */
+	public static final String URI_$CONTENT = "/$content";
+	/** URI : $useradmin */
+	public static final String URI_$USERADMIN = "/$useradmin";
+	/** URI : group - admin */
+	public static final String URI_GROUP_ADMIN = URI_GROUP + URI_$ADMIN;
+	/** URI : group - content */
+	public static final String URI_GROUP_CONTENT = URI_GROUP + URI_$CONTENT;
+	/** URI : group - useradmin */
+	public static final String URI_GROUP_USERADMIN = URI_GROUP + URI_$USERADMIN;
+	/** URI : auth (layer) */
+	public static final String URI_LAYER_AUTH = "/auth";
+	/** URI : group (layer) */
+	public static final String URI_LAYER_GROUP = "/group";
+
 }
