@@ -32,7 +32,7 @@ public interface RequestType {
 	/** URLパラメータ : ログアウト */
 	public static final String PARAM_LOGOUT = "_logout";
 	/** URLパラメータ : 認証後にディスパッチする */
-	public static final String PARAM_LOGIN_DISPATCH = "_logindispatch";
+	//public static final String PARAM_LOGIN_DISPATCH = "_logindispatch";
 	/** URLパラメータ : 強制ログイン */
 	public static final String PARAM_LOGINF = "_loginf";
 	/** URLパラメータ : BlobstoreへのアップロードURLを取得 */
@@ -86,7 +86,7 @@ public interface RequestType {
 	/** URLパラメータ : パスワード変更オプション */
 	public static final String PARAM_CHANGEPASS = "_changephash";
 	/** URLパラメータ : 管理者によるユーザ登録オプション */
-	public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
+	//public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
 	/** URLパラメータ : サービス作成 */
 	public static final String PARAM_CREATESERVICE = "_createservice";
 	/** URLパラメータ : ログインサービスへのリダイレクト時にサービス名を引き渡すために使用するパラメータ */
