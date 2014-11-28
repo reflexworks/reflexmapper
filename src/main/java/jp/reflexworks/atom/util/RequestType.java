@@ -51,6 +51,8 @@ public interface RequestType {
 	public static final String PARAM_RANGEIDS = "_rangeids";
 	/** URLパラメータ : 認証チェックサービス */
 	public static final String PARAM_AUTHCHECK = "_authcheck";
+	/** URLパラメータ : 認証チェックとユーザ名・ニックネーム・UID取得サービス */
+	public static final String PARAM_WHOAMI = "_whoami";
 	/** URLパラメータ : Dataスキームで取得 */
 	public static final String PARAM_DATASCHEME = "64";
 	/** URLパラメータ : RXID */
