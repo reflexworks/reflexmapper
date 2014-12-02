@@ -170,4 +170,15 @@ public interface AtomConst {
 	/** URI : group (layer) */
 	public static final String URI_LAYER_GROUP = "/group";
 
+	/** type : webhook */
+	public static final String TYPE_WEBHOOK = "webhook";
+	/** type : websocket */
+	public static final String TYPE_WEBSOCKET = "websocket";
+	/** type : mobile push */
+	public static final String TYPE_MOBILEPUSH = "push";
+	/** type : メール通知 */
+	public static final String TYPE_EMAIL = "mail";
+	/** type : node */
+	public static final String TYPE_NODE = "node";
+
 }

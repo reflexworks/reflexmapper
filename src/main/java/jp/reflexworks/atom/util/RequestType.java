@@ -91,6 +91,8 @@ public interface RequestType {
 	//public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
 	/** URLパラメータ : サービス作成 */
 	public static final String PARAM_CREATESERVICE = "_createservice";
+	/** URLパラメータ : サービスのステータス取得・更新 */
+	public static final String PARAM_SERVICESTATUS = "_servicestatus";
 	/** URLパラメータ : ログインサービスへのリダイレクト時にサービス名を引き渡すために使用するパラメータ */
 	public static final String PARAM_INVOKER = "_invoker";
 
