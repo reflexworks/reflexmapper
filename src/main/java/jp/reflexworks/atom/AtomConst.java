@@ -180,5 +180,14 @@ public interface AtomConst {
 	public static final String TYPE_EMAIL = "mail";
 	/** type : node */
 	public static final String TYPE_NODE = "node";
+	
+	/** ユーザステータス : 登録なし */
+	public static final String USERSTATUS_NOTHING = "Nothing";
+	/** ユーザステータス : 仮登録 */
+	public static final String USERSTATUS_INTERIM = "Interim";
+	/** ユーザステータス : 本登録 */
+	public static final String USERSTATUS_ACTIVATED = "Activated";
+	/** ユーザステータス : 無効 */
+	public static final String USERSTATUS_REVOKE = "Revoke";
 
 }
