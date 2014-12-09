@@ -2,6 +2,7 @@ package jp.reflexworks.atom.feed;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.msgpack.annotation.Index;
 
@@ -194,6 +195,17 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	@Override
 	public String toString() {
 		return "Feed [entry=" + entry + "]";
+	}
+	
+	/**
+	 * エントリーを追加します.
+	 * @param entry エントリー
+	 */
+	public void addEntry(EntryBase addingEntry) {
+		if (entry == null) {
+			entry = new ArrayList<EntryBase>();
+		}
+		entry.add(addingEntry);
 	}
 
 	/**
