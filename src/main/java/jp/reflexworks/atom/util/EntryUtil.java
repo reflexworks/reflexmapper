@@ -227,5 +227,17 @@ public class EntryUtil {
 		}
 		return null;
 	}
+	
+	/**
+	 * Feedのtitleを返却します.
+	 * @param feed フィード
+	 * @return titleの内容
+	 */
+	public static String getTitle(FeedBase feed) {
+		if (feed != null) {
+			return feed.title;
+		}
+		return null;
+	}
 
 }
