@@ -39,29 +39,12 @@ public abstract class EntryBase implements Serializable {
 	/**
 	 * 更新者.
 	 * <p>
-	 * urn:virtual-tech.net:{created|updated|deleted}:{username} の形式です。
+	 * urn:vte.cx:{created|updated|deleted}:{uid} の形式です。
 	 * </p>
 	 */
 	@Index(3)
 	public List<Author> author;
 
-	/**
-	 * カテゴリ.
-	 * <p>
-	 * termにプロパティ名、labelに値をセットすることで、検索項目に使用できます。<br>
-	 * termに型を指定することもできます。型とプロパティ名をコロンでつないでください。指定できる型は以下の通りです。
-	 * <ul>
-	 * <li>String</li>
-	 * <li>Integer</li>
-	 * <li>long</li>
-	 * <li>Long</li>
-	 * <li>float</li>
-	 * <li>Float</li>
-	 * <li>double</li>
-	 * <li>Double</li>
-	 * </ul>
-	 * </p>
-	 */
 	@Index(4)
 	public List<Category> category;
 
@@ -80,14 +63,14 @@ public abstract class EntryBase implements Serializable {
 	 * <b>WSSE指定</b><br>
 	 * /_user/{username} をキーとするエントリーのｃontributorタグのuriタグに、以下の書式で認証情報を設定します。
 	 * <ul>
-	 * <li>urn:virtual-tech.net:wsse:{username},{password}</li>
+	 * <li>urn:virtual-tech.net:auth:{username},{password}</li>
 	 * </ul>
 	 * <br>
 	 * <b>ACL指定</b><br>
 	 * uriタグに、以下の書式でACLを設定します。<br>
 	 * <br>
 	 * <ul>
-	 * <li>urn:virtual-tech.net:acl:{username},{C|R|U|D|A|E}</li>
+	 * <li>urn:virtual-tech.net:acl:{username},{C|R|U|D|.|/|E}</li>
 	 * </ul>
 	 * <br>
 	 * このACLは、配下のエントリーに対し有効です。<br>
@@ -107,7 +90,8 @@ public abstract class EntryBase implements Serializable {
 	 * <li>R : 検索処理を許可</li>
 	 * <li>U : 更新処理を許可</li>
 	 * <li>D : 削除処理を許可</li>
-	 * <li>A : 管理者 (CRUD権限に加え、権限の付与および参照が可能)</li>
+	 * <li>. : 指定したエントリーのみ設定が有効</li>
+	 * <li>/ : 指定したエントリーの配下から設定が有効 (設定したエントリー自身には適用されない。)</li>
 	 * <li>E : 外部サービス呼び出しからのみデータ操作可で、Reflexサービスから直接データ操作が不可。</li>
 	 * </ul>
 	 * </li>
@@ -162,15 +146,6 @@ public abstract class EntryBase implements Serializable {
 	 * 配下のエントリーが検索・登録・更新・削除された場合リクエストが実行されます。自身の登録・更新時には実行されません。<br>
 	 * hrefのURLに?async={数字}パラメータが設定されている場合、{数字}秒後にリクエストを実行します。<br>
 	 * <br>
-	 * <b>JavaScript</b><br>
-	 * rel="via"、type="text/javascript"の場合、href="{キー}#{関数名}"でJavascript実行を指定できます
-	 * 。<br>
-	 * Javascriptはキーで指定されたエントリーのcontentに格納されている必要があります。<br>
-	 * title属性にGET、POST、PUTが指定できます。この場合、配下のエントリーに対して実行されます。自身には実行されません。<br>
-	 * Javascriptはエントリー登録・更新後に実行され、実行結果をデータストアに格納されます。<br>
-	 * JavascriptがGET指定されている場合、検索後に実行され、実行結果をレスポンスデータに設定します。<br>
-	 * Javascript実行時、rel="related"、type="text/javascript"
-	 * で指定されたエントリーのcontentをJavascriptのコードに加えることができます。<br>
 	 * </p>
 	 */
 	@Index(10)
@@ -203,12 +178,6 @@ public abstract class EntryBase implements Serializable {
 	@Index(17)
 	public String rights_$xml$base;
 
-	/**
-	 * サマリー.
-	 * <p>
-	 * Reflexでは、登録・更新時やエラー時のメッセージを設定します。
-	 * </p>
-	 */
 	@Index(18)
 	public String summary;
 
@@ -221,13 +190,6 @@ public abstract class EntryBase implements Serializable {
 	@Index(21)
 	public String summary_$xml$base;
 
-	/**
-	 * タイトル.
-	 * <p>
-	 * Reflexでは、"Error"や"POST""PUT""DELETE"等を設定します。<br>
-	 * Index項目です。
-	 * </p>
-	 */
 	@Index(22)
 	public String title;
 
@@ -240,12 +202,6 @@ public abstract class EntryBase implements Serializable {
 	@Index(25)
 	public String title_$xml$base;
 
-	/**
-	 * サブタイトル.
-	 * <p>
-	 * Reflexでは、ステータスコードを設定します。
-	 * </p>
-	 */
 	@Index(26)
 	public String subtitle;
 
@@ -661,9 +617,7 @@ public abstract class EntryBase implements Serializable {
 
 	/**
 	 * エイリアスから指定されたURLを削除します。
-	 * 
-	 * @param uri
-	 *            エイリアス
+	 * @param uri エイリアス
 	 */
 	public void removeAlternate(String uri) {
 		if (isTop(uri)) {
@@ -684,7 +638,7 @@ public abstract class EntryBase implements Serializable {
 	}
 
 	/**
-	 * エイリアス一覧を取得します。
+	 * エイリアス一覧を取得します.
 	 */
 	public List<String> getAlternate() {
 		if (link == null) {
@@ -705,9 +659,7 @@ public abstract class EntryBase implements Serializable {
 
 	/**
 	 * Linkを追加します.
-	 * 
-	 * @param ln
-	 *            Link
+	 * @param ln Link
 	 */
 	public void addLink(Link ln) {
 		if (ln == null) {
@@ -721,9 +673,7 @@ public abstract class EntryBase implements Serializable {
 
 	/**
 	 * Contributorを追加します.
-	 * 
-	 * @param cont
-	 *            Contributor
+	 * @param cont Contributor
 	 */
 	public void addContributor(Contributor cont) {
 		if (cont == null) {
@@ -733,6 +683,28 @@ public abstract class EntryBase implements Serializable {
 			contributor = new ArrayList<Contributor>();
 		}
 		contributor.add(cont);
+	}
+	
+	/**
+	 * Contentに文字列を設定します.
+	 * @param text 文字列
+	 */
+	public void setContentText(String text) {
+		if (content == null) {
+			content = new Content();
+		}
+		content._$$text = text;
+	}
+	
+	/**
+	 * Contentの文字列を取得します.
+	 * @return Contentの文字列
+	 */
+	public String getContentText() {
+		if (content != null) {
+			return content._$$text;
+		}
+		return null;
 	}
 
 	/**

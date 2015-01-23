@@ -51,6 +51,8 @@ public interface RequestType {
 	public static final String PARAM_RANGEIDS = "_rangeids";
 	/** URLパラメータ : 認証チェックサービス */
 	public static final String PARAM_AUTHCHECK = "_authcheck";
+	/** URLパラメータ : 認証チェックとユーザ名・ニックネーム・UID取得サービス */
+	public static final String PARAM_WHOAMI = "_whoami";
 	/** URLパラメータ : Dataスキームで取得 */
 	public static final String PARAM_DATASCHEME = "64";
 	/** URLパラメータ : RXID */
@@ -91,6 +93,16 @@ public interface RequestType {
 	public static final String PARAM_CREATESERVICE = "_createservice";
 	/** URLパラメータ : ログインサービスへのリダイレクト時にサービス名を引き渡すために使用するパラメータ */
 	public static final String PARAM_INVOKER = "_invoker";
+	/** URLパラメータ : サービス */
+	public static final String PARAM_SERVICE = "_service";
+	/** URLパラメータ : サービスのステータス取得・更新 */
+	public static final String PARAM_SERVICESTATUS = "_servicestatus";
+	/** URLパラメータ : ユーザステータス取得 */
+	public static final String PARAM_USERSTATUS = "_userstatus";
+	/** URLパラメータ : ユーザを無効にする */
+	public static final String PARAM_REVOKEUSER = "_revokeuser";
+	/** URLパラメータ : ユーザを有効にする */
+	public static final String PARAM_ACTIVATEUSER = "_activateuser";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
 	public static final String SIGN_RELATED = "+";

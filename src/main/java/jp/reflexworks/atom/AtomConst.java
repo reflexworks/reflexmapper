@@ -170,4 +170,37 @@ public interface AtomConst {
 	/** URI : group (layer) */
 	public static final String URI_LAYER_GROUP = "/group";
 
+	/** type : webhook */
+	public static final String TYPE_WEBHOOK = "webhook";
+	/** type : websocket */
+	public static final String TYPE_WEBSOCKET = "websocket";
+	/** type : mobile push */
+	public static final String TYPE_MOBILEPUSH = "push";
+	/** type : メール通知 */
+	public static final String TYPE_EMAIL = "mail";
+	/** type : node */
+	public static final String TYPE_NODE = "node";
+	
+	/** ユーザステータス : 登録なし */
+	public static final String USERSTATUS_NOTHING = "Nothing";
+	/** ユーザステータス : 仮登録 */
+	public static final String USERSTATUS_INTERIM = "Interim";
+	/** ユーザステータス : 本登録 */
+	public static final String USERSTATUS_ACTIVATED = "Activated";
+	/** ユーザステータス : 無効 */
+	public static final String USERSTATUS_REVOKE = "Revoke";
+	
+	/** サービス設定 : エントリー最大数デフォルト設定 **/
+	public static final String SETTING_ENTRY_NUMBER_DEFAULT = "_entry.number.default";
+	/** サービス設定 : 検索条件除外設定 **/
+	public static final String SETTING_IGNORE_CONDITION_PREFIX = "_ignore.condition.";
+	/** サービス設定 : エラー画面表示URLパターン */
+	public static final String SETTING_ERRORPAGE_URI = "_errorpage.uri";
+	/** サービス設定 : Amazon Web Service SNS mobile push : 更新者自身にpush通知を行うかどうか */
+	public static final String SETTING_AWS_SNS_PUSH_SELF = "_aws.sns.push.self";
+	/** サービス設定 : EMail通知設定 : 更新者自身にメール通知を行うかどうか */
+	public static final String SETTING_EMAIL_SEND_ONESELF = "_email.send.oneself";
+	/** サービス設定 : EMailの送信元名 */
+	public static final String SETTING_MAIL_FROM_PERSONAL = "_mail.from.personal";
+
 }
