@@ -153,12 +153,14 @@ public interface AtomConst {
 	public static final String URI_SETTINGS_TEMPLATE = URI_SETTINGS + "/" + URI_TEMPLATE_VAL;
 	/** URI : group */
 	public static final String URI_GROUP = "/_group";
+	/** URI : system group prefix */
+	public static final String URI_SERVICE_GROUP_PREFIX = "/$";
 	/** URI : $admin */
-	public static final String URI_$ADMIN = "/$admin";
+	public static final String URI_$ADMIN = URI_SERVICE_GROUP_PREFIX + "admin";
 	/** URI : $content */
-	public static final String URI_$CONTENT = "/$content";
+	public static final String URI_$CONTENT = URI_SERVICE_GROUP_PREFIX + "content";
 	/** URI : $useradmin */
-	public static final String URI_$USERADMIN = "/$useradmin";
+	public static final String URI_$USERADMIN = URI_SERVICE_GROUP_PREFIX + "useradmin";
 	/** URI : group - admin */
 	public static final String URI_GROUP_ADMIN = URI_GROUP + URI_$ADMIN;
 	/** URI : group - content */
