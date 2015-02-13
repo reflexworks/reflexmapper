@@ -1840,6 +1840,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 								} else if (v.isRawValue()) {
 									Element element = new Element();
 									element._$$text = v.toString().substring(1,v.toString().length()-1);
+									element._$$text = element._$$text.replace("\\\\n", "\n");
 									child.add(element);
 									f.set(parent, child);
 								}
@@ -1867,6 +1868,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 										throw new ParseException(de.getMessage() + " / " + v, 0);
 									}
 								} else {
+									v = v.replaceAll("\\\\n", "\n");
 									f.set(parent, v);
 								}
 							}
