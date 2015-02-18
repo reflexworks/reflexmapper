@@ -13,12 +13,13 @@ public class TestMsgpackMapperGenerateFiles {
 	@Test
 	public void testGenerateFiles() throws FileNotFoundException, ParseException {
 		
-		String[] args = new String[4];
+		String[] args = new String[5];
 		
-		args[0] = FileUtil.getResourceFilename("template_sample.txt");
-		args[1] = "./";
-		args[2] = "mykey";  // secretkey
-		args[3] = FileUtil.getResourceFilename("prop_acls_atom.txt");
+		args[0] = "default";
+		args[1] = FileUtil.getResourceFilename("template_sample.txt");
+		args[2] = "./";
+		args[3] = "mykey";  // secretkey
+		args[4] = FileUtil.getResourceFilename("prop_acls_atom.txt");
 		
 		FeedTemplateMapper.main(args);
 		

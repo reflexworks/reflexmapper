@@ -1954,14 +1954,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public static void main(String args[]) throws ParseException {
 
-		if (args.length<3) {
-			System.out.println("Usage: Java FeedTemplateMapper <templatefile> <folderpath> <secretkey> (<aclfile>)");
+		if (args.length<4) {
+			System.out.println("Usage: Java FeedTemplateMapper <servicename> <templatefile> <folderpath> <secretkey> (<aclfile>)");
 		}else {
-			String[] entitytempl = readtemplatefile(args[0]);
+			String[] entitytempl1 = readtemplatefile(args[1]);
+			String[] entitytempl = new String[entitytempl1.length+1];
+			entitytempl[0] = args[0]+"{}";
+			System.arraycopy(entitytempl1, 0, entitytempl, 1, entitytempl1.length);
+			
 			String[] aclfile = null;
-			if (args.length==4&&args[3]!=null) aclfile = readtemplatefile(args[3]);
+			if (args.length==5&&args[4]!=null) aclfile = readtemplatefile(args[4]);
 
-			new FeedTemplateMapper(entitytempl,aclfile,30,false,args[1],args[2]);		
+			new FeedTemplateMapper(entitytempl,aclfile,30,false,args[2],args[3]);		
 		}
 	}
 

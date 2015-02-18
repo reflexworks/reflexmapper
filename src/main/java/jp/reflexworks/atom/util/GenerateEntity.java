@@ -17,14 +17,15 @@ public class GenerateEntity {
 
 	public static void main(String[] args) throws ParseException, IOException {
 
-		String[] args2 = new String[4];
+		String[] args2 = new String[5];
 		
 		// templateファイルを指定
-		if (args.length > 4) {
-			args2[0] = FileUtil.getResourceFilename(args[0]); // templatefile
-			args2[1] = args[1]; // folderpath
-			args2[2] = args[2]; // secretkey
-			args2[3] = FileUtil.getResourceFilename(args[3]); // propaclfile
+		if (args.length > 5) {
+			args2[0] = args[0];
+			args2[1] = FileUtil.getResourceFilename(args[1]); // templatefile
+			args2[2] = args[2]; // folderpath
+			args2[3] = args[3]; // secretkey
+			args2[4] = FileUtil.getResourceFilename(args[4]); // propaclfile
 
 			FeedTemplateMapper.main(args2);
 		} 
@@ -33,20 +34,20 @@ public class GenerateEntity {
 			FeedTemplateMapper mp = new FeedTemplateMapper(
 					new String[] { "default" }, "");
 
-			String dataXmlFile = FileUtil.getResourceFilename(args[0]); // templatefile
+			String dataXmlFile = FileUtil.getResourceFilename(args[1]); // templatefile
 			FileReader fi = new FileReader(dataXmlFile);
 			FeedBase feed = (FeedBase) mp.fromXML(fi);
 
-			String secretkey = args[2]; // secretkey
-			String folderpath = args[1]; // folderpath
+			String folderpath = args[2]; // folderpath
+			String secretkey = args[3]; // secretkey
 
-			String[] entitytempl = null;
+			String[] entitytempl1 = null;
 			List<String> acl = readtemplatefile(FileUtil
-					.getResourceFilename(args[3]));	// propaclfile
+					.getResourceFilename(args[4]));	// propaclfile
 
 			for (EntryBase entry : feed.entry) {
 				if (entry.link.get(0)._$href.contains("/_settings/template")) {
-					entitytempl = entry.content._$$text.split(System
+					entitytempl1 = entry.content._$$text.split(System
 							.getProperty("line.separator"));
 					String[] aclrights = entry.rights.split(System
 							.getProperty("line.separator"));
@@ -58,6 +59,9 @@ public class GenerateEntity {
 				}
 			}
 			String[] aclfile = acl.toArray(new String[0]);
+			String[] entitytempl = new String[entitytempl1.length+1];
+			entitytempl[0] = args[0]+"{}";
+			System.arraycopy(entitytempl1, 0, entitytempl, 1, entitytempl1.length);
 
 			new FeedTemplateMapper(entitytempl, aclfile, 30, false, folderpath,
 					secretkey);
