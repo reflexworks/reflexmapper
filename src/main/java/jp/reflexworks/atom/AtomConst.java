@@ -190,7 +190,7 @@ public interface AtomConst {
 	/** ユーザステータス : 本登録 */
 	public static final String USERSTATUS_ACTIVATED = "Activated";
 	/** ユーザステータス : 無効 */
-	public static final String USERSTATUS_REVOKE = "Revoke";
+	public static final String USERSTATUS_REVOKED = "Revoked";
 	
 	/** サービス設定 : エントリー最大数デフォルト設定 **/
 	public static final String SETTING_ENTRY_NUMBER_DEFAULT = "_entry.number.default";
