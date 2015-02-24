@@ -208,6 +208,18 @@ public class TestMsgpackMapper {
 		" category",
 		" color",
 		" size=^[a-zA-Z0-9]{1,2}$",
+		" sale_boolean(boolean)",
+		" sale_c_boolean(Boolean)",
+		" stock_long(long)",
+		" stock_int(int)",
+		" stock_short(short)",
+		" stock_float(float)",
+		" stock_double(double)",
+		" stock_c_long(Long)",
+		" stock_c_integer(Integer)",
+		" stock_c_short(Short)",
+		" stock_c_float(Float)",
+		" stock_c_double(Double)",
 		"comment{}",
 		" $$text",
 		" nickname",
@@ -1883,6 +1895,9 @@ public class TestMsgpackMapper {
 			existsMetalist = true;
 			for (Meta meta : metalist) {
 				prn.append(meta);
+				prn.append("(");
+				prn.append(meta.type);
+				prn.append(")");
 				if (meta.index != null) {
 					prn.append(" : index=");
 					prn.append(meta.index);
