@@ -204,5 +204,10 @@ public interface AtomConst {
 	public static final String SETTING_EMAIL_SEND_ONESELF = "_email.send.oneself";
 	/** サービス設定 : EMailの送信元名 */
 	public static final String SETTING_MAIL_FROM_PERSONAL = "_mail.from.personal";
+	
+	/** ユーザ初期エントリー設定 : ユーザ番号に置き換える記号 */
+	public static final String SETTING_USERINIT_UID = "#";
+	/** ユーザ初期エントリー設定 : サービス管理者ユーザ番号に置き換える記号 */
+	public static final String SETTING_USERINIT_SERVICEADMIN_UID = "!";
 
 }
