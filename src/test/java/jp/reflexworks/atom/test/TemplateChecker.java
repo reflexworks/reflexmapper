@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 
@@ -18,14 +20,14 @@ public class TemplateChecker {
 
 	private static final String ENCODING = "UTF-8";
 	
-	private static final String serviceName = "myservice";
+	private static final String SERVICE_NAME = "myservice";
 	
-
-	public static void main(String[] args) {
+	@Test
+	public void check() {
 		try {
 			// 指定されたテンプレートにエラーがないかチェックする。
-			String templateFileStr = getFilePathTemplate(serviceName);
-			String indexEncItemACLFileStr = getFilePathIndexEncItemACL(serviceName);
+			String templateFileStr = getFilePathTemplate(SERVICE_NAME);
+			String indexEncItemACLFileStr = getFilePathIndexEncItemACL(SERVICE_NAME);
 			createMapper(templateFileStr, indexEncItemACLFileStr);
 			
 			System.out.println("create mapper OK.");
@@ -35,7 +37,7 @@ public class TemplateChecker {
 		}
 	}
 
-	private static FeedTemplateMapper createMapper(String templateFileStr, 
+	private FeedTemplateMapper createMapper(String templateFileStr, 
 			String indexEncItemACLFileStr) 
 	throws IOException, URISyntaxException, ParseException {
 		String[] template = null;
@@ -61,7 +63,7 @@ public class TemplateChecker {
 	/*
 	 * ファイルを読み、改行区切りのString配列にして返却する。
 	 */
-	public static String[] readTemplate(String fileStr) 
+	private String[] readTemplate(String fileStr) 
 	throws IOException, URISyntaxException {
 		BufferedReader reader = getReader(fileStr);
 		if (reader != null) {
@@ -88,7 +90,7 @@ public class TemplateChecker {
 		return null;
 	}
 	
-	private static BufferedReader getReader(String filePath) 
+	private BufferedReader getReader(String filePath) 
 	throws IOException, URISyntaxException {
 		File file = new File(filePath);
 		if (file.exists()) {
@@ -101,7 +103,7 @@ public class TemplateChecker {
 	/**
 	 * テンプレートのファイルパスを返却.
 	 */
-	private static String getFilePathTemplate(String serviceName) 
+	private String getFilePathTemplate(String serviceName) 
 	throws FileNotFoundException {
 		String fileName = editFileNameTemplate(serviceName);
 		return editInputFilePath(fileName);
@@ -110,14 +112,14 @@ public class TemplateChecker {
 	/**
 	 * テンプレートのIndex、暗号化、項目ACL設定のファイルパスを返却.
 	 */
-	public static String getFilePathIndexEncItemACL(String serviceName) 
+	private String getFilePathIndexEncItemACL(String serviceName) 
 	throws FileNotFoundException {
 		String fileName = editFileNameIndexEncItemACL(serviceName);
 		return editInputFilePath(fileName);
 	}
 
 	// template_{サービス名}.txt
-	private static String editFileNameTemplate(String serviceName) {
+	private String editFileNameTemplate(String serviceName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("template_");
 		sb.append(serviceName);
@@ -126,7 +128,7 @@ public class TemplateChecker {
 	}
 
 	// idx_enc_itemacl_{サービス名}.txt
-	private static String editFileNameIndexEncItemACL(String serviceName) {
+	private String editFileNameIndexEncItemACL(String serviceName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("idx_enc_itemacl_");
 		sb.append(serviceName);
@@ -134,7 +136,7 @@ public class TemplateChecker {
 		return sb.toString();
 	}
 
-	private static String editInputFilePath(String filename) {
+	private String editInputFilePath(String filename) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(editInputFileDir());
 		sb.append(File.separator);
@@ -142,7 +144,7 @@ public class TemplateChecker {
 		return sb.toString();
 	}
 	
-	private static String editInputFileDir() {
+	private String editInputFileDir() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(FileUtil.getUserDir());
 		sb.append(File.separator);
