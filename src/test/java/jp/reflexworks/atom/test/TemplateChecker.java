@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,56 +36,52 @@ public class TemplateChecker {
 	}
 
 	@Test
-	public void check() {
-		try {
-			// 指定されたテンプレートにエラーがないかチェックする。
-			String templateFileStr = getFilePathTemplate(SERVICE_NAME);
-			String indexEncItemACLFileStr = getFilePathIndexEncItemACL(SERVICE_NAME);
-			FeedTemplateMapper mapper = createMapper(templateFileStr, indexEncItemACLFileStr);
-			System.out.println("create mapper OK : template_" + SERVICE_NAME + ".txt");
-			
-			// データチェック
-			String dataPath = getFilePathData(SERVICE_NAME);
-			FeedBase feed = createFeedFromXmlFile(mapper, dataPath);
-			if (feed == null) {
-				throw new IllegalArgumentException("Feed is null. file path = " + dataPath);
-			}
-			if (feed.entry == null) {
-				throw new IllegalArgumentException("Feed's entries are null. file path = " + dataPath);
-			}
-			if (feed.entry.size() == 0) {
-				throw new IllegalArgumentException("Feed's entries are empty. file path =  " + dataPath);
-			}
-			// バリデーション
-			feed.validate(UID, GROUPS);
-			// 暗号化
-			CipherUtil cipherUtil = new CipherUtil();
-			cipherUtil.encrypt(feed);
-			cipherUtil.decrypt(feed);
-			// サービス名付与・除去
-			feed.addSvcname(SERVICE_NAME);
-			feed.cutSvcname(SERVICE_NAME);
-			
-			// 値の取得
-			EntryBase entry = feed.entry.get(0);
-			//String name = "testinfo.int_idx.intmap_limit.range";
-			//String name = "testinfo";
-			//String name = "testinfo.int_idx.group_useradmin_r";
-			//String name = "testinfo.int_idx";
-			String name = "testinfo.int_idx.intmap_required.required";
-			Object obj = entry.getValue(name);
-
-			System.out.println("  [getValue]" + name + " : " + obj);
-			int dataInt_idx$intmap_required$required = 203880201;	// data_example1.xml より抜粋
-			System.out.println("  [xml data]" + name + " : " + dataInt_idx$intmap_required$required);
-			
-			assertTrue(obj.equals(dataInt_idx$intmap_required$required));
-
-			System.out.println("data_" + SERVICE_NAME + ".xml : OK");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void check() 
+	throws IOException, ParseException, URISyntaxException, GeneralSecurityException {
+		// 指定されたテンプレートにエラーがないかチェックする。
+		String templateFileStr = getFilePathTemplate(SERVICE_NAME);
+		String indexEncItemACLFileStr = getFilePathIndexEncItemACL(SERVICE_NAME);
+		FeedTemplateMapper mapper = createMapper(templateFileStr, indexEncItemACLFileStr);
+		System.out.println("create mapper OK : template_" + SERVICE_NAME + ".txt");
+		
+		// データチェック
+		String dataPath = getFilePathData(SERVICE_NAME);
+		FeedBase feed = createFeedFromXmlFile(mapper, dataPath);
+		if (feed == null) {
+			throw new IllegalArgumentException("Feed is null. file path = " + dataPath);
 		}
+		if (feed.entry == null) {
+			throw new IllegalArgumentException("Feed's entries are null. file path = " + dataPath);
+		}
+		if (feed.entry.size() == 0) {
+			throw new IllegalArgumentException("Feed's entries are empty. file path =  " + dataPath);
+		}
+		// バリデーション
+		feed.validate(UID, GROUPS);
+		// 暗号化
+		CipherUtil cipherUtil = new CipherUtil();
+		cipherUtil.encrypt(feed);
+		cipherUtil.decrypt(feed);
+		// サービス名付与・除去
+		feed.addSvcname(SERVICE_NAME);
+		feed.cutSvcname(SERVICE_NAME);
+		
+		// 値の取得
+		EntryBase entry = feed.entry.get(0);
+		//String name = "testinfo.int_idx.intmap_limit.range";
+		//String name = "testinfo";
+		//String name = "testinfo.int_idx.group_useradmin_r";
+		//String name = "testinfo.int_idx";
+		String name = "testinfo.int_idx.intmap_required.required";
+		Object obj = entry.getValue(name);
+
+		System.out.println("  [getValue]" + name + " : " + obj);
+		int dataInt_idx$intmap_required$required = 203880201;	// data_example1.xml より抜粋
+		System.out.println("  [xml data]" + name + " : " + dataInt_idx$intmap_required$required);
+		
+		assertTrue(obj.equals(dataInt_idx$intmap_required$required));
+
+		System.out.println("data_" + SERVICE_NAME + ".xml : OK");
 	}
 
 	private FeedTemplateMapper createMapper(String templateFileStr, 
