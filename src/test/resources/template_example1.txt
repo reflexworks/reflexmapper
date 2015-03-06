@@ -1,23 +1,23 @@
 testinfo
  str
   $attribute
-  $attribute_alphabet=^[a-zA-Z]$
+  $attribute_alphabet=^[a-zA-Z].*$
   required!
-  required_num!=^[0-9]$
-  num=^[0-9]$
-  alphabet=^[a-zA-Z]$
+  required_num!=^[0-9].*$
+  num=^[0-9].*$
+  alphabet=^[a-zA-Z].*$
   japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   map{}
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   map_required{}!
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
    encrypt
    group_useradmin_r
@@ -37,15 +37,15 @@ testinfo
    group_all_rw
   map_limit{20}
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   map_limit_required{20}!
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   array[]
   array_required[]!
@@ -70,25 +70,24 @@ testinfo
   free
  str_idx
   $attribute
-  $attribute_alphabet=^[a-zA-Z]$
+  $attribute_alphabet=^[a-zA-Z].*$
   required!
-  required_num!=^[0-9]$
-  num=^[0-9]$
-  alphabet=^[a-zA-Z]$
+  required_num!=^[0-9].*$
+  num=^[0-9].*$
+  alphabet=^[a-zA-Z].*$
   japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   map{}
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   map_required{}!
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
-   encrypt
    group_useradmin_r
    group_useradmin_w
    group_useradmin_rw
@@ -106,21 +105,16 @@ testinfo
    group_all_rw
   map_limit{20}
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
   map_limit_required{20}!
    required!
-   required_num!=^[0-9]$
-   num=^[0-9]$
-   alphabet=^[a-zA-Z]$
+   required_num!=^[0-9].*$
+   num=^[0-9].*$
+   alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
-  array[]
-  array_required[]!
-  array_limit[10]
-  array_required_limit[10]!
-  encrypt
   group_useradmin_r
   group_useradmin_w
   group_useradmin_rw
@@ -140,13 +134,16 @@ testinfo
  int
   required(int)!
   range(int){1~999}
-  map{}
+  minus(int)
+  minus_range(int){-999~-1}
+  intmap{}
    required(int)!
    range(int){1~999}
-  map_required{}!
+  intmap_required{}!
    required(int)!
    range(int){1~999}
-   encrypt(int)
+   minus(int)
+   minus_range(int){-999~-1}
    group_useradmin_r(int)
    group_useradmin_w(int)
    group_useradmin_rw(int)
@@ -162,13 +159,12 @@ testinfo
    group_all_r(int)
    group_all_w(int)
    group_all_rw(int)
-  map_limit{20}
+  intmap_limit{20}
    required(int)!
    range(int){1~999}
-  map_limit_required{20}!
+  intmap_limit_required{20}!
    required(int)!
    range(int){1~999}
-  encrypt(int)
   group_useradmin_r(int)
   group_useradmin_w(int)
   group_useradmin_rw(int)
@@ -188,13 +184,16 @@ testinfo
  int_idx
   required(int)!
   range(int){1~999}
-  map{}
+  minus(int)
+  minus_range(int){-999~-1}
+  intmap{}
    required(int)!
    range(int){1~999}
-  map_required{}!
+  intmap_required{}!
    required(int)!
    range(int){1~999}
-   encrypt(int)
+   minus(int)
+   minus_range(int){-999~-1}
    group_useradmin_r(int)
    group_useradmin_w(int)
    group_useradmin_rw(int)
@@ -210,13 +209,12 @@ testinfo
    group_all_r(int)
    group_all_w(int)
    group_all_rw(int)
-  map_limit{20}
+  intmap_limit{20}
    required(int)!
    range(int){1~999}
-  map_limit_required{20}!
+  intmap_limit_required{20}!
    required(int)!
    range(int){1~999}
-  encrypt(int)
   group_useradmin_r(int)
   group_useradmin_w(int)
   group_useradmin_rw(int)

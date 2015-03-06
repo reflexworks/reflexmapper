@@ -1,5 +1,7 @@
 package jp.reflexworks.atom.test;
 
+import static org.junit.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import jp.reflexworks.atom.entry.EntryBase;
+import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 
@@ -20,19 +25,64 @@ public class TemplateChecker {
 
 	private static final String ENCODING = "UTF-8";
 	
-	private static final String SERVICE_NAME = "myservice";
-	
+	private static final String SERVICE_NAME = "example1";
+	private static final String UID = "2";
+	private static final List<String> GROUPS = new ArrayList<String>();
+	static {
+		GROUPS.add("/@" + SERVICE_NAME + "/_group/$admin");
+		GROUPS.add("/@" + SERVICE_NAME + "/_group/$useradmin");
+		GROUPS.add("/@" + SERVICE_NAME + "/_group/$content");
+	}
+
 	@Test
 	public void check() {
 		try {
 			// 指定されたテンプレートにエラーがないかチェックする。
 			String templateFileStr = getFilePathTemplate(SERVICE_NAME);
 			String indexEncItemACLFileStr = getFilePathIndexEncItemACL(SERVICE_NAME);
-			createMapper(templateFileStr, indexEncItemACLFileStr);
+			FeedTemplateMapper mapper = createMapper(templateFileStr, indexEncItemACLFileStr);
+			System.out.println("create mapper OK : template_" + SERVICE_NAME + ".txt");
 			
-			System.out.println("create mapper OK.");
+			// データチェック
+			String dataPath = getFilePathData(SERVICE_NAME);
+			FeedBase feed = createFeedFromXmlFile(mapper, dataPath);
+			if (feed == null) {
+				throw new IllegalArgumentException("Feed is null. file path = " + dataPath);
+			}
+			if (feed.entry == null) {
+				throw new IllegalArgumentException("Feed's entries are null. file path = " + dataPath);
+			}
+			if (feed.entry.size() == 0) {
+				throw new IllegalArgumentException("Feed's entries are empty. file path =  " + dataPath);
+			}
+			// バリデーション
+			feed.validate(UID, GROUPS);
+			// 暗号化
+			CipherUtil cipherUtil = new CipherUtil();
+			cipherUtil.encrypt(feed);
+			cipherUtil.decrypt(feed);
+			// サービス名付与・除去
+			feed.addSvcname(SERVICE_NAME);
+			feed.cutSvcname(SERVICE_NAME);
 			
-		} catch (Throwable e) {
+			// 値の取得
+			EntryBase entry = feed.entry.get(0);
+			//String name = "testinfo.int_idx.intmap_limit.range";
+			//String name = "testinfo";
+			//String name = "testinfo.int_idx.group_useradmin_r";
+			//String name = "testinfo.int_idx";
+			String name = "testinfo.int_idx.intmap_required.required";
+			Object obj = entry.getValue(name);
+
+			System.out.println("  [getValue]" + name + " : " + obj);
+			int dataInt_idx$intmap_required$required = 203880201;	// data_example1.xml より抜粋
+			System.out.println("  [xml data]" + name + " : " + dataInt_idx$intmap_required$required);
+			
+			assertTrue(obj.equals(dataInt_idx$intmap_required$required));
+
+			System.out.println("data_" + SERVICE_NAME + ".xml : OK");
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -118,6 +168,15 @@ public class TemplateChecker {
 		return editInputFilePath(fileName);
 	}
 
+	/**
+	 * データのファイルパスを返却.
+	 */
+	private String getFilePathData(String serviceName) 
+	throws FileNotFoundException {
+		String fileName = editFileNameData(serviceName);
+		return editInputFilePath(fileName);
+	}
+
 	// template_{サービス名}.txt
 	private String editFileNameTemplate(String serviceName) {
 		StringBuilder sb = new StringBuilder();
@@ -133,6 +192,15 @@ public class TemplateChecker {
 		sb.append("idx_enc_itemacl_");
 		sb.append(serviceName);
 		sb.append(".txt");
+		return sb.toString();
+	}
+
+	// data_{サービス名}.xml
+	private String editFileNameData(String serviceName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("data_");
+		sb.append(serviceName);
+		sb.append(".xml");
 		return sb.toString();
 	}
 
@@ -154,6 +222,25 @@ public class TemplateChecker {
 		sb.append(File.separator);
 		sb.append("resources");
 		return sb.toString();
+	}
+	
+	/**
+	 * XML文字列からFeedオブジェクトを作成
+	 */
+	private FeedBase createFeedFromXmlFile(FeedTemplateMapper mapper, String filePath) 
+	throws IOException, URISyntaxException {
+		BufferedReader reader = getReader(filePath);
+		if (reader != null) {
+			try {
+				return (FeedBase)mapper.fromXML(reader);
+				
+			} finally {
+				try {
+					reader.close();
+				} catch (Exception e) {}	// Do nothing.
+			}
+		}
+		return null;
 	}
 
 }
