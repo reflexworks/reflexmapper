@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
@@ -16,17 +17,20 @@ import java.util.List;
 
 import org.junit.Test;
 
+import jp.sourceforge.reflex.util.FileUtil;
+import jp.sourceforge.reflex.util.StringUtils;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
-import jp.sourceforge.reflex.util.FileUtil;
+import jp.reflexworks.atom.wrapper.Condition;
 
 public class TemplateChecker {
 
 	private static final String ENCODING = "UTF-8";
 	
 	private static final String SERVICE_NAME = "example1";
+	private static final String SERVICE_NAME_X = "exampleX";
 	private static final String UID = "2";
 	private static final List<String> GROUPS = new ArrayList<String>();
 	static {
@@ -82,6 +86,53 @@ public class TemplateChecker {
 		assertTrue(((List<Integer>)obj).get(0).equals(dataInt_idx$intmap_required$required));
 
 		System.out.println("data_" + SERVICE_NAME + ".xml : OK");
+		
+		// compareTo : 引数文字列がこの文字列に等しい場合は、値 0。
+		//             この文字列が文字列引数より辞書式に小さい場合は、0 より小さい値。
+		//             この文字列が文字列引数より辞書式に大きい場合は、0 より大きい値。
+		String anotherString = "gggrrr298kk-3mrq";
+		System.out.println("gggrrr219kk-mrq".compareTo(anotherString));
+		System.out.println("gggrrr219kk-mrq2".compareTo(anotherString));
+		System.out.println("gggrrr219kk-3mrq".compareTo(anotherString));
+		
+		// Feed
+		String dataStr = readData(SERVICE_NAME_X);
+		if (StringUtils.isBlank(dataStr)) {
+			throw new IllegalArgumentException("file " + SERVICE_NAME_X + " is null.");
+		}
+		
+		dataStr = dataStr.replaceAll("XXX", "219");
+		feed = createFeedFromXml(mapper, dataStr);
+		entry = feed.entry.get(0);
+		
+		String item = "testinfo.str.map_required.group_users_r";
+		System.out.println(item + " = " + entry.getValue(item));
+		
+		// isMatch
+		String value = "gggrrr219kk-3mrq";
+		isMatch(entry, item + "-eq-" + value, true);
+
+		// 比較対象が小さい場合
+		value = "gggrrr218kk-mrq2";
+		isMatch(entry, item + "-eq-" + value, false);
+		isMatch(entry, item + "-lt-" + value, false);
+		isMatch(entry, item + "-le-" + value, false);
+		isMatch(entry, item + "-ge-" + value, true);
+		isMatch(entry, item + "-gt-" + value, true);
+		
+		// 比較対象が大きい場合
+		value = "gggrrr298kk-3mrq";
+		isMatch(entry, item + "-eq-" + value, false);
+		isMatch(entry, item + "-lt-" + value, true);
+		isMatch(entry, item + "-le-" + value, true);
+		isMatch(entry, item + "-ge-" + value, false);
+		isMatch(entry, item + "-gt-" + value, false);
+
+	}
+	
+	private void isMatch(EntryBase entry, String conditionStr, boolean isMatch) {
+		System.out.println("[isMatch]" + conditionStr + " : " + isMatch);
+		assertTrue(entry.isMatch(new Condition[]{new Condition(conditionStr)}) == isMatch);
 	}
 
 	private FeedTemplateMapper createMapper(String templateFileStr, 
@@ -236,6 +287,20 @@ public class TemplateChecker {
 					reader.close();
 				} catch (Exception e) {}	// Do nothing.
 			}
+		}
+		return null;
+	}
+
+	private String readData(String serviceName) 
+	throws IOException {
+		String filePath = getFilePathData(serviceName);
+		Reader reader = FileUtil.getReaderFromFile(filePath);
+		return FileUtil.readString(reader);
+	}
+
+	private FeedBase createFeedFromXml(FeedTemplateMapper mapper, String str) {
+		if (!StringUtils.isBlank(str)) {
+			return (FeedBase)mapper.fromXML(str);
 		}
 		return null;
 	}
