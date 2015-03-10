@@ -1288,10 +1288,10 @@ public class TestMsgpackMapper {
 		// バックアップ
 		String sDeleteFlg = (String)sourceEntry.getValue("deleteFlg");
 		String sInfoName = (String)sourceEntry.getValue("info.name");
-		String sCommentText = (String)sourceEntry.getValue("comment.$$text");
+		List<String> sCommentText = (List<String>)sourceEntry.getValue("comment.$$text");
 		String tDeleteFlg = (String)targetEntry.getValue("deleteFlg");
 		String tInfoName = (String)targetEntry.getValue("info.name");
-		String tCommentText = (String)targetEntry.getValue("comment.$$text");
+		List<String> tCommentText = (List<String>)targetEntry.getValue("comment.$$text");
 
 		System.out.println("--- 実行前 ---");
 		System.out.println("sDeleteFlg = " + sDeleteFlg);
@@ -1309,14 +1309,18 @@ public class TestMsgpackMapper {
 		System.out.println("--- 実行後 ---");
 		tDeleteFlg = (String)targetEntry.getValue("deleteFlg");
 		tInfoName = (String)targetEntry.getValue("info.name");
-		tCommentText = (String)targetEntry.getValue("comment.$$text");
+		tCommentText = (List<String>)targetEntry.getValue("comment.$$text");
 
 		System.out.println("tDeleteFlg = " + tDeleteFlg);
 		System.out.println("tInfoName = " + tInfoName);
 		System.out.println("tCommentText = " + tCommentText);
 
-		assertTrue(sDeleteFlg.equals(tDeleteFlg) && sInfoName.equals(tInfoName) &&
-				sCommentText.equals(tCommentText));
+		// DeleteFlgとInfoNameをチェック
+		assertTrue(sDeleteFlg.equals(tDeleteFlg) && sInfoName.equals(tInfoName));
+		
+		// コメントをチェック
+		assertArrayEquals(sCommentText.toArray(), tCommentText.toArray());
+
 	}
 
 	private String createJsonTempl4_1() {
