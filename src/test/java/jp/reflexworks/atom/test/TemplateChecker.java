@@ -79,7 +79,7 @@ public class TemplateChecker {
 		int dataInt_idx$intmap_required$required = 203880201;	// data_example1.xml より抜粋
 		System.out.println("  [xml data]" + name + " : " + dataInt_idx$intmap_required$required);
 		
-		assertTrue(obj.equals(dataInt_idx$intmap_required$required));
+		assertTrue(((List<Integer>)obj).get(0).equals(dataInt_idx$intmap_required$required));
 
 		System.out.println("data_" + SERVICE_NAME + ".xml : OK");
 	}
