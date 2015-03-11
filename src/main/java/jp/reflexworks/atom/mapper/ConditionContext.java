@@ -23,6 +23,7 @@ public class ConditionContext {
 	public String fldname;
 	public String type;
 	public Object obj;
+	public String parent;
 	public Map<String,Boolean> isMatchs;
 	private Boolean[] isFetchs;		// 項目名が一致したか
 	
@@ -147,7 +148,7 @@ public class ConditionContext {
 				return false;
 				
 			}else {
-				return checkConditionString((String)obj, cond, type);
+					return checkConditionString((String)obj, cond, type);
 			}
 		} else if (type.equals("Integer")) {
 			int src = (Integer)obj;

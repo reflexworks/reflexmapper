@@ -1191,7 +1191,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(id, cipher, secretkey);}"); 
 						decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(id, cipher, secretkey);}"); 
 						if (!isFeed(classname)) {
-							ismatch.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}"); 
+							ismatch.append("context.parent=\"" + meta.name + "\";if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(uid,groups,myself);}"); 
 						} else {
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
@@ -1200,7 +1200,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
 						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(id, cipher, secretkey);");
 						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(id, cipher, secretkey);");
-						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
+						ismatch.append("context.parent=\"" + meta.name + "\";if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
 						if (!isFeed(classname)) {
 							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(uid,groups,myself);");
 						} else {
@@ -1211,6 +1211,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 					// getValueで返せるようにする
 					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) return " + meta.self + ";");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");
+					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
+					ismatch.append("else if (\"" + meta.name + ".\".indexOf(context.parent)>=0)");
 					ismatch.append("jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);}");
 				}
 
