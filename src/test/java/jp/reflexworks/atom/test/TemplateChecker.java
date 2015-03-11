@@ -105,11 +105,36 @@ public class TemplateChecker {
 		feed = createFeedFromXml(mapper, dataStr);
 		entry = feed.entry.get(0);
 		
-		String item = "testinfo.str.map_required.group_users_r";
-		System.out.println(item + " = " + entry.getValue(item));
-		
 		// isMatch
-		String value = "gggrrr219kk-3mrq";
+		String item = "testinfo.str.group_users_r";
+		System.out.println(item + " = " + entry.getValue(item));
+		String value = "gggrr219kkk";
+		isMatch(entry, item + "-eq-" + value, true);
+		isMatch(entry, item + "-lt-" + value, false);
+		isMatch(entry, item + "-le-" + value, true);
+		isMatch(entry, item + "-ge-" + value, true);
+		isMatch(entry, item + "-gt-" + value, false);
+
+		// 比較対象が小さい場合
+		value = "gggrr218kkk";
+		isMatch(entry, item + "-eq-" + value, false);
+		isMatch(entry, item + "-lt-" + value, false);
+		isMatch(entry, item + "-le-" + value, false);
+		isMatch(entry, item + "-ge-" + value, true);
+		isMatch(entry, item + "-gt-" + value, true);
+
+		// 比較対象が大きい場合
+		value = "gggrr298kkk";
+		isMatch(entry, item + "-eq-" + value, false);
+		isMatch(entry, item + "-lt-" + value, true);
+		isMatch(entry, item + "-le-" + value, true);
+		isMatch(entry, item + "-ge-" + value, false);
+		isMatch(entry, item + "-gt-" + value, false);
+		
+		// List項目
+		item = "testinfo.str.map_required.group_users_r";
+		System.out.println(item + " = " + entry.getValue(item));
+		value = "gggrrr219kk-3mrq";
 		isMatch(entry, item + "-eq-" + value, true);
 
 		// 比較対象が小さい場合
