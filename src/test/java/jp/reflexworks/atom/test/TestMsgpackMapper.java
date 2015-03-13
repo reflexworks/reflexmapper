@@ -1028,29 +1028,29 @@ public class TestMsgpackMapper {
 		System.out.println(mp.toXML(entry));
 		System.out.println("--------------");
 
-		Condition[] conditions = new Condition[3];
+		Condition[] conditions = new Condition[21];
 
 		conditions[0] = new Condition("subInfo.favorite.food", "カレー");
 		conditions[1] = new Condition("subInfo.favorite3.food", "うどん");
 		conditions[2] = new Condition("verified_email", "false");		// boolean
-//		conditions[3] = new Condition("subInfo.favorite3.updated", "2013-09-30 14:06:30");	// date(Tや+09:00は省略可能)
-//		conditions[4] = new Condition("error.errors.domain", "com.google.auth2");	// List検索
-//		conditions[5] = new Condition("error.errors.domain", "com.google.auth");	// List検索(全て合致すればtrue)
-//		conditions[6] = new Condition("title-rg-^タイトル$");							// 正規表現検索
-//		conditions[7] = new Condition("content.$$text", "あああ");	
-//		conditions[8] = new Condition("contributor.email", "abc@def");	
-//		conditions[9] = new Condition("contributor.uri", "http://abc");	
-//		conditions[10] = new Condition("contributor.name", "hoge");	
-//		conditions[11] = new Condition("category.$term", "term1");	
-//		conditions[12] = new Condition("category.$scheme", "scheme1");	
-//		conditions[13] = new Condition("category.$label", "label1");	
-//		conditions[14] = new Condition("link.$href", "/0762678511-/@/spool/759188985520");	// ATOM標準Entry List検索
-//		conditions[15] = new Condition("author.email", "xyz@def");	
-//		conditions[16] = new Condition("author.uri", "http://xyz");	
-//		conditions[17] = new Condition("author.name-le-2014/10/04");	
-//		conditions[18] = new Condition("public.int", "email1");	// java予約語項目
-//		conditions[19] = new Condition("subInfo.favorite.music", "ポップス3");	// java予約語項目
-//		conditions[20] = new Condition("author.name-ge-2014/10/03");	
+		conditions[3] = new Condition("subInfo.favorite3.updated", "2013-09-30 14:06:30");	// date(Tや+09:00は省略可能)
+		conditions[4] = new Condition("error.errors.domain", "com.google.auth2");	// List検索
+		conditions[5] = new Condition("error.errors.domain", "com.google.auth");	// List検索(全て合致すればtrue)
+		conditions[6] = new Condition("title-rg-^タイトル$");							// 正規表現検索
+		conditions[7] = new Condition("content.$$text", "あああ");	
+		conditions[8] = new Condition("contributor.email", "abc@def");	
+		conditions[9] = new Condition("contributor.uri", "http://abc");	
+		conditions[10] = new Condition("contributor.name", "hoge");	
+		conditions[11] = new Condition("category.$term", "term1");	
+		conditions[12] = new Condition("category.$scheme", "scheme1");	
+		conditions[13] = new Condition("category.$label", "label1");	
+		conditions[14] = new Condition("link.$href", "/0762678511-/@/spool/759188985520");	// ATOM標準Entry List検索
+		conditions[15] = new Condition("author.email", "xyz@def");	
+		conditions[16] = new Condition("author.uri", "http://xyz");	
+		conditions[17] = new Condition("author.name-le-2014/10/04");	
+		conditions[18] = new Condition("public.int", "email1");	// java予約語項目
+		conditions[19] = new Condition("subInfo.favorite.music", "ポップス3");	// java予約語項目
+		conditions[20] = new Condition("author.name-ge-2014/10/03");	
 
 		boolean ismatch = entry.isMatch(conditions);
 		System.out.println("isMatch="+ismatch);
