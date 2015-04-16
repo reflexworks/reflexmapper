@@ -320,7 +320,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(FEEDBASE);
 
 		// XMLデシリアライザのRXMapperのClassloaderにセットする。サーブレットでのメモリ増加に注意
-//		((jp.sourceforge.reflex.core.RXMapper)this.getClassMapper()).wrapped = new com.thoughtworks.xstream.mapper.DefaultMapper(this.loader); 
+		((jp.sourceforge.reflex.core.RXMapper)this.getClassMapper()).wrapped = new com.thoughtworks.xstream.mapper.DefaultMapper(this.loader); 
 
 		registry = new TemplateRegistry(null);
 		builder = new ReflectionTemplateBuilder(registry); // msgpack準備(Javassistで動的に作成したクラスはReflectionTemplateBuilderを使わないとエラーになる)
