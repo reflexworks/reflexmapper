@@ -50,13 +50,11 @@ import org.msgpack.template.builder.ReflectionTemplateBuilder;
 import org.msgpack.type.Value;
 import org.msgpack.util.json.JSONBufferUnpacker;
 
-import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
-import com.thoughtworks.xstream.mapper.DefaultMapper;
+//import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.sourceforge.reflex.core.RXMapper;
 import jp.sourceforge.reflex.core.ResourceMapper;
 import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DateUtil;
@@ -203,7 +201,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public FeedTemplateMapper(Object jo_packages, String secretkey) 
 			throws ParseException {
-		this(jo_packages, null, 0, false, false, false, null, null, secretkey);
+		this(jo_packages, null, 0, false, false, false, null, secretkey);
 	}
 
 	/**
@@ -216,23 +214,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public FeedTemplateMapper(Object jo_packages, boolean compatible, String secretkey) 
 			throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible, null, null, secretkey);
-	}
-
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param jo_packages
-	 * @param compatible
-	 * @param reflectionProvider
-	 * @param secretkey
-	 * @throws ParseException
-	 */
-	public FeedTemplateMapper(Object jo_packages, boolean compatible, 
-			ReflectionProvider reflectionProvider, String secretkey) 
-					throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible, reflectionProvider, null,
-				secretkey);
+		this(jo_packages, null, 0, false, false, compatible, null, secretkey);
 	}
 
 	/**
@@ -247,7 +229,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			String secretkey) 
 					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, false, null, null, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, false, null, secretkey);
 	}
 
 	/**
@@ -263,7 +245,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			boolean compatible, String secretkey) 
 					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, null, null, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, compatible, null, secretkey);
 	}
 
 	/**
@@ -280,7 +262,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			boolean compatible, String folderpath, String secretkey) 
 					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, null, folderpath, 
+		this(jo_packages, propAcls, indexmax, false, false, compatible, folderpath, 
 				secretkey);
 	}
 
@@ -309,47 +291,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param jo_packages
 	 * @param propAcls
 	 * @param indexmax
-	 * @param compatible
-	 * @param reflectionProvider
-	 * @param folderpath
-	 * @param secretkey
-	 * @throws ParseException
-	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax,
-			boolean compatible, ReflectionProvider reflectionProvider, String folderpath, 
-			String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, reflectionProvider, 
-				folderpath, secretkey);
-	}
-
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param jo_packages
-	 * @param propAcls
-	 * @param indexmax
-	 * @param isCamel
-	 * @param useSingleQuote
-	 * @param compatible
-	 * @param folderpath
-	 * @param secretkey
-	 * @throws ParseException
-	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, 
-			String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, isCamel, useSingleQuote, compatible, null, folderpath,
-				secretkey);
-	}
-
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param jo_packages
-	 * @param propAcls
-	 * @param indexmax
 	 * @param isCamel
 	 * @param useSingleQuote
 	 * @param compatible
@@ -359,11 +300,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible,
-			ReflectionProvider reflectionProvider,  String folderpath, String secretkey) 
+			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, String secretkey) 
 					throws ParseException {
-		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible,
-				reflectionProvider);
+		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible);
 
 		this.folderpath = folderpath;
 		this.secretkey = secretkey;
@@ -381,7 +320,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(FEEDBASE);
 
 		// XMLデシリアライザのRXMapperのClassloaderにセットする。サーブレットでのメモリ増加に注意
-		((RXMapper)this.getClassMapper()).wrapped = new DefaultMapper(this.loader); 
+//		((jp.sourceforge.reflex.core.RXMapper)this.getClassMapper()).wrapped = new com.thoughtworks.xstream.mapper.DefaultMapper(this.loader); 
 
 		registry = new TemplateRegistry(null);
 		builder = new ReflectionTemplateBuilder(registry); // msgpack準備(Javassistで動的に作成したクラスはReflectionTemplateBuilderを使わないとエラーになる)
