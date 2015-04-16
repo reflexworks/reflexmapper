@@ -50,13 +50,11 @@ import org.msgpack.template.builder.ReflectionTemplateBuilder;
 import org.msgpack.type.Value;
 import org.msgpack.util.json.JSONBufferUnpacker;
 
-import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
-import com.thoughtworks.xstream.mapper.DefaultMapper;
+//import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.sourceforge.reflex.core.RXMapper;
 import jp.sourceforge.reflex.core.ResourceMapper;
 import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DateUtil;
@@ -203,7 +201,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public FeedTemplateMapper(Object jo_packages, String secretkey) 
 			throws ParseException {
-		this(jo_packages, null, 0, false, false, false, null, null, secretkey);
+		this(jo_packages, null, 0, false, false, false, null, secretkey);
 	}
 
 	/**
@@ -216,23 +214,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public FeedTemplateMapper(Object jo_packages, boolean compatible, String secretkey) 
 			throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible, null, null, secretkey);
-	}
-
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param jo_packages
-	 * @param compatible
-	 * @param reflectionProvider
-	 * @param secretkey
-	 * @throws ParseException
-	 */
-	public FeedTemplateMapper(Object jo_packages, boolean compatible, 
-			ReflectionProvider reflectionProvider, String secretkey) 
-					throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible, reflectionProvider, null,
-				secretkey);
+		this(jo_packages, null, 0, false, false, compatible, null, secretkey);
 	}
 
 	/**
@@ -247,7 +229,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			String secretkey) 
 					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, false, null, null, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, false, null, secretkey);
 	}
 
 	/**
@@ -263,7 +245,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			boolean compatible, String secretkey) 
 					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, null, null, secretkey);
+		this(jo_packages, propAcls, indexmax, false, false, compatible, null, secretkey);
 	}
 
 	/**
@@ -280,7 +262,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
 			boolean compatible, String folderpath, String secretkey) 
 					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, null, folderpath, 
+		this(jo_packages, propAcls, indexmax, false, false, compatible, folderpath, 
 				secretkey);
 	}
 
@@ -309,47 +291,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param jo_packages
 	 * @param propAcls
 	 * @param indexmax
-	 * @param compatible
-	 * @param reflectionProvider
-	 * @param folderpath
-	 * @param secretkey
-	 * @throws ParseException
-	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax,
-			boolean compatible, ReflectionProvider reflectionProvider, String folderpath, 
-			String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, reflectionProvider, 
-				folderpath, secretkey);
-	}
-
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param jo_packages
-	 * @param propAcls
-	 * @param indexmax
-	 * @param isCamel
-	 * @param useSingleQuote
-	 * @param compatible
-	 * @param folderpath
-	 * @param secretkey
-	 * @throws ParseException
-	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, 
-			String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, isCamel, useSingleQuote, compatible, null, folderpath,
-				secretkey);
-	}
-
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param jo_packages
-	 * @param propAcls
-	 * @param indexmax
 	 * @param isCamel
 	 * @param useSingleQuote
 	 * @param compatible
@@ -359,11 +300,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible,
-			ReflectionProvider reflectionProvider,  String folderpath, String secretkey) 
+			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, String secretkey) 
 					throws ParseException {
-		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible,
-				reflectionProvider);
+		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible);
 
 		this.folderpath = folderpath;
 		this.secretkey = secretkey;
@@ -381,7 +320,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(FEEDBASE);
 
 		// XMLデシリアライザのRXMapperのClassloaderにセットする。サーブレットでのメモリ増加に注意
-		((RXMapper)this.getClassMapper()).wrapped = new DefaultMapper(this.loader); 
+		((jp.sourceforge.reflex.core.RXMapper)this.getClassMapper()).wrapped = new com.thoughtworks.xstream.mapper.DefaultMapper(this.loader); 
 
 		registry = new TemplateRegistry(null);
 		builder = new ReflectionTemplateBuilder(registry); // msgpack準備(Javassistで動的に作成したクラスはReflectionTemplateBuilderを使わないとエラーになる)
@@ -1047,7 +986,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			StringBuffer validation = new StringBuffer();
 			StringBuffer maskprop = new StringBuffer();
 			if (isEntry(classname)) {
-				ismatch.append(ismatchFuncS2);
+				ismatch.append(ismatchFuncS2+"context.parent=null;");
 				maskprop.append(maskpropFuncS2);
 				validation.append(validateFuncS2);
 				encrypt.append(encryptFuncS2);
@@ -1060,7 +999,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				decrypt.append(decryptFuncS3_2);
 			} else {
 				if (!isFeed(classname)) {
-					ismatch.append(ismatchFuncS);
+					ismatch.append(ismatchFuncS+"String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";");
 					maskprop.append(maskpropFuncS);
 					validation.append(validateFuncS);
 				} else {
@@ -1187,17 +1126,17 @@ public class FeedTemplateMapper extends ResourceMapper {
 				// 子要素のgetValue/setValue
 				if (meta.hasChild()) {
 					if (meta.isMap) {
-						getvalue.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);if (value!=null) return value;}"); 
+						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { java.util.List result = new java.util.ArrayList(); for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);result.add(value);} if (result.size()>0) return result;}"); 
 						encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(id, cipher, secretkey);}"); 
 						decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(id, cipher, secretkey);}"); 
 						if (!isFeed(classname)) {
-							ismatch.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}"); 
+							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(uid,groups,myself);}"); 
 						} else {
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
 						}
 					} else {
-						getvalue.append("if (" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname); if (value!=null) return value;}");
+						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
 						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(id, cipher, secretkey);");
 						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(id, cipher, secretkey);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
@@ -1211,6 +1150,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 					// getValueで返せるようにする
 					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) return " + meta.self + ";");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");
+					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
+					ismatch.append("else if (\"" + meta.name + "\".indexOf(context.parent)>=0)");
 					ismatch.append("jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);}");
 				}
 
@@ -1263,7 +1204,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				if (isEntry(classname)) {
 					ismatch.append(ismatchFuncE2);				
 				} else {
-					ismatch.append(endFuncE);				
+					ismatch.append("context.parent=parent;"+endFuncE);				
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
@@ -1290,6 +1231,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 		}
 
 		return classnames;
+	}
+
+	private String cutPackagename(String classname) {
+		String result = classname.substring(classname.lastIndexOf(".")+1);
+		return (""+result.charAt(0)).toLowerCase()+result.substring(1);
 	}
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
