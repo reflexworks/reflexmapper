@@ -24,6 +24,7 @@ import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
+import jp.reflexworks.atom.util.EntryUtil;
 import jp.reflexworks.atom.wrapper.Condition;
 
 public class TemplateChecker {
@@ -75,6 +76,10 @@ public class TemplateChecker {
 		System.out.println("[start]testinfo.str_idx.map.encrypt" + " = " + entry.getValue("testinfo.str_idx.map.encrypt"));
 		System.out.println("[start]testinfo.str_idx.map_required.encrypt" + " = " + entry.getValue("testinfo.str_idx.map_required.encrypt"));
 		
+		String tmpTemplateFileStr = getFilePathTemplate("encrypt");
+		String tmpIndexEncItemACLFileStr = getFilePathIndexEncItemACL("encrypt");
+		FeedTemplateMapper encMapper = createMapper(tmpTemplateFileStr, tmpIndexEncItemACLFileStr);
+
 		CipherUtil cipherUtil = new CipherUtil();
 		cipherUtil.encrypt(feed);
 
@@ -90,25 +95,39 @@ public class TemplateChecker {
 
 		// 暗号化されているか
 		assertTrue(!"encstrencenc".equals(entry.getValue("testinfo.str.encrypt")));
-		assertTrue("U0ITKWb8FTKLBgjbRbNcWg==".equals(entry.getValue("testinfo.str.encrypt")));
+		String tmp = encrypt(encMapper, "encstrencenc", cipherUtil);
+		assertTrue(tmp.equals(entry.getValue("testinfo.str.encrypt")));
 		assertTrue(!"encstrIdxencenc".equals(entry.getValue("testinfo.str_idx.encrypt")));
-		assertTrue("ppApAuJscZOysyyU3KExDQ==".equals(entry.getValue("testinfo.str_idx.encrypt")));
+		tmp = encrypt(encMapper, "encstrIdxencenc", cipherUtil);
+		assertTrue(tmp.equals(entry.getValue("testinfo.str_idx.encrypt")));
 		
-		assertTrue("c9QlERXJvloQ6gv8GUh8E770vQQUpImKCDa0G0/gf70=".equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(0)));
-		assertTrue("TiBZnHXYrH9YGsiiU3Ups770vQQUpImKCDa0G0/gf70=".equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(1)));
-		assertTrue("DPMItV/zvZurrU6KcYBKub70vQQUpImKCDa0G0/gf70=".equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(2)));
+		tmp = encrypt(encMapper, "encstrmapencenc1", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(0)));
+		tmp = encrypt(encMapper, "encstrmapencenc2", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(1)));
+		tmp = encrypt(encMapper, "encstrmapencenc3", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(2)));
 
-		assertTrue("QaJ7j75rDON65AfhvWa+LQ==".equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(0)));
-		assertTrue("VmI/TPzNDe5MUAHOZxZOYg==".equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(1)));
-		assertTrue("s5ruqUZhR5WtKT4zkU8b8w==".equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(2)));
+		tmp = encrypt(encMapper, "encencenc-1mrq", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(0)));
+		tmp = encrypt(encMapper, "encencenc-2mrq", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(1)));
+		tmp = encrypt(encMapper, "encencenc-3mrq", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(2)));
 
-		assertTrue("aOh6/apIBpBFtTAyUjw96KH1z6vPgwQu87uuNZb7OBU=".equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(0)));
-		assertTrue("aOh6/apIBpBFtTAyUjw96IkFNBQFzEdALU5Csc7WQAY=".equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(1)));
-		assertTrue("aOh6/apIBpBFtTAyUjw96Bt62XJoATsfSs6TbU6f6ag=".equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(2)));
+		tmp = encrypt(encMapper, "encstrIdxMapencenc1", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(0)));
+		tmp = encrypt(encMapper, "encstrIdxMapencenc2", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(1)));
+		tmp = encrypt(encMapper, "encstrIdxMapencenc3", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(2)));
 
-		assertTrue("eqidgyUsLBPvYC0Oz9z7Rtmbo6f2dAl85eDTKy9/k7s=".equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(0)));
-		assertTrue("eqidgyUsLBPvYC0Oz9z7RsfprqvDPcZAVN8cTl/znBw=".equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(1)));
-		assertTrue("eqidgyUsLBPvYC0Oz9z7RoFVO5kRiDbjanVbH6RuTVM=".equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(2)));
+		tmp = encrypt(encMapper, "encstrIdxMapRequired1enc", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(0)));
+		tmp = encrypt(encMapper, "encstrIdxMapRequired2enc", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(1)));
+		tmp = encrypt(encMapper, "encstrIdxMapRequired3enc", cipherUtil);
+		assertTrue(tmp.equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(2)));
 
 		cipherUtil.decrypt(feed);
 		
@@ -227,6 +246,16 @@ public class TemplateChecker {
 			System.out.println("[checkCipherList]" + name + " : " + val[i] + ", " + source);
 			assertTrue(val[i].equals(source));
 		}
+	}
+	
+	private String encrypt(FeedTemplateMapper encMapper, String str,
+			CipherUtil cipherUtil) 
+	throws GeneralSecurityException {
+		EntryBase entry = EntryUtil.createEntry(encMapper);
+		entry.id = "/1/new,1";
+		entry.subtitle = str;
+		cipherUtil.encrypt(entry);
+		return entry.subtitle;
 	}
 
 	private FeedTemplateMapper createMapper(String templateFileStr, 
