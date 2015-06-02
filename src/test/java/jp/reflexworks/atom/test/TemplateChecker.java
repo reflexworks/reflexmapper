@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -62,16 +63,69 @@ public class TemplateChecker {
 		}
 		// バリデーション
 		feed.validate(UID, GROUPS);
+
 		// 暗号化
+		EntryBase entry = feed.entry.get(0);
+
+		// test log
+		System.out.println("[start]testinfo.str.encrypt" + " = " + entry.getValue("testinfo.str.encrypt"));
+		System.out.println("[start]testinfo.str_idx.encrypt" + " = " + entry.getValue("testinfo.str_idx.encrypt"));
+		System.out.println("[start]testinfo.str.map.encrypt" + " = " + entry.getValue("testinfo.str.map.encrypt"));
+		System.out.println("[start]testinfo.str.map_required.encrypt" + " = " + entry.getValue("testinfo.str.map_required.encrypt"));
+		System.out.println("[start]testinfo.str_idx.map.encrypt" + " = " + entry.getValue("testinfo.str_idx.map.encrypt"));
+		System.out.println("[start]testinfo.str_idx.map_required.encrypt" + " = " + entry.getValue("testinfo.str_idx.map_required.encrypt"));
+		
 		CipherUtil cipherUtil = new CipherUtil();
 		cipherUtil.encrypt(feed);
+
+		entry = feed.entry.get(0);
+
+		// test log
+		System.out.println("[encrypt]testinfo.str.encrypt" + " = " + entry.getValue("testinfo.str.encrypt"));
+		System.out.println("[encrypt]testinfo.str_idx.encrypt" + " = " + entry.getValue("testinfo.str_idx.encrypt"));
+		System.out.println("[encrypt]testinfo.str.map.encrypt" + " = " + entry.getValue("testinfo.str.map.encrypt"));
+		System.out.println("[encrypt]testinfo.str.map_required.encrypt" + " = " + entry.getValue("testinfo.str.map_required.encrypt"));
+		System.out.println("[encrypt]testinfo.str_idx.map.encrypt" + " = " + entry.getValue("testinfo.str_idx.map.encrypt"));
+		System.out.println("[encrypt]testinfo.str_idx.map_required.encrypt" + " = " + entry.getValue("testinfo.str_idx.map_required.encrypt"));
+
+		// 暗号化されているか
+		assertTrue(!"encstrencenc".equals(entry.getValue("testinfo.str.encrypt")));
+		assertTrue("U0ITKWb8FTKLBgjbRbNcWg==".equals(entry.getValue("testinfo.str.encrypt")));
+		assertTrue(!"encstrIdxencenc".equals(entry.getValue("testinfo.str_idx.encrypt")));
+		assertTrue("ppApAuJscZOysyyU3KExDQ==".equals(entry.getValue("testinfo.str_idx.encrypt")));
+		
+		assertTrue("c9QlERXJvloQ6gv8GUh8E770vQQUpImKCDa0G0/gf70=".equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(0)));
+		assertTrue("TiBZnHXYrH9YGsiiU3Ups770vQQUpImKCDa0G0/gf70=".equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(1)));
+		assertTrue("DPMItV/zvZurrU6KcYBKub70vQQUpImKCDa0G0/gf70=".equals(((List<String>)entry.getValue("testinfo.str.map.encrypt")).get(2)));
+
+		assertTrue("QaJ7j75rDON65AfhvWa+LQ==".equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(0)));
+		assertTrue("VmI/TPzNDe5MUAHOZxZOYg==".equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(1)));
+		assertTrue("s5ruqUZhR5WtKT4zkU8b8w==".equals(((List<String>)entry.getValue("testinfo.str.map_required.encrypt")).get(2)));
+
+		assertTrue("aOh6/apIBpBFtTAyUjw96KH1z6vPgwQu87uuNZb7OBU=".equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(0)));
+		assertTrue("aOh6/apIBpBFtTAyUjw96IkFNBQFzEdALU5Csc7WQAY=".equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(1)));
+		assertTrue("aOh6/apIBpBFtTAyUjw96Bt62XJoATsfSs6TbU6f6ag=".equals(((List<String>)entry.getValue("testinfo.str_idx.map.encrypt")).get(2)));
+
+		assertTrue("eqidgyUsLBPvYC0Oz9z7Rtmbo6f2dAl85eDTKy9/k7s=".equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(0)));
+		assertTrue("eqidgyUsLBPvYC0Oz9z7RsfprqvDPcZAVN8cTl/znBw=".equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(1)));
+		assertTrue("eqidgyUsLBPvYC0Oz9z7RoFVO5kRiDbjanVbH6RuTVM=".equals(((List<String>)entry.getValue("testinfo.str_idx.map_required.encrypt")).get(2)));
+
 		cipherUtil.decrypt(feed);
+		
+		// 復号チェック
+		checkCipher(entry, "testinfo.str.encrypt", "encstrencenc");
+		checkCipher(entry, "testinfo.str_idx.encrypt", "encstrIdxencenc");
+		checkCipherList(entry, "testinfo.str.map.encrypt", new String[]{"encstrmapencenc1", "encstrmapencenc2", "encstrmapencenc3"});
+		checkCipherList(entry, "testinfo.str.map_required.encrypt", new String[]{"encencenc-1mrq", "encencenc-2mrq", "encencenc-3mrq"});
+		checkCipherList(entry, "testinfo.str_idx.map.encrypt", new String[]{"encstrIdxMapencenc1", "encstrIdxMapencenc2", "encstrIdxMapencenc3"});
+		checkCipherList(entry, "testinfo.str_idx.map_required.encrypt", new String[]{"encstrIdxMapRequired1enc", "encstrIdxMapRequired2enc", "encstrIdxMapRequired3enc"});
+		
 		// サービス名付与・除去
 		feed.addSvcname(SERVICE_NAME);
 		feed.cutSvcname(SERVICE_NAME);
 		
 		// 値の取得
-		EntryBase entry = feed.entry.get(0);
+		entry = feed.entry.get(0);
 		//String name = "testinfo.int_idx.intmap_limit.range";
 		//String name = "testinfo";
 		//String name = "testinfo.int_idx.group_useradmin_r";
@@ -159,6 +213,21 @@ public class TemplateChecker {
 		System.out.println("[isMatch]" + conditionStr + " : " + isMatch);
 		assertTrue(entry.isMatch(new Condition[]{new Condition(conditionStr)}) == isMatch);
 	}
+	
+	private void checkCipher(EntryBase entry, String name, String val) {
+		String source = (String)entry.getValue(name);
+		System.out.println("[checkCipher]" + name + " : " + val + ", " + source);
+		assertTrue(val.equals(source));
+	}
+	
+	private void checkCipherList(EntryBase entry, String name, String[] val) {
+		List<String> list = (List<String>)entry.getValue(name);
+		for (int i = 0; i < val.length; i++) {
+			String source = list.get(i);
+			System.out.println("[checkCipherList]" + name + " : " + val[i] + ", " + source);
+			assertTrue(val[i].equals(source));
+		}
+	}
 
 	private FeedTemplateMapper createMapper(String templateFileStr, 
 			String indexEncItemACLFileStr) 
@@ -169,7 +238,7 @@ public class TemplateChecker {
 			String[] tmpTemplate = readTemplate(templateFileStr);
 			if (tmpTemplate != null && tmpTemplate.length > 0) {
 				template = new String[tmpTemplate.length + 1];
-				template[0] = "dummy{99999}";
+				template[0] = "default{99999}";
 				System.arraycopy(tmpTemplate, 0, template, 1, tmpTemplate.length);
 				if (indexEncItemACLFileStr != null) {
 					rights = readTemplate(indexEncItemACLFileStr);
@@ -179,7 +248,7 @@ public class TemplateChecker {
 			template = new String[]{"_"};
 		}
 		FeedTemplateMapper mapper = new FeedTemplateMapper(template, rights, 
-				999999999, null);
+				999999999, "testsecret123");
 		return mapper;
 	}
 	

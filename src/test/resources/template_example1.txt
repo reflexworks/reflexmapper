@@ -13,6 +13,7 @@ testinfo
    num=^[0-9].*$
    alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
+   encrypt
   map_required{}!
    required!
    required_num!=^[0-9].*$
@@ -82,12 +83,14 @@ testinfo
    num=^[0-9].*$
    alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
+   encrypt
   map_required{}!
    required!
    required_num!=^[0-9].*$
    num=^[0-9].*$
    alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
+   encrypt
    group_useradmin_r
    group_useradmin_w
    group_useradmin_rw
@@ -115,6 +118,7 @@ testinfo
    num=^[0-9].*$
    alphabet=^[a-zA-Z].*$
    japaneze=^[ぁ-んァ-ヶ一-龠々ー].*$
+  encrypt
   group_useradmin_r
   group_useradmin_w
   group_useradmin_rw
