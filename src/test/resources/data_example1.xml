@@ -19,7 +19,7 @@
         <array_required_limit>rrrlllaa</array_required_limit>
         <array_required_limit>rrrlllbb</array_required_limit>
         <array_required_limit>rrrlllcc</array_required_limit>
-        <encrypt>encencenc</encrypt>
+        <encrypt>encstrencenc</encrypt>
         <group_useradmin_r>gggrrrreueu</group_useradmin_r>
         <group_useradmin_w>gggwwwweueu</group_useradmin_w>
         <group_useradmin_rw>gggrwrweueu</group_useradmin_rw>
@@ -41,6 +41,7 @@
           <num>736184</num>
           <alphabet>jjjjjmd</alphabet>
           <japaneze>日本語日本語マップデフォルト</japaneze>
+          <encrypt>encstrmapencenc1</encrypt>
         </map>
         <map>
           <required>qqqrrr-md</required>
@@ -48,6 +49,7 @@
           <num>736166</num>
           <alphabet>jjjrrmd</alphabet>
           <japaneze>日本語日本語マップデフォルトに</japaneze>
+          <encrypt>encstrmapencenc2</encrypt>
         </map>
         <map>
           <required>qqqsss-md</required>
@@ -55,6 +57,7 @@
           <num>736156</num>
           <alphabet>jjjssmd</alphabet>
           <japaneze>日本語日本語マップデフォルトさん</japaneze>
+          <encrypt>encstrmapencenc3</encrypt>
         </map>
         <map_required>
           <required>qqqqqq-mrq</required>
@@ -62,7 +65,7 @@
           <num>736123</num>
           <alphabet>jjjjjmmrq</alphabet>
           <japaneze>日本語日本語マップ必須</japaneze>
-          <encrypt>encencenc-mrq</encrypt>
+          <encrypt>encencenc-1mrq</encrypt>
           <group_useradmin_r>gggrrrreueu-mrq</group_useradmin_r>
           <group_useradmin_w>gggwwwweueu-mrq</group_useradmin_w>
           <group_useradmin_rw>gggrwrweueu-mrq</group_useradmin_rw>
@@ -85,7 +88,7 @@
           <num>736164</num>
           <alphabet>jjjrrmrq</alphabet>
           <japaneze>日本語日本語マップ必須に</japaneze>
-          <encrypt>encencenc-mrq</encrypt>
+          <encrypt>encencenc-2mrq</encrypt>
           <group_useradmin_r>gggrrrreueu-mrq2</group_useradmin_r>
           <group_useradmin_w>gggwwwweueu-mrq2</group_useradmin_w>
           <group_useradmin_rw>gggrwrweueu-mrq2</group_useradmin_rw>
@@ -108,7 +111,7 @@
           <num>736336</num>
           <alphabet>jjjssmrq</alphabet>
           <japaneze>日本語日本語マップ必須さん</japaneze>
-          <encrypt>encencenc-mrq</encrypt>
+          <encrypt>encencenc-3mrq</encrypt>
           <group_useradmin_r>gggrrrreueu-3mrq</group_useradmin_r>
           <group_useradmin_w>gggwwwweueu-3mrq</group_useradmin_w>
           <group_useradmin_rw>gggrwrweueu-3mrq</group_useradmin_rw>
@@ -176,6 +179,7 @@
         <num>737184</num>
         <alphabet>jjjjjsi</alphabet>
         <japaneze>日本語日本語インデックス</japaneze>
+        <encrypt>encstrIdxencenc</encrypt>
         <group_useradmin_r>gggrrrreusi</group_useradmin_r>
         <group_useradmin_w>gggwwwweusi</group_useradmin_w>
         <group_useradmin_rw>gggrwrweusi</group_useradmin_rw>
@@ -197,6 +201,7 @@
           <num>636184</num>
           <alphabet>jjjsimd</alphabet>
           <japaneze>日本語インデックス日本語マップデフォルト</japaneze>
+          <encrypt>encstrIdxMapencenc1</encrypt>
         </map>
         <map>
           <required>qqqrsi-md</required>
@@ -204,6 +209,7 @@
           <num>736166</num>
           <alphabet>jjjrrsimd</alphabet>
           <japaneze>日本語インデックス日本語マップデフォルトに</japaneze>
+          <encrypt>encstrIdxMapencenc2</encrypt>
         </map>
         <map>
           <required>qqqssi-md</required>
@@ -211,6 +217,7 @@
           <num>636156</num>
           <alphabet>jjjsssimd</alphabet>
           <japaneze>日本語インデックス日本語マップデフォルトさん</japaneze>
+          <encrypt>encstrIdxMapencenc3</encrypt>
         </map>
         <map_required>
           <required>qqqqsi-mrq</required>
@@ -218,6 +225,7 @@
           <num>636123</num>
           <alphabet>jjjsimmrq</alphabet>
           <japaneze>日本語インデックス日本語マップ必須</japaneze>
+          <encrypt>encstrIdxMapRequired1enc</encrypt>
           <group_useradmin_r>gggrrrreueusi-mrq</group_useradmin_r>
           <group_useradmin_w>gggwwwweueusi-mrq</group_useradmin_w>
           <group_useradmin_rw>gggrwrweueusi-mrq</group_useradmin_rw>
@@ -240,6 +248,7 @@
           <num>736164</num>
           <alphabet>jjjsimrq</alphabet>
           <japaneze>日本語インデックス日本語マップ必須に</japaneze>
+          <encrypt>encstrIdxMapRequired2enc</encrypt>
           <group_useradmin_r>gggrrrreueusi-mrq2</group_useradmin_r>
           <group_useradmin_w>gggwwwweueusi-mrq2</group_useradmin_w>
           <group_useradmin_rw>gggrwrweueusi-mrq2</group_useradmin_rw>
@@ -262,6 +271,7 @@
           <num>636336</num>
           <alphabet>jjjsimrq</alphabet>
           <japaneze>日本語インデックス日本語マップ必須さん</japaneze>
+          <encrypt>encstrIdxMapRequired3enc</encrypt>
           <group_useradmin_r>gggrrrreueusi-3mrq</group_useradmin_r>
           <group_useradmin_w>gggwwwweueusi-3mrq</group_useradmin_w>
           <group_useradmin_rw>gggrwrweueusi-3mrq</group_useradmin_rw>
@@ -568,6 +578,7 @@
       </int_idx>
       
     </testinfo>
+    <id>/1/new,1</id>
   </entry>
 </feed>
   

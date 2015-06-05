@@ -1751,6 +1751,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (fld.indexOf("-") >= 0) {
 						fld = fld.replace("-", "__");
 					}
+					if (fld.indexOf("___") >= 0) {
+						fld = fld.replace("___", "$");
+					}
 					if (!classname.isEmpty()) {
 						cc = this.getClass(classname);
 						try {
