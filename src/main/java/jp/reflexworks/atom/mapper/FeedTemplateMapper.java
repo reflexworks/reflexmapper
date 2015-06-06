@@ -1481,7 +1481,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				}
 				if (meta.self != null) {
 					if (meta.regex != null && meta.regex.length() > 0 && meta.hasChild()) {
-						throw new ParseException("Syntax error(illegal character in property or regex uses in parent object):" + meta.self, 0);
+						throw new ParseException("Syntax error(illegal character in property or regex uses in the parent object):" + meta.self, 0);
 					}
 					metalist.add(meta);
 				}
@@ -1491,7 +1491,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				}
 				else {
 					if (meta.self.startsWith("_$")) {
-						if (!meta.canattr) throw new ParseException("Attribute($) must be first line.:" + meta.name, 0);
+						if (!meta.canattr) throw new ParseException("Attribute($) must be the first line.:" + meta.name, 0);
 						if (meta.hasChild()) throw new ParseException("Can't specify attribute($) to.:" + meta.name, 0);
 					}
 					if (!meta.self.startsWith("_$")) {
