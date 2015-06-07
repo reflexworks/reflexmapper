@@ -52,6 +52,7 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 
 //import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
+
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -76,7 +77,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]*)(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
@@ -501,6 +502,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static final String aclpattern = "([/0-9a-zA-Z_$*@]+\\+(?:R|W|RW),?)+";
+	private static final String STRMAXLENGTH = "67108864";	// 64KB
+	
 	private void addPropAcls(String[] propAcls, int indexmax) throws ParseException {
 
 		Pattern patternp = Pattern.compile(aclpattern);
@@ -1386,6 +1389,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else if (meta.isArray||meta.hasChild()) {
 					line += "if (" + meta.self + "!=null&&" + meta.self + ".size()<" + min + ") throw new java.text.ParseException(\"Minimum number of '" + meta.self + "' not met.\",0);";
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".size()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
+				} else if (meta.type.equals("String")) {
+					line += "if (" + meta.self + "!=null&&" + meta.self + ".length()<" + min + ") throw new java.text.ParseException(\"Minimum length of '" + meta.self + "' not met.\",0);";
+					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";
 				}
 			} else {
 				// maxチェックのみ
@@ -1394,9 +1400,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".longValue()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
 				} else if (meta.isArray || meta.hasChild()) {
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".size()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
+				} else if (meta.type.equals("String")) {
+					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";					
 				}
 			}
 		}
+		
+		if (!meta.isArray && meta.type.equals("String")) {
+			line += "if (" + meta.self + "!=null&&" + STRMAXLENGTH + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";					
+		}
+		
 		return line;
 	}
 
@@ -1563,13 +1576,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} else {
 						meta.type = "String"; // その他
 					}
-				} else {
-					if (meta.type == null) {
-						meta.type = "String"; // 省略時
-					}
-				}
-
-				if (meta.min != null && meta.type.equals("String")) {
+				} 
+				
+				if (meta.min != null && meta.type==null) {
 					meta.isMap = true;
 				} else {
 					if (matcherf.group(5).indexOf(ARRAY) >= 0) {
@@ -1577,6 +1586,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 						meta.isArray = true;
 						meta.min = matcherf.group(6);	// maxの要素数をminに入れる
 					}
+				}
+
+				if (meta.type == null) {
+					meta.type = "String"; // 省略時
 				}
 
 			} else {
