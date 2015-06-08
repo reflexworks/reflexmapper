@@ -3,7 +3,7 @@ package jp.reflexworks.atom.entry;
 import java.util.List;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
-import jp.reflexworks.atom.mapper.MapperContext;
+import jp.reflexworks.atom.mapper.CipherContext;
 
 public interface SoftSchema {
 	
@@ -23,7 +23,7 @@ public interface SoftSchema {
 	 * @param secretkey
 	 */
 //	public void encrypt(String id, Object cipher, String secretkey);
-	public void encrypt(MapperContext context);
+	public void encrypt(CipherContext context);
 	
 	/**
 	 * 暗号化対象の項目を複合
@@ -33,7 +33,7 @@ public interface SoftSchema {
 	 * @param secretkey
 	 */
 //	public void decrypt(String id, Object cipher, String secretkey);
-	public void decrypt(MapperContext context);
+	public void decrypt(CipherContext context);
 	
 	/**
 	 * 検索条件に合致するか調べる

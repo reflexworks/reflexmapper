@@ -8,7 +8,7 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.ConditionContext;
-import jp.reflexworks.atom.mapper.MapperContext;
+import jp.reflexworks.atom.mapper.CipherContext;
 
 /**
  * 認証・認可情報定義.
@@ -110,10 +110,10 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(MapperContext context) {
+	public void encrypt(CipherContext context) {
 		if (uri != null) uri = (String)CipherUtil.doEncrypt("" + uri, context.secretkey + context.id, context.cipher);
 	}
-	public void decrypt(MapperContext context) {
+	public void decrypt(CipherContext context) {
 		if (uri != null) uri = (String)CipherUtil.doDecrypt("" + uri, context.secretkey + context.id, context.cipher);
 	}
 	

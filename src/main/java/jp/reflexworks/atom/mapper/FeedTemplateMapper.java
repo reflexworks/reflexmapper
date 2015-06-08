@@ -165,7 +165,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String FEEDBASE = "jp.reflexworks.atom.feed.FeedBase";
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
-	private static final String MAPPERCONTEXT = "jp.reflexworks.atom.mapper.MapperContext";
+	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
@@ -314,7 +314,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		this.loader = new Loader(Thread.currentThread().getContextClassLoader(), this.pool);
 
 		loader.delegateLoadingOf(CONDITIONCONTEXT);			// 既存classは先に読めるようにする
-		loader.delegateLoadingOf(MAPPERCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(CIPHERCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
@@ -994,8 +994,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 				ismatch.append(ismatchFuncS2);
 				maskprop.append(maskpropFuncS2);
 				validation.append(validateFuncS2);
-				encrypt.append(encryptFuncS2);
-				decrypt.append(decryptFuncS2);
+				encrypt.append(encryptFuncS2+",\""+this.secretkey+"\");");
+				decrypt.append(decryptFuncS2+",\""+this.secretkey+"\");");
 			} else {
 				if (!isFeed(classname)) {
 					ismatch.append(ismatchFuncS+setparent(classname));
@@ -1247,12 +1247,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
 	private final String getvalueFuncE = "return null;}";
-	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.MapperContext context) {";
-	private final String encryptFuncS2 = "public void encrypt(Object cipher) { jp.reflexworks.atom.mapper.MapperContext context= new jp.reflexworks.atom.mapper.MapperContext(cipher,this.id);";
+	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.CipherContext context) {";
+	private final String encryptFuncS2 = "public void encrypt(Object cipher) { jp.reflexworks.atom.mapper.CipherContext context= new jp.reflexworks.atom.mapper.CipherContext(cipher,this.id";
 	private final String encryptFuncS4 = "public void encrypt(Object cipher) {";
 	
-	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.MapperContext context) {";
-	private final String decryptFuncS2 = "public void decrypt(Object cipher) { jp.reflexworks.atom.mapper.MapperContext context= new jp.reflexworks.atom.mapper.MapperContext(cipher,this.id);";
+	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.CipherContext context) {";
+	private final String decryptFuncS2 = "public void decrypt(Object cipher) { jp.reflexworks.atom.mapper.CipherContext context= new jp.reflexworks.atom.mapper.CipherContext(cipher,this.id";
 	private final String endFuncE = "}";
 	private final String decryptFuncS4 = "public void decrypt(Object cipher) {";
 

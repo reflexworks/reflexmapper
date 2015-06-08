@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
-import jp.reflexworks.atom.mapper.MapperContext;
+import jp.reflexworks.atom.mapper.CipherContext;
 
 /**
  * コンテンツ.
@@ -106,8 +106,8 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(MapperContext context) {}
-	public void decrypt(MapperContext context) {}
+	public void encrypt(CipherContext context) {}
+	public void decrypt(CipherContext context) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$$text != null) {

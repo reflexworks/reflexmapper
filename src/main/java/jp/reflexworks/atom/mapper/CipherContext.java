@@ -1,21 +1,17 @@
 package jp.reflexworks.atom.mapper;
 
-import java.util.List;
-
-public class MapperContext {
+public class CipherContext {
 
 	
 	public String parent;
-	public String uid;
-	public List groups;
-	public String myself;
 	public String id;
 	public Object cipher;
 	public String secretkey;
 	
-	public MapperContext(Object cipher,String id) {
+	public CipherContext(Object cipher,String id,String secretkey) {
 		this.cipher = cipher;
 		this.id = id;
+		this.secretkey = secretkey;
 	}
 	
 }
