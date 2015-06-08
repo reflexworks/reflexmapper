@@ -7,6 +7,7 @@ import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.ConditionContext;
+import jp.reflexworks.atom.mapper.MapperContext;
 
 /**
  * Link.
@@ -140,8 +141,8 @@ public class Link implements Serializable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher, String secretkey) {}
-	public void decrypt(String id, Object cipher, String secretkey) {}
+	public void encrypt(MapperContext context) {}
+	public void decrypt(MapperContext context) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$href != null) {

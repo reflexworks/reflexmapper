@@ -6,6 +6,7 @@ import java.util.List;
 import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
+import jp.reflexworks.atom.mapper.MapperContext;
 
 /**
  * 更新者.
@@ -81,8 +82,8 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher, String secretkey) {}
-	public void decrypt(String id, Object cipher, String secretkey) {}
+	public void encrypt(MapperContext context) {}
+	public void decrypt(MapperContext context) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (name != null) {

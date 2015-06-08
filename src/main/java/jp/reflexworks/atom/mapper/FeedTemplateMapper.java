@@ -165,6 +165,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String FEEDBASE = "jp.reflexworks.atom.feed.FeedBase";
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
+	private static final String MAPPERCONTEXT = "jp.reflexworks.atom.mapper.MapperContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
@@ -313,6 +314,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		this.loader = new Loader(Thread.currentThread().getContextClassLoader(), this.pool);
 
 		loader.delegateLoadingOf(CONDITIONCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(MAPPERCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
@@ -989,28 +991,24 @@ public class FeedTemplateMapper extends ResourceMapper {
 			StringBuffer validation = new StringBuffer();
 			StringBuffer maskprop = new StringBuffer();
 			if (isEntry(classname)) {
-				ismatch.append(ismatchFuncS2+"context.parent=null;");
+				ismatch.append(ismatchFuncS2);
 				maskprop.append(maskpropFuncS2);
 				validation.append(validateFuncS2);
 				encrypt.append(encryptFuncS2);
-				encrypt.append(encryptFuncS3_1);
-				encrypt.append(this.secretkey);
-				encrypt.append(encryptFuncS3_2);
 				decrypt.append(decryptFuncS2);
-				decrypt.append(decryptFuncS3_1);
-				decrypt.append(this.secretkey);
-				decrypt.append(decryptFuncS3_2);
 			} else {
 				if (!isFeed(classname)) {
-					ismatch.append(ismatchFuncS+"String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";");
+					ismatch.append(ismatchFuncS+setparent(classname));
 					maskprop.append(maskpropFuncS);
 					validation.append(validateFuncS);
+					encrypt.append(encryptFuncS+setparent(classname));
+					decrypt.append(decryptFuncS+setparent(classname));
 				} else {
 					maskprop.append(maskpropFuncS3);
 					validation.append(validateFuncS3);
+					encrypt.append(encryptFuncS4);
+					decrypt.append(decryptFuncS4);
 				}
-				encrypt.append(encryptFuncS);
-				decrypt.append(decryptFuncS);
 			}
 
 			for (int i = 0; i < matches(classname); i++) {
@@ -1122,26 +1120,28 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 				// 暗号化
 				if (meta.privatekey != null) {
-					encrypt.append("if (" + meta.self + "!=null)" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doEncrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+id, cipher);");
-					decrypt.append("if (" + meta.self + "!=null)" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doDecrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+id, cipher);");
+					encrypt.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doEncrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+context.id, context.cipher);");
+					decrypt.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doDecrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+context.id, context.cipher);");
 				}
 
 				// 子要素のgetValue/setValue
 				if (meta.hasChild()) {
 					if (meta.isMap) {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { java.util.List result = new java.util.ArrayList(); for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);result.add(value);} if (result.size()>0) return result;}"); 
-						encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(id, cipher, secretkey);}"); 
-						decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(id, cipher, secretkey);}"); 
 						if (!isFeed(classname)) {
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(context);}"); 
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
 							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(uid,groups,myself);}"); 
 						} else {
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
 						}
 					} else {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
-						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(id, cipher, secretkey);");
-						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(id, cipher, secretkey);");
+						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(context);");
+						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(context);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
 						if (!isFeed(classname)) {
 							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(uid,groups,myself);");
@@ -1195,22 +1195,22 @@ public class FeedTemplateMapper extends ResourceMapper {
 			CtMethod m2 = CtNewMethod.make(getvalue.toString(), cc);
 			cc.addMethod(m2);
 
-			encrypt.append(endFuncE);
-			CtMethod m3 = CtNewMethod.make(encrypt.toString(), cc);
-			cc.addMethod(m3);
-
-			decrypt.append(endFuncE);
-			CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
-			cc.addMethod(m4);
-
 			if (!isFeed(classname)) {
 				if (isEntry(classname)) {
 					ismatch.append(ismatchFuncE2);				
+					encrypt.append(endFuncE);
+					decrypt.append(endFuncE);
 				} else {
 					ismatch.append("context.parent=parent;"+endFuncE);				
+					encrypt.append("context.parent=parent;"+endFuncE);				
+					decrypt.append("context.parent=parent;"+endFuncE);				
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
+				CtMethod m3 = CtNewMethod.make(encrypt.toString(), cc);
+				cc.addMethod(m3);
+				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
+				cc.addMethod(m4);
 			}
 
 			maskprop.append(endFuncE);
@@ -1236,6 +1236,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return classnames;
 	}
 
+	private String setparent(String classname) {
+		return "String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";";
+	}
+	
 	private String cutPackagename(String classname) {
 		String result = classname.substring(classname.lastIndexOf(".")+1);
 		return (""+result.charAt(0)).toLowerCase()+result.substring(1);
@@ -1243,15 +1247,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
 	private final String getvalueFuncE = "return null;}";
-	private final String encryptFuncS = "public void encrypt(String id, Object cipher, String secretkey) {";
-	private final String encryptFuncS2 = "public void encrypt(Object cipher) { String id=this.id;";
-	private final String encryptFuncS3_1 = "String secretkey=\"";
-	private final String encryptFuncS3_2 = "\";";
-	private final String decryptFuncS = "public void decrypt(String id, Object cipher, String secretkey) {";
-	private final String decryptFuncS2 = "public void decrypt(Object cipher) { String id=this.id;";
-	private final String decryptFuncS3_1 = encryptFuncS3_1;
-	private final String decryptFuncS3_2 = encryptFuncS3_2;
+	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.MapperContext context) {";
+	private final String encryptFuncS2 = "public void encrypt(Object cipher) { jp.reflexworks.atom.mapper.MapperContext context= new jp.reflexworks.atom.mapper.MapperContext(cipher,this.id);";
+	private final String encryptFuncS4 = "public void encrypt(Object cipher) {";
+	
+	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.MapperContext context) {";
+	private final String decryptFuncS2 = "public void decrypt(Object cipher) { jp.reflexworks.atom.mapper.MapperContext context= new jp.reflexworks.atom.mapper.MapperContext(cipher,this.id);";
 	private final String endFuncE = "}";
+	private final String decryptFuncS4 = "public void decrypt(Object cipher) {";
+
 	private final String ismatchFuncS = "public void isMatch(jp.reflexworks.atom.mapper.ConditionContext context) {";
 	private final String ismatchFuncS2 = "public boolean isMatch(jp.reflexworks.atom.wrapper.base.ConditionBase[] conditions) {" +
 			"jp.reflexworks.atom.mapper.ConditionContext context = new jp.reflexworks.atom.mapper.ConditionContext(conditions);";

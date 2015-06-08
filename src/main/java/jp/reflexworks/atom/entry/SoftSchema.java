@@ -3,6 +3,7 @@ package jp.reflexworks.atom.entry;
 import java.util.List;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
+import jp.reflexworks.atom.mapper.MapperContext;
 
 public interface SoftSchema {
 	
@@ -21,7 +22,8 @@ public interface SoftSchema {
 	 * @param cipher
 	 * @param secretkey
 	 */
-	public void encrypt(String id, Object cipher, String secretkey);
+//	public void encrypt(String id, Object cipher, String secretkey);
+	public void encrypt(MapperContext context);
 	
 	/**
 	 * 暗号化対象の項目を複合
@@ -30,7 +32,8 @@ public interface SoftSchema {
 	 * @param cipher
 	 * @param secretkey
 	 */
-	public void decrypt(String id, Object cipher, String secretkey);
+//	public void decrypt(String id, Object cipher, String secretkey);
+	public void decrypt(MapperContext context);
 	
 	/**
 	 * 検索条件に合致するか調べる
