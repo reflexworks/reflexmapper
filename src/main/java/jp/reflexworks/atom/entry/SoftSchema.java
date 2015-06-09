@@ -4,6 +4,7 @@ import java.util.List;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
+import jp.reflexworks.atom.mapper.MaskpropContext;
 
 public interface SoftSchema {
 	
@@ -18,21 +19,15 @@ public interface SoftSchema {
 	/**
 	 * 暗号化対象の項目を暗号化
 	 * 
-	 * @param id
-	 * @param cipher
-	 * @param secretkey
+	 * @param context
 	 */
-//	public void encrypt(String id, Object cipher, String secretkey);
 	public void encrypt(CipherContext context);
 	
 	/**
 	 * 暗号化対象の項目を複合
 	 * 
-	 * @param id
-	 * @param cipher
-	 * @param secretkey
+	 * @param context
 	 */
-//	public void decrypt(String id, Object cipher, String secretkey);
 	public void decrypt(CipherContext context);
 	
 	/**
@@ -57,10 +52,8 @@ public interface SoftSchema {
 	/**
 	 * 項目の値をマスクする
 	 * 
-	 * @param uid
-	 * @param groups
-	 * @param myself
+	 * @param context
 	 */
-	public void maskprop(String uid, List<String> groups, String myself);
+	public void maskprop(MaskpropContext context);
 
 }

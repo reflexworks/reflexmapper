@@ -33,10 +33,5 @@ public class Feed extends FeedBase implements Serializable {
 		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
-	@Override
-	public void maskprop(String ucode, List groups) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
 
 }

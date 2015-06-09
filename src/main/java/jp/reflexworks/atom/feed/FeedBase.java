@@ -218,8 +218,6 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	public abstract boolean validate(String uid, List<String> groups)
 			throws java.text.ParseException;
 
-	public abstract void maskprop(String uid, List<String> groups);
-
 	/**
 	 * キーにサービス名を付加します.
 	 * @param svcname サービス名
