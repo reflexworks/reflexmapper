@@ -1592,8 +1592,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 					meta.isMap = true;
 				} else {
 					if (matcherf.group(5).indexOf(ARRAY) >= 0) {
-						// for Array
-						meta.isArray = true;
+						// for Array(廃止)
+//						meta.isArray = true;
 						meta.min = matcherf.group(6);	// maxの要素数をminに入れる
 					}
 				}
