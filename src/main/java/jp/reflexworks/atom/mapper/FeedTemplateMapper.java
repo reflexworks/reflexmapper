@@ -1218,7 +1218,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}else {
 				maskprop.append(endFuncE);
 			}
-			System.out.println(maskprop);
 			CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
 			cc.addMethod(m6);
 
