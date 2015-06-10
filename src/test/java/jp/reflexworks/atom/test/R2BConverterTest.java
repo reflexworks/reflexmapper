@@ -11,7 +11,6 @@ public class R2BConverterTest {
 
 	public static String entitytempl[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
-		"default{2}",        //  0行目はパッケージ名(service名)
 		"Idx 	",			  
 		"email",
 		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）

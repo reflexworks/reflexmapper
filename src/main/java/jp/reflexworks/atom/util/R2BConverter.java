@@ -5,6 +5,42 @@ import java.util.regex.Pattern;
 
 public class R2BConverter {
 
+	public static final String[] ATOMENTRYTMPL = {
+		"author{}",
+		" name",
+		" uri",
+		" email",
+		"category{}",
+		" $term",
+		" $scheme",
+		" $label",
+		"content",
+		" $src",				// 下に同じ
+		" $type",				// この項目はContentクラスのvalidate(group)において$contentグループに属しているかのチェックをしている
+		" $$text",				// 同上
+		"contributor{}",
+		" name",
+		" uri",
+		" email",
+		"id",
+		"link{}",
+		" $href",
+		" $rel",
+		" $type",
+		" $title",
+		" $length", 
+		"published",
+		"rights",
+		"rights_$type",
+		"summary",
+		"summary_$type",
+		"title",
+		"title_$type",
+		"subtitle",
+		"subtitle_$type",
+		"updated",
+	};	
+
 	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]*)(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	public class Meta {
@@ -22,13 +58,20 @@ public class R2BConverter {
 	}
 	
 	public String convert(String[] entitytempl) {
+		
+		int l = ((String[]) entitytempl).length;
+		String[] template = new String[ATOMENTRYTMPL.length+l];
+//		template[0] = ((String[]) entitytempl)[0];
+		System.arraycopy(ATOMENTRYTMPL, 0, template, 0, ATOMENTRYTMPL.length);
+		System.arraycopy((String[]) entitytempl, 0, template, ATOMENTRYTMPL.length , l );
+
 		Pattern patternf = Pattern.compile(field_pattern);
 		StringBuilder sb = new StringBuilder();
 
 		Meta meta = new Meta(0);
-		for(int i=0;i<entitytempl.length;i++) {
+		for(int i=0;i<template.length;i++) {
 			
-			Matcher matcherf = patternf.matcher(entitytempl[i]);
+			Matcher matcherf = patternf.matcher(template[i]);
 						
 			if (matcherf.find()) {
 
@@ -39,7 +82,7 @@ public class R2BConverter {
 					}
 				}
 
-				if (i<entitytempl.length+1) {
+				if (i<template.length+1) {
 					meta.comma = true;
 				}
 
@@ -53,7 +96,7 @@ public class R2BConverter {
 					meta.repeated = false;
 				}
 				
-				meta.name = matcherf.group(2);
+				meta.name = matcherf.group(2).replace("$", "___");
 				
 				meta.type = "STRING";
 				if (matcherf.group(4)!=null) {
@@ -82,7 +125,7 @@ public class R2BConverter {
 
 		}
 		out(meta,sb);
-		return sb.toString();
+		return "[\n"+sb.toString()+"]\n";
 
 	}
 
