@@ -1173,7 +1173,7 @@ public class TestMsgpackMapper {
 		List<String> groups = new ArrayList<String>();
 
 		// グループ参加なし
-		feed.entry.get(0).maskprop(uid, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (グループ参加なし) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
@@ -1191,7 +1191,7 @@ public class TestMsgpackMapper {
 		// 別グループに参加
 		feed = (FeedBase)mp.fromJSON(json);
 		groups.add("/othergroup");
-		feed.entry.get(0).maskprop(uid, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (別グループに参加) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
@@ -1199,7 +1199,7 @@ public class TestMsgpackMapper {
 		// /$admin グループ
 		feed = (FeedBase)mp.fromJSON(json);
 		groups.add("/@testservice/_group/$admin");
-		feed.entry.get(0).maskprop(uid, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
@@ -1230,7 +1230,7 @@ public class TestMsgpackMapper {
 		//groups.add("/@testservice/_group/$admin");
 		//groups.add("/@testservice/_group/$content");
 
-		feed.entry.get(0).maskprop(uid, groups);
+		feed.maskprop(uid, groups);
 		System.out.println("\n=== maskprop (管理者権限) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);

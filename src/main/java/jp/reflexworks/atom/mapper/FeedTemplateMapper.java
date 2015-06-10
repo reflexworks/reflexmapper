@@ -1215,9 +1215,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 				cc.addMethod(m3);
 				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
 				cc.addMethod(m4);
-				CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
-				cc.addMethod(m6);
+			}else {
+				maskprop.append(endFuncE);
 			}
+			System.out.println(maskprop);
+			CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
+			cc.addMethod(m6);
 
 			/* 静的classFile作成 */
 			if (folderpath != null && !cc.getName().equals("Author")
@@ -1270,7 +1273,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String validateFuncE = "return true;}";
 	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
 	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getMyself());";
-	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {String myself = null;";
+	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
 
 	/**
 	 * バリデーションロジック（必須チェックと正規表現チェック）
