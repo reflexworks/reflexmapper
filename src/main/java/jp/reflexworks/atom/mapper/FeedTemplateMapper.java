@@ -166,6 +166,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
 	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";
+	private static final String MASKPROPCONTEXT = "jp.reflexworks.atom.mapper.MaskpropContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
@@ -315,6 +316,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		loader.delegateLoadingOf(CONDITIONCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(MASKPROPCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
@@ -999,7 +1001,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			} else {
 				if (!isFeed(classname)) {
 					ismatch.append(ismatchFuncS+setparent(classname));
-					maskprop.append(maskpropFuncS);
+					maskprop.append(maskpropFuncS+setparent(classname));
 					validation.append(validateFuncS);
 					encrypt.append(encryptFuncS+setparent(classname));
 					decrypt.append(decryptFuncS+setparent(classname));
@@ -1132,7 +1134,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(context);}"); 
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
 							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(uid,groups,myself);}"); 
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(context);}"); 
 						} else {
 							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
@@ -1144,7 +1146,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(context);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
 						if (!isFeed(classname)) {
-							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(uid,groups,myself);");
+							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(context);");
 						} else {
 							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(uid,groups);");
 						}
@@ -1200,10 +1202,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 					ismatch.append(ismatchFuncE2);				
 					encrypt.append(endFuncE);
 					decrypt.append(endFuncE);
+					maskprop.append(endFuncE);
 				} else {
 					ismatch.append("context.parent=parent;"+endFuncE);				
 					encrypt.append("context.parent=parent;"+endFuncE);				
 					decrypt.append("context.parent=parent;"+endFuncE);				
+					maskprop.append("context.parent=parent;"+endFuncE);
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
@@ -1211,11 +1215,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				cc.addMethod(m3);
 				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
 				cc.addMethod(m4);
+				CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
+				cc.addMethod(m6);
 			}
-
-			maskprop.append(endFuncE);
-			CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
-			cc.addMethod(m6);
 
 			/* 静的classFile作成 */
 			if (folderpath != null && !cc.getName().equals("Author")
@@ -1266,8 +1268,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String validateFuncS3 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = null;";
 
 	private final String validateFuncE = "return true;}";
-	private final String maskpropFuncS = "public void maskprop(String uid, java.util.List groups, String myself) {";
-	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {String myself = getMyself();";
+	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
+	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getMyself());";
 	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {String myself = null;";
 
 	/**
@@ -1315,11 +1317,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "if ("+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
-			line += "if (groups==null) groups = new java.util.ArrayList();";
-			line += "java.util.ArrayList groups2 = new java.util.ArrayList(groups);";
-			line += "groups2.add(\"\"+uid);";
+			line += "if (context.groups==null) context.groups = new java.util.ArrayList();";
+			line += "java.util.ArrayList groups2 = new java.util.ArrayList(context.groups);";
+			line += "groups2.add(\"\"+context.uid);";
 			for(String aclr:meta.aclR) {
-				if (aclr.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
+				if (aclr.equals("@")) line += "if (context.uid != null && context.uid.equals(context.myself)) ex=true;";
 			}
 			line += "for(int i=0;i<groups2.size();i++) {";
 			for(String aclr:meta.aclR) {
@@ -1332,7 +1334,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				else line += "if (groups2.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
 			line += "}";
+			line += "if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0)) {";
 			line += "if (!ex) "+ meta.self +"=null;";
+			line += "}";
 			line += "}";
 		}
 		return line;

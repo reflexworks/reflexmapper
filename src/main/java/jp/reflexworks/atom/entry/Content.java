@@ -9,6 +9,7 @@ import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
+import jp.reflexworks.atom.mapper.MaskpropContext;
 
 /**
  * コンテンツ.
@@ -130,6 +131,6 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 		}
 	}
 
-	public void maskprop(String uid, List<String> groups, String myself) {}
+	public void maskprop(MaskpropContext context) {}
 
 }

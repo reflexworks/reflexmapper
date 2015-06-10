@@ -8,6 +8,7 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
+import jp.reflexworks.atom.mapper.MaskpropContext;
 
 /**
  * Link.
@@ -208,7 +209,7 @@ public class Link implements Serializable, SoftSchema {
 		return true;
 	}
 
-	public void maskprop(String uid, List<String> groups, String myself) {
+	public void maskprop(MaskpropContext context) {
 	}
 
 	public void addSvcname(String svcname) {
