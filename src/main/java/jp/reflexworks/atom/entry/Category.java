@@ -6,6 +6,8 @@ import java.util.List;
 import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.mapper.ConditionContext;
+import jp.reflexworks.atom.mapper.CipherContext;
+import jp.reflexworks.atom.mapper.MaskpropContext;
 
 /**
  * カテゴリ.
@@ -78,8 +80,8 @@ public class Category implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher, String secretkey) {}
-	public void decrypt(String id, Object cipher, String secretkey) {}
+	public void encrypt(CipherContext context) {}
+	public void decrypt(CipherContext context) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$term != null) {
@@ -105,6 +107,6 @@ public class Category implements Serializable, Cloneable, SoftSchema {
 	public boolean validate(String uid, List<String> groups, String myself) 
 			throws java.text.ParseException {return true;}
 
-	public void maskprop(String uid, List<String> groups, String myself) {}
+	public void maskprop(MaskpropContext context) {}
 
 }

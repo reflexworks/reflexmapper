@@ -8,6 +8,8 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.ConditionContext;
+import jp.reflexworks.atom.mapper.CipherContext;
+import jp.reflexworks.atom.mapper.MaskpropContext;
 
 /**
  * 認証・認可情報定義.
@@ -109,11 +111,11 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher, String secretkey) {
-		if (uri != null) uri = (String)CipherUtil.doEncrypt("" + uri, secretkey + id, cipher);
+	public void encrypt(CipherContext context) {
+		if (uri != null) uri = (String)CipherUtil.doEncrypt("" + uri, context.secretkey + context.id, context.cipher);
 	}
-	public void decrypt(String id, Object cipher, String secretkey) {
-		if (uri != null) uri = (String)CipherUtil.doDecrypt("" + uri, secretkey + id, cipher);
+	public void decrypt(CipherContext context) {
+		if (uri != null) uri = (String)CipherUtil.doDecrypt("" + uri, context.secretkey + context.id, context.cipher);
 	}
 	
 	public void isMatch(ConditionContext context) {
@@ -140,7 +142,7 @@ public class Contributor implements Serializable, Cloneable, SoftSchema {
 	public boolean validate(String uid, List<String> groups, String myself) 
 			throws java.text.ParseException {return true;}
 
-	public void maskprop(String uid, List<String> groups, String myself) {}
+	public void maskprop(MaskpropContext context) {}
 
 	public void addSvcname(String svcname) {
 		if (uri != null && svcname != null && svcname.length() > 0) {

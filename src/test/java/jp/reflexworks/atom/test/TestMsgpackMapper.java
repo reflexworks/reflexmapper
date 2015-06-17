@@ -44,7 +44,7 @@ public class TestMsgpackMapper {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
 		"Idx 	",			  
-		"email",
+		"email(string){5~30}",	// 5文字~30文字の範囲
 		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
 		"name",
 		"given_name",
@@ -61,7 +61,7 @@ public class TestMsgpackMapper {
 		"subInfo",
 		" favorite",
 		"  food!=^.{3}$",	// 必須項目、正規表現つき
-		"  music[3]=^.{5}$",			// 配列(要素数max3)
+		"  music=^.{5}$",			// 配列(要素数max3)
 		" favorite2",
 		"  food",
 		"   food1",
@@ -147,7 +147,7 @@ public class TestMsgpackMapper {
 		"subInfo",
 		" favorite",
 		"  food!=^.{3}$",	// 必須項目、正規表現つき
-		"  music[3]=^.{5}$",			// 配列(要素数max3)
+		"  music=^.{5}$",			// 配列(要素数max3)
 		" favorite2",
 		"  food",
 		"   food1",
@@ -179,7 +179,7 @@ public class TestMsgpackMapper {
 		"subInfo",
 		" favorite",
 		"  food!=^.{3}$",	// 必須項目、正規表現つき
-		"  music[3]=^.{5}$",			// 配列(要素数max3)
+		"  music=^.{5}$",			// 配列(要素数max3)
 		" favorite2",
 		"  food",
 		"   food1",
@@ -258,7 +258,7 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 
 		System.out.println("JSON Entry デシリアライズ");
-		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
 		System.out.println("\n=== JSON Entry シリアライズ ===");
@@ -273,7 +273,7 @@ public class TestMsgpackMapper {
 	public void testXMLEntry() throws ParseException, JSONException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls, 30, SECRETKEY);
 
-		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
 		System.out.println("\n=== XML Entry シリアライズ ===");
@@ -327,7 +327,7 @@ public class TestMsgpackMapper {
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_COMPRESSION, true);
 		try {
 
-			String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$type\" : \"image/gif\",\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+			String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$type\" : \"image/gif\",\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 			//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 			EntryBase entry = (EntryBase) mp.fromJSON(json);
 	
@@ -394,7 +394,7 @@ public class TestMsgpackMapper {
 		//DeflateUtil deflateUtil = new DeflateUtil();
 
 		// desc(降順プロパティ付き）
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}},\"seq\" :\"1\"}]}}";
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}},\"seq\" :\"1\"}]}}";
 
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
 		List groups = new ArrayList<String>();
@@ -412,7 +412,7 @@ public class TestMsgpackMapper {
 		
 		// descにLongを超える文字を入れる
 		boolean isParseException = false;
-		json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}},\"seq\" :\"9223372036854775904\"}]}}";
+		json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}},\"seq\" :\"9223372036854775904\"}]}}";
 		feed = (FeedBase) mp.fromJSON(json);
 		try {
 			System.out.println("Validtion:"+feed.validate("123",groups));
@@ -426,7 +426,7 @@ public class TestMsgpackMapper {
 	public void testArrayEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
 
-		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
 		// MessagePack test
@@ -450,7 +450,7 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
 		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl2, SECRETKEY);	// 項目追加後	
 
-		String json = "{ \"feed\" : {\"entry\" : [{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}]}}";
+		String json = "{ \"feed\" : {\"entry\" : [{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}]}}";
 		FeedBase entry = (FeedBase) mp.fromJSON(json);
 		byte[] mbytes = mp.toMessagePack(entry);	// mbytesは変更前のrawデータ
 
@@ -480,13 +480,13 @@ public class TestMsgpackMapper {
 	@Test
 	public void testMapEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
-		String json = "{ \"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		String json = "{ \"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 		// 正常ケース
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 		//entry.validate();	// TODO validate実装する。
 
 		// エラーケース（errorsの数が２個）
-		json = "{ \"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 101,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		json = "{ \"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 101,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 		entry = (EntryBase) mp.fromJSON(json);
 
 		/*
@@ -792,7 +792,7 @@ public class TestMsgpackMapper {
 
 		// template
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);
-		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
+		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 		System.out.println("\n=== [template] xml=\n" + defmp.toXML(entry));
@@ -858,7 +858,7 @@ public class TestMsgpackMapper {
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"\"}]}}";
 		//		String json = "{\"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\"}]}}";
 		//		String json = "{\"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"_$term\":\"term1\"},{\"_$scheme\":\"scheme1\"},{\"_$label\":\"label1\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\"}]}}";
-		//		String json = "{ \"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"_$term\":\"term1\"},{\"_$scheme\":\"scheme1\"},{\"_$label\":\"label1\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		//		String json = "{ \"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"_$term\":\"term1\"},{\"_$scheme\":\"scheme1\"},{\"_$label\":\"label1\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
 		//		feed._$xmlns = "1";
@@ -897,7 +897,7 @@ public class TestMsgpackMapper {
 		//		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"test\"}]}}";
 		//		String json = "{\"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\"}]}}";
 		//		String json = "{\"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"_$term\":\"term1\"},{\"_$scheme\":\"scheme1\"},{\"_$label\":\"label1\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\"}]}}";
-		//		String json = "{ \"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"_$term\":\"term1\"},{\"_$scheme\":\"scheme1\"},{\"_$label\":\"label1\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		//		String json = "{ \"feed\" : {\"entry\" : [{\"content\" : {\"_$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}],\"category\" : [{\"_$term\":\"term1\"},{\"_$scheme\":\"scheme1\"},{\"_$label\":\"label1\"}],\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
 		//		String json = "{\"feed\" : {\"entry\" : [{ \"title\" : \"hello\", \"subInfo\" : { \"favorite2\": { \"food\" : { \"food1\" : \"ラーメン\"}}},\"link\" : [{\"href\":\"xxx\",\"title\":\"yyy\"},{\"href\":\"aaa\",\"title\":\"bbb\"},{\"href\":\"ccc\",\"title\":\"ddd\"}] }]}}";
 		String json = "{\"feed\" : {\"entry\" : [{ \"family_name\" : \"f\",\"Idx\" : \"1\",\"title\" : \"hello\", \"subInfo\" : { \"favorite2\": { \"food\" : { \"food1\" : \"ラーメン\"}}},\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}] }]}}";
@@ -971,7 +971,7 @@ public class TestMsgpackMapper {
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
 		//		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\"}]}}";
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
@@ -1049,7 +1049,7 @@ public class TestMsgpackMapper {
 		conditions[16] = new Condition("author.uri", "http://xyz");	
 		conditions[17] = new Condition("author.name-le-2014/10/04");	
 		conditions[18] = new Condition("public.int", "email1");	// java予約語項目
-		conditions[19] = new Condition("subInfo.favorite.music", "ポップス3");	// java予約語項目
+		conditions[19] = new Condition("subInfo.favorite.music", "ポップス1");	// java予約語項目
 		conditions[20] = new Condition("author.name-ge-2014/10/03");	
 
 		boolean ismatch = entry.isMatch(conditions);

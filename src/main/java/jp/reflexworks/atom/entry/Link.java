@@ -7,6 +7,8 @@ import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.ConditionContext;
+import jp.reflexworks.atom.mapper.CipherContext;
+import jp.reflexworks.atom.mapper.MaskpropContext;
 
 /**
  * Link.
@@ -140,8 +142,8 @@ public class Link implements Serializable, SoftSchema {
 		return null;
 	}
 
-	public void encrypt(String id, Object cipher, String secretkey) {}
-	public void decrypt(String id, Object cipher, String secretkey) {}
+	public void encrypt(CipherContext context) {}
+	public void decrypt(CipherContext context) {}
 	
 	public void isMatch(ConditionContext context) {
 		if (_$href != null) {
@@ -207,7 +209,7 @@ public class Link implements Serializable, SoftSchema {
 		return true;
 	}
 
-	public void maskprop(String uid, List<String> groups, String myself) {
+	public void maskprop(MaskpropContext context) {
 	}
 
 	public void addSvcname(String svcname) {

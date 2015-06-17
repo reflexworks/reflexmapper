@@ -52,6 +52,7 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 
 //import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
+
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -76,7 +77,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]*)(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
@@ -164,6 +165,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String FEEDBASE = "jp.reflexworks.atom.feed.FeedBase";
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
+	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";
+	private static final String MASKPROPCONTEXT = "jp.reflexworks.atom.mapper.MaskpropContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
@@ -312,6 +315,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 		this.loader = new Loader(Thread.currentThread().getContextClassLoader(), this.pool);
 
 		loader.delegateLoadingOf(CONDITIONCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(CIPHERCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(MASKPROPCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
@@ -501,6 +506,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static final String aclpattern = "([/0-9a-zA-Z_$*@]+\\+(?:R|W|RW),?)+";
+	private static final String STRMAXLENGTH = "67108864";	// 64KB
+	
 	private void addPropAcls(String[] propAcls, int indexmax) throws ParseException {
 
 		Pattern patternp = Pattern.compile(aclpattern);
@@ -986,28 +993,24 @@ public class FeedTemplateMapper extends ResourceMapper {
 			StringBuffer validation = new StringBuffer();
 			StringBuffer maskprop = new StringBuffer();
 			if (isEntry(classname)) {
-				ismatch.append(ismatchFuncS2+"context.parent=null;");
+				ismatch.append(ismatchFuncS2);
 				maskprop.append(maskpropFuncS2);
 				validation.append(validateFuncS2);
-				encrypt.append(encryptFuncS2);
-				encrypt.append(encryptFuncS3_1);
-				encrypt.append(this.secretkey);
-				encrypt.append(encryptFuncS3_2);
-				decrypt.append(decryptFuncS2);
-				decrypt.append(decryptFuncS3_1);
-				decrypt.append(this.secretkey);
-				decrypt.append(decryptFuncS3_2);
+				encrypt.append(encryptFuncS2+",\""+this.secretkey+"\");");
+				decrypt.append(decryptFuncS2+",\""+this.secretkey+"\");");
 			} else {
 				if (!isFeed(classname)) {
-					ismatch.append(ismatchFuncS+"String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";");
-					maskprop.append(maskpropFuncS);
+					ismatch.append(ismatchFuncS+setparent(classname));
+					maskprop.append(maskpropFuncS+setparent(classname));
 					validation.append(validateFuncS);
+					encrypt.append(encryptFuncS+setparent(classname));
+					decrypt.append(decryptFuncS+setparent(classname));
 				} else {
 					maskprop.append(maskpropFuncS3);
 					validation.append(validateFuncS3);
+					encrypt.append(encryptFuncS4);
+					decrypt.append(decryptFuncS4);
 				}
-				encrypt.append(encryptFuncS);
-				decrypt.append(decryptFuncS);
 			}
 
 			for (int i = 0; i < matches(classname); i++) {
@@ -1119,29 +1122,31 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 				// 暗号化
 				if (meta.privatekey != null) {
-					encrypt.append("if (" + meta.self + "!=null)" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doEncrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+id, cipher);");
-					decrypt.append("if (" + meta.self + "!=null)" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doDecrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+id, cipher);");
+					encrypt.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doEncrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+context.id, context.cipher);");
+					decrypt.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doDecrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+context.id, context.cipher);");
 				}
 
 				// 子要素のgetValue/setValue
 				if (meta.hasChild()) {
 					if (meta.isMap) {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { java.util.List result = new java.util.ArrayList(); for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);result.add(value);} if (result.size()>0) return result;}"); 
-						encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(id, cipher, secretkey);}"); 
-						decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(id, cipher, secretkey);}"); 
 						if (!isFeed(classname)) {
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(context);}"); 
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
 							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(uid,groups,myself);}"); 
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(context);}"); 
 						} else {
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
 						}
 					} else {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
-						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(id, cipher, secretkey);");
-						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(id, cipher, secretkey);");
+						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(context);");
+						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(context);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
 						if (!isFeed(classname)) {
-							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(uid,groups,myself);");
+							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(context);");
 						} else {
 							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(uid,groups);");
 						}
@@ -1192,25 +1197,27 @@ public class FeedTemplateMapper extends ResourceMapper {
 			CtMethod m2 = CtNewMethod.make(getvalue.toString(), cc);
 			cc.addMethod(m2);
 
-			encrypt.append(endFuncE);
-			CtMethod m3 = CtNewMethod.make(encrypt.toString(), cc);
-			cc.addMethod(m3);
-
-			decrypt.append(endFuncE);
-			CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
-			cc.addMethod(m4);
-
 			if (!isFeed(classname)) {
 				if (isEntry(classname)) {
 					ismatch.append(ismatchFuncE2);				
+					encrypt.append(endFuncE);
+					decrypt.append(endFuncE);
+					maskprop.append(endFuncE);
 				} else {
 					ismatch.append("context.parent=parent;"+endFuncE);				
+					encrypt.append("context.parent=parent;"+endFuncE);				
+					decrypt.append("context.parent=parent;"+endFuncE);				
+					maskprop.append("context.parent=parent;"+endFuncE);
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
+				CtMethod m3 = CtNewMethod.make(encrypt.toString(), cc);
+				cc.addMethod(m3);
+				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
+				cc.addMethod(m4);
+			}else {
+				maskprop.append(endFuncE);
 			}
-
-			maskprop.append(endFuncE);
 			CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
 			cc.addMethod(m6);
 
@@ -1233,6 +1240,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return classnames;
 	}
 
+	private String setparent(String classname) {
+		return "String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";";
+	}
+	
 	private String cutPackagename(String classname) {
 		String result = classname.substring(classname.lastIndexOf(".")+1);
 		return (""+result.charAt(0)).toLowerCase()+result.substring(1);
@@ -1240,15 +1251,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
 	private final String getvalueFuncE = "return null;}";
-	private final String encryptFuncS = "public void encrypt(String id, Object cipher, String secretkey) {";
-	private final String encryptFuncS2 = "public void encrypt(Object cipher) { String id=this.id;";
-	private final String encryptFuncS3_1 = "String secretkey=\"";
-	private final String encryptFuncS3_2 = "\";";
-	private final String decryptFuncS = "public void decrypt(String id, Object cipher, String secretkey) {";
-	private final String decryptFuncS2 = "public void decrypt(Object cipher) { String id=this.id;";
-	private final String decryptFuncS3_1 = encryptFuncS3_1;
-	private final String decryptFuncS3_2 = encryptFuncS3_2;
+	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.CipherContext context) {";
+	private final String encryptFuncS2 = "public void encrypt(Object cipher) { jp.reflexworks.atom.mapper.CipherContext context= new jp.reflexworks.atom.mapper.CipherContext(cipher,this.id";
+	private final String encryptFuncS4 = "public void encrypt(Object cipher) {";
+	
+	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.CipherContext context) {";
+	private final String decryptFuncS2 = "public void decrypt(Object cipher) { jp.reflexworks.atom.mapper.CipherContext context= new jp.reflexworks.atom.mapper.CipherContext(cipher,this.id";
 	private final String endFuncE = "}";
+	private final String decryptFuncS4 = "public void decrypt(Object cipher) {";
+
 	private final String ismatchFuncS = "public void isMatch(jp.reflexworks.atom.mapper.ConditionContext context) {";
 	private final String ismatchFuncS2 = "public boolean isMatch(jp.reflexworks.atom.wrapper.base.ConditionBase[] conditions) {" +
 			"jp.reflexworks.atom.mapper.ConditionContext context = new jp.reflexworks.atom.mapper.ConditionContext(conditions);";
@@ -1259,9 +1270,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String validateFuncS3 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = null;";
 
 	private final String validateFuncE = "return true;}";
-	private final String maskpropFuncS = "public void maskprop(String uid, java.util.List groups, String myself) {";
-	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {String myself = getMyself();";
-	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {String myself = null;";
+	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
+	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getMyself());";
+	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
 
 	/**
 	 * バリデーションロジック（必須チェックと正規表現チェック）
@@ -1308,11 +1319,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "if ("+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
-			line += "if (groups==null) groups = new java.util.ArrayList();";
-			line += "java.util.ArrayList groups2 = new java.util.ArrayList(groups);";
-			line += "groups2.add(\"\"+uid);";
+			line += "if (context.groups==null) context.groups = new java.util.ArrayList();";
+			line += "java.util.ArrayList groups2 = new java.util.ArrayList(context.groups);";
+			line += "groups2.add(\"\"+context.uid);";
 			for(String aclr:meta.aclR) {
-				if (aclr.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
+				if (aclr.equals("@")) line += "if (context.uid != null && context.uid.equals(context.myself)) ex=true;";
 			}
 			line += "for(int i=0;i<groups2.size();i++) {";
 			for(String aclr:meta.aclR) {
@@ -1325,7 +1336,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				else line += "if (groups2.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
 			line += "}";
+			line += "if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0)) {";
 			line += "if (!ex) "+ meta.self +"=null;";
+			line += "}";
 			line += "}";
 		}
 		return line;
@@ -1386,6 +1399,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else if (meta.isArray||meta.hasChild()) {
 					line += "if (" + meta.self + "!=null&&" + meta.self + ".size()<" + min + ") throw new java.text.ParseException(\"Minimum number of '" + meta.self + "' not met.\",0);";
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".size()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
+				} else if (meta.type.equals("String")) {
+					line += "if (" + meta.self + "!=null&&" + meta.self + ".length()<" + min + ") throw new java.text.ParseException(\"Minimum length of '" + meta.self + "' not met.\",0);";
+					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";
 				}
 			} else {
 				// maxチェックのみ
@@ -1394,9 +1410,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".longValue()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
 				} else if (meta.isArray || meta.hasChild()) {
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".size()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
+				} else if (meta.type.equals("String")) {
+					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";					
 				}
 			}
 		}
+		
+		if (!meta.isArray && meta.type.equals("String")) {
+			line += "if (" + meta.self + "!=null&&" + STRMAXLENGTH + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";					
+		}
+		
 		return line;
 	}
 
@@ -1481,7 +1504,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				}
 				if (meta.self != null) {
 					if (meta.regex != null && meta.regex.length() > 0 && meta.hasChild()) {
-						throw new ParseException("Syntax error(illegal character in property or regex uses in parent object):" + meta.self, 0);
+						throw new ParseException("Syntax error(illegal character in property or regex uses in the parent object):" + meta.self, 0);
 					}
 					metalist.add(meta);
 				}
@@ -1491,7 +1514,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				}
 				else {
 					if (meta.self.startsWith("_$")) {
-						if (!meta.canattr) throw new ParseException("Attribute($) must be first line.:" + meta.name, 0);
+						if (!meta.canattr) throw new ParseException("Attribute($) must be the first line.:" + meta.name, 0);
 						if (meta.hasChild()) throw new ParseException("Can't specify attribute($) to.:" + meta.name, 0);
 					}
 					if (!meta.self.startsWith("_$")) {
@@ -1563,20 +1586,20 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} else {
 						meta.type = "String"; // その他
 					}
-				} else {
-					if (meta.type == null) {
-						meta.type = "String"; // 省略時
-					}
-				}
-
-				if (meta.min != null && meta.type.equals("String")) {
+				} 
+				
+				if (meta.min != null && meta.type==null) {
 					meta.isMap = true;
 				} else {
 					if (matcherf.group(5).indexOf(ARRAY) >= 0) {
-						// for Array
-						meta.isArray = true;
+						// for Array(廃止)
+//						meta.isArray = true;
 						meta.min = matcherf.group(6);	// maxの要素数をminに入れる
 					}
+				}
+
+				if (meta.type == null) {
+					meta.type = "String"; // 省略時
 				}
 
 			} else {
