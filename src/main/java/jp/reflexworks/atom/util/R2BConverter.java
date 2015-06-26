@@ -125,7 +125,7 @@ public class R2BConverter {
 
 		}
 		out(meta,sb);
-		String idrev = "{\"name\": \"___id\", \"type\": \"STRING\"},\n" +
+		String idrev = "{\"name\": \"___key\", \"type\": \"STRING\"},\n" +
 						"{\"name\": \"___revision\", \"type\": \"INTEGER\"},\n";
 		return "[\n"+idrev+sb.toString()+"]\n";
 
