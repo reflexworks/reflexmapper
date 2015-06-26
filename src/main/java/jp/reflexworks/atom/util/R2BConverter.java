@@ -87,7 +87,6 @@ public class R2BConverter {
 				}
 
 				if (i>0) out(meta,sb);
-
 				meta = new Meta(meta.level);
 				
 				if (matcherf.group(5)!=null&&!matcherf.group(5).equals("")) {
@@ -142,24 +141,19 @@ public class R2BConverter {
 				sb.append("\"mode\": \"REPEATED\",");
 			}
 			sb.append("\"fields\": [");
+			if (meta.repeated) {
+				sb.append("\n");
+				for(int j=0;j<meta.level0+1;j++) 
+					sb.append("	");
+				sb.append("{\"name\": \"___num\", \"type\": \"INTEGER\"},");
+			}
 			meta.comma = false;
 		}else {
 			sb.append("{\"name\": \""+meta.name+"\", \"type\": \""+meta.type+"\"}");
 		}
 
 		for(int k=meta.level;k<meta.level0;k++) {
-			if (meta.level0+meta.level-k-1>0) {
-				sb.append(",\n");
-			}else {
-				sb.append("\n");
-			}
-			for(int j=0;j<meta.level0+meta.level-k-1;j++) {
-				for(int l=0;l<meta.level0+meta.level-k;l++) 
-					sb.append("	");
-				sb.append("{\"name\": \"___num"+(j+1)+"\", \"type\": \"INTEGER\"}");
-				if (j<meta.level0+meta.level-k-2) sb.append(",");
-				sb.append("\n");
-			}
+			sb.append("\n");
 			for(int j=0;j<meta.level0+meta.level-k-1;j++) 
 				sb.append("	");
 			sb.append("]}");
