@@ -125,7 +125,9 @@ public class R2BConverter {
 
 		}
 		out(meta,sb);
-		return "[\n"+sb.toString()+"]\n";
+		String idrev = "{\"name\": \"___id\", \"type\": \"STRING\"},\n" +
+						"{\"name\": \"___revision\", \"type\": \"INTEGER\"},\n";
+		return "[\n"+idrev+sb.toString()+"]\n";
 
 	}
 
@@ -146,7 +148,18 @@ public class R2BConverter {
 		}
 
 		for(int k=meta.level;k<meta.level0;k++) {
-			sb.append("\n");
+			if (meta.level0+meta.level-k-1>0) {
+				sb.append(",\n");
+			}else {
+				sb.append("\n");
+			}
+			for(int j=0;j<meta.level0+meta.level-k-1;j++) {
+				for(int l=0;l<meta.level0+meta.level-k;l++) 
+					sb.append("	");
+				sb.append("{\"name\": \"___num"+(j+1)+"\", \"type\": \"INTEGER\"}");
+				if (j<meta.level0+meta.level-k-2) sb.append(",");
+				sb.append("\n");
+			}
 			for(int j=0;j<meta.level0+meta.level-k-1;j++) 
 				sb.append("	");
 			sb.append("]}");
