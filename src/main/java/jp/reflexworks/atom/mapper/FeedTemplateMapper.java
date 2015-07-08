@@ -1839,7 +1839,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public void convertDefaultEntry(byte[] msgpack) {
 		if (msgpack != null && msgpack.length > 2) {
 			//msgpack[2] = 0x27;
-			msgpack[2] = 0x21;	// source、protected項目を削除した分項目数を減らした。
+			//msgpack[2] = 0x21;
+			msgpack[2] = 0x10;	// source、protected項目を削除した分項目数を減らした。
 		}
 	}
 

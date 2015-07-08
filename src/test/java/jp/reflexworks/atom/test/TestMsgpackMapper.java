@@ -969,7 +969,7 @@ public class TestMsgpackMapper {
 		} 
 		System.out.print("\n"+Integer.toHexString(msgpack[22]& 0xff)+" "); 
 
-		// 2番目に0x10(本来は0x2e)を入れることでATOM標準Feedとしてデシリアライズできる
+		// 2番目に0x27(本来は0x2e)を入れることでATOM標準Feedとしてデシリアライズできる
 		//msgpack[2] = 0x27;
 		msgpack[2] = 0x10;
 
