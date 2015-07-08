@@ -24,18 +24,16 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	 * デフォルトの名前空間
 	 */
 	@Index(0)
-	public String _$xmlns;
-	@Index(1)
 	public List<Author> author;
-	@Index(2)
+	@Index(1)
 	public List<Category> category;
-	@Index(3)
+	@Index(2)
 	public List<Contributor> contributor;
-	@Index(4)
+	@Index(3)
 	public Generator generator;
-	@Index(5)
+	@Index(4)
 	public String icon;
-	@Index(6)
+	@Index(5)
 	public String id;
 
 	/**
@@ -44,33 +42,25 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	 * 属性rel="next"の、href属性に設定された値が次ページ検索のためのカーソルです。
 	 * </p>
 	 */
-	@Index(7)
+	@Index(6)
 	public List<Link> link;
-	@Index(8)
+	@Index(7)
 	public String logo;
-	@Index(9)
+	@Index(8)
 	public String rights;
-	@Index(10)
+	@Index(9)
 	public String title;
-	@Index(11)
+	@Index(10)
 	public String title_$type;
-	@Index(12)
+	@Index(11)
 	public String subtitle;
-	@Index(13)
+	@Index(12)
 	public String subtitle_$type;
-	@Index(14)
+	@Index(13)
 	public String updated;
 	/** エントリーリスト */
-	@Index(15)
+	@Index(14)
 	public List<EntryBase> entry;
-
-	public String get$xmlns() {
-		return _$xmlns;
-	}
-
-	public void set$xmlns(String _$xmlns) {
-		this._$xmlns = _$xmlns;
-	}
 
 	public List<Author> getAuthor() {
 		return author;

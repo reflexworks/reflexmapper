@@ -38,7 +38,7 @@ public interface AtomConst {
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_ENTRY);
 	/** MessagePack Feed byte配列 16進数表記 */
 	public static final String MSGPACK_BYTES_HEX_FEED = 
-			"DC0010C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+			"9FC0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
 	/** MessagePack Feed byte配列 */
 	public static final byte[] MSGPACK_BYTES_FEED = 
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_FEED);
