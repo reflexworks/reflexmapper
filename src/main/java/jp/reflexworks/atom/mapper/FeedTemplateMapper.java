@@ -53,6 +53,7 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 //import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
 
+
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -77,7 +78,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
@@ -98,67 +99,39 @@ public class FeedTemplateMapper extends ResourceMapper {
 	};
 
 	public static final String[] ATOMENTRYTMPL = {
-		"$xmlns",
-		"$xml$lang",
-		"$xml$base",
 		"author{}",
-		" $xml$lang",
-		" $xml$base",
 		" name",
 		" uri",
 		" email",
 		"category{}",
-		" $xml$lang",
-		" $xml$base",
 		" $term",
 		" $scheme",
 		" $label",
 		"content",
-		" $xml$lang",
-		" $xml$base",
 		" $src",				// 下に同じ
 		" $type",				// この項目はContentクラスのvalidate(group)において$contentグループに属しているかのチェックをしている
 		" $$text",				// 同上
 		"contributor{}",
-		" $xml$lang",
-		" $xml$base",
 		" name",
 		" uri",
 		" email",
 		"id",
-		"id_$xml$lang",
-		"id_$xml$base",
 		"link{}",
-		" $xml$lang",
-		" $xml$base",
 		" $href",
 		" $rel",
 		" $type",
-		" $hreflang",
 		" $title",
 		" $length", 
 		"published",
-		"published_$xml$lang",
-		"published_$xml$base",
 		"rights",
 		"rights_$type",
-		"rights_$xml$lang",
-		"rights_$xml$base",
 		"summary",
 		"summary_$type",
-		"summary_$xml$lang",
-		"summary_$xml$base",
 		"title",
 		"title_$type",
-		"title_$xml$lang",
-		"title_$xml$base",
 		"subtitle",
 		"subtitle_$type",
-		"subtitle_$xml$lang",
-		"subtitle_$xml$base",
 		"updated",
-		"updated_$xml$lang",
-		"updated_$xml$base"
 	};	
 
 	private static final String ENTRYBASE = "jp.reflexworks.atom.entry.EntryBase";
@@ -1424,7 +1397,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static String parseLine0(String line) {
-		Pattern patternf = Pattern.compile(field_pattern);
+		Pattern patternf = Pattern.compile(FIELDPATTERN);
 		Matcher matcherf = patternf.matcher(line);
 
 		if (matcherf.find()) {
@@ -1448,7 +1421,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		List<Meta> metalist = new ArrayList<Meta>();
 
-		Pattern patternf = Pattern.compile(field_pattern);
+		Pattern patternf = Pattern.compile(FIELDPATTERN);
 
 		Meta meta = new Meta();
 		Matcher matcherf;

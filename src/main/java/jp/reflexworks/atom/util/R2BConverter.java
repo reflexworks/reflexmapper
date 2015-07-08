@@ -3,45 +3,9 @@ package jp.reflexworks.atom.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.reflexworks.atom.mapper.FeedTemplateMapper;
+
 public class R2BConverter {
-
-	public static final String[] ATOMENTRYTMPL = {
-		"author{}",
-		" name",
-		" uri",
-		" email",
-		"category{}",
-		" $term",
-		" $scheme",
-		" $label",
-		"content",
-		" $src",				// 下に同じ
-		" $type",				// この項目はContentクラスのvalidate(group)において$contentグループに属しているかのチェックをしている
-		" $$text",				// 同上
-		"contributor{}",
-		" name",
-		" uri",
-		" email",
-		"id",
-		"link{}",
-		" $href",
-		" $rel",
-		" $type",
-		" $title",
-		" $length", 
-		"published",
-		"rights",
-		"rights_$type",
-		"summary",
-		"summary_$type",
-		"title",
-		"title_$type",
-		"subtitle",
-		"subtitle_$type",
-		"updated",
-	};	
-
-	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]*)(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	public class Meta {
 		public String name;
@@ -60,12 +24,12 @@ public class R2BConverter {
 	public String convert(String[] entitytempl) {
 		
 		int l = ((String[]) entitytempl).length;
-		String[] template = new String[ATOMENTRYTMPL.length+l];
+		String[] template = new String[FeedTemplateMapper.ATOMENTRYTMPL.length+l];
 //		template[0] = ((String[]) entitytempl)[0];
-		System.arraycopy(ATOMENTRYTMPL, 0, template, 0, ATOMENTRYTMPL.length);
-		System.arraycopy((String[]) entitytempl, 0, template, ATOMENTRYTMPL.length , l );
+		System.arraycopy(FeedTemplateMapper.ATOMENTRYTMPL, 0, template, 0, FeedTemplateMapper.ATOMENTRYTMPL.length);
+		System.arraycopy((String[]) entitytempl, 0, template, FeedTemplateMapper.ATOMENTRYTMPL.length , l );
 
-		Pattern patternf = Pattern.compile(field_pattern);
+		Pattern patternf = Pattern.compile(FeedTemplateMapper.FIELDPATTERN);
 		StringBuilder sb = new StringBuilder();
 
 		Meta meta = new Meta(0);

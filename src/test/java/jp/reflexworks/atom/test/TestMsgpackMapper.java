@@ -282,9 +282,7 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== XML Entry デシリアライズ ===");
 		EntryBase entry2 = (EntryBase) mp.fromXML(xml);
-		entry2._$xmlns = null;
 		System.out.println(mp.toJSON(entry2));
-		entry2._$xmlns = null;
 
 		//		System.out.println("object1:"+ObjectTree.dump(entry));
 		//		System.out.println("object2:"+ObjectTree.dump(entry2));
@@ -875,19 +873,30 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
 		String xml = mp.toXML(feed);
 		System.out.println(xml);
-
-
+		
+		feed.entry.get(0).title=null;
+		
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
 
 		for(int i=0;i<msgpack.length;i++) { 
 			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
 		} 
+		
+		System.out.println("\n=== Messagepack Entry シリアライズ ===");
+		msgpack = mp.toMessagePack(feed.entry.get(0));
+
+		for(int i=0;i<msgpack.length;i++) { 
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
+		} 
+
 		System.out.println("\n=== Array シリアライズ ===");
 		String array = (String) mp.toArray(msgpack).toString();
 		System.out.println(array);
 
-		FeedBase feed2 = (FeedBase) mp.fromMessagePack(msgpack,FEED);
+//		FeedBase feed2 = (FeedBase) mp.fromMessagePack(msgpack,FEED);
+		FeedBase feed2 = (FeedBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_FEED,FEED);
+		EntryBase entry2 = (EntryBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_ENTRY,ENTRY);
 
 		System.out.println(mp.toJSON(mp.fromXML(xml)));
 		System.out.println(json);
@@ -960,9 +969,9 @@ public class TestMsgpackMapper {
 		} 
 		System.out.print("\n"+Integer.toHexString(msgpack[22]& 0xff)+" "); 
 
-		// 2番目に0x27(本来は0x2e)を入れることでATOM標準Feedとしてデシリアライズできる
+		// 2番目に0x10(本来は0x2e)を入れることでATOM標準Feedとしてデシリアライズできる
 		//msgpack[2] = 0x27;
-		msgpack[2] = 0x21;
+		msgpack[2] = 0x10;
 
 		EntryBase entry2 = (EntryBase) mp0.fromMessagePack(msgpack,ENTRY);
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");

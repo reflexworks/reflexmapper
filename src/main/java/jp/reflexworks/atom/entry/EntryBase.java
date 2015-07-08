@@ -25,27 +25,15 @@ public abstract class EntryBase implements Serializable {
 	public static final String TOP = ":";
 
 	/**
-	 * デフォルトの名前空間
-	 */
-	@Index(0)
-	public String _$xmlns;
-
-	@Index(1)
-	public String _$xml$lang;
-
-	@Index(2)
-	public String _$xml$base;
-
-	/**
 	 * 更新者.
 	 * <p>
 	 * urn:vte.cx:{created|updated|deleted}:{uid} の形式です。
 	 * </p>
 	 */
-	@Index(3)
+	@Index(0)
 	public List<Author> author;
 
-	@Index(4)
+	@Index(1)
 	public List<Category> category;
 
 	/**
@@ -54,7 +42,7 @@ public abstract class EntryBase implements Serializable {
 	 * HTMLなどのテキストコンテンツや、画像のリンク先を設定します。
 	 * </p>
 	 */
-	@Index(5)
+	@Index(2)
 	public Content content;
 
 	/**
@@ -98,7 +86,7 @@ public abstract class EntryBase implements Serializable {
 	 * </ul>
 	 * </p>
 	 */
-	@Index(6)
+	@Index(3)
 	public List<Contributor> contributor;
 
 	/**
@@ -109,14 +97,8 @@ public abstract class EntryBase implements Serializable {
 	 * DELETEの場合、idのリビジョンで楽観的排他チェックを行います。<br>
 	 * </p>
 	 */
-	@Index(7)
+	@Index(4)
 	public String id;
-
-	@Index(8)
-	public String id_$xml$lang;
-
-	@Index(9)
-	public String id_$xml$base;
 
 	/**
 	 * Link.
@@ -148,7 +130,7 @@ public abstract class EntryBase implements Serializable {
 	 * <br>
 	 * </p>
 	 */
-	@Index(10)
+	@Index(5)
 	public List<Link> link;
 
 	/**
@@ -157,62 +139,32 @@ public abstract class EntryBase implements Serializable {
 	 * yyyy-MM-dd'T'hh:mm:ss.SSS+99:99 形式です。<br>
 	 * </p>
 	 */
-	@Index(11)
+	@Index(6)
 	public String published;
 
-	@Index(12)
-	public String published_$xml$lang;
-
-	@Index(13)
-	public String published_$xml$base;
-
-	@Index(14)
+	@Index(7)
 	public String rights;
 
-	@Index(15)
+	@Index(8)
 	public String rights_$type;
 
-	@Index(16)
-	public String rights_$xml$lang;
-
-	@Index(17)
-	public String rights_$xml$base;
-
-	@Index(18)
+	@Index(9)
 	public String summary;
 
-	@Index(19)
+	@Index(10)
 	public String summary_$type;
 
-	@Index(20)
-	public String summary_$xml$lang;
-
-	@Index(21)
-	public String summary_$xml$base;
-
-	@Index(22)
+	@Index(11)
 	public String title;
 
-	@Index(23)
+	@Index(12)
 	public String title_$type;
 
-	@Index(24)
-	public String title_$xml$lang;
-
-	@Index(25)
-	public String title_$xml$base;
-
-	@Index(26)
+	@Index(13)
 	public String subtitle;
 
-	@Index(27)
+	@Index(14)
 	public String subtitle_$type;
-
-	@Index(28)
-	public String subtitle_$xml$lang;
-
-	@Index(29)
-	public String subtitle_$xml$base;
 
 	/**
 	 * 更新日時.
@@ -221,38 +173,8 @@ public abstract class EntryBase implements Serializable {
 	 * Index項目です。
 	 * </p>
 	 */
-	@Index(30)
+	@Index(15)
 	public String updated;
-
-	@Index(31)
-	public String updated_$xml$lang;
-
-	@Index(32)
-	public String updated_$xml$base;
-
-	public String get$xmlns() {
-		return _$xmlns;
-	}
-
-	public void set$xmlns(String _$xmlns) {
-		this._$xmlns = _$xmlns;
-	}
-
-	public String get$xml$lang() {
-		return _$xml$lang;
-	}
-
-	public void set$xml$lang(String _$xml$lang) {
-		this._$xml$lang = _$xml$lang;
-	}
-
-	public String get$xml$base() {
-		return _$xml$base;
-	}
-
-	public void set$xml$base(String _$xml$base) {
-		this._$xml$base = _$xml$base;
-	}
 
 	public List<Author> getAuthor() {
 		return author;
@@ -294,22 +216,6 @@ public abstract class EntryBase implements Serializable {
 		this.id = id;
 	}
 
-	public String getId_$xml$lang() {
-		return id_$xml$lang;
-	}
-
-	public void setId_$xml$lang(String id_$xml$lang) {
-		this.id_$xml$lang = id_$xml$lang;
-	}
-
-	public String getId_$xml$base() {
-		return id_$xml$base;
-	}
-
-	public void setId_$xml$base(String id_$xml$base) {
-		this.id_$xml$base = id_$xml$base;
-	}
-
 	public List<Link> getLink() {
 		return link;
 	}
@@ -324,22 +230,6 @@ public abstract class EntryBase implements Serializable {
 
 	public void setPublished(String published) {
 		this.published = published;
-	}
-
-	public String getPublished_$xml$lang() {
-		return published_$xml$lang;
-	}
-
-	public void setPublished_$xml$lang(String published_$xml$lang) {
-		this.published_$xml$lang = published_$xml$lang;
-	}
-
-	public String getPublished_$xml$base() {
-		return published_$xml$base;
-	}
-
-	public void setPublished_$xml$base(String published_$xml$base) {
-		this.published_$xml$base = published_$xml$base;
 	}
 
 	public String getRights() {
@@ -358,22 +248,6 @@ public abstract class EntryBase implements Serializable {
 		this.rights_$type = rights_$type;
 	}
 
-	public String getRights_$xml$lang() {
-		return rights_$xml$lang;
-	}
-
-	public void setRights_$xml$lang(String rights_$xml$lang) {
-		this.rights_$xml$lang = rights_$xml$lang;
-	}
-
-	public String getRights_$xml$base() {
-		return rights_$xml$base;
-	}
-
-	public void setRights_$xml$base(String rights_$xml$base) {
-		this.rights_$xml$base = rights_$xml$base;
-	}
-
 	public String getSummary() {
 		return summary;
 	}
@@ -388,22 +262,6 @@ public abstract class EntryBase implements Serializable {
 
 	public void setSummary_$type(String summary_$type) {
 		this.summary_$type = summary_$type;
-	}
-
-	public String getSummary_$xml$lang() {
-		return summary_$xml$lang;
-	}
-
-	public void setSummary_$xml$lang(String summary_$xml$lang) {
-		this.summary_$xml$lang = summary_$xml$lang;
-	}
-
-	public String getSummary_$xml$base() {
-		return summary_$xml$base;
-	}
-
-	public void setSummary_$xml$base(String summary_$xml$base) {
-		this.summary_$xml$base = summary_$xml$base;
 	}
 
 	public String getTitle() {
@@ -422,22 +280,6 @@ public abstract class EntryBase implements Serializable {
 		this.title_$type = title_$type;
 	}
 
-	public String getTitle_$xml$lang() {
-		return title_$xml$lang;
-	}
-
-	public void setTitle_$xml$lang(String title_$xml$lang) {
-		this.title_$xml$lang = title_$xml$lang;
-	}
-
-	public String getTitle_$xml$base() {
-		return title_$xml$base;
-	}
-
-	public void setTitle_$xml$base(String title_$xml$base) {
-		this.title_$xml$base = title_$xml$base;
-	}
-
 	public String getSubtitle() {
 		return subtitle;
 	}
@@ -454,44 +296,12 @@ public abstract class EntryBase implements Serializable {
 		this.subtitle_$type = subtitle_$type;
 	}
 
-	public String getSubtitle_$xml$lang() {
-		return subtitle_$xml$lang;
-	}
-
-	public void setSubtitle_$xml$lang(String subtitle_$xml$lang) {
-		this.subtitle_$xml$lang = subtitle_$xml$lang;
-	}
-
-	public String getSubtitle_$xml$base() {
-		return subtitle_$xml$base;
-	}
-
-	public void setSubtitle_$xml$base(String subtitle_$xml$base) {
-		this.subtitle_$xml$base = subtitle_$xml$base;
-	}
-
 	public String getUpdated() {
 		return updated;
 	}
 
 	public void setUpdated(String updated) {
 		this.updated = updated;
-	}
-
-	public String getUpdated_$xml$lang() {
-		return updated_$xml$lang;
-	}
-
-	public void setUpdated_$xml$lang(String updated_$xml$lang) {
-		this.updated_$xml$lang = updated_$xml$lang;
-	}
-
-	public String getUpdated_$xml$base() {
-		return updated_$xml$base;
-	}
-
-	public void setUpdated_$xml$base(String updated_$xml$base) {
-		this.updated_$xml$base = updated_$xml$base;
 	}
 
 	/**

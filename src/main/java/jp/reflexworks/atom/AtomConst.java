@@ -32,13 +32,13 @@ public interface AtomConst {
 	public static final byte MSGPACK_PREFIX = -36;
 	/** MessagePack Entry byte配列 16進数表記 */
 	public static final String MSGPACK_BYTES_HEX_ENTRY = 
-			"DC0020C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+			"DC0010C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
 	/** MessagePack Entry byte配列 */
 	public static final byte[] MSGPACK_BYTES_ENTRY = 
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_ENTRY);
 	/** MessagePack Feed byte配列 16進数表記 */
 	public static final String MSGPACK_BYTES_HEX_FEED = 
-			"DC0011C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+			"DC0010C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
 	/** MessagePack Feed byte配列 */
 	public static final byte[] MSGPACK_BYTES_FEED = 
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_FEED);

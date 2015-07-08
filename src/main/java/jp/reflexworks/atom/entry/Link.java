@@ -46,37 +46,15 @@ public class Link implements Serializable, SoftSchema {
 	public static final String NUMBERING = "#";
 
 	@Index(0)
-	public String _$xml$lang;
-	@Index(1)
-	public String _$xml$base;
-	@Index(2)
 	public String _$href;
-	@Index(3)
+	@Index(1)
 	public String _$rel;
-	@Index(4)
+	@Index(2)
 	public String _$type;
-	@Index(5)
-	public String _$hreflang;
-	@Index(6)
+	@Index(3)
 	public String _$title;
-	@Index(7)
+	@Index(4)
 	public String _$length;
-
-	public String get$xml$lang() {
-		return _$xml$lang;
-	}
-
-	public void set$xml$lang(String _$xml$lang) {
-		this._$xml$lang = _$xml$lang;
-	}
-
-	public String get$xml$base() {
-		return _$xml$base;
-	}
-
-	public void set$xml$base(String _$xml$base) {
-		this._$xml$base = _$xml$base;
-	}
 
 	public String get$href() {
 		return _$href;
@@ -100,14 +78,6 @@ public class Link implements Serializable, SoftSchema {
 
 	public void set$type(String _$type) {
 		this._$type = _$type;
-	}
-
-	public String get$hreflang() {
-		return _$hreflang;
-	}
-
-	public void set$hreflang(String _$hreflang) {
-		this._$hreflang = _$hreflang;
 	}
 
 	public String get$title() {
@@ -136,7 +106,6 @@ public class Link implements Serializable, SoftSchema {
 		if (fldname.equals("link.$href")) return _$href;
 		if (fldname.equals("link.$type")) return _$type;
 		if (fldname.equals("link.$rel")) return _$rel;
-		if (fldname.equals("link.$hreflang")) return _$hreflang;
 		if (fldname.equals("link.$title")) return _$title;
 		if (fldname.equals("link.$length")) return _$length;
 		return null;
@@ -162,12 +131,6 @@ public class Link implements Serializable, SoftSchema {
 			context.fldname = "link.$type";
 			context.type = "String";
 			context.obj = _$type;
-			ConditionContext.checkCondition(context);
-		}
-		if (_$hreflang != null) {
-			context.fldname = "link.$hreflang";
-			context.type = "String";
-			context.obj = _$hreflang;
 			ConditionContext.checkCondition(context);
 		}
 		if (_$title != null) {

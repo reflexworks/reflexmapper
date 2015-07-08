@@ -24,31 +24,11 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	private static final long serialVersionUID = 1L;
 
 	@Index(0)
-	public String _$xml$lang;
-	@Index(1)
-	public String _$xml$base;
-	@Index(2)
 	public String _$src;
-	@Index(3)
+	@Index(1)
 	public String _$type;
-	@Index(4)
+	@Index(2)
 	public String _$$text;
-
-	public String get$xml$lang() {
-		return _$xml$lang;
-	}
-
-	public void set$xml$lang(String _$xml$lang) {
-		this._$xml$lang = _$xml$lang;
-	}
-
-	public String get$xml$base() {
-		return _$xml$base;
-	}
-
-	public void set$xml$base(String _$xml$base) {
-		this._$xml$base = _$xml$base;
-	}
 
 	public String get$src() {
 		return _$src;
