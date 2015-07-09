@@ -3,7 +3,7 @@ package jp.reflexworks.atom.util;
 import java.util.List;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 
-public class R2BConverter {
+public class BQSchemaConverter {
 
 	public String convert(List<Meta> metalist) {
 

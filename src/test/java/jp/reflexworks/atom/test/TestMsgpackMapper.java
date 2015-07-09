@@ -36,7 +36,7 @@ import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
-import jp.reflexworks.atom.util.R2BConverter;
+import jp.reflexworks.atom.util.BQSchemaConverter;
 import jp.reflexworks.atom.wrapper.Condition;
 import jp.reflexworks.atom.util.EntryUtil;
 
@@ -448,7 +448,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testR2BConverter() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
-		R2BConverter converter = new R2BConverter();
+		BQSchemaConverter converter = new BQSchemaConverter();
 		String schema = converter.convert(mp.getMetalist("service_name"));
 		System.out.println("\n=== BigQuery Schema ===");
 		System.out.println(schema);
