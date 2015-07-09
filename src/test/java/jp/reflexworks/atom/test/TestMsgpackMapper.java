@@ -36,6 +36,7 @@ import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
+import jp.reflexworks.atom.util.BQSQLGenerator;
 import jp.reflexworks.atom.util.BQSchemaConverter;
 import jp.reflexworks.atom.wrapper.Condition;
 import jp.reflexworks.atom.util.EntryUtil;
@@ -454,7 +455,17 @@ public class TestMsgpackMapper {
 		System.out.println(schema);
 		
 	}
-	
+
+	@Test
+	public void testBQSQLGenerator() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
+		BQSQLGenerator generator = new BQSQLGenerator();
+		String schema = generator.generate(mp.getMetalist("service_name"));
+		System.out.println("\n=== BigQuery SQL ===");
+		System.out.println(schema);
+		
+	}
+
 	@Test
 	public void testChangeTemplateFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前

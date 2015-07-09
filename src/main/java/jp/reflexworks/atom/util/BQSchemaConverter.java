@@ -15,7 +15,7 @@ public class BQSchemaConverter {
 						(i < metalist.size() - 1));
 		}
 		
-		out(metalist.get(metalist.size() - 1), sb, 0, false);
+		out(metalist.get(metalist.size() - 1), sb, 1, false);
 
 		String idrev = "{\"name\": \"___key\", \"type\": \"STRING\"},\n"
 				+ "{\"name\": \"___revision\", \"type\": \"INTEGER\"},\n";
@@ -26,7 +26,7 @@ public class BQSchemaConverter {
 
 	private void out(Meta meta,StringBuilder sb,int level,boolean comma) {
 
-		for(int j=0;j<meta.level;j++) 
+		for(int j=0;j<meta.level-1;j++) 
 			sb.append("	");
 		
 		if (meta.isrecord) {
@@ -37,7 +37,7 @@ public class BQSchemaConverter {
 			sb.append("\"fields\": [");
 			if (meta.repeated) {
 				sb.append("\n");
-				for(int j=0;j<meta.level+1;j++) 
+				for(int j=0;j<meta.level;j++) 
 					sb.append("	");
 				sb.append("{\"name\": \"___num\", \"type\": \"INTEGER\"},");
 			}
@@ -46,9 +46,9 @@ public class BQSchemaConverter {
 			sb.append("{\"name\": \""+meta.self.replace("$", "___")+"\", \"type\": \""+meta.bigquerytype+"\"}");
 		}
 
-		for(int k=level;k<meta.level;k++) {
+		for(int k=level-1;k<meta.level-1;k++) {
 			sb.append("\n");
-			for(int j=0;j<meta.level+level-k-1;j++) 
+			for(int j=0;j<meta.level+level-k-3;j++) 
 				sb.append("	");
 			sb.append("]}");
 		}
