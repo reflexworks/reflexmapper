@@ -446,7 +446,7 @@ public class TestMsgpackMapper {
 	}
 
 	@Test
-	public void testR2BConverter() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+	public void testBQSchemaConverter() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
 		BQSchemaConverter converter = new BQSchemaConverter();
 		String schema = converter.convert(mp.getMetalist("service_name"));
