@@ -38,6 +38,7 @@ import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.util.R2BConverter;
 import jp.reflexworks.atom.wrapper.Condition;
+import jp.reflexworks.atom.util.EntryUtil;
 
 public class TestMsgpackMapper {
 
@@ -886,6 +887,7 @@ public class TestMsgpackMapper {
 		System.out.println(xml);
 		
 		feed.entry.get(0).title=null;
+		feed.entry = null;
 		
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
@@ -1156,6 +1158,11 @@ public class TestMsgpackMapper {
 			System.out.println("\n=== MessagePack Feed シリアライズ ===");
 			byte[] mbytes = mp.toMessagePack(feed);
 			System.out.println("len:"+mbytes.length);
+			
+			
+			byte[] testBytes = AtomConst.MSGPACK_BYTES_FEED;
+			assertTrue(EntryUtil.isMessagePack(testBytes));
+			
 			System.out.println("array:"+ mp.toArray(mbytes));
 			for(int i=0;i<mbytes.length;i++) { 
 				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 

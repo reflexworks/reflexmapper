@@ -28,8 +28,6 @@ public interface AtomConst {
 	public static final Map<String, String> ATOM_PACKAGE = 
 			AtomConstSupporter.createModelPackage();
 	
-	/** MessagePack byte配列 最初の1バイト */
-	public static final byte MSGPACK_PREFIX = -36;
 	/** MessagePack Entry byte配列 16進数表記 */
 	public static final String MSGPACK_BYTES_HEX_ENTRY = 
 			"DC0010C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
@@ -42,6 +40,8 @@ public interface AtomConst {
 	/** MessagePack Feed byte配列 */
 	public static final byte[] MSGPACK_BYTES_FEED = 
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_FEED);
+	/** MessagePack byte配列 最初の1バイト (Feedの場合) */
+	public static final byte MSGPACK_PREFIX = MSGPACK_BYTES_FEED[0];
 	
 	/** MessaaePack Entry class */
 	public static final boolean MSGPACK_ENTRY = false;
