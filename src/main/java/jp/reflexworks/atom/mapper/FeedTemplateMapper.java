@@ -723,7 +723,23 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 * XMLの属性
 		 */
 		public boolean canattr;
+		
+		/**
+		 * 繰り返し項目
+		 */
+		public boolean repeated;
 
+		/**
+		 * レコード項目(BigQuery)
+		 */
+		public boolean isrecord;
+
+		/**
+		 * BigQueryの型
+		 */
+		public String bigquerytype;
+
+		
 		/**
 		 * Camelケースで名前を返す
 		 * @return Camelcaseの名前
@@ -1440,11 +1456,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (matcherf.find()) {
 				if (meta.level != matcherf.group(1).length()) {
 					level = matcherf.group(1).length();
+					meta.isrecord = false;
 					if (meta.level < level) {
 						//２段階下がるとエラー
 						if (meta.level + 1 < level) {
 							throw new ParseException("Wrong Indentation:" + line, 0);	
 						}
+						meta.isrecord = true;
 						classname = packagename + "." + meta.getSelf();
 						stack.push(classname);
 						if (!meta.type.equals("String")) throw new ParseException("Can't specify (Type) for Map type:" + line, 0);
@@ -1510,6 +1528,35 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.isMandatory = matcherf.group(9).equals(MANDATORY);
 				meta.aclR = null;
 				meta.aclW = null;
+				
+				// for BugQuery Schema
+				if (matcherf.group(5)!=null&&!matcherf.group(5).equals("")) {
+					meta.repeated = true;
+				}else {
+					meta.repeated = false;
+				}
+				
+				meta.bigquerytype = "STRING";
+				if (matcherf.group(4)!=null) {
+					switch(matcherf.group(4)) {
+						case "int" :
+						case "long" :
+							meta.bigquerytype = "INTEGER";
+							break;
+						case "Boolean" :
+							meta.bigquerytype = "BOOLEAN";
+							break;
+						case "Float" :
+						case "double" :
+							meta.bigquerytype = "FLOAT";
+							break;
+						case "date" :
+							meta.bigquerytype = "TIMESTAMP";
+							break;
+						default:
+							meta.bigquerytype = "STRING";
+					}
+				}
 
 				meta.regex = matcherf.group(10);
 				if (l == 0) {

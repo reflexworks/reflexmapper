@@ -36,6 +36,7 @@ import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
+import jp.reflexworks.atom.util.R2BConverter;
 import jp.reflexworks.atom.wrapper.Condition;
 
 public class TestMsgpackMapper {
@@ -443,6 +444,16 @@ public class TestMsgpackMapper {
 		assertEquals(json, mp.toJSON(entity2));
 	}
 
+	@Test
+	public void testR2BConverter() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
+		R2BConverter converter = new R2BConverter();
+		String schema = converter.convert(mp.getMetalist("service_name"));
+		System.out.println("\n=== BigQuery Schema ===");
+		System.out.println(schema);
+		
+	}
+	
 	@Test
 	public void testChangeTemplateFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
