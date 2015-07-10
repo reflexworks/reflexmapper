@@ -241,7 +241,19 @@ public class TestMsgpackMapper {
 		" user_bamboo{}",
 		"  bamboo_text",
 		"  user_plum{}",
-		"   plum_text"
+		"   plum_text",
+		"user_paintset",
+		" paintset_text",
+		" user_palette",
+		"  palette_text",
+		"  palette_size",
+		" user_paintbrush",
+		"  paintbrush_text",
+		"  user_measure",
+		"   length_text",
+		"   weight_text",
+		" user_colors{}",
+		"  colors_text"
 	};
 
 

@@ -8,8 +8,6 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 
 public class BQSQLGenerator {
 
-	
-	
 	public String generate(List<Meta> metalist,String table) {
 
 		StringBuilder sb = new StringBuilder();
@@ -82,7 +80,7 @@ public class BQSQLGenerator {
 	}
 
 	private String headLine2(String org) {
-		return "'entry' as flg, ___key, ___revision, id, updated,"+org.replace(",updated","").replace("id,", "");
+		return "'0' as flg, ___key, ___revision, id, updated,"+org.replace(",updated","").replace("id,", "");
 	}
 
 	private String getall0(List<Meta> metalist) {
@@ -150,15 +148,7 @@ public class BQSQLGenerator {
 			if (sb.length()>0) sb.append(",");
 			sb.append(meta.name.replace("$", "___"));
 		}
-		}
-		/*
-		if (meta.repeated) {
-			if (sb.length()>0) sb.append(",");
-			sb.append(meta.name.replace("$", "___")+".___num");
-		}
-		repeated項目が確定しているから___numは機械的に作成してよいはず
-		*/
-		
+		}		
 	}
 
 	private Set repeatedItemset(List<Meta> metalist) {
