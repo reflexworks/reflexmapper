@@ -8,27 +8,39 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 
 public class BQSQLGenerator {
 
+	private List<Meta> metalist;
+	private Set<String> repeatedItemset;
+	
 	public String generate(List<Meta> metalist,String table) {
-
+		this.metalist = metalist;
+		
 		StringBuilder sb = new StringBuilder();
-		String all0 = getall0(metalist);
-		Set<String> repeatedItemset = repeatedItemset(metalist);
+		String all0 = getall0();
+		this.repeatedItemset = repeatedItemset();
 		
 		sb.append("select "+headLine0(all0)+" from (\n");
 		sb.append("select "+headLine1(all0)+" from \n");
-		sb.append("(select "+headLine2(getnorm(metalist,repeatedItemset))+" from ["+table+"]),\n");
+		sb.append("(select "+headLine2(getnorm())+" from ["+table+"]),\n");
 
 		for (String item:repeatedItemset) {
-			addRepeatedItems(item,sb,metalist,repeatedItemset,table);
+			addRepeatedItems(item,sb,table);
 		}
 
 		return sb.toString();
 
 	}
 
-	private void addRepeatedItems(String item,StringBuilder sb,List<Meta> metalist,Set<String> repeatedItemset,String table) {
-		String token = "id,"+getNum(item)+","+getnormbyitem(metalist,repeatedItemset,item);
-		sb.append("(FLATTEN((select '"+item+"' as flg, "+token+" from "+getFlatten(item,token,table)+"),"+item+")),\n");
+	private void addRepeatedItems(String item,StringBuilder sb,String table) {
+		String token = "id,"+getNum(item)+","+getnormbyitem(item);
+		String item2="";
+		if (item.lastIndexOf(".")>=0) {
+			item2 = item.substring(0,item.lastIndexOf("."));
+		}
+		if (isRepeated(item2)) {
+			sb.append("(FLATTEN((select '"+item+"' as flg, "+token+" from "+getFlatten(item,token,table)+"),"+item+")),\n");
+		}else {
+			sb.append("(FLATTEN((select '"+item+"' as flg, "+token+" from ["+table+"]),"+item+")),\n");
+		}
 	}
 
 	private String getFlatten(String item,String token,String table) {
@@ -41,7 +53,7 @@ public class BQSQLGenerator {
 		String item2 = item;
 		if (item.lastIndexOf(".")>=0) {
 			item2 = item.substring(0,item.lastIndexOf("."));
-			if (item2.lastIndexOf(".")>=0) {
+			if ((item2.lastIndexOf(".")>=0)&&isRepeated(item2)) {
 				sb.append("(FLATTEN((select "+token+" from ");
 				getFlatten(item2,token,table,sb);
 				sb.append("),"+item2+"))");
@@ -51,6 +63,13 @@ public class BQSQLGenerator {
 		}else {
 			sb.append("["+table+"]");
 		}
+	}
+	
+	private boolean isRepeated(String item) {
+		for(Meta meta:metalist) {
+			if (meta.name.equals(item)) return meta.repeated;
+		}
+		return false;
 	}
 	
 	private String getNum(String item){
@@ -64,7 +83,7 @@ public class BQSQLGenerator {
 		String item2 = item;
 		if (item.lastIndexOf(".")>=0) {
 			item2 = item.substring(0,item.lastIndexOf("."));
-			sb.append(","+item2+".___num");
+			if (isRepeated(item2)) sb.append(","+item2+".___num");
 			if (item2.lastIndexOf(".")>=0) {
 				getNum(item2,sb);
 			}
@@ -83,7 +102,7 @@ public class BQSQLGenerator {
 		return "'0' as flg, ___key, ___revision, id, updated,"+org.replace(",updated","").replace("id,", "");
 	}
 
-	private String getall0(List<Meta> metalist) {
+	private String getall0() {
 	
 		StringBuilder sb = new StringBuilder();
 
@@ -94,25 +113,24 @@ public class BQSQLGenerator {
 		return sb.toString();
 	}
 	
-	private String getnorm(List<Meta> metalist,Set repeatedItemset) {
+	private String getnorm() {
 		
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < metalist.size(); i++) {
-				outnorm(metalist.get(i), sb,(i < metalist.size() - 1),repeatedItemset);
+				outnorm(metalist.get(i), sb,(i < metalist.size() - 1));
 		}
 
 		return sb.toString();
 	}
 
-	private String getnormbyitem(List<Meta> metalist,
-			Set<String> repeatedItemset, String item) {
+	private String getnormbyitem(String item) {
 		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < metalist.size(); i++) {
 			Meta meta = metalist.get(i);
 			if ((meta.name+".").indexOf(item+".")==0) {
-				outnorm(meta, sb,(i < metalist.size() - 1),repeatedItemset,item);
+				outnorm(meta, sb,(i < metalist.size() - 1),item);
 			}
 		}
 
@@ -137,13 +155,13 @@ public class BQSQLGenerator {
 		
 	}
 
-	private void outnorm(Meta meta,StringBuilder sb,boolean comma,Set repeatedItemset) {
-		outnorm(meta,sb,comma,repeatedItemset,"-");
+	private void outnorm(Meta meta,StringBuilder sb,boolean comma) {
+		outnorm(meta,sb,comma,"-");
 	}
 
-	private void outnorm(Meta meta,StringBuilder sb,boolean comma,Set repeatedItemset,String except) {
+	private void outnorm(Meta meta,StringBuilder sb,boolean comma,String except) {
 
-		if (!meta.name.equals("content.$$text")&&!isRepeatedChild(repeatedItemset,meta.name,except)) {
+		if (!meta.name.equals("content.$$text")&&!isRepeatedChild(meta.name,except)) {
 		if (!meta.isrecord) {
 			if (sb.length()>0) sb.append(",");
 			sb.append(meta.name.replace("$", "___"));
@@ -151,7 +169,7 @@ public class BQSQLGenerator {
 		}		
 	}
 
-	private Set repeatedItemset(List<Meta> metalist) {
+	private Set repeatedItemset() {
 		
 		Set<String> set = new LinkedHashSet<String>();
 		
@@ -164,7 +182,7 @@ public class BQSQLGenerator {
 		return set;
 	}
 	
-	private boolean isRepeatedChild(Set<String> repeatedItemset,String name,String except) {
+	private boolean isRepeatedChild(String name,String except) {
 		
 		for(String repeated:repeatedItemset) {
 			boolean ex = true;
