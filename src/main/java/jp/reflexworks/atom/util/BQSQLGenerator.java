@@ -9,21 +9,21 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 public class BQSQLGenerator {
 
 	private List<Meta> metalist;
-	private Set<String> repeatedItemset;
+	private Set<String> repeatedItemSet;
 
 	public String generate(List<Meta> metalist, String table) {
 		this.metalist = metalist;
 
 		StringBuilder sb = new StringBuilder();
-		String line = getline();
-		this.repeatedItemset = repeatedItemset();
+		String line = getLine();
+		this.repeatedItemSet = repeatedItemSet();
 
 		sb.append("select " + head1(line) + " from (\n");
 		sb.append("select " + head2(line) + " from \n");
-		sb.append("(select " + head3(getnorm()) + " from [" + table
+		sb.append("(select " + head3(getItems()) + " from [" + table
 				+ "]),\n");
 
-		for (String item : repeatedItemset) {
+		for (String item : repeatedItemSet) {
 			addRepeatedItems(item, sb, table);
 		}
 
@@ -32,7 +32,7 @@ public class BQSQLGenerator {
 	}
 
 	private void addRepeatedItems(String item, StringBuilder sb, String table) {
-		String token = "id," + getNum(item) + "," + getnormbyitem(item);
+		String token = "id," + getNums(item) + "," + getItems(item);
 		if (isRepeated(getParent(item))) {
 			sb.append("(FLATTEN((select '" + item + "' as flg, " + token
 					+ " from " + getFlatten(item, token, table) + ")," + item
@@ -82,20 +82,20 @@ public class BQSQLGenerator {
 		return false;
 	}
 
-	private String getNum(String item) {
+	private String getNums(String item) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(item + ".___num");
-		getNum(item, sb);
+		getNums(item, sb);
 		return sb.toString();
 	}
 
-	private void getNum(String item, StringBuffer sb) {
+	private void getNums(String item, StringBuffer sb) {
 		if (item.lastIndexOf(".") >= 0) {
 			String parent = getParent(item);
 			if (isRepeated(parent))
 				sb.append("," + parent + ".___num");
 			if (parent.lastIndexOf(".") >= 0) {
-				getNum(parent, sb);
+				getNums(parent, sb);
 			}
 		}
 	}
@@ -116,42 +116,37 @@ public class BQSQLGenerator {
 				+ org.replace(",updated", "").replace("id,", "");
 	}
 
-	private String getline() {
+	private String getLine() {
 
 		StringBuilder sb = new StringBuilder();
-
 		for (int i = 0; i < metalist.size(); i++) {
-			out(metalist.get(i), sb, (i < metalist.size() - 1));
+			outAll(metalist.get(i), sb, (i < metalist.size() - 1));
 		}
-
 		return sb.toString();
 	}
 
-	private String getnorm() {
+	private String getItems() {
 
 		StringBuilder sb = new StringBuilder();
-
 		for (int i = 0; i < metalist.size(); i++) {
-			outnorm(metalist.get(i), sb, (i < metalist.size() - 1));
+			outItems(metalist.get(i), sb, (i < metalist.size() - 1));
 		}
-
 		return sb.toString();
 	}
 
-	private String getnormbyitem(String item) {
-		StringBuilder sb = new StringBuilder();
+	private String getItems(String item) {
 
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < metalist.size(); i++) {
 			Meta meta = metalist.get(i);
 			if ((meta.name + ".").indexOf(item + ".") == 0) {
-				outnorm(meta, sb, (i < metalist.size() - 1), item);
+				outItems(meta, sb, (i < metalist.size() - 1), item);
 			}
 		}
-
 		return sb.toString();
 	}
 
-	private void out(Meta meta, StringBuilder sb, boolean comma) {
+	private void outAll(Meta meta, StringBuilder sb, boolean comma) {
 
 		if (!meta.isrecord && !meta.name.equals("content.$$text")) {
 			sb.append(meta.name.replace("$", "___"));
@@ -168,12 +163,12 @@ public class BQSQLGenerator {
 
 	}
 
-	private void outnorm(Meta meta, StringBuilder sb, boolean comma) {
+	private void outItems(Meta meta, StringBuilder sb, boolean comma) {
 		// '-' is nothing.
-		outnorm(meta, sb, comma, "-");
+		outItems(meta, sb, comma, "-");
 	}
 
-	private void outnorm(Meta meta, StringBuilder sb, boolean comma,
+	private void outItems(Meta meta, StringBuilder sb, boolean comma,
 			String except) {
 
 		if (!meta.name.equals("content.$$text")
@@ -186,7 +181,7 @@ public class BQSQLGenerator {
 		}
 	}
 
-	private Set<String> repeatedItemset() {
+	private Set<String> repeatedItemSet() {
 
 		Set<String> set = new LinkedHashSet<String>();
 
@@ -201,7 +196,7 @@ public class BQSQLGenerator {
 
 	private boolean isRepeatedChild(String name, String except) {
 
-		for (String repeated : repeatedItemset) {
+		for (String repeated : repeatedItemSet) {
 			boolean ex = true;
 			int ex1 = (name + ".").indexOf(except + ".");
 			if (ex1 == 0) {
