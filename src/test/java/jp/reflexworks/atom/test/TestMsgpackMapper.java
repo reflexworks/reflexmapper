@@ -229,6 +229,21 @@ public class TestMsgpackMapper {
 		" secret",
 		"deleteFlg",
 	};
+	
+	public static String entitytemplbq[] = {
+		"bqtest{}",
+		"user_parent{}",
+		" parent_text",
+		" user_child{}",
+		"  child_text",
+		"user_pine{}",
+		" pine_text",
+		" user_bamboo{}",
+		"  bamboo_text",
+		"  user_plum{}",
+		"   plum_text"
+	};
+
 
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
@@ -458,9 +473,9 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testBQSQLGenerator() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplbq, SECRETKEY);		
 		BQSQLGenerator generator = new BQSQLGenerator();
-		String schema = generator.generate(mp.getMetalist("service_name"));
+		String schema = generator.generate(mp.getMetalist("service_name"),"test_dataset.test_listnum_table");
 		System.out.println("\n=== BigQuery SQL ===");
 		System.out.println(schema);
 		
