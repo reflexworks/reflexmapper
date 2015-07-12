@@ -474,26 +474,6 @@ public class TestMsgpackMapper {
 	}
 
 	@Test
-	public void testBQSchemaConverter() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
-		BQSchemaConverter converter = new BQSchemaConverter();
-		String schema = converter.convert(mp.getMetalist("service_name"));
-		System.out.println("\n=== BigQuery Schema ===");
-		System.out.println(schema);
-		
-	}
-
-	@Test
-	public void testBQSQLGenerator() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplbq, SECRETKEY);		
-		BQSQLGenerator generator = new BQSQLGenerator();
-		String schema = generator.generate(mp.getMetalist("service_name"),"test_dataset.test_listnum_table");
-		System.out.println("\n=== BigQuery SQL ===");
-		System.out.println(schema);
-		
-	}
-
-	@Test
 	public void testChangeTemplateFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
 		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl2, SECRETKEY);	// 項目追加後	
