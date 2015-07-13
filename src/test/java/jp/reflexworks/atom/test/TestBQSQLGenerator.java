@@ -48,10 +48,11 @@ public class TestBQSQLGenerator {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplbq, SECRETKEY);		
 		BQSQLGenerator generator = new BQSQLGenerator();
 		
-		Condition[] conditions = new Condition[3];
+		Condition[] conditions = new Condition[4];
 		conditions[0] = new Condition("user_pine.user_bamboo.user_plum.plum_text", "梅3-2-2");
 		conditions[1] = new Condition("user_parent.user_child.child_text", "子項目2-1の2");
 		conditions[2] = new Condition("title", "ユーザ項目");
+		conditions[3] = new Condition("user_paintset.user_colors.colors_text", "赤");
 
 		String linkhref ="/rrr/";
 		
@@ -60,19 +61,6 @@ public class TestBQSQLGenerator {
 		System.out.println(schema);
 		
 	}
-
-	@Test
-	public void testBQ()  {
-		Condition condition = new Condition("author.name-ge-2014/10/03");
-		System.out.println(condition.getProp());
-		System.out.println(condition.getValue());
-
-		condition = new Condition("subInfo.favorite.music", "ポップス1");
-		System.out.println(condition.getProp());
-		System.out.println(condition.getValue());
-
-	}
-	
 	
 	
 }

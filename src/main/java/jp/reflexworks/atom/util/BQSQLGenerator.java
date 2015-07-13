@@ -119,7 +119,7 @@ public class BQSQLGenerator {
 		while(true) {
 			item = getParent(item);
 			if (item.equals("")) break;
-			result.add(item);
+			if (repeatedItemSet.contains(item)) result.add(item);
 		}
 		Collections.reverse(result);
 		return result;
