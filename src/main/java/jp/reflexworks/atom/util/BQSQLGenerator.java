@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
-import jp.reflexworks.atom.wrapper.Condition;
+import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 public class BQSQLGenerator {
 
@@ -18,7 +18,7 @@ public class BQSQLGenerator {
 
 	private String[] primitives = {"___key", "___revision", "id", "rights____type", "link.___rel", "link.___href"};
 	
-	public String generate(List<Meta> metalist, String table,Condition[] conditions,String linkhref) {
+	public String generate(List<Meta> metalist, String table,ConditionBase[] conditions,String linkhref) {
 		this.metalist = metalist;
 
 		StringBuilder sb = new StringBuilder();
@@ -38,10 +38,10 @@ public class BQSQLGenerator {
 		sb.append("JOIN EACH\n");
 		sb.append("(select id from\n");
 		
-		List<Condition> conditionlist = Arrays.asList(conditions);
+		List<ConditionBase> conditionlist = Arrays.asList(conditions);
 
 		Set<String> nestset = new LinkedHashSet<String>();
-		for(Condition condition:conditionlist) {
+		for(ConditionBase condition:conditionlist) {
 			nestset.addAll(getParentList(condition.getProp()));
 		}
 		nestset.add("link");
@@ -55,7 +55,7 @@ public class BQSQLGenerator {
 		sb.append("and regexp_match(link.___href, '^"+linkhref+"[^/]+$') \n");
 		sb.append("and rights____type is null \n");
 		
-		for(Condition condition:conditionlist) {
+		for(ConditionBase condition:conditionlist) {
 			sb.append("and regexp_match("+condition.getProp()+",\"^"+condition.getValue()+"$\") \n");
 		}
 		sb.append("GROUP EACH by id) grp \n");
@@ -68,7 +68,7 @@ public class BQSQLGenerator {
 
 	}
 
-	private void addNest(Set<String> nestset,List<Condition> conditionlist,String table,StringBuilder sb) {
+	private void addNest(Set<String> nestset,List<ConditionBase> conditionlist,String table,StringBuilder sb) {
 
 		String nestitems = getNestItems(conditionlist);
 		for(String nestflats:nestset) {
@@ -88,11 +88,11 @@ public class BQSQLGenerator {
         }		
 	}
 	
-	private String getNestItems(List<Condition> conditionlist) {
+	private String getNestItems(List<ConditionBase> conditionlist) {
 		StringBuilder sb = new StringBuilder();
 		List<String> items = new ArrayList<String>();
 		items.addAll(Arrays.asList(primitives));
-		for(Condition condition:conditionlist) {
+		for(ConditionBase condition:conditionlist) {
 			items.add(condition.getProp());
 		}
 		for(int i=0;i<items.size();i++) {

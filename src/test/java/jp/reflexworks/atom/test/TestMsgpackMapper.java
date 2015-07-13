@@ -905,7 +905,6 @@ public class TestMsgpackMapper {
 		System.out.println(xml);
 		
 		feed.entry.get(0).title=null;
-		feed.entry = null;
 		
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
