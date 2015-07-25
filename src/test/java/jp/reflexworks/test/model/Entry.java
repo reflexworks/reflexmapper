@@ -148,4 +148,9 @@ public class Entry extends EntryBase {
 	}
 	*/
 
+	@Override
+	public int getsize() {
+		return 0;
+	}
+
 }

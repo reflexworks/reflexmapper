@@ -9,6 +9,7 @@ import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
 import jp.reflexworks.atom.mapper.MaskpropContext;
+import jp.reflexworks.atom.mapper.SizeContext;
 
 /**
  * Link.
@@ -199,6 +200,15 @@ public class Link implements Serializable, SoftSchema {
 				_$href = "/";
 			}
 		}
+	}
+
+	@Override
+	public void getsize(SizeContext context) {
+		if (_$href!=null) {context.size += _$href.length();context.count++;context.keysize+=5; }
+		if (_$rel!=null) {context.size += _$rel.length();context.count++;context.keysize+=4; }
+		if (_$type!=null) {context.size += _$type.length();context.count++;context.keysize+=5; }
+		if (_$title!=null) {context.size += _$title.length();context.count++;context.keysize+=6; }
+		if (_$length!=null) {context.size += _$length.length();context.count++;context.keysize+=7; }
 	}
 
 }

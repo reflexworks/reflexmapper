@@ -10,6 +10,7 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
 import jp.reflexworks.atom.mapper.MaskpropContext;
+import jp.reflexworks.atom.mapper.SizeContext;
 
 /**
  * コンテンツ.
@@ -112,5 +113,12 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	}
 
 	public void maskprop(MaskpropContext context) {}
+
+	@Override
+	public void getsize(SizeContext context) {
+		if (_$src!=null) {context.size += _$src.length();context.count++;context.keysize+=4; }
+		if (_$type!=null) {context.size += _$type.length();context.count++;context.keysize+=5; }
+		if (_$$text!=null) {context.size += _$$text.length();context.count++;context.keysize+=6; }
+	}
 
 }

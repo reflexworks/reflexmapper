@@ -681,6 +681,8 @@ public abstract class EntryBase implements Serializable {
 
 	public abstract boolean isMatch(ConditionBase[] conditions);
 
+	public abstract int getsize();
+
 	/**
 	 * 項目チェック.
 	 * @param uid UID

@@ -8,6 +8,7 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
 import jp.reflexworks.atom.mapper.MaskpropContext;
+import jp.reflexworks.atom.mapper.SizeContext;
 
 /**
  * 更新者.
@@ -91,5 +92,12 @@ public class Author implements Serializable, Cloneable, SoftSchema {
 	throws java.text.ParseException {return true;}
 
 	public void maskprop(MaskpropContext context) {}
+
+	@Override
+	public void getsize(SizeContext context) {
+		if (name!=null) {context.size += name.length();context.count++;context.keysize+=4; }
+		if (uri!=null) {context.size += uri.length();context.count++;context.keysize+=3; }
+		if (email!=null) {context.size += email.length();context.count++;context.keysize+=5; }
+	}
 
 }

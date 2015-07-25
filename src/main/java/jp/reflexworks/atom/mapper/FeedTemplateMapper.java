@@ -54,6 +54,7 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 
 
 
+
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -140,6 +141,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
 	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";
 	private static final String MASKPROPCONTEXT = "jp.reflexworks.atom.mapper.MaskpropContext";
+	private static final String SIZECONTEXT = "jp.reflexworks.atom.mapper.SizeContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
@@ -290,6 +292,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(CONDITIONCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(MASKPROPCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(SIZECONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
@@ -397,7 +400,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private String convertIndex(String propAcl,String svc) {
 		if (propAcl==null) return null;
 		String token[] = propAcl.split("\\|");
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		
 		for (int i=0;i<token.length;i++) {
 			// サービス名が指定されている場合はそのまま
@@ -974,19 +977,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} 
 			}
 
-			StringBuffer getvalue = new StringBuffer();
+			StringBuilder getvalue = new StringBuilder();
 			getvalue.append(getvalueFuncS);
-			StringBuffer encrypt = new StringBuffer();
-			StringBuffer decrypt = new StringBuffer();
-			StringBuffer ismatch = new StringBuffer();
-			StringBuffer validation = new StringBuffer();
-			StringBuffer maskprop = new StringBuffer();
+			StringBuilder encrypt = new StringBuilder();
+			StringBuilder decrypt = new StringBuilder();
+			StringBuilder ismatch = new StringBuilder();
+			StringBuilder validation = new StringBuilder();
+			StringBuilder maskprop = new StringBuilder();
+			StringBuilder getsize = new StringBuilder();
 			if (isEntry(classname)) {
 				ismatch.append(ismatchFuncS2);
 				maskprop.append(maskpropFuncS2);
 				validation.append(validateFuncS2);
 				encrypt.append(encryptFuncS2+",\""+this.secretkey+"\");");
 				decrypt.append(decryptFuncS2+",\""+this.secretkey+"\");");
+				getsize.append(getsizeFuncS2);
 			} else {
 				if (!isFeed(classname)) {
 					ismatch.append(ismatchFuncS+setparent(classname));
@@ -994,11 +999,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 					validation.append(validateFuncS);
 					encrypt.append(encryptFuncS+setparent(classname));
 					decrypt.append(decryptFuncS+setparent(classname));
+					getsize.append(getsizeFuncS+setparent(classname));
 				} else {
 					maskprop.append(maskpropFuncS3);
 					validation.append(validateFuncS3);
 					encrypt.append(encryptFuncS4);
 					decrypt.append(decryptFuncS4);
+					getsize.append(getsizeFuncS3);
 				}
 			}
 
@@ -1124,16 +1131,19 @@ public class FeedTemplateMapper extends ResourceMapper {
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
 							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(context);}"); 
+							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(context);}context.count++;context.keysize+=\"+meta.self+\".length();}"); 
 						} else {
 							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
+							getsize.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).getsize();}"); 
 						}
 					} else {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
 						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(context);");
 						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(context);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
+						getsize.append("if (" + meta.self + "!=null) {" + meta.self + ".getsize(context);context.count++;context.keysize+=\"+meta.self+\".length();}");
 						if (!isFeed(classname)) {
 							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(context);");
 						} else {
@@ -1147,6 +1157,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
 					ismatch.append("else if (\"" + meta.name + "\".indexOf(context.parent)>=0)");
 					ismatch.append("jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);}");
+					getsize.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0)) {context.size+="+getSizeStr(meta.type,meta.self)+";context.count++;context.keysize+=\"+meta.self+\".length();}");
 				}
 
 				// バリデーションチェック
@@ -1192,11 +1203,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 					encrypt.append(endFuncE);
 					decrypt.append(endFuncE);
 					maskprop.append(endFuncE);
+					getsize.append(getsizeFuncE);
 				} else {
 					ismatch.append("context.parent=parent;"+endFuncE);				
 					encrypt.append("context.parent=parent;"+endFuncE);				
 					decrypt.append("context.parent=parent;"+endFuncE);				
 					maskprop.append("context.parent=parent;"+endFuncE);
+					getsize.append("context.parent=parent;"+endFuncE);				
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
@@ -1204,6 +1217,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				cc.addMethod(m3);
 				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
 				cc.addMethod(m4);
+				
+				CtMethod m7 = CtNewMethod.make(getsize.toString(), cc);
+				cc.addMethod(m7);
 			}else {
 				maskprop.append(endFuncE);
 			}
@@ -1227,6 +1243,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 		}
 
 		return classnames;
+	}
+
+	private String getSizeStr(String type, String self) {
+		if (type.equals("String")) {
+			return self+".length()";
+		}else {
+			return "(\"\"+"+self+").length()";
+		}
 	}
 
 	private String setparent(String classname) {
@@ -1262,6 +1286,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
 	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getMyself());";
 	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
+
+	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext context) {";
+	private final String getsizeFuncS2 = "public int getsize() { jp.reflexworks.atom.mapper.SizeContext context= new jp.reflexworks.atom.mapper.SizeContext();";
+	private final String getsizeFuncS3 = "public void getsize() {";
+	private final String getsizeFuncE = "return context.size+context.keysize+context.count*8+10;}";
 
 	/**
 	 * バリデーションロジック（必須チェックと正規表現チェック）

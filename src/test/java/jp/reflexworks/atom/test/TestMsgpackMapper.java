@@ -227,33 +227,6 @@ public class TestMsgpackMapper {
 		" secret",
 		"deleteFlg",
 	};
-	
-	public static String entitytemplbq[] = {
-		"bqtest{}",
-		"user_parent{}",
-		" parent_text",
-		" user_child{}",
-		"  child_text",
-		"user_pine{}",
-		" pine_text",
-		" user_bamboo{}",
-		"  bamboo_text",
-		"  user_plum{}",
-		"   plum_text",
-		"user_paintset",
-		" paintset_text",
-		" user_palette",
-		"  palette_text",
-		"  palette_size",
-		" user_paintbrush",
-		"  paintbrush_text",
-		"  user_measure",
-		"   length_text",
-		"   weight_text",
-		" user_colors{}",
-		"  colors_text"
-	};
-
 
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
@@ -1046,6 +1019,9 @@ public class TestMsgpackMapper {
 		System.out.println("link(ATOM Entry) uri value="+entry.getValue("contributor.uri"));
 		System.out.println("link(ATOM Entry) name value="+entry.getValue("contributor.name"));
 
+		System.out.println("entry size="+entry.getsize());
+		System.out.println("entry json size="+mp.toJSON(entry).length());
+		
 		// TODO contributor
 		Contributor contributor = new Contributor();
 		entry.contributor.add(contributor);
@@ -1251,6 +1227,9 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
+
+		System.out.println("entry size="+feed.entry.get(0).getsize());
+		System.out.println("entry json size="+mp.toJSON(feed.entry.get(0)).length());
 
 		assertTrue(isMatch);
 	}
