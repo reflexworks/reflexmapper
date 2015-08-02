@@ -1131,7 +1131,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
 							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(context);}"); 
-							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(context);}context.count++;context.keysize+=\"+meta.self+\".length();}"); 
+							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(context);context.arraycount++;}context.count++;context.mapcount++;context.keysize+=\"+meta.self+\".length();}"); 
 						} else {
 							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
@@ -1217,7 +1217,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 				cc.addMethod(m3);
 				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
 				cc.addMethod(m4);
-				
 				CtMethod m7 = CtNewMethod.make(getsize.toString(), cc);
 				cc.addMethod(m7);
 			}else {
@@ -1290,7 +1289,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext context) {";
 	private final String getsizeFuncS2 = "public int getsize() { jp.reflexworks.atom.mapper.SizeContext context= new jp.reflexworks.atom.mapper.SizeContext();";
 	private final String getsizeFuncS3 = "public void getsize() {";
-	private final String getsizeFuncE = "return context.size+context.keysize+context.count*8+10;}";
+	private final String getsizeFuncE = "return context.size+context.keysize+(context.count+context.mapcount)*8+context.arraycount*10+100;}";
+//	private final String getsizeFuncE = "return context.arraycount;}";
 
 	/**
 	 * バリデーションロジック（必須チェックと正規表現チェック）

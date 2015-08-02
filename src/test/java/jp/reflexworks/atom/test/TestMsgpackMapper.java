@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 
@@ -33,9 +35,11 @@ import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.mapper.BQJSONSerializer;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
+import jp.reflexworks.atom.mapper.SizeLimitExceededException;
 import jp.reflexworks.atom.wrapper.Condition;
 import jp.reflexworks.atom.util.EntryUtil;
 
@@ -983,7 +987,7 @@ public class TestMsgpackMapper {
 	}
 
 	@Test
-	public void testGetSetvalue() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+	public void testGetSetvalue() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException, SizeLimitExceededException {
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
@@ -995,7 +999,7 @@ public class TestMsgpackMapper {
 		// MessagePack test
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
 		String xml = mp.toXML(feed);
-		System.out.println(xml);
+//		System.out.println(xml);
 
 		FeedBase feed2 = (FeedBase) mp.fromXML(xml);
 		List groups = new ArrayList<String>();
@@ -1020,7 +1024,10 @@ public class TestMsgpackMapper {
 		System.out.println("link(ATOM Entry) name value="+entry.getValue("contributor.name"));
 
 		System.out.println("entry size="+entry.getsize());
-		System.out.println("entry json size="+mp.toJSON(entry).length());
+		String bqjson = BQJSONSerializer.toJSON(mp, entry);
+//		String bqjson = mp.toJSON(entry);
+		System.out.println(bqjson);
+		System.out.println("entry json size="+bqjson.length());
 		
 		// TODO contributor
 		Contributor contributor = new Contributor();
