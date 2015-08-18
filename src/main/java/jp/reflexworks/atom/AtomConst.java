@@ -209,5 +209,8 @@ public interface AtomConst {
 	public static final String SETTING_USERINIT_UID = "#";
 	/** ユーザ初期エントリー設定 : サービス管理者ユーザ番号に置き換える記号 */
 	public static final String SETTING_USERINIT_SERVICEADMIN_UID = "!";
+	
+	/** ログインユーザのUIDを表す記号 */
+	public static final String LOGINUSER_VAL = "~";
 
 }
