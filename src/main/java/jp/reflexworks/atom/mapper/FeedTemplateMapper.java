@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -617,7 +618,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static String toCamelcase(String name) {
-		return name.substring(0, 1).toUpperCase() + name.substring(1);
+		return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
 	}
 
 	/**
@@ -1258,7 +1259,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	
 	private String cutPackagename(String classname) {
 		String result = classname.substring(classname.lastIndexOf(".")+1);
-		return (""+result.charAt(0)).toLowerCase()+result.substring(1);
+		return (""+result.charAt(0)).toLowerCase(Locale.ENGLISH)+result.substring(1);
 	}
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
@@ -1615,7 +1616,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
-					String typestr = matcherf.group(4).toLowerCase();
+					String typestr = matcherf.group(4).toLowerCase(Locale.ENGLISH);
 					if (typestr.equals("date")) {
 						meta.type = "Date";
 					} else if (typestr.equals("int")) {
