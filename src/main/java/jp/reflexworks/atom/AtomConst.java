@@ -179,7 +179,7 @@ public interface AtomConst {
 	/** type : mobile push */
 	public static final String TYPE_MOBILEPUSH = "push";
 	/** type : メール通知 */
-	public static final String TYPE_EMAIL = "mail";
+	public static final String TYPE_EMAIL = "email";
 	/** type : node */
 	public static final String TYPE_NODE = "node";
 	
