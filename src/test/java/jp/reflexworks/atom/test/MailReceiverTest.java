@@ -17,6 +17,10 @@ import org.junit.Test;
 
 public class MailReceiverTest {
 
+	String[] propstr = {"mail.pop3.host=pop.gmail.com","mail.pop3.port=995","mail.pop3.connectiontimeout=60000",
+			"mail.pop3.socketFactory.class=javax.net.ssl.SSLSocketFactory","mail.pop3.socketFactory.fallback=false"
+			,"mail.pop3.socketFactory.port=995","username=XXXXX@gmail.com","password=XXXX"};
+	
 	@Test
 	public void test() {
 		System.out.println("メール受信: 開始");
@@ -25,9 +29,8 @@ public class MailReceiverTest {
 			FeedTemplateMapper mapper = new FeedTemplateMapper(
 					new String[] { "default" }, "");
 		
-			FeedBase feed = mr.doReceive(mapper, getProperties(),
-					"メールアドレス@gmail.com", "パスワード");
-	
+			FeedBase feed = mr.doReceive(mapper, propstr);
+
 			System.out.println("メール受信: 終了");
 			
 			for(EntryBase entry:feed.getEntry()) {
@@ -41,28 +44,10 @@ public class MailReceiverTest {
 			}
 			
 		}catch(Exception e) {
+			e.printStackTrace();
 			// Do nothing
 		}
 		assertTrue(true);
 	}
 	
-	private Properties getProperties() {
-		final Properties props = new Properties();
-
-		props.setProperty("mail.pop3.host", "pop.gmail.com");
-		props.setProperty("mail.pop3.port", "995");
-
-		// タイムアウト
-		props.setProperty("mail.pop3.connectiontimeout", "60000");
-		props.setProperty("mail.pop3.timeout", "60000");
-
-		// SSL関連
-		props.setProperty("mail.pop3.socketFactory.class",
-				"javax.net.ssl.SSLSocketFactory");
-		props.setProperty("mail.pop3.socketFactory.fallback", "false");
-		props.setProperty("mail.pop3.socketFactory.port", "995");
-		return props;
-	}
-
-
 }

@@ -28,6 +28,26 @@ import com.sun.mail.pop3.POP3Store;
 
 public class MailReceiver {
 
+	public FeedBase doReceive(FeedTemplateMapper mapper, String[] propstr) throws MessagingException, IOException {
+		
+		Properties props = new Properties();
+		String username = "";
+		String password = "";
+		
+		for(String prop:propstr) {
+			String token[] = prop.split("=");
+			if (token[0].equals("username")) {
+				username = token[1];
+			}else if(token[0].equals("password")){
+				password = token[1];
+			}else {
+				props.setProperty(token[0], token[1]);
+			}
+		}
+		return doReceive(mapper,props,username,password);
+		
+	}
+	
 	public FeedBase doReceive(FeedTemplateMapper mapper, Properties props,
 			String username, String password) throws MessagingException,
 			IOException {
