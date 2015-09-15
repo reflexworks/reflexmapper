@@ -90,6 +90,7 @@ public class MailReceiver {
 					if (Part.ATTACHMENT.equals(disposition) || Part.INLINE.equals(disposition)) {
 						// 添付ファイル名
 						entry.content._$src = MimeUtility.decodeText(part.getFileName());
+						entry.content._$type = MimeUtility.decodeText(part.getContentType());						
 						byte[] body = IOUtils.toByteArray(part.getInputStream());
 						entry.content._$$text =
 								new String(Base64.encodeBase64(body), ReflexServletConst.ENCODING);
