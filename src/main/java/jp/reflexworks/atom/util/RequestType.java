@@ -13,6 +13,8 @@ public interface RequestType {
 	public static final String PARAM_LIMIT = "l";
 	/** URLパラメータ : 次ページ取得のカーソルを指定 */
 	public static final String PARAM_NEXT = "p";
+	/** URLパラメータ : ページ番号を指定 */
+	public static final String PARAM_NUMBER = "n";
 	/** URLパラメータ : リビジョンを指定 */
 	public static final String PARAM_REVISION = "r";
 	/** URLパラメータ : 件数取得 */
@@ -75,6 +77,8 @@ public interface RequestType {
 	public static final String PARAM_POINTERS = "_pointers";
 	/** URLパラメータ : カーソル一覧取得で最初のページの件数を指定するオプション */
 	public static final String PARAM_FIRST = "_first";
+	/** URLパラメータ : 指定されたページ数分のカーソル一覧をサーバ内部に取得するオプション */
+	public static final String PARAM_PAGINATION = "_pagination";
 	/** URLパラメータ : 配下のエントリーを全て抽出するオプション */
 	public static final String PARAM_LOWER = "_lower";
 	/** URLパラメータ : ノード名を指定するオプション (_lowerオプションと合わせて使用) */
