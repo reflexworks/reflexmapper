@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 
@@ -33,10 +35,13 @@ import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.mapper.BQJSONSerializer;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
+import jp.reflexworks.atom.mapper.SizeLimitExceededException;
 import jp.reflexworks.atom.wrapper.Condition;
+import jp.reflexworks.atom.util.EntryUtil;
 
 public class TestMsgpackMapper {
 
@@ -282,9 +287,7 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== XML Entry デシリアライズ ===");
 		EntryBase entry2 = (EntryBase) mp.fromXML(xml);
-		entry2._$xmlns = null;
 		System.out.println(mp.toJSON(entry2));
-		entry2._$xmlns = null;
 
 		//		System.out.println("object1:"+ObjectTree.dump(entry));
 		//		System.out.println("object2:"+ObjectTree.dump(entry2));
@@ -533,7 +536,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testTextNodeEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, SECRETKEY);		// 変更前
-
+		
 		String json = "{\"entry\" : {\"public\" : {\"int\" : \"予約語\"},\"subInfo\" : {\"hobby\" : [{\"______text\" : \"テキストノード\\\"\\n\"}]},\"link\" : [{\"___href\" : \"/0762678511-/allA/759188985520\",\"___rel\" : \"self\"},{\"___href\" : \"/transferring/all/0762678511-/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/@/spool/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/historyA/759188985520\",\"___rel\" : \"alternate\"}]}}";
 		//		String json = "{\"entry\" : {\"subInfo\" : {\"hobby\" : [{\"_$$text\" : \"テキストノード\"}]},\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}]}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -875,19 +878,30 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
 		String xml = mp.toXML(feed);
 		System.out.println(xml);
-
-
+		
+		feed.entry.get(0).title=null;
+		
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
 
 		for(int i=0;i<msgpack.length;i++) { 
 			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
 		} 
+		
+		System.out.println("\n=== Messagepack Entry シリアライズ ===");
+		msgpack = mp.toMessagePack(feed.entry.get(0));
+
+		for(int i=0;i<msgpack.length;i++) { 
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
+		} 
+
 		System.out.println("\n=== Array シリアライズ ===");
 		String array = (String) mp.toArray(msgpack).toString();
 		System.out.println(array);
 
-		FeedBase feed2 = (FeedBase) mp.fromMessagePack(msgpack,FEED);
+//		FeedBase feed2 = (FeedBase) mp.fromMessagePack(msgpack,FEED);
+		FeedBase feed2 = (FeedBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_FEED,FEED);
+		EntryBase entry2 = (EntryBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_ENTRY,ENTRY);
 
 		System.out.println(mp.toJSON(mp.fromXML(xml)));
 		System.out.println(json);
@@ -962,7 +976,7 @@ public class TestMsgpackMapper {
 
 		// 2番目に0x27(本来は0x2e)を入れることでATOM標準Feedとしてデシリアライズできる
 		//msgpack[2] = 0x27;
-		msgpack[2] = 0x21;
+		msgpack[2] = 0x10;
 
 		EntryBase entry2 = (EntryBase) mp0.fromMessagePack(msgpack,ENTRY);
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
@@ -973,7 +987,7 @@ public class TestMsgpackMapper {
 	}
 
 	@Test
-	public void testGetSetvalue() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+	public void testGetSetvalue() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException, SizeLimitExceededException {
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
@@ -985,7 +999,7 @@ public class TestMsgpackMapper {
 		// MessagePack test
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
 		String xml = mp.toXML(feed);
-		System.out.println(xml);
+//		System.out.println(xml);
 
 		FeedBase feed2 = (FeedBase) mp.fromXML(xml);
 		List groups = new ArrayList<String>();
@@ -1009,6 +1023,12 @@ public class TestMsgpackMapper {
 		System.out.println("link(ATOM Entry) uri value="+entry.getValue("contributor.uri"));
 		System.out.println("link(ATOM Entry) name value="+entry.getValue("contributor.name"));
 
+		System.out.println("entry size="+entry.getsize());
+		String bqjson = BQJSONSerializer.toJSON(mp, entry);
+//		String bqjson = mp.toJSON(entry);
+		System.out.println(bqjson);
+		System.out.println("entry json size="+bqjson.length());
+		
 		// TODO contributor
 		Contributor contributor = new Contributor();
 		entry.contributor.add(contributor);
@@ -1136,6 +1156,11 @@ public class TestMsgpackMapper {
 			System.out.println("\n=== MessagePack Feed シリアライズ ===");
 			byte[] mbytes = mp.toMessagePack(feed);
 			System.out.println("len:"+mbytes.length);
+			
+			
+			byte[] testBytes = AtomConst.MSGPACK_BYTES_FEED;
+			assertTrue(EntryUtil.isMessagePack(testBytes));
+			
 			System.out.println("array:"+ mp.toArray(mbytes));
 			for(int i=0;i<mbytes.length;i++) { 
 				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
@@ -1209,6 +1234,9 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== maskprop (/@testservice/$admin グループ) ===");
 		xml = mp.toXML(feed);
 		System.out.println(xml);
+
+		System.out.println("entry size="+feed.entry.get(0).getsize());
+		System.out.println("entry json size="+mp.toJSON(feed.entry.get(0)).length());
 
 		assertTrue(isMatch);
 	}

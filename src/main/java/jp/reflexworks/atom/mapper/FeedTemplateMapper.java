@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -53,6 +54,8 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 //import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
 
+
+
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -77,7 +80,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	private static final String field_pattern = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
@@ -98,67 +101,39 @@ public class FeedTemplateMapper extends ResourceMapper {
 	};
 
 	public static final String[] ATOMENTRYTMPL = {
-		"$xmlns",
-		"$xml$lang",
-		"$xml$base",
 		"author{}",
-		" $xml$lang",
-		" $xml$base",
 		" name",
 		" uri",
 		" email",
 		"category{}",
-		" $xml$lang",
-		" $xml$base",
 		" $term",
 		" $scheme",
 		" $label",
 		"content",
-		" $xml$lang",
-		" $xml$base",
 		" $src",				// 下に同じ
 		" $type",				// この項目はContentクラスのvalidate(group)において$contentグループに属しているかのチェックをしている
 		" $$text",				// 同上
 		"contributor{}",
-		" $xml$lang",
-		" $xml$base",
 		" name",
 		" uri",
 		" email",
 		"id",
-		"id_$xml$lang",
-		"id_$xml$base",
 		"link{}",
-		" $xml$lang",
-		" $xml$base",
 		" $href",
 		" $rel",
 		" $type",
-		" $hreflang",
 		" $title",
 		" $length", 
 		"published",
-		"published_$xml$lang",
-		"published_$xml$base",
 		"rights",
 		"rights_$type",
-		"rights_$xml$lang",
-		"rights_$xml$base",
 		"summary",
 		"summary_$type",
-		"summary_$xml$lang",
-		"summary_$xml$base",
 		"title",
 		"title_$type",
-		"title_$xml$lang",
-		"title_$xml$base",
 		"subtitle",
 		"subtitle_$type",
-		"subtitle_$xml$lang",
-		"subtitle_$xml$base",
 		"updated",
-		"updated_$xml$lang",
-		"updated_$xml$base"
 	};	
 
 	private static final String ENTRYBASE = "jp.reflexworks.atom.entry.EntryBase";
@@ -167,6 +142,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
 	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";
 	private static final String MASKPROPCONTEXT = "jp.reflexworks.atom.mapper.MaskpropContext";
+	private static final String SIZECONTEXT = "jp.reflexworks.atom.mapper.SizeContext";
 	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
@@ -317,6 +293,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(CONDITIONCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(MASKPROPCONTEXT);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(SIZECONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
@@ -424,7 +401,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private String convertIndex(String propAcl,String svc) {
 		if (propAcl==null) return null;
 		String token[] = propAcl.split("\\|");
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		
 		for (int i=0;i<token.length;i++) {
 			// サービス名が指定されている場合はそのまま
@@ -506,7 +483,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static final String aclpattern = "([/0-9a-zA-Z_$*@]+\\+(?:R|W|RW),?)+";
-	private static final String STRMAXLENGTH = "67108864";	// 64KB
+	private static final String STRMAXLENGTH = "1048576";	// 1MB
 	
 	private void addPropAcls(String[] propAcls, int indexmax) throws ParseException {
 
@@ -641,7 +618,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static String toCamelcase(String name) {
-		return name.substring(0, 1).toUpperCase() + name.substring(1);
+		return name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
 	}
 
 	/**
@@ -750,7 +727,23 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 * XMLの属性
 		 */
 		public boolean canattr;
+		
+		/**
+		 * 繰り返し項目
+		 */
+		public boolean repeated;
 
+		/**
+		 * レコード項目(BigQuery)
+		 */
+		public boolean isrecord;
+
+		/**
+		 * BigQueryの型
+		 */
+		public String bigquerytype;
+
+		
 		/**
 		 * Camelケースで名前を返す
 		 * @return Camelcaseの名前
@@ -985,19 +978,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} 
 			}
 
-			StringBuffer getvalue = new StringBuffer();
+			StringBuilder getvalue = new StringBuilder();
 			getvalue.append(getvalueFuncS);
-			StringBuffer encrypt = new StringBuffer();
-			StringBuffer decrypt = new StringBuffer();
-			StringBuffer ismatch = new StringBuffer();
-			StringBuffer validation = new StringBuffer();
-			StringBuffer maskprop = new StringBuffer();
+			StringBuilder encrypt = new StringBuilder();
+			StringBuilder decrypt = new StringBuilder();
+			StringBuilder ismatch = new StringBuilder();
+			StringBuilder validation = new StringBuilder();
+			StringBuilder maskprop = new StringBuilder();
+			StringBuilder getsize = new StringBuilder();
 			if (isEntry(classname)) {
 				ismatch.append(ismatchFuncS2);
 				maskprop.append(maskpropFuncS2);
 				validation.append(validateFuncS2);
 				encrypt.append(encryptFuncS2+",\""+this.secretkey+"\");");
 				decrypt.append(decryptFuncS2+",\""+this.secretkey+"\");");
+				getsize.append(getsizeFuncS2);
 			} else {
 				if (!isFeed(classname)) {
 					ismatch.append(ismatchFuncS+setparent(classname));
@@ -1005,11 +1000,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 					validation.append(validateFuncS);
 					encrypt.append(encryptFuncS+setparent(classname));
 					decrypt.append(decryptFuncS+setparent(classname));
+					getsize.append(getsizeFuncS+setparent(classname));
 				} else {
 					maskprop.append(maskpropFuncS3);
 					validation.append(validateFuncS3);
 					encrypt.append(encryptFuncS4);
 					decrypt.append(decryptFuncS4);
+					getsize.append(getsizeFuncS3);
 				}
 			}
 
@@ -1135,16 +1132,19 @@ public class FeedTemplateMapper extends ResourceMapper {
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
 							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(context);}"); 
+							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(context);context.arraycount++;}context.count++;context.mapcount++;context.keysize+=\"+meta.self+\".length();}"); 
 						} else {
 							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
+							getsize.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).getsize();}"); 
 						}
 					} else {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
 						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(context);");
 						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(context);");
 						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
+						getsize.append("if (" + meta.self + "!=null) {" + meta.self + ".getsize(context);context.count++;context.keysize+=\"+meta.self+\".length();}");
 						if (!isFeed(classname)) {
 							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(context);");
 						} else {
@@ -1158,6 +1158,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
 					ismatch.append("else if (\"" + meta.name + "\".indexOf(context.parent)>=0)");
 					ismatch.append("jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);}");
+					getsize.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0)) {context.size+="+getSizeStr(meta.type,meta.self)+";context.count++;context.keysize+=\"+meta.self+\".length();}");
 				}
 
 				// バリデーションチェック
@@ -1203,11 +1204,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 					encrypt.append(endFuncE);
 					decrypt.append(endFuncE);
 					maskprop.append(endFuncE);
+					getsize.append(getsizeFuncE);
 				} else {
 					ismatch.append("context.parent=parent;"+endFuncE);				
 					encrypt.append("context.parent=parent;"+endFuncE);				
 					decrypt.append("context.parent=parent;"+endFuncE);				
 					maskprop.append("context.parent=parent;"+endFuncE);
+					getsize.append("context.parent=parent;"+endFuncE);				
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
@@ -1215,6 +1218,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 				cc.addMethod(m3);
 				CtMethod m4 = CtNewMethod.make(decrypt.toString(), cc);
 				cc.addMethod(m4);
+				CtMethod m7 = CtNewMethod.make(getsize.toString(), cc);
+				cc.addMethod(m7);
 			}else {
 				maskprop.append(endFuncE);
 			}
@@ -1240,13 +1245,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return classnames;
 	}
 
+	private String getSizeStr(String type, String self) {
+		if (type.equals("String")) {
+			return self+".length()";
+		}else {
+			return "(\"\"+"+self+").length()";
+		}
+	}
+
 	private String setparent(String classname) {
 		return "String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";";
 	}
 	
 	private String cutPackagename(String classname) {
 		String result = classname.substring(classname.lastIndexOf(".")+1);
-		return (""+result.charAt(0)).toLowerCase()+result.substring(1);
+		return (""+result.charAt(0)).toLowerCase(Locale.ENGLISH)+result.substring(1);
 	}
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
@@ -1273,6 +1286,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
 	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getMyself());";
 	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
+
+	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext context) {";
+	private final String getsizeFuncS2 = "public int getsize() { jp.reflexworks.atom.mapper.SizeContext context= new jp.reflexworks.atom.mapper.SizeContext();";
+	private final String getsizeFuncS3 = "public void getsize() {";
+	private final String getsizeFuncE = "return context.size+context.keysize+(context.count+context.mapcount)*8+context.arraycount*10+100;}";
+//	private final String getsizeFuncE = "return context.arraycount;}";
 
 	/**
 	 * バリデーションロジック（必須チェックと正規表現チェック）
@@ -1424,7 +1443,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static String parseLine0(String line) {
-		Pattern patternf = Pattern.compile(field_pattern);
+		Pattern patternf = Pattern.compile(FIELDPATTERN);
 		Matcher matcherf = patternf.matcher(line);
 
 		if (matcherf.find()) {
@@ -1448,7 +1467,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		List<Meta> metalist = new ArrayList<Meta>();
 
-		Pattern patternf = Pattern.compile(field_pattern);
+		Pattern patternf = Pattern.compile(FIELDPATTERN);
 
 		Meta meta = new Meta();
 		Matcher matcherf;
@@ -1467,11 +1486,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (matcherf.find()) {
 				if (meta.level != matcherf.group(1).length()) {
 					level = matcherf.group(1).length();
+					meta.isrecord = false;
 					if (meta.level < level) {
 						//２段階下がるとエラー
 						if (meta.level + 1 < level) {
 							throw new ParseException("Wrong Indentation:" + line, 0);	
 						}
+						meta.isrecord = true;
 						classname = packagename + "." + meta.getSelf();
 						stack.push(classname);
 						if (!meta.type.equals("String")) throw new ParseException("Can't specify (Type) for Map type:" + line, 0);
@@ -1537,6 +1558,35 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.isMandatory = matcherf.group(9).equals(MANDATORY);
 				meta.aclR = null;
 				meta.aclW = null;
+				
+				// for BugQuery Schema
+				if (matcherf.group(5)!=null&&!matcherf.group(5).equals("")) {
+					meta.repeated = true;
+				}else {
+					meta.repeated = false;
+				}
+				
+				meta.bigquerytype = "STRING";
+				if (matcherf.group(4)!=null) {
+					switch(matcherf.group(4)) {
+						case "int" :
+						case "long" :
+							meta.bigquerytype = "INTEGER";
+							break;
+						case "Boolean" :
+							meta.bigquerytype = "BOOLEAN";
+							break;
+						case "Float" :
+						case "double" :
+							meta.bigquerytype = "FLOAT";
+							break;
+						case "date" :
+							meta.bigquerytype = "TIMESTAMP";
+							break;
+						default:
+							meta.bigquerytype = "STRING";
+					}
+				}
 
 				meta.regex = matcherf.group(10);
 				if (l == 0) {
@@ -1551,7 +1601,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else {
 					meta.name = fldname + "." + meta.self;
 				}
-				if (exists(metalist, meta.name)) throw new ParseException("Already defined in Entry:" + meta.name, 0);
+				if (exists(metalist, meta.name)) throw new ParseException("Dupricated properties in Entry:" + meta.name, 0);
 				if (meta.self.startsWith("_")&&meta.level == 1) 
 					throw new ParseException("Can't use '_' as prefix.:" + meta.name, 0);
 
@@ -1566,7 +1616,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
-					String typestr = matcherf.group(4).toLowerCase();
+					String typestr = matcherf.group(4).toLowerCase(Locale.ENGLISH);
 					if (typestr.equals("date")) {
 						meta.type = "Date";
 					} else if (typestr.equals("int")) {
@@ -1782,7 +1832,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 						try {
 							f = cc.getField(fld);
 						}catch(NoSuchFieldException ns) {
-							f = cc.getField("_"+fld);
+							try {
+								f = cc.getField("_"+fld);
+							}catch(NoSuchFieldException ns2) {
+								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is required.");
+							}
 						}
 					}
 
@@ -1850,7 +1904,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}
 			return parent;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new JSONException(e);
 		}
 	}
@@ -1866,7 +1919,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public void convertDefaultEntry(byte[] msgpack) {
 		if (msgpack != null && msgpack.length > 2) {
 			//msgpack[2] = 0x27;
-			msgpack[2] = 0x21;	// source、protected項目を削除した分項目数を減らした。
+			//msgpack[2] = 0x21;
+			msgpack[2] = 0x10;	// source、protected項目を削除した分項目数を減らした。
 		}
 	}
 

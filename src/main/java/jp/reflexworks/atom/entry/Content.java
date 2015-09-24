@@ -10,6 +10,7 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
 import jp.reflexworks.atom.mapper.MaskpropContext;
+import jp.reflexworks.atom.mapper.SizeContext;
 
 /**
  * コンテンツ.
@@ -24,31 +25,11 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	private static final long serialVersionUID = 1L;
 
 	@Index(0)
-	public String _$xml$lang;
-	@Index(1)
-	public String _$xml$base;
-	@Index(2)
 	public String _$src;
-	@Index(3)
+	@Index(1)
 	public String _$type;
-	@Index(4)
+	@Index(2)
 	public String _$$text;
-
-	public String get$xml$lang() {
-		return _$xml$lang;
-	}
-
-	public void set$xml$lang(String _$xml$lang) {
-		this._$xml$lang = _$xml$lang;
-	}
-
-	public String get$xml$base() {
-		return _$xml$base;
-	}
-
-	public void set$xml$base(String _$xml$base) {
-		this._$xml$base = _$xml$base;
-	}
 
 	public String get$src() {
 		return _$src;
@@ -132,5 +113,12 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	}
 
 	public void maskprop(MaskpropContext context) {}
+
+	@Override
+	public void getsize(SizeContext context) {
+		if (_$src!=null) {context.size += _$src.length();context.count++;context.keysize+=4; }
+		if (_$type!=null) {context.size += _$type.length();context.count++;context.keysize+=5; }
+		if (_$$text!=null) {context.size += _$$text.length();context.count++;context.keysize+=6; }
+	}
 
 }

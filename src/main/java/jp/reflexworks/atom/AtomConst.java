@@ -28,20 +28,20 @@ public interface AtomConst {
 	public static final Map<String, String> ATOM_PACKAGE = 
 			AtomConstSupporter.createModelPackage();
 	
-	/** MessagePack byte配列 最初の1バイト */
-	public static final byte MSGPACK_PREFIX = -36;
 	/** MessagePack Entry byte配列 16進数表記 */
 	public static final String MSGPACK_BYTES_HEX_ENTRY = 
-			"DC0020C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+			"DC0010C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
 	/** MessagePack Entry byte配列 */
 	public static final byte[] MSGPACK_BYTES_ENTRY = 
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_ENTRY);
 	/** MessagePack Feed byte配列 16進数表記 */
 	public static final String MSGPACK_BYTES_HEX_FEED = 
-			"DC0011C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
+			"9FC0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
 	/** MessagePack Feed byte配列 */
 	public static final byte[] MSGPACK_BYTES_FEED = 
 			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_FEED);
+	/** MessagePack byte配列 最初の1バイト (Feedの場合) */
+	public static final byte MSGPACK_PREFIX = MSGPACK_BYTES_FEED[0];
 	
 	/** MessaaePack Entry class */
 	public static final boolean MSGPACK_ENTRY = false;
@@ -141,7 +141,7 @@ public interface AtomConst {
 	/** URI : settings - passreset */
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
 	/** URI : settings - errorpage */
-	public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
+	//public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
 	/** URI : user init (value) */
 	//public static final String URI_USERINIT_VAL = "userinit";
 	public static final String URI_USERINIT_VAL = "userinit.xml";
@@ -179,7 +179,7 @@ public interface AtomConst {
 	/** type : mobile push */
 	public static final String TYPE_MOBILEPUSH = "push";
 	/** type : メール通知 */
-	public static final String TYPE_EMAIL = "mail";
+	public static final String TYPE_EMAIL = "email";
 	/** type : node */
 	public static final String TYPE_NODE = "node";
 	
@@ -192,22 +192,7 @@ public interface AtomConst {
 	/** ユーザステータス : 無効 */
 	public static final String USERSTATUS_REVOKED = "Revoked";
 	
-	/** サービス設定 : エントリー最大数デフォルト設定 **/
-	public static final String SETTING_ENTRY_NUMBER_DEFAULT = "_entry.number.default";
-	/** サービス設定 : 検索条件除外設定 **/
-	public static final String SETTING_IGNORE_CONDITION_PREFIX = "_ignore.condition.";
-	/** サービス設定 : エラー画面表示URLパターン */
-	public static final String SETTING_ERRORPAGE_URI = "_errorpage.uri";
-	/** サービス設定 : Amazon Web Service SNS mobile push : 更新者自身にpush通知を行うかどうか */
-	public static final String SETTING_AWS_SNS_PUSH_SELF = "_aws.sns.push.self";
-	/** サービス設定 : EMail通知設定 : 更新者自身にメール通知を行うかどうか */
-	public static final String SETTING_EMAIL_SEND_ONESELF = "_email.send.oneself";
-	/** サービス設定 : EMailの送信元名 */
-	public static final String SETTING_MAIL_FROM_PERSONAL = "_mail.from.personal";
-	
-	/** ユーザ初期エントリー設定 : ユーザ番号に置き換える記号 */
-	public static final String SETTING_USERINIT_UID = "#";
-	/** ユーザ初期エントリー設定 : サービス管理者ユーザ番号に置き換える記号 */
-	public static final String SETTING_USERINIT_SERVICEADMIN_UID = "!";
+	/** ログインユーザのUIDを表す記号 */
+	public static final String LOGINUSER_VAL = "~";
 
 }

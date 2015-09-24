@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.zip.DataFormatException;
 
 
@@ -90,7 +91,7 @@ public class FeedTemplateRequester extends Requester implements ReflexServletCon
 		int format = FORMAT_DEFAULT;
 		String contentType = http.getHeaderField(HEADER_CONTENT_TYPE);
 		if (contentType == null) {
-			contentType = http.getHeaderField(HEADER_CONTENT_TYPE.toLowerCase());
+			contentType = http.getHeaderField(HEADER_CONTENT_TYPE.toLowerCase(Locale.ENGLISH));
 		}
 		if (contentType != null) {
 			if (contentType.indexOf(CONTENT_TYPE_MESSAGEPACK) > -1) {

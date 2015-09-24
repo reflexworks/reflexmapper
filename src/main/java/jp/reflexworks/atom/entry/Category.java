@@ -8,6 +8,7 @@ import org.msgpack.annotation.Index;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
 import jp.reflexworks.atom.mapper.MaskpropContext;
+import jp.reflexworks.atom.mapper.SizeContext;
 
 /**
  * カテゴリ.
@@ -17,31 +18,11 @@ public class Category implements Serializable, Cloneable, SoftSchema {
 	private static final long serialVersionUID = 1L;
 
 	@Index(0)
-	public String _$xml$lang;
-	@Index(1)
-	public String _$xml$base;
-	@Index(2)
 	public String _$term;
-	@Index(3)
+	@Index(1)
 	public String _$scheme;
-	@Index(4)
+	@Index(2)
 	public String _$label;
-
-	public String get$xml$lang() {
-		return _$xml$lang;
-	}
-
-	public void set$xml$lang(String _$xml$lang) {
-		this._$xml$lang = _$xml$lang;
-	}
-
-	public String get$xml$base() {
-		return _$xml$base;
-	}
-
-	public void set$xml$base(String _$xml$base) {
-		this._$xml$base = _$xml$base;
-	}
 
 	public String get$term() {
 		return _$term;
@@ -108,5 +89,12 @@ public class Category implements Serializable, Cloneable, SoftSchema {
 			throws java.text.ParseException {return true;}
 
 	public void maskprop(MaskpropContext context) {}
+
+	@Override
+	public void getsize(SizeContext context) {
+		if (_$term!=null) {context.size += _$term.length();context.count++;context.keysize+=5; }
+		if (_$scheme!=null) {context.size += _$scheme.length();context.count++;context.keysize+=7; }
+		if (_$label!=null) {context.size += _$label.length();context.count++;context.keysize+=5; }
+	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;
 import jp.reflexworks.atom.mapper.MaskpropContext;
+import jp.reflexworks.atom.mapper.SizeContext;
 
 public interface SoftSchema {
 	
@@ -55,5 +56,12 @@ public interface SoftSchema {
 	 * @param context
 	 */
 	public void maskprop(MaskpropContext context);
+
+	/**
+	 * Entryのサイズを計算する
+	 * 
+	 * @param context
+	 */
+	public void getsize(SizeContext context);
 
 }

@@ -32,6 +32,7 @@ public class TemplateChecker {
 	private static final String ENCODING = "UTF-8";
 	
 	private static final String SERVICE_NAME = "example1";
+	//private static final String SERVICE_NAME = "bqschema";
 	private static final String SERVICE_NAME_X = "exampleX";
 	private static final String UID = "2";
 	private static final List<String> GROUPS = new ArrayList<String>();

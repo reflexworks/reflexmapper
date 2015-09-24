@@ -1,0 +1,24 @@
+<feed>
+  <entry>
+    <user_parent>
+      <parent_text>親項目1</parent_text>
+      <user_child>
+        <child_text>子項目1-1</child_text>
+      </user_child>
+      <user_child>
+        <child_text>子項目1-2</child_text>
+      </user_child>
+    </user_parent>
+    <user_parent>
+      <parent_text>親項目2</parent_text>
+      <user_child>
+        <child_text>子項目2-1</child_text>
+      </user_child>
+      <user_child>
+        <child_text>子項目2-2</child_text>
+      </user_child>
+    </user_parent>
+    <id>/ddd/001,1</id>
+  </entry>
+</feed>
+  
