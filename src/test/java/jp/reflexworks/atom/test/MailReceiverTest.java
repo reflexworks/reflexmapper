@@ -2,11 +2,8 @@ package jp.reflexworks.atom.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Properties;
-
-import javax.mail.MessagingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.feed.FeedBase;
@@ -16,10 +13,6 @@ import jp.reflexworks.atom.util.MailReceiver;
 import org.junit.Test;
 
 public class MailReceiverTest {
-
-	String[] propstr = {"mail.pop3.host=pop.gmail.com","mail.pop3.port=995","mail.pop3.connectiontimeout=60000",
-			"mail.pop3.socketFactory.class=javax.net.ssl.SSLSocketFactory","mail.pop3.socketFactory.fallback=false"
-			,"mail.pop3.socketFactory.port=995","username=XXXXX@gmail.com","password=XXXX"};
 	
 	@Test
 	public void test() {
@@ -29,7 +22,18 @@ public class MailReceiverTest {
 			FeedTemplateMapper mapper = new FeedTemplateMapper(
 					new String[] { "default" }, "");
 		
-			FeedBase feed = mr.doReceive(mapper, propstr);
+			Map<String,String> propmap = new HashMap<String,String>();
+			
+			propmap.put("mail.pop3.host", "pop.gmail.com");
+			propmap.put("mail.pop3.port", "995");
+			propmap.put("mail.pop3.connectiontimeout", "60000");
+			propmap.put("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			propmap.put("mail.pop3.socketFactory.fallback", "false");
+			propmap.put("mail.pop3.socketFactory.port", "995");
+			propmap.put("username", "reflexworks.test@gmail.com");
+			propmap.put("password", "reflex0613");
+			
+			FeedBase feed = mr.doReceive(mapper, propmap);
 
 			System.out.println("メール受信: 終了");
 			

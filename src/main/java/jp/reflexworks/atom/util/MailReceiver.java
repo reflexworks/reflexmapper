@@ -2,6 +2,7 @@ package jp.reflexworks.atom.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Flags;
@@ -28,20 +29,20 @@ import com.sun.mail.pop3.POP3Store;
 
 public class MailReceiver {
 
-	public FeedBase doReceive(FeedTemplateMapper mapper, String[] propstr) throws MessagingException, IOException {
+	public FeedBase doReceive(FeedTemplateMapper mapper, Map<String,String> propmap) throws MessagingException, IOException {
 		
 		Properties props = new Properties();
 		String username = "";
 		String password = "";
 		
-		for(String prop:propstr) {
-			String token[] = prop.split("=");
-			if (token[0].equals("username")) {
-				username = token[1];
-			}else if(token[0].equals("password")){
-				password = token[1];
+		for(Map.Entry<String, String> entry:propmap.entrySet()) {
+			
+			if (entry.getKey().equals("username")) {
+				username = entry.getValue();
+			}else if(entry.getKey().equals("password")){
+				password = entry.getValue();
 			}else {
-				props.setProperty(token[0], token[1]);
+				props.setProperty(entry.getKey(), entry.getValue());
 			}
 		}
 		return doReceive(mapper,props,username,password);
