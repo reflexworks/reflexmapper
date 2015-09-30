@@ -141,7 +141,7 @@ public interface AtomConst {
 	/** URI : settings - passreset */
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
 	/** URI : settings - errorpage */
-	public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
+	//public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
 	/** URI : user init (value) */
 	//public static final String URI_USERINIT_VAL = "userinit";
 	public static final String URI_USERINIT_VAL = "userinit.xml";

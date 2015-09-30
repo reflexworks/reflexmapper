@@ -10,7 +10,7 @@ public interface SettingConst {
 	/** サービス設定 : 検索条件除外設定 **/
 	public static final String IGNORE_CONDITION_PREFIX = "_ignore.condition.";
 	/** サービス設定 : エラー画面表示URLパターン */
-	public static final String ERRORPAGE_URI = "_errorpage.uri";
+	public static final String ERRORPAGE_PREFIX = "_errorpage.";
 	/** サービス設定 : Amazon Web Service SNS mobile push : 更新者自身にpush通知を行うかどうか */
 	public static final String AWS_SNS_PUSH_SELF = "_aws.sns.push.self";
 	/** サービス設定 : EMail通知設定 : 更新者自身にメール通知を行うかどうか */
