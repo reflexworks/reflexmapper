@@ -171,6 +171,8 @@ public interface AtomConst {
 	public static final String URI_LAYER_AUTH = "/auth";
 	/** URI : group (layer) */
 	public static final String URI_LAYER_GROUP = "/group";
+	/** URI : html */
+	public static final String URI_HTML = "/_html";
 
 	/** type : webhook */
 	public static final String TYPE_WEBHOOK = "webhook";
