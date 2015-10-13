@@ -89,6 +89,8 @@ public interface AtomConst {
 	public static final String URN_PREFIX_AUTH = URN_PREFIX + "auth:";
 	/** URN : usersecret */
 	public static final String URN_PREFIX_USERSECRET = URN_PREFIX + "usersecret:";
+	/** URN : platformtoken */
+	public static final String URN_PREFIX_PLATFORMTOKEN = URN_PREFIX + "platformtoken:";
 	
 	/** 登録権限 */
 	public static final String ACL_TYPE_CREATE = "C";
@@ -140,6 +142,8 @@ public interface AtomConst {
 	public static final String URI_SETTINGS_ADDUSER = URI_SETTINGS + "/adduser";
 	/** URI : settings - passreset */
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
+	/** URI : settings - adduserByAdmin */
+	public static final String URI_SETTINGS_ADDUSER_BYADMIN = URI_SETTINGS + "/adduserByAdmin";
 	/** URI : settings - errorpage */
 	//public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
 	/** URI : user init (value) */
@@ -169,6 +173,8 @@ public interface AtomConst {
 	public static final String URI_GROUP_USERADMIN = URI_GROUP + URI_$USERADMIN;
 	/** URI : auth (layer) */
 	public static final String URI_LAYER_AUTH = "/auth";
+	/** URI : platform (layer) */
+	public static final String URI_LAYER_PLATFORM = "/platform";
 	/** URI : group (layer) */
 	public static final String URI_LAYER_GROUP = "/group";
 	/** URI : html */
