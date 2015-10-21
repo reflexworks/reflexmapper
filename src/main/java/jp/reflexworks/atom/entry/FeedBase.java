@@ -1,12 +1,10 @@
-package jp.reflexworks.atom.feed;
+package jp.reflexworks.atom.entry;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 import org.msgpack.annotation.Index;
-
-import jp.reflexworks.atom.entry.EntryBase;
 
 /**
  * Feedの親クラス.

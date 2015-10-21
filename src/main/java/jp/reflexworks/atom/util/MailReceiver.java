@@ -18,7 +18,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import jp.reflexworks.atom.entry.Content;
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.servlet.ReflexServletConst;
 import jp.sourceforge.reflex.util.DateUtil;

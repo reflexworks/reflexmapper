@@ -2,7 +2,7 @@ package jp.reflexworks.atom.util;
 
 import java.net.HttpURLConnection;
 
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 
 public class FeedTemplateURLConnection  {
 	

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.util.MailReceiver;
 

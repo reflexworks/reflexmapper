@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 

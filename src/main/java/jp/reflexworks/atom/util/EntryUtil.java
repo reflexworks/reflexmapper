@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 import jp.sourceforge.reflex.util.StringUtils;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.entry.Link;
-import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 
 public class EntryUtil {

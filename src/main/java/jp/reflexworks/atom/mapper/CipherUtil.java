@@ -16,11 +16,10 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 import jp.sourceforge.reflex.util.StringUtils;
-
 import jp.reflexworks.atom.AtomConst;
-import jp.reflexworks.atom.feed.FeedBase;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
+import jp.reflexworks.atom.entry.FeedBase;
 
 /**
  * 暗号化ユーティリティ.
