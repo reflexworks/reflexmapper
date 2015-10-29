@@ -172,7 +172,7 @@ public interface AtomConst {
 	/** URI : group - useradmin */
 	public static final String URI_GROUP_USERADMIN = URI_GROUP + URI_$USERADMIN;
 	/** URI : auth (layer) */
-	public static final String URI_LAYER_AUTH = "/auth";
+	public static final String URI_LAYER_AUTH = "/_auth";
 	/** URI : platform (layer) */
 	public static final String URI_LAYER_PLATFORM = "/platform";
 	/** URI : group (layer) */
