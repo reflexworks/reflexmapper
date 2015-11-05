@@ -137,7 +137,7 @@ public interface AtomConst {
 	/** URI : settings */
 	public static final String URI_SETTINGS = "/" + URI_SETTINGS_VAL;
 	/** URI : settings - admin */
-	public static final String URI_SETTINGS_ADMIN = URI_SETTINGS + "/admin";
+	public static final String URI_SETTINGS_PROPERTIES = URI_SETTINGS + "/properties";
 	/** URI : settings - adduser */
 	public static final String URI_SETTINGS_ADDUSER = URI_SETTINGS + "/adduser";
 	/** URI : settings - passreset */
