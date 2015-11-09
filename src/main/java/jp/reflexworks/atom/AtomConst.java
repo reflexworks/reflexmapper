@@ -202,5 +202,8 @@ public interface AtomConst {
 	
 	/** ログインユーザのUIDを表す記号 */
 	public static final String LOGINUSER_VAL = "~";
+	
+	/** ACLグループのワイルドカード */
+	public static final String GROUP_WILDCARD = "*";
 
 }
