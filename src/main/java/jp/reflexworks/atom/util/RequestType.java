@@ -21,14 +21,14 @@ public interface RequestType {
 	public static final String PARAM_COUNT = "c";
 	/** URLパラメータ : Entry取得 */
 	public static final String PARAM_ENTRY = "e"; 
-	/** URLパラメータ : Feed検索 */
+	/** URLパラメータ : Feed検索、削除 */
 	public static final String PARAM_FEED = "f";
 	/** URLパラメータ : contentの中身を取得 */
 	public static final String PARAM_CONTENT = "_content";
 	/** URLパラメータ : contentの中身無しで返す */
 	public static final String PARAM_NOCONTENT = "_nocontent";
-	/** URLパラメータ : 配下のエントリー削除処理（DELETEメソッドで使用） */
-	public static final String PARAM_FORCE = "_force";
+	/** URLパラメータ : 配下のエントリー削除処理 (DELETEメソッドで使用) */
+	public static final String PARAM_RF = "_rf";
 	/** URLパラメータ : ログイン */
 	public static final String PARAM_LOGIN = "_login";
 	/** URLパラメータ : ログアウト */
