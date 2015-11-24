@@ -101,6 +101,8 @@ public interface RequestType {
 	public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
 	/** URLパラメータ : サービス作成 */
 	public static final String PARAM_CREATESERVICE = "_createservice";
+	/** URLパラメータ : サービス削除 */
+	public static final String PARAM_DELETESERVICE = "_deleteservice";
 	/** URLパラメータ : ログインサービスへのリダイレクト時にサービス名を引き渡すために使用するパラメータ */
 	public static final String PARAM_INVOKER = "_invoker";
 	/** URLパラメータ : サービス */
