@@ -131,6 +131,10 @@ public interface AtomConst {
 	public static final String SERVICE_STATUS_RUNNING = "running";
 	/** サービスステータス : 強制停止 */
 	public static final String SERVICE_STATUS_BLOCKED = "blocked";
+	/** サービスステータス : リセット中 */
+	public static final String SERVICE_STATUS_RESETTING = "resetting";
+	/** サービスステータス : 削除中 */
+	public static final String SERVICE_STATUS_DELETING = "deleting";
 
 	/** URI : settings (value) */
 	public static final String URI_SETTINGS_VAL = "_settings";
