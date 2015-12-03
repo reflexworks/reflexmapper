@@ -93,11 +93,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		"jp.reflexworks.atom.entry.Contributor",
 		"jp.reflexworks.atom.entry.Link",
 		"jp.reflexworks.atom.entry.Element",		// Elementは本来はATOMクラスではないがここに必要
-		"jp.reflexworks.atom.feed.Author",
-		"jp.reflexworks.atom.feed.Category",
-		"jp.reflexworks.atom.feed.Generator",
-		"jp.reflexworks.atom.feed.Contributor",
-		"jp.reflexworks.atom.feed.Link"
+		"jp.reflexworks.atom.entry.Generator"
 	};
 
 	public static final String[] ATOMENTRYTMPL = {
@@ -137,7 +133,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	};	
 
 	private static final String ENTRYBASE = "jp.reflexworks.atom.entry.EntryBase";
-	private static final String FEEDBASE = "jp.reflexworks.atom.feed.FeedBase";
+	private static final String FEEDBASE = "jp.reflexworks.atom.entry.FeedBase";
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
 	private static final String CONDITIONCONTEXT = "jp.reflexworks.atom.mapper.ConditionContext";
 	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";

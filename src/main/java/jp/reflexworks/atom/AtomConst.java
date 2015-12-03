@@ -89,6 +89,8 @@ public interface AtomConst {
 	public static final String URN_PREFIX_AUTH = URN_PREFIX + "auth:";
 	/** URN : usersecret */
 	public static final String URN_PREFIX_USERSECRET = URN_PREFIX + "usersecret:";
+	/** URN : platformtoken */
+	public static final String URN_PREFIX_PLATFORMTOKEN = URN_PREFIX + "platformtoken:";
 	
 	/** 登録権限 */
 	public static final String ACL_TYPE_CREATE = "C";
@@ -129,17 +131,23 @@ public interface AtomConst {
 	public static final String SERVICE_STATUS_RUNNING = "running";
 	/** サービスステータス : 強制停止 */
 	public static final String SERVICE_STATUS_BLOCKED = "blocked";
+	/** サービスステータス : リセット中 */
+	public static final String SERVICE_STATUS_RESETTING = "resetting";
+	/** サービスステータス : 削除中 */
+	public static final String SERVICE_STATUS_DELETING = "deleting";
 
 	/** URI : settings (value) */
 	public static final String URI_SETTINGS_VAL = "_settings";
 	/** URI : settings */
 	public static final String URI_SETTINGS = "/" + URI_SETTINGS_VAL;
 	/** URI : settings - admin */
-	public static final String URI_SETTINGS_ADMIN = URI_SETTINGS + "/admin";
+	public static final String URI_SETTINGS_PROPERTIES = URI_SETTINGS + "/properties";
 	/** URI : settings - adduser */
 	public static final String URI_SETTINGS_ADDUSER = URI_SETTINGS + "/adduser";
 	/** URI : settings - passreset */
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
+	/** URI : settings - adduserByAdmin */
+	public static final String URI_SETTINGS_ADDUSER_BYADMIN = URI_SETTINGS + "/adduserByAdmin";
 	/** URI : settings - errorpage */
 	//public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
 	/** URI : user init (value) */
@@ -168,9 +176,13 @@ public interface AtomConst {
 	/** URI : group - useradmin */
 	public static final String URI_GROUP_USERADMIN = URI_GROUP + URI_$USERADMIN;
 	/** URI : auth (layer) */
-	public static final String URI_LAYER_AUTH = "/auth";
+	public static final String URI_LAYER_AUTH = "/_auth";
+	/** URI : platform (layer) */
+	public static final String URI_LAYER_PLATFORM = "/platform";
 	/** URI : group (layer) */
 	public static final String URI_LAYER_GROUP = "/group";
+	/** URI : html */
+	public static final String URI_HTML = "/_html";
 
 	/** type : webhook */
 	public static final String TYPE_WEBHOOK = "webhook";
@@ -194,5 +206,8 @@ public interface AtomConst {
 	
 	/** ログインユーザのUIDを表す記号 */
 	public static final String LOGINUSER_VAL = "~";
+	
+	/** ACLグループのワイルドカード */
+	public static final String GROUP_WILDCARD = "*";
 
 }

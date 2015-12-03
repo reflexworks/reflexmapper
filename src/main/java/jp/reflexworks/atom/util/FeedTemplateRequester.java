@@ -9,12 +9,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.zip.DataFormatException;
 
-
 import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.Requester;
 import jp.reflexworks.servlet.ReflexServletConst;
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 
 public class FeedTemplateRequester extends Requester implements ReflexServletConst {

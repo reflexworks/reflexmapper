@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
 
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 
 public class Feed extends FeedBase implements Serializable {
 

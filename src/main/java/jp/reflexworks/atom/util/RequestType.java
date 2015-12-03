@@ -21,14 +21,14 @@ public interface RequestType {
 	public static final String PARAM_COUNT = "c";
 	/** URLパラメータ : Entry取得 */
 	public static final String PARAM_ENTRY = "e"; 
-	/** URLパラメータ : Feed検索 */
+	/** URLパラメータ : Feed検索、削除 */
 	public static final String PARAM_FEED = "f";
 	/** URLパラメータ : contentの中身を取得 */
 	public static final String PARAM_CONTENT = "_content";
 	/** URLパラメータ : contentの中身無しで返す */
 	public static final String PARAM_NOCONTENT = "_nocontent";
-	/** URLパラメータ : 配下のエントリー削除処理（DELETEメソッドで使用） */
-	public static final String PARAM_FORCE = "_force";
+	/** URLパラメータ : 配下のエントリー削除処理 (DELETEメソッドで使用) */
+	public static final String PARAM_RF = "_rf";
 	/** URLパラメータ : ログイン */
 	public static final String PARAM_LOGIN = "_login";
 	/** URLパラメータ : ログアウト */
@@ -83,8 +83,14 @@ public interface RequestType {
 	public static final String PARAM_LOWER = "_lower";
 	/** URLパラメータ : ノード名を指定するオプション (_lowerオプションと合わせて使用) */
 	public static final String PARAM_NODE = "_node";
-	/** URLパラメータ : アクセスキー発行オプション */
+	/** URLパラメータ : アクセスキー変更オプション */
 	public static final String PARAM_ACCESSKEY = "_accesskey";
+	/** URLパラメータ : アクセストークン発行オプション */
+	public static final String PARAM_ACCESSTOKEN = "_accesstoken";
+	/** URLパラメータ : リンクトークン発行オプション */
+	public static final String PARAM_LINKTOKEN = "_linktoken";
+	/** URLパラメータ : リンクトークン指定オプション */
+	public static final String PARAM_TOKEN = "_token";
 	/** URLパラメータ : ユーザ登録メール送信オプション */
 	public static final String PARAM_ADDUSER = "_adduser";
 	/** URLパラメータ : パスワード変更メール送信オプション */
@@ -95,6 +101,8 @@ public interface RequestType {
 	public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
 	/** URLパラメータ : サービス作成 */
 	public static final String PARAM_CREATESERVICE = "_createservice";
+	/** URLパラメータ : サービス削除 */
+	public static final String PARAM_DELETESERVICE = "_deleteservice";
 	/** URLパラメータ : ログインサービスへのリダイレクト時にサービス名を引き渡すために使用するパラメータ */
 	public static final String PARAM_INVOKER = "_invoker";
 	/** URLパラメータ : サービス */

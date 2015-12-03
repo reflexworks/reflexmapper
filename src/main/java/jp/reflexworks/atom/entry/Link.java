@@ -45,6 +45,7 @@ public class Link implements Serializable, SoftSchema {
 	public static final String REL_VIA = "via";
 	public static final String REL_ENCLOSURE = "enclosure";
 	public static final String NUMBERING = "#";
+	public static final String REL_NEXT = "next";
 
 	@Index(0)
 	public String _$href;

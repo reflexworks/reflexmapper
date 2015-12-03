@@ -34,7 +34,7 @@ import jp.sourceforge.reflex.util.FileUtil;
 import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
-import jp.reflexworks.atom.feed.FeedBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.BQJSONSerializer;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
