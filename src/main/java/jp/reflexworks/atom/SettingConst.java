@@ -1,5 +1,8 @@
 package jp.reflexworks.atom;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * サービスごとに指定する設定
  */
@@ -23,6 +26,16 @@ public interface SettingConst {
 	public static final String EMAIL_SEND_ONESELF = "_email.send.oneself";
 	/** サービス設定 : EMail情報 */
 	public static final String MAIL_PREFIX = "_mail.";
+	
+	/** 
+	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
+	 * <p>
+	 * 条件を複数取得する、前方一致指定の項目に有効。
+	 * 追加があればString配列に項目を追加すること。
+	 * </p>
+	 */
+	public static final List<String> IGNORE_SYSTEM_IF_EXIST_SERVICE_INFO =
+			Arrays.asList(new String[]{MAIL_PREFIX});
 	
 	/** ユーザ初期エントリー設定 : ユーザ番号に置き換える記号 */
 	public static final String SETTING_USERINIT_UID = "#";

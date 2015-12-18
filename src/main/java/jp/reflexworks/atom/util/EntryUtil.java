@@ -1,11 +1,14 @@
 package jp.reflexworks.atom.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jp.sourceforge.reflex.util.StringUtils;
 import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.entry.Link;
@@ -238,6 +241,58 @@ public class EntryUtil {
 			return feed.title;
 		}
 		return null;
+	}
+
+	/**
+	 * ユーザに指定した権限を付与するACL情報の文字列を作成します
+	 * @param user ユーザ名
+	 * @param aclType 権限情報
+	 * @return ACL情報の文字列
+	 */
+	public static String getAclUrn(String user, String aclType) {
+		if (aclType != null && aclType.length() > 0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(AtomConst.URN_PREFIX_ACL);
+			sb.append(user);
+			sb.append(",");
+			sb.append(aclType);
+			return sb.toString();
+		}
+		return null;
+	}
+	
+	/**
+	 * ACL情報を設定したContributorを作成します.
+	 * @param user ユーザ名
+	 * @param aclType 権限情報
+	 * @return ACL情報を設定したContributor
+	 */
+	public static Contributor getAclContributor(String user, String aclType) {
+		String urn = getAclUrn(user, aclType);
+		Contributor contributor = new Contributor();
+		contributor.uri = urn;
+		return contributor;
+	}
+
+	/**
+	 * エントリーに認可情報を設定します。
+	 * @param entry 編集対象エントリー
+	 * @param user ACLを設定する対象(ユーザ(UID)、グループ)
+	 * @param aclType ACLタイプ
+	 */
+	public static void addAclToEntry(EntryBase entry, String user, 
+			String aclType) {
+		if (entry != null) {
+			Contributor contributor = new Contributor();
+			contributor.uri = getAclUrn(user, aclType);
+			List<Contributor> contributors = entry.getContributor();
+			if (contributors == null) {
+				contributors = new ArrayList<Contributor>();
+				entry.setContributor(contributors);
+			}
+			contributors.add(contributor);
+			entry.setContributor(contributors);
+		}
 	}
 
 }
