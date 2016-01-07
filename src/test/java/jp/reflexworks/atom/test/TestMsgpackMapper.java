@@ -121,12 +121,12 @@ public class TestMsgpackMapper {
 
 	public static String entityAcls5[] = {
 		"title:^/$|^/@XXXX$",
-		"contributor=/@testservice/_group/$admin+RW",
+		"contributor=/_group/$admin+RW",
 		"contributor.uri#",
-		"rights#=@+RW,/@testservice/_group/$admin+RW",
-		"info.category=/@testservice/1/group/office+RW",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.category=/1/group/office+RW",
 		"comment=7+RW",
-		"info.name:/item",
+		"info.name:^/index[^/]*$",
 		"comment.secret#"
 	};
 
@@ -2234,4 +2234,46 @@ public class TestMsgpackMapper {
 		return " (☓) ";
 	}
 	
+	@Test
+	public void testGetMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
+		
+		String serviceName = "service1";
+		String testName = "info.name";
+		String sourceValue = null;
+		String targetValue = null;
+		
+		System.out.println("[Index]");
+		for (String acl : entityAcls5) {
+			int idx = acl.indexOf(":");
+			if (idx > 0) {
+				System.out.println("** " + acl);
+				if (testName.equals(acl.substring(0, idx))) {
+					sourceValue = acl.substring(idx + 1);
+				}
+			}
+		}
+		
+		List<Meta> metalist = mp4.getMetalist(serviceName);
+		System.out.println("[Metalist Index]");
+		for (Meta meta : metalist) {
+			if (meta.index != null && meta.index.length() > 0) {
+				System.out.println("** " + meta.name + ": " + meta.index);
+				if (testName.equals(meta.name)) {
+					targetValue = meta.index;
+				}
+			}
+		}
+		
+		String testLayer = "/index";
+		String sourceLayer = sourceValue.substring(sourceValue.indexOf(testLayer));
+		String targetLayer = targetValue.substring(targetValue.indexOf(testLayer));
+		
+		System.out.println("sourceLayer: " + sourceLayer);
+		System.out.println("targetLayer: " + targetLayer);
+		
+		assertEquals(sourceLayer, targetLayer);
+
+	}
 }
