@@ -2047,7 +2047,7 @@ public class TestMsgpackMapper {
 		assertTrue(isMatch);
 
 		// Integer桁数を超える数値
-		conditions[0] = new Condition("info.stock_int-gt-9999999999999");
+		conditions[0] = new Condition("info.stock_int-gt-999999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);

@@ -152,8 +152,11 @@ public class ConditionContext {
 			}
 		} else if (type.equals("Integer")) {
 			int src = (Integer)obj;
-			int value = StringUtils.intValue(cond.getValue());
-			
+			int s = cond.getValue().length();
+			// 2147483647(Integer.MAX_VALUE)
+			if (s>10) s= 10;
+			long value = StringUtils.longValue(cond.getValue().substring(0, s));
+
 			if (ConditionBase.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
@@ -170,8 +173,12 @@ public class ConditionContext {
 
 		} else if (type.equals("Long")) {
 			long src = (Long)obj;
-			long value = StringUtils.longValue(cond.getValue());
 			
+			int s = cond.getValue().length();
+			// 9223372036854775807(Long.MAX_VALUE)
+			if (s>20) s= 20;
+			double value = StringUtils.doubleValue(cond.getValue().substring(0, s));
+
 			if (ConditionBase.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
