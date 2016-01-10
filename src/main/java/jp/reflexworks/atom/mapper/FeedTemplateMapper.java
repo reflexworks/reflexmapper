@@ -404,8 +404,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0||svc==null) {
 				result.append(token[i]);
 			}else {
-				String t = token[i].replace("^", "");
-				result.append("^/@"+svc+t);
+				int p = token[i].indexOf("/");
+				result.append(token[i].substring(0,p)+"/@"+svc+token[i].substring(p));
 			}
 			if (i+1<token.length) {
 				result.append("|");
