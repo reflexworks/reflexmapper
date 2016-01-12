@@ -28,6 +28,7 @@ import org.junit.Test;
 import com.carrotsearch.sizeof.ObjectTree;
 
 import jp.sourceforge.reflex.exception.JSONException;
+import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
@@ -127,6 +128,10 @@ public class TestMsgpackMapper {
 		"info.category=/1/group/office+RW",
 		"comment=7+RW",
 		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
 		"comment.secret#"
 	};
 
@@ -214,17 +219,14 @@ public class TestMsgpackMapper {
 		" color",
 		" size=^[a-zA-Z0-9]{1,2}$",
 		" sale_boolean(boolean)",
-		" sale_c_boolean(Boolean)",
-		" stock_long(long)",
 		" stock_int(int)",
-		" stock_short(short)",
+		" stock_long(long)",
 		" stock_float(float)",
 		" stock_double(double)",
-		" stock_c_long(Long)",
-		" stock_c_integer(Integer)",
-		" stock_c_short(Short)",
-		" stock_c_float(Float)",
-		" stock_c_double(Double)",
+		" stock_string(string)",
+		" stock_date(date)",
+		//" stock_desc(desc)",
+		" aaa(desc)",
 		"comment{}",
 		" $$text",
 		" nickname",
@@ -1919,7 +1921,7 @@ public class TestMsgpackMapper {
 		modelPackage.putAll(AtomConst.ATOM_PACKAGE);
 		modelPackage.put("jp.reflexworks.test2.model", "");
 
-		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);		
+		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);
 		metalist = mp.getMetalist(serviceName);
 		existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
@@ -1953,6 +1955,107 @@ public class TestMsgpackMapper {
 	}
 	
 	@Test
+	public void testGetMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
+		
+		String serviceName = "service1";
+		String testName = "info.name";
+		String sourceValue = null;
+		String targetValue = null;
+		
+		System.out.println("[Index]");
+		for (String acl : entityAcls5) {
+			int idx = acl.indexOf(":");
+			if (idx > 0) {
+				System.out.println("** " + acl);
+				if (testName.equals(acl.substring(0, idx))) {
+					sourceValue = acl.substring(idx + 1);
+				}
+			}
+		}
+		
+		List<Meta> metalist = mp4.getMetalist(serviceName);
+		System.out.println("[Metalist Index]");
+		for (Meta meta : metalist) {
+			if (meta.index != null && meta.index.length() > 0) {
+				System.out.println("** " + meta.name + ": " + meta.index);
+				if (testName.equals(meta.name)) {
+					targetValue = meta.index;
+				}
+			}
+		}
+		
+		String testLayer = "/index";
+		String sourceLayer = sourceValue.substring(sourceValue.indexOf(testLayer));
+		String targetLayer = targetValue.substring(targetValue.indexOf(testLayer));
+		
+		System.out.println("sourceLayer: " + sourceLayer);
+		System.out.println("targetLayer: " + targetLayer);
+		
+		assertEquals(sourceLayer, targetLayer);
+
+	}
+
+	@Test
+	public void testDate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
+
+		String date = "2015-12-04 09:53:34";
+		String json = getDateJson(date);
+		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		EntryBase entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		
+		date = "2015-12-04 09:53:34.333";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeMillisec((Date)entry.getValue("info.stock_date"), "JST"));
+		
+		date = "2015-12-04 09:53:34.333+0900";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeMillisec((Date)entry.getValue("info.stock_date"), "JST"));
+
+		date = "2015-12-04T09:53:34";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		
+		date = "2015-12-04T09:53:34+0900";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		
+		date = "2015-12-04T09:53:34+09:00";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		
+		try {
+			date = "2015-12-04T09:53:34.909+09:00";
+			json = getDateJson(date);
+			feed = (FeedBase)mp4.fromJSON(json);
+			entry = feed.entry.get(0);
+			System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		} catch (JSONException e) {
+			// TODO ミリ秒は指定できなくて良いか要確認
+			e.printStackTrace();
+		}
+
+	}
+	
+	private String getDateJson(String date) {
+		return "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_date\" : \"" + date + "\"}}]}}";
+	}
+
+	@Test
 	public void testIsMatch() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
 		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
@@ -1962,12 +2065,42 @@ public class TestMsgpackMapper {
 
 		// stock_int をテスト
 		// 数値が正数の場合
-		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000}}]}}";
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333,\"stock_double\" : 4444.5555}}]}}";
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333}}]}}";
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
 		EntryBase entry = feed.entry.get(0);
 		
+		checkPositiveInteger(entry);
+		checkPositiveLong(entry);
+		checkPositiveFloat(entry);
+		checkPositiveDouble(entry);
+
+		// 数値が負数の場合
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333,\"stock_double\" : -4444.5555}}]}}";
+		//json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333}}]}}";
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+
+		checkNegativeInteger(entry);
+		checkNegativeLong(entry);
+		checkNegativeFloat(entry);
+		checkNegativeDouble(entry);
+
+	}
+	
+	private String checkResult(boolean target, boolean source) {
+		if (target == source) {
+			return " (◯) ";
+		}
+		return " (☓) ";
+	}
+	
+	// 正数 Integer の isMatchテスト
+	private void checkPositiveInteger(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
 		System.out.println("info.stock_int = " + entry.getValue("info.stock_int"));
-		
 		// Integer桁数内の数値
 		conditions[0] = new Condition("info.stock_int-gt-99999");
 		isMatch = entry.isMatch(conditions);
@@ -2082,14 +2215,382 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
+	}
 
-		// 数値が負数の場合
-		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000}}]}}";
-		feed = (FeedBase)mp4.fromJSON(json);
-		entry = feed.entry.get(0);
+	// 正数 Long の isMatchテスト
+	private void checkPositiveLong(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
+		System.out.println("info.stock_long = " + entry.getValue("info.stock_long"));
+		// Long桁数内の数値
+		conditions[0] = new Condition("info.stock_long-gt-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-le-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-le-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-le--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-le--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
 		
+		conditions[0] = new Condition("info.stock_long-eq-1000000");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		// Long桁数を超える数値
+		conditions[0] = new Condition("info.stock_long-gt-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-le-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-le--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+	}
+	
+	// 正数 Float の isMatchテスト
+	private void checkPositiveFloat(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
+		// 222.333
+		System.out.println("info.stock_float = " + entry.getValue("info.stock_float"));
+		// Float桁数内の数値
+		conditions[0] = new Condition("info.stock_float-gt-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-le-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-le-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-le--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-le--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_float-eq-222.333");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		// Float桁数を超える数値
+		conditions[0] = new Condition("info.stock_float-gt-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-le-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-le--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+	}
+	
+	// 正数 Double の isMatchテスト
+	private void checkPositiveDouble(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
+		// 4444.5555
+		System.out.println("info.stock_double = " + entry.getValue("info.stock_double"));
+		// Double桁数内の数値
+		conditions[0] = new Condition("info.stock_double-gt-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-le-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-le-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-le--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-le--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_double-eq-4444.5555");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		// Double桁数を超える数値
+		conditions[0] = new Condition("info.stock_double-gt-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-le-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-le--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+	}
+
+	// 負数 Integer の isMatchテスト
+	private void checkNegativeInteger(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
 		System.out.println("info.stock_int = " + entry.getValue("info.stock_int"));
-		
 		// Integer桁数内の数値
 		conditions[0] = new Condition("info.stock_int-gt-99999");
 		isMatch = entry.isMatch(conditions);
@@ -2224,56 +2725,434 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-
 	}
+
+	// 負数 Long の isMatchテスト
+	private void checkNegativeLong(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
+		System.out.println("info.stock_long = " + entry.getValue("info.stock_long"));
+		// Integer桁数内の数値
+		conditions[0] = new Condition("info.stock_long-gt-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-le-99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-le-999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-le--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_long-eq--99999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-le--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		
+		conditions[0] = new Condition("info.stock_long-eq--999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_long-eq--1000000");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		// Long桁数を超える数値
+		conditions[0] = new Condition("info.stock_long-gt-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-le-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		
+		conditions[0] = new Condition("info.stock_long-eq-99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-gt--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_long-ge--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_long-lt--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_long-le--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
 	
-	private String checkResult(boolean target, boolean source) {
-		if (target == source) {
-			return " (◯) ";
-		}
-		return " (☓) ";
+		conditions[0] = new Condition("info.stock_long-eq--99999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
 	}
+
+	// 負数 Float の isMatchテスト
+	private void checkNegativeFloat(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
+		// 222.333
+		System.out.println("info.stock_float = " + entry.getValue("info.stock_float"));
+		// Float桁数内の数値
+		conditions[0] = new Condition("info.stock_float-gt-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-le-999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-le-11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-le--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_float-eq--999.99");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-le--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		
+		conditions[0] = new Condition("info.stock_float-eq--11.222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_float-eq--222.333");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		// Float桁数を超える数値
+		conditions[0] = new Condition("info.stock_float-gt-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-le-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		
+		conditions[0] = new Condition("info.stock_float-eq-999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-gt--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_float-ge--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_float-lt--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_float-le--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
 	
-	@Test
-	public void testGetMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-
-		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
-		
-		String serviceName = "service1";
-		String testName = "info.name";
-		String sourceValue = null;
-		String targetValue = null;
-		
-		System.out.println("[Index]");
-		for (String acl : entityAcls5) {
-			int idx = acl.indexOf(":");
-			if (idx > 0) {
-				System.out.println("** " + acl);
-				if (testName.equals(acl.substring(0, idx))) {
-					sourceValue = acl.substring(idx + 1);
-				}
-			}
-		}
-		
-		List<Meta> metalist = mp4.getMetalist(serviceName);
-		System.out.println("[Metalist Index]");
-		for (Meta meta : metalist) {
-			if (meta.index != null && meta.index.length() > 0) {
-				System.out.println("** " + meta.name + ": " + meta.index);
-				if (testName.equals(meta.name)) {
-					targetValue = meta.index;
-				}
-			}
-		}
-		
-		String testLayer = "/index";
-		String sourceLayer = sourceValue.substring(sourceValue.indexOf(testLayer));
-		String targetLayer = targetValue.substring(targetValue.indexOf(testLayer));
-		
-		System.out.println("sourceLayer: " + sourceLayer);
-		System.out.println("targetLayer: " + targetLayer);
-		
-		assertEquals(sourceLayer, targetLayer);
-
+		conditions[0] = new Condition("info.stock_float-eq--999.9999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
 	}
+
+	// 負数 Double の isMatchテスト
+	private void checkNegativeDouble(EntryBase entry) {
+		Condition[] conditions = new Condition[1];
+		boolean isMatch = false;
+
+		// 4444.5555
+		System.out.println("info.stock_double = " + entry.getValue("info.stock_double"));
+		// Double桁数内の数値
+		conditions[0] = new Condition("info.stock_double-gt-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-le-999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-le-111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-le--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_double-eq--999999.999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-le--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		
+		conditions[0] = new Condition("info.stock_double-eq--111.22222222");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		
+		conditions[0] = new Condition("info.stock_double-eq--4444.5555");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		// Double桁数を超える数値
+		conditions[0] = new Condition("info.stock_double-gt-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-le-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		
+		conditions[0] = new Condition("info.stock_double-eq-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-gt--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+		conditions[0] = new Condition("info.stock_double-ge--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
+		assertTrue(isMatch);
+
+		conditions[0] = new Condition("info.stock_double-lt--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+		conditions[0] = new Condition("info.stock_double-le--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+	
+		conditions[0] = new Condition("info.stock_double-eq--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
+		isMatch = entry.isMatch(conditions);
+		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
+		assertFalse(isMatch);
+	}
+
 }
