@@ -2002,48 +2002,68 @@ public class TestMsgpackMapper {
 
 		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
 
+		String printFormat = "yyyy-MM-dd HH:mm:ss.SSSZ";
+		
 		String date = "2015-12-04 09:53:34";
 		String json = getDateJson(date);
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
 		EntryBase entry = feed.entry.get(0);
-		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 		
 		date = "2015-12-04 09:53:34.333";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
-		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeMillisec((Date)entry.getValue("info.stock_date"), "JST"));
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 		
-		date = "2015-12-04 09:53:34.333+0900";
+		date = "2015-12-04 09:53:34+0800";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
-		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeMillisec((Date)entry.getValue("info.stock_date"), "JST"));
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+
+		date = "2015-12-04 09:53:34+08:00";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+		
+		date = "2015-12-04 09:53:34.333+0800";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 
 		date = "2015-12-04T09:53:34";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
-		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 		
-		date = "2015-12-04T09:53:34+0900";
+		date = "2015-12-04T09:53:34.333";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
-		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
-		
-		date = "2015-12-04T09:53:34+09:00";
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+
+		date = "2015-12-04T09:53:34+0800";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
-		System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+		
+		date = "2015-12-04T09:53:34+08:00";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 		
 		try {
-			date = "2015-12-04T09:53:34.909+09:00";
+			date = "2015-12-04T09:53:34.333+0800";
 			json = getDateJson(date);
 			feed = (FeedBase)mp4.fromJSON(json);
 			entry = feed.entry.get(0);
-			System.out.println("[testDate] before = " + date + " | after = " + entry.getValue("info.stock_date"));
+			System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 		} catch (JSONException e) {
 			// TODO ミリ秒は指定できなくて良いか要確認
 			e.printStackTrace();
