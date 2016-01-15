@@ -2069,6 +2069,30 @@ public class TestMsgpackMapper {
 			e.printStackTrace();
 		}
 
+		date = "2015/12/04 09:53:34.333";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+
+		date = "2015/12/04 09:53:34.333+0800";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+
+		date = "20151204095334333";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+		
+		date = "20151204095334333+0800";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
+
 	}
 	
 	private String getDateJson(String date) {
