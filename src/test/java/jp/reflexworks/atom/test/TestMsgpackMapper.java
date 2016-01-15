@@ -2058,16 +2058,11 @@ public class TestMsgpackMapper {
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 		
-		try {
-			date = "2015-12-04T09:53:34.333+0800";
-			json = getDateJson(date);
-			feed = (FeedBase)mp4.fromJSON(json);
-			entry = feed.entry.get(0);
-			System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		} catch (JSONException e) {
-			// TODO ミリ秒は指定できなくて良いか要確認
-			e.printStackTrace();
-		}
+		date = "2015-12-04T09:53:34.333+0800";
+		json = getDateJson(date);
+		feed = (FeedBase)mp4.fromJSON(json);
+		entry = feed.entry.get(0);
+		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 
 		date = "2015/12/04 09:53:34.333";
 		json = getDateJson(date);
