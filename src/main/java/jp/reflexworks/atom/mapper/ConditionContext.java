@@ -153,7 +153,7 @@ public class ConditionContext {
 		} else if (type.equals("Integer")) {
 			int src = (Integer)obj;
 			int value = StringUtils.intValue(cond.getValue());
-			
+
 			if (ConditionBase.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
@@ -171,7 +171,7 @@ public class ConditionContext {
 		} else if (type.equals("Long")) {
 			long src = (Long)obj;
 			long value = StringUtils.longValue(cond.getValue());
-			
+
 			if (ConditionBase.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {

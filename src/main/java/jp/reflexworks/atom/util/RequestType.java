@@ -103,6 +103,8 @@ public interface RequestType {
 	public static final String PARAM_CREATESERVICE = "_createservice";
 	/** URLパラメータ : サービス削除 */
 	public static final String PARAM_DELETESERVICE = "_deleteservice";
+	/** URLパラメータ : サービスリセット */
+	public static final String PARAM_RESETSERVICE = "_resetservice";
 	/** URLパラメータ : ログインサービスへのリダイレクト時にサービス名を引き渡すために使用するパラメータ */
 	public static final String PARAM_INVOKER = "_invoker";
 	/** URLパラメータ : サービス */

@@ -404,8 +404,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0||svc==null) {
 				result.append(token[i]);
 			}else {
-				String t = token[i].replace("^", "");
-				result.append("^/@"+svc+t);
+				int p = token[i].indexOf("/");
+				result.append(token[i].substring(0,p)+"/@"+svc+token[i].substring(p));
 			}
 			if (i+1<token.length) {
 				result.append("|");
@@ -1878,8 +1878,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 								if (f.getType().getName().equals("java.lang.Integer")) f.set(parent, e.getValue().asIntegerValue().getInt());
 								if (f.getType().getName().equals("java.lang.Long")) f.set(parent, e.getValue().asIntegerValue().getLong());
 								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
+								if (f.getType().getName().equals("java.lang.Double")) f.set(parent, e.getValue().asFloatValue().getDouble());
 							}
-							else if (e.getValue().isFloatValue()) f.set(parent, e.getValue().asFloatValue().getFloat());
+							else if (e.getValue().isFloatValue()) {
+								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
+								if (f.getType().getName().equals("java.lang.Double")) f.set(parent, e.getValue().asFloatValue().getDouble());
+							}
 							else if (e.getValue().isRawValue()) {
 								String v = e.getValue().toString().substring(1,e.getValue().toString().length()-1);
 								if (f.getType().getName().equals("java.util.Date")) {
