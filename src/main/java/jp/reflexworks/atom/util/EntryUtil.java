@@ -155,6 +155,124 @@ public class EntryUtil {
 	}
 	
 	/**
+	 * 親階層、自身の階層からキーを取得します.
+	 * @param parent 親階層
+	 * @param selfid 自身の階層
+	 * @return キー
+	 */
+	public static String getUri(String parent, String selfid) {
+		String uri = null;
+		if (!isTop(parent)) {
+			if (selfid != null) {
+				uri = editSlash(parent) + selfid;
+			} else {
+				uri = parent;
+			}
+		} else {
+			if (selfid != null) {
+				uri = selfid;
+			}
+		}
+		return uri;
+	}
+
+	/**
+	 * キーが最上位かどうかを判定します.
+	 * @param uri キー
+	 * @return 最上位の場合true
+	 */
+	public static boolean isTop(String uri) {
+		return EntryBase.isTop(uri);
+	}
+
+	/**
+	 * キーの末尾にスラッシュを設定します.
+	 * @param myUri キー
+	 * @return キーの末尾にスラッシュをつけた文字列
+	 */
+	public static String editSlash(String myUri) {
+		if (myUri != null && myUri.length() > 0) {
+			if (myUri.lastIndexOf("/") < myUri.length() - 1) {
+				myUri = myUri + "/";
+			}
+		} else {
+			myUri = "/";
+		}
+		return myUri;
+	}
+	
+	/**
+	 * 最後にスラッシュが設定されている場合に除去します.
+	 * @param myUri URI
+	 * @return 最後のスラッシュを除去したURI
+	 */
+	public static String removeLastSlash(String myUri) {
+		String uri = editSlash(myUri);
+		if (uri.length() > 1) {
+			uri = uri.substring(0, uri.length() - 1);
+		}
+		return uri;
+	}
+
+	/**
+	 * 親階層を返却します.
+	 * <p>
+	 * 親階層は末尾にスラッシュが付きます.
+	 * <ul>
+	 * <li>uriが"/"の場合、親はnull、子は"/"です。親がnullの場合は":"を返却します。</li>
+	 * <li>uriが"/aaa"の場合、親は"/"、子は"aaa"のため、"/"を返却します。</li>
+	 * <li>uriが"/aaa/bbb"の場合、親は"/aaa/"、子は"bbb"のため、"/aaa/"を返却します。</li>
+	 * </ul>
+	 * </p>
+	 * @param pMyUri キー
+	 * @return キーの親階層
+	 */
+	public static String getParentUri(String pMyUri) {
+		String parentUri = null;
+		String myUri = editSlash(pMyUri);
+		if ("/".equals(myUri)) {
+			return EntryBase.TOP;	// root layer
+		}
+		if (myUri != null && myUri.length() > 1) {
+			int index = myUri.lastIndexOf("/", myUri.length() - 2);
+			if (index > -1) {
+				parentUri = myUri.substring(0, index + 1);
+			}
+		}
+		return parentUri;
+	}
+
+	/**
+	 * 自分の階層を返却します.
+	 * <p>
+	 * <ul>
+	 * <li>uriが"/"の場合、親はnull、子は"/"のため、"/"を返却します。</li>
+	 * <li>uriが"/aaa"の場合、親は"/"、子は"aaa"のため、"aaa"を返却します。</li>
+	 * <li>uriが"/aaa/bbb"の場合、親は"/aaa/"、子は"bbb"のため、"bbb"を返却します。</li>
+	 * </ul>
+	 * </p>
+	 * @param pMyUri キー
+	 * @return キーの自階層
+	 */
+	public static String getSelfidUri(String pMyUri) {
+		String selfidUri = null;
+		String myUri = editSlash(pMyUri);
+		if ("/".equals(myUri)) {
+			return "/";	// root layer
+		}
+		myUri = myUri.substring(0, myUri.length() - 1);
+		if (myUri != null) {
+			int index = myUri.lastIndexOf("/");
+			if (index > -1) {
+				selfidUri = myUri.substring(index + 1);
+			} else {
+				selfidUri = myUri;
+			}
+		}
+		return selfidUri;
+	}
+
+	/**
 	 * Entryクラスのインスタンスを生成します。
 	 * @return Entryオブジェクト
 	 */
