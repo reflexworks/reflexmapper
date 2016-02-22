@@ -132,8 +132,8 @@ public class EntryUtil {
 	 * @param id ID
 	 * @return リビジョン
 	 */
-	public static int getRevisionFromId(String id) {
-		return EntryBase.getRevisionFromId(id);
+	public static int getRevisionById(String id) {
+		return EntryBase.getRevisionById(id);
 	}
 
 	/**
@@ -141,8 +141,8 @@ public class EntryUtil {
 	 * @param id ID
 	 * @return IDから抽出したURI
 	 */
-	public static String getUriFromId(String id) {
-		return EntryBase.getUriFromId(id);
+	public static String getUriById(String id) {
+		return EntryBase.getUriById(id);
 	}
 
 	/**
@@ -150,8 +150,8 @@ public class EntryUtil {
 	 * @param id ID
 	 * @return [0]URI、[1]リビジョン
 	 */
-	public static String[] getUriAndRevisionFromId(String id) {
-		return EntryBase.getUriAndRevisionFromId(id);
+	public static String[] getUriAndRevisionById(String id) {
+		return EntryBase.getUriAndRevisionById(id);
 	}
 	
 	/**
@@ -330,7 +330,7 @@ public class EntryUtil {
 	 */
 	public static String getSignature(EntryBase entry, String uri) {
 		if (!StringUtils.isBlank(uri) && entry != null && entry.link != null) {
-			String idUri = getUriFromId(entry.id);
+			String idUri = getUriById(entry.id);
 			if (uri.equals(idUri)) {
 				for (Link link : entry.link) {
 					if (Link.REL_SELF.equals(link._$rel)) {
