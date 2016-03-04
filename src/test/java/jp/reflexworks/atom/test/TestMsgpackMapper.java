@@ -993,7 +993,8 @@ public class TestMsgpackMapper {
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		//String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\",\"$type\" : \"index1\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\",\"$type\" : \"index3\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
 		//		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\"}]}}";
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
@@ -1021,10 +1022,14 @@ public class TestMsgpackMapper {
 		System.out.println("subInfo.favorite3.updated value="+entry.getValue("subInfo.favorite3.updated"));
 		System.out.println("title(ATOM Entry) value="+entry.getValue("title"));
 		System.out.println("link(ATOM Entry) $href value="+entry.getValue("link.$href"));
+		System.out.println("link(ATOM Entry) $type value="+entry.getValue("link.$type"));
 		System.out.println("link(ATOM Entry) email value="+entry.getValue("contributor.email"));
 		System.out.println("link(ATOM Entry) uri value="+entry.getValue("contributor.uri"));
 		System.out.println("link(ATOM Entry) name value="+entry.getValue("contributor.name"));
 
+		Object objLinkHref = entry.getValue("link.$href");
+		System.out.println("link.$href class = " + objLinkHref.getClass().getName());
+		
 		System.out.println("entry size="+entry.getsize());
 		String bqjson = BQJSONSerializer.toJSON(mp, entry);
 //		String bqjson = mp.toJSON(entry);
@@ -1914,6 +1919,8 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
 		List<Meta> metalist = mp.getMetalist(serviceName);
 		boolean existsMetalist = printMetalist(metalist);
+		System.out.println("--- printMetalist2 ---");
+		existsMetalist = printMetalist2(metalist);
 		assertTrue(existsMetalist);
 
 		System.out.println("--- Package Metalist ---");
@@ -1954,6 +1961,35 @@ public class TestMsgpackMapper {
 		return existsMetalist;
 	}
 	
+	private boolean printMetalist2(List<Meta> metalist) {
+		boolean existsMetalist = false;
+		StringBuilder prn = new StringBuilder();
+		if (metalist != null && metalist.size() > 0) {
+			existsMetalist = true;
+			prn.append("[name]\t[level]\t[type]\t[parent]\t[self]\t[index]\t[repeated]\t[isrecord]\n");
+			for (Meta meta : metalist) {
+				prn.append(meta);
+				prn.append("\t");
+				prn.append(meta.level);
+				prn.append("\t");
+				prn.append(meta.type);
+				prn.append("\t");
+				prn.append(meta.parent);
+				prn.append("\t");
+				prn.append(meta.self);
+				prn.append("\t");
+				prn.append(meta.index);
+				prn.append("\t");
+				prn.append(meta.repeated);
+				prn.append("\t");
+				prn.append(meta.isrecord);
+				prn.append("\n");
+			}
+		}
+		System.out.println(prn.toString());
+		return existsMetalist;
+	}
+
 	@Test
 	public void testGetMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
