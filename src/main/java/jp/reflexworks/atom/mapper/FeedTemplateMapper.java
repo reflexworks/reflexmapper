@@ -777,7 +777,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		}
 	}
 
-	private Class getClass(String classname) throws ClassNotFoundException {
+	public Class getClass(String classname) throws ClassNotFoundException {
 		// ATOMの優先すべき項目名の場合はATOMクラスを読む
 		int dot = classname.lastIndexOf(".");
 		if (dot > 0) {

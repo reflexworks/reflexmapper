@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -232,6 +234,41 @@ public class TestMsgpackMapper {
 		" nickname",
 		" secret",
 		"deleteFlg",
+	};
+
+	public static String entitytempl5[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" name!",
+		" category",
+		" color",
+		" size=^[a-zA-Z0-9]{1,2}$",
+		" sale_boolean(boolean)",
+		" stock_int(int)",
+		" stock_long(long)",
+		" stock_float(float)",
+		" stock_double(double)",
+		" stock_string(string)",
+		" stock_date(date)",
+		" aaa(desc)",
+		"comment{}",
+		" $$text",
+		" nickname",
+		" secret",
+		"deleteFlg",
+		"layer_a1{}",
+		" layer_a1_name",
+		" layer_a2{}",
+		"  layer_a2_name",
+		"  layer_a2_value",
+		"layer_b1_list",
+		" layer_b1{}",
+		"  layer_b1_name",
+		"  layer_b2_list",
+		"   layer_b2{}",
+		"    layer_b2_name",
+		"    layer_b2_value",
 	};
 
 	private static boolean FEED = true;
@@ -1028,7 +1065,13 @@ public class TestMsgpackMapper {
 		System.out.println("link(ATOM Entry) name value="+entry.getValue("contributor.name"));
 
 		Object objLinkHref = entry.getValue("link.$href");
-		System.out.println("link.$href class = " + objLinkHref.getClass().getName());
+		System.out.println("[EntryBase#getValue] link.$href class = " + objLinkHref.getClass().getName());
+		Object objLink = entry.getValue("link");
+		if (objLink != null) {
+			System.out.println("[EntryBase#getValue] link class = " + objLink.getClass().getName());
+		} else {
+			System.out.println("[EntryBase#getValue] link object is null.");
+		}
 		
 		System.out.println("entry size="+entry.getsize());
 		String bqjson = BQJSONSerializer.toJSON(mp, entry);
@@ -3230,4 +3273,44 @@ public class TestMsgpackMapper {
 		assertFalse(isMatch);
 	}
 
+	@Test
+	public void testCreateObject() 
+	throws ParseException, ClassNotFoundException, IllegalAccessException, InstantiationException,
+			NoSuchMethodException, InvocationTargetException {
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl5, entityAcls5, 30, SECRETKEY);
+		
+		EntryBase entry = EntryUtil.createEntry(mapper);
+
+		// 内部のクラスを生成したい。
+		String pkg = entitytempl5[0].substring(0, entitytempl5[0].indexOf("{"));
+		String clsName = "_" + pkg + "." + "Info";
+		
+		try {
+			Class cls = Class.forName(clsName);
+			System.out.println("Class.forName - OK : " + cls.getName());
+			assertTrue(false);
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("Class.forName - ClassNotFoundException : " + e.getMessage());
+		}
+
+		// javassistのクラスローダーからクラスを取得
+		Class cls = mapper.getClass(clsName);
+		
+		// インスタンス生成
+		Object obj = cls.newInstance();
+		
+		// setterで値を設定
+		String field = "name";
+		String value = "名前1";
+		//Class type = String.class;
+		String typeName = "java.lang.String";
+		Class type = Class.forName(typeName);
+
+		String setter = FieldMapper.getSetter(field, type);
+		Method method = cls.getMethod(setter, type);
+		method.invoke(obj, value);
+		
+		System.out.println(mapper.toXML(obj));
+	}
 }
