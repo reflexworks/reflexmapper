@@ -117,6 +117,10 @@ public interface RequestType {
 	public static final String PARAM_REVOKEUSER = "_revokeuser";
 	/** URLパラメータ : ユーザを有効にする */
 	public static final String PARAM_ACTIVATEUSER = "_activateuser";
+	/** URLパラメータ : 登録反映 */
+	public static final String PARAM_APPLY = "_apply";
+	/** URLパラメータ : 履歴 */
+	public static final String PARAM_HISTORY = "_history";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
 	public static final String SIGN_RELATED = "+";

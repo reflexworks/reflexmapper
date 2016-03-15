@@ -26,7 +26,9 @@ public interface SettingConst {
 	public static final String EMAIL_SEND_ONESELF = "_email.send.oneself";
 	/** サービス設定 : EMail情報 */
 	public static final String MAIL_PREFIX = "_mail.";
-	
+	/** 登録反映(apply)処理後、元のデータを削除するまでの待ち時間(秒) */
+	public static final String APPLY_DELETE_WAITSEC = "_apply.delete.waitsec";
+
 	/** 
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
 	 * <p>
