@@ -119,8 +119,8 @@ public interface RequestType {
 	public static final String PARAM_ACTIVATEUSER = "_activateuser";
 	/** URLパラメータ : RDB登録反映 */
 	public static final String PARAM_APPLYRDB = "_applyrdb";
-	/** URLパラメータ : 履歴 */
-	public static final String PARAM_HISTORY = "_history";
+	/** URLパラメータ : RDB */
+	public static final String PARAM_RDB = "_rdb";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
 	public static final String SIGN_RELATED = "+";
