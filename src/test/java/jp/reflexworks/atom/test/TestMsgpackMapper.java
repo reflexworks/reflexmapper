@@ -34,17 +34,18 @@ import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
-import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.api.AtomConst;
+import jp.reflexworks.atom.api.EntryUtil;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.BQJSONSerializer;
-import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
+import jp.reflexworks.atom.mapper.FeedTemplateConst;
+import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.mapper.SizeLimitExceededException;
 import jp.reflexworks.atom.wrapper.Condition;
-import jp.reflexworks.atom.util.EntryUtil;
 
 public class TestMsgpackMapper {
 
@@ -939,8 +940,8 @@ public class TestMsgpackMapper {
 		System.out.println(array);
 
 //		FeedBase feed2 = (FeedBase) mp.fromMessagePack(msgpack,FEED);
-		FeedBase feed2 = (FeedBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_FEED,FEED);
-		EntryBase entry2 = (EntryBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_ENTRY,ENTRY);
+		FeedBase feed2 = (FeedBase) mp.fromMessagePack(FeedTemplateConst.MSGPACK_BYTES_FEED,FEED);
+		EntryBase entry2 = (EntryBase) mp.fromMessagePack(FeedTemplateConst.MSGPACK_BYTES_ENTRY,ENTRY);
 
 		System.out.println(mp.toJSON(mp.fromXML(xml)));
 		System.out.println(json);
@@ -1207,7 +1208,7 @@ public class TestMsgpackMapper {
 			System.out.println("len:"+mbytes.length);
 			
 			
-			byte[] testBytes = AtomConst.MSGPACK_BYTES_FEED;
+			byte[] testBytes = FeedTemplateConst.MSGPACK_BYTES_FEED;
 			assertTrue(EntryUtil.isMessagePack(testBytes));
 			
 			System.out.println("array:"+ mp.toArray(mbytes));

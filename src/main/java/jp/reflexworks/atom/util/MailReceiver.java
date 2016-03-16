@@ -16,6 +16,7 @@ import javax.mail.internet.MimeUtility;
 
 import org.apache.commons.codec.binary.Base64;
 
+import jp.reflexworks.atom.api.EntryUtil;
 import jp.reflexworks.atom.entry.Content;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;

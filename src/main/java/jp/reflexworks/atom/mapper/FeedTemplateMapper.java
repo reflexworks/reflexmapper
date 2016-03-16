@@ -56,7 +56,8 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 
 
 
-import jp.reflexworks.atom.AtomConst;
+
+import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.sourceforge.reflex.core.ResourceMapper;

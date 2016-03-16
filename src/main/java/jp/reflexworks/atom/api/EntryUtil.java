@@ -1,4 +1,4 @@
-package jp.reflexworks.atom.util;
+package jp.reflexworks.atom.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,11 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jp.sourceforge.reflex.util.StringUtils;
-import jp.reflexworks.atom.AtomConst;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.entry.Link;
+import jp.reflexworks.atom.mapper.FeedTemplateConst;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 
 public class EntryUtil {
@@ -280,7 +280,7 @@ public class EntryUtil {
 		if (mapper != null) {
 			try {
 		        EntryBase emptyEntry = (EntryBase)mapper.fromMessagePack(
-		        		AtomConst.MSGPACK_BYTES_ENTRY, AtomConst.MSGPACK_ENTRY);
+		        		FeedTemplateConst.MSGPACK_BYTES_ENTRY, AtomConst.MSGPACK_ENTRY);
 		        return emptyEntry;
 
 			} catch (ClassNotFoundException e) {
@@ -299,7 +299,7 @@ public class EntryUtil {
 	public static FeedBase createFeed(FeedTemplateMapper mapper) {
 		try {
 			FeedBase emptyFeed = (FeedBase)mapper.fromMessagePack(
-							AtomConst.MSGPACK_BYTES_FEED, AtomConst.MSGPACK_FEED);
+					FeedTemplateConst.MSGPACK_BYTES_FEED, AtomConst.MSGPACK_FEED);
 			return emptyFeed;
 			
 		} catch (ClassNotFoundException e) {
@@ -319,7 +319,7 @@ public class EntryUtil {
 	 * @return データがMessagePack形式の場合true
 	 */
 	public static boolean isMessagePack(byte[] data) {
-		if (data != null && data.length > 1 && data[0] == AtomConst.MSGPACK_PREFIX) {
+		if (data != null && data.length > 1 && data[0] == FeedTemplateConst.MSGPACK_PREFIX) {
 			return true;
 		}
 		return false;

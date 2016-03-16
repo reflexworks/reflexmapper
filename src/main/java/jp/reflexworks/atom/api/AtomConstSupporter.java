@@ -1,4 +1,4 @@
-package jp.reflexworks.atom;
+package jp.reflexworks.atom.api;
 
 import java.util.Map;
 import java.util.HashMap;

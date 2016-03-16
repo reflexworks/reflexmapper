@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.msgpack.annotation.Index;
 
-import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 /**

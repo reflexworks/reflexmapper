@@ -1,4 +1,4 @@
-package jp.reflexworks.atom;
+package jp.reflexworks.atom.api;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package jp.reflexworks.atom.util;
+package jp.reflexworks.atom.api;
 
 public interface RequestType {
 

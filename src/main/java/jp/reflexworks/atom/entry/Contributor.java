@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.msgpack.annotation.Index;
 
-import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.ConditionContext;
 import jp.reflexworks.atom.mapper.CipherContext;

@@ -16,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 import jp.sourceforge.reflex.util.StringUtils;
-import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.FeedBase;
