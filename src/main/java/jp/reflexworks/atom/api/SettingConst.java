@@ -28,6 +28,8 @@ public interface SettingConst {
 	public static final String MAIL_PREFIX = "_mail.";
 	/** 登録反映(apply)処理後、元のデータを削除するまでの待ち時間(秒) */
 	public static final String APPLY_DELETE_WAITSEC = "_apply.delete.waitsec";
+	/** IPアドレスホワイトリスト設定(サービス管理者) **/
+	public static final String WHITE_REMOTEADDR_PREFIX = "_white.remoteaddress.";
 
 	/** 
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
