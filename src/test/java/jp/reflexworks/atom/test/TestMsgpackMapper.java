@@ -647,7 +647,7 @@ public class TestMsgpackMapper {
 		//MODEL_PACKAGE.put("jp.reflexworks.atom.source", NAMESPACE_ATOM);
 		MODEL_PACKAGE.put("jp.reflexworks.test.model", NAMESPACE_VT);
 
-		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(new String[]{"jp.reflexworks.test.model"});		
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
@@ -730,7 +730,7 @@ public class TestMsgpackMapper {
 		MODEL_PACKAGE.putAll(AtomConst.ATOM_PACKAGE);
 		// 名前空間の指定なし
 		MODEL_PACKAGE.put("jp.reflexworks.test2.model", "");
-		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);
+		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
 
 		jp.reflexworks.test2.model.Feed feed = createTest2Feed();
 		String xml = mp.toXML(feed);
@@ -1972,10 +1972,18 @@ public class TestMsgpackMapper {
 		modelPackage.putAll(AtomConst.ATOM_PACKAGE);
 		modelPackage.put("jp.reflexworks.test2.model", "");
 
-		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);
+		//mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);
+		mp = new FeedTemplateMapper(null, entityAcls5, 30, SECRETKEY, modelPackage);
 		metalist = mp.getMetalist(serviceName);
 		existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
+		
+		System.out.println("--- Package Metalist (template & package) ---");
+		mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY, modelPackage);
+		metalist = mp.getMetalist(serviceName);
+		existsMetalist = printMetalist(metalist);
+		assertTrue(existsMetalist);
+
 	}
 	
 	private boolean printMetalist(List<Meta> metalist) {
