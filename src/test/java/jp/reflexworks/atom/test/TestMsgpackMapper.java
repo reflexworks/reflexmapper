@@ -272,6 +272,25 @@ public class TestMsgpackMapper {
 		"    layer_b2_value",
 	};
 
+	public static String entitytempl6[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" item_1",
+		" item_2",
+		" item_3",
+		"email",
+		" before_message{}",
+		"  message_no",
+		"  before_message_text",
+		" after_message{}",
+		"  message_no",
+		"  after_message_text",
+		"addresss",
+		" zip",
+		" address"
+	};
+
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
 	private static String SECRETKEY = "testsecret123";
@@ -3322,4 +3341,71 @@ public class TestMsgpackMapper {
 		
 		System.out.println(mapper.toXML(obj));
 	}
+	
+	@Test
+	public void testMaskprop3() throws ParseException {
+		// パッケージ指定mapperの動作方法
+		// 1. TestMsgpackGenerterFilesクラスでエンティティクラスを生成する。
+		// 2. 生成されたパッケージフォルダを、/target/test-classes 配下にコピーする。
+		// 3. 実行する。
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		//FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY, packages);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"feed\": {\"entry\": [");
+		sb.append("{\"info\": {\"item_1\": \"51000007\"},");
+		sb.append("\"email\": {");
+		sb.append("\"before_message\": [");
+		sb.append("{\"message_no\": \"2\",\"before_message_text\": \"予定Eメール2\"},");
+		sb.append("{\"message_no\": \"3\",\"before_message_text\": \"予定Eメール3\"}],");
+		sb.append("\"after_message\": [");
+		sb.append("{\"message_no\": \"4\",\"after_message_text\": \"完了Eメール4\"},");
+		sb.append("{\"message_no\": \"5\",\"after_message_text\": \"完了Eメール5\"}]},");
+		sb.append("\"id\": \"/11000001/send/51000007,1\",");
+		sb.append("\"link\": [{\"___href\": \"/11000001/send/51000007\",\"___rel\": \"self\"}]");
+		sb.append("}]}}");
+		
+		String json = sb.toString();
+		System.out.println(json);
+		
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		
+		// maskprop
+		String uid = "11";
+		List<String> groups = new ArrayList<String>();
+		groups.add("/@mypackage/_group/$admin");
+		groups.add("/@mypackage/_group/$content");
+		groups.add("/@mypackage/_group/$useradmin");
+		
+		EntryBase entry = feed.entry.get(0);
+		entry.maskprop(uid, groups);
+		
+		String name = "info";
+		Object obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+		
+		name = "info.item_1";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		name = "email";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		name = "email.before_message";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		name = "email.before_message.before_message_text";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		System.out.println("testMaskprop3 end");
+	}
+	
 }
