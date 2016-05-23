@@ -2195,6 +2195,9 @@ public class TestMsgpackMapper {
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 
+		System.out.println("[testDate] json = " + mp4.toJSON(feed));
+		System.out.println("[testDate] xml = " + mp4.toXML(feed));
+		
 	}
 	
 	private String getDateJson(String date) {
