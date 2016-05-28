@@ -1,8 +1,6 @@
 package jp.reflexworks.atom.mapper;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import java.security.GeneralSecurityException;
@@ -76,16 +74,18 @@ public final class CipherUtil {
 			return sourceFeed;
 		}
 
-		List<EntryBase> entries = new ArrayList<EntryBase>();
+		//List<EntryBase> entries = new ArrayList<EntryBase>();
 		for (EntryBase sourceEntry : sourceFeed.getEntry()) {
-			entries.add(encrypt(sourceEntry));
+			//entries.add(encrypt(sourceEntry));
+			encrypt(sourceEntry);
 		}
-		sourceFeed.setEntry(entries);
+		//sourceFeed.setEntry(entries);
 		return sourceFeed;
 	}
 	
 	/**
-	 * Feed内Entryの復号
+	 * Feed内Entryの復号.
+	 * 引数のFeed内Entry自身が復号化されます。
 	 * @param sourceFeed
 	 * @return 復号化されたFeed
 	 * @throws GeneralSecurityException
@@ -97,17 +97,19 @@ public final class CipherUtil {
 			return sourceFeed;
 		}
 
-		List<EntryBase> entries = new ArrayList<EntryBase>();
+		//List<EntryBase> entries = new ArrayList<EntryBase>();
 		for (EntryBase sourceEntry : sourceFeed.getEntry()) {
-			entries.add(decrypt(sourceEntry));
+			//entries.add(decrypt(sourceEntry));
+			decrypt(sourceEntry);
 		}
-		sourceFeed.setEntry(entries);
+		//sourceFeed.setEntry(entries);
 		return sourceFeed;
 	}
 
 	/**
 	 * Entryのうち、@Encryptアノテーションが付加されているString項目と、
 	 * テンプレートの暗号化指定項目について暗号化し返却します.
+	 * 引数のエントリー自身が暗号化されます。
 	 * @param sourceEntry エントリ
 	 * @return 指定された項目のみ暗号化したEntry
 	 * @throws GeneralSecurityException
@@ -161,6 +163,7 @@ public final class CipherUtil {
 	/**
 	 * Entryのうち、@Encryptアノテーションが付加されているString項目と、
 	 * テンプレートの暗号化指定項目について復号化し返却します.
+	 * 引数のエントリー自体が暗号化されます。
 	 * @param sourceEntry エントリ
 	 * @return 指定された項目のみ復号化したEntry
 	 * @throws GeneralSecurityException

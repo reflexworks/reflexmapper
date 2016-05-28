@@ -30,6 +30,8 @@ public interface SettingConst {
 	public static final String APPLY_DELETE_WAITSEC = "_apply.delete.waitsec";
 	/** IPアドレスホワイトリスト設定(サービス管理者) **/
 	public static final String WHITE_REMOTEADDR_PREFIX = "_white.remoteaddress.";
+	/** ユーザキャッシュの有効期間(分) **/
+	public static final String USERCACHE_MINUTE = "_usercache.minute";
 
 	/** 
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.

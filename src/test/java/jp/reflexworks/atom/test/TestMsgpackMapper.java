@@ -225,7 +225,8 @@ public class TestMsgpackMapper {
 		" stock_int(int)",
 		" stock_long(long)",
 		" stock_float(float)",
-		" stock_double(double){0~9999.99}",
+		//" stock_double(double){0~9999.99}",	// TODO issue #327 テスト用
+		" stock_double(double)",
 		" stock_string(string)",
 		" stock_date(date)",
 		//" stock_desc(desc)",

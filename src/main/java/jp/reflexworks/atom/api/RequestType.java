@@ -121,6 +121,8 @@ public interface RequestType {
 	public static final String PARAM_APPLYRDB = "_applyrdb";
 	/** URLパラメータ : RDB */
 	public static final String PARAM_RDB = "_rdb";
+	/** URLパラメータ : SID */
+	public static final String PARAM_SID = "_sid";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
 	public static final String SIGN_RELATED = "+";
