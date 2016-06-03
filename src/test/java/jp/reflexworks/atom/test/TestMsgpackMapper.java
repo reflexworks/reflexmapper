@@ -238,6 +238,29 @@ public class TestMsgpackMapper {
 		"deleteFlg",
 	};
 
+	public static String entitytempl4tmptype[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" name!",
+		" category",
+		" color",
+		" size=^[a-zA-Z0-9]{1,2}$",
+		" sale_boolean(tmp_boolean)",
+		" stock_int(tmp_int)",
+		" stock_long(tmp_long)",
+		" stock_float(tmp_float)",
+		" stock_double(tmp_double)",
+		" stock_string(tmp_string)",
+		" stock_date(tmp_date)",
+		" aaa(tmp_desc)",
+		"comment{}",
+		" $$text",
+		" nickname",
+		" secret",
+		"deleteFlg",
+	};
+
 	public static String entitytempl5[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"mypackage{100}",        //  0行目はパッケージ名(service名)
@@ -3411,5 +3434,40 @@ public class TestMsgpackMapper {
 
 		System.out.println("testMaskprop3 end");
 	}
-	
+
+	@Test
+	public void testType() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4tmptype, entityAcls5, 30, SECRETKEY);
+
+		List<Meta> metalist = mp.getMetalist("myservice");
+		
+		System.out.println("[testType] print type : ");
+		for (Meta meta : metalist) {
+			System.out.println("  name = " + meta.name + ", type = " + meta.type);
+		}
+
+		// stock_int をテスト
+		// 数値が正数の場合
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333,\"stock_double\" : 4444.5555}}]}}";
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333}}]}}";
+		FeedBase feed = (FeedBase)mp.fromJSON(json);
+		EntryBase entry = feed.entry.get(0);
+		
+
+		/*
+		// 数値が負数の場合
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333,\"stock_double\" : -4444.5555}}]}}";
+		//json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333}}]}}";
+		feed = (FeedBase)mp.fromJSON(json);
+		entry = feed.entry.get(0);
+
+		checkNegativeInteger(entry);
+		checkNegativeLong(entry);
+		checkNegativeFloat(entry);
+		checkNegativeDouble(entry);
+		*/
+
+	}
+
 }
