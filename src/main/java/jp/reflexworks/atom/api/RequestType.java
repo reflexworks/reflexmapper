@@ -118,9 +118,11 @@ public interface RequestType {
 	/** URLパラメータ : ユーザを有効にする */
 	public static final String PARAM_ACTIVATEUSER = "_activateuser";
 	/** URLパラメータ : RDB登録反映 */
-	public static final String PARAM_APPLYRDB = "_applyrdb";
+	//public static final String PARAM_APPLYRDB = "_applyrdb";
 	/** URLパラメータ : RDB */
 	public static final String PARAM_RDB = "_rdb";
+	/** URLパラメータ : キャッシュ */
+	public static final String PARAM_CACHE = "_cache";
 	/** URLパラメータ : SID */
 	public static final String PARAM_SID = "_sid";
 
