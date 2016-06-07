@@ -81,7 +81,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z_]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
