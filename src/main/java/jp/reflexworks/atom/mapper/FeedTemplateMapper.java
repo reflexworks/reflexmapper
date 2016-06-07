@@ -790,6 +790,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 */
 		public String bigquerytype;
 
+		public String typesrc;
+
 		
 		/**
 		 * Camelケースで名前を返す
@@ -1669,6 +1671,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
 					String typestr = matcherf.group(4).toLowerCase(Locale.ENGLISH);
+					meta.typesrc = typestr;
 					if (typestr.equals("date")) {
 						meta.type = "Date";
 					} else if (typestr.equals("int")) {
