@@ -246,14 +246,14 @@ public class TestMsgpackMapper {
 		" category",
 		" color",
 		" size=^[a-zA-Z0-9]{1,2}$",
-		" sale_boolean(tmp_boolean)",
-		" stock_int(tmp_int)",
-		" stock_long(tmp_long)",
-		" stock_float(tmp_float)",
-		" stock_double(tmp_double)",
-		" stock_string(tmp_string)",
-		" stock_date(tmp_date)",
-		" aaa(tmp_desc)",
+		" sale_boolean(rdb_boolean)",
+		" stock_int(rdb_int)",
+		" stock_long(rdb_long)",
+		" stock_float(rdb_float)",
+		" stock_double(rdb_double)",
+		" stock_string(rdb_string)",
+		" stock_date(rdb_date)",
+		" aaa(rdb_desc)",
 		"comment{}",
 		" $$text",
 		" nickname",
@@ -3444,7 +3444,7 @@ public class TestMsgpackMapper {
 		
 		System.out.println("[testType] print type : ");
 		for (Meta meta : metalist) {
-			System.out.println("  name = " + meta.name + ", type = " + meta.type);
+			System.out.println("  name = " + meta.name + ", type = " + meta.type + ", typesrc = " + meta.typesrc);
 		}
 
 		// stock_int をテスト
