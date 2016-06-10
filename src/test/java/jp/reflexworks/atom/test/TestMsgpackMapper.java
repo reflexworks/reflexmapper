@@ -234,6 +234,29 @@ public class TestMsgpackMapper {
 		"deleteFlg",
 	};
 
+	public static String entitytempl4tmptype[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" name!",
+		" category",
+		" color",
+		" size=^[a-zA-Z0-9]{1,2}$",
+		" sale_boolean(rdb_boolean)",
+		" stock_int(rdb_int)",
+		" stock_long(rdb_long)",
+		" stock_float(rdb_float)",
+		" stock_double(rdb_double)",
+		" stock_string(rdb_string)",
+		" stock_date(rdb_date)",
+		" aaa(rdb_desc)",
+		"comment{}",
+		" $$text",
+		" nickname",
+		" secret",
+		"deleteFlg",
+	};
+
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
 	private static String SECRETKEY = "testsecret123";
@@ -3192,6 +3215,41 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
+	}
+
+	@Test
+	public void testType() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4tmptype, entityAcls5, 30, SECRETKEY);
+
+		List<Meta> metalist = mp.getMetalist("myservice");
+		
+		System.out.println("[testType] print type : ");
+		for (Meta meta : metalist) {
+			System.out.println("  name = " + meta.name + ", type = " + meta.type + ", typesrc = " + meta.typesrc);
+		}
+
+		// stock_int をテスト
+		// 数値が正数の場合
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333,\"stock_double\" : 4444.5555}}]}}";
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333}}]}}";
+		FeedBase feed = (FeedBase)mp.fromJSON(json);
+		EntryBase entry = feed.entry.get(0);
+		
+
+		/*
+		// 数値が負数の場合
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333,\"stock_double\" : -4444.5555}}]}}";
+		//json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333}}]}}";
+		feed = (FeedBase)mp.fromJSON(json);
+		entry = feed.entry.get(0);
+
+		checkNegativeInteger(entry);
+		checkNegativeLong(entry);
+		checkNegativeFloat(entry);
+		checkNegativeDouble(entry);
+		*/
+
 	}
 
 }

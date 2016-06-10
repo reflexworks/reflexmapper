@@ -80,7 +80,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z_]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
@@ -308,7 +308,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			// Entityテンプレートからメタ情報を作成する
 			metalist = getMetalist(mergeAtomEntry((String[])jo_packages));
 			if (propAcls != null) {
-				addPropAcls(propAcls,indexmax);
+				addPropAcls(propAcls, indexmax);
 			}
 
 			registerClasses();
@@ -738,6 +738,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 * BigQueryの型
 		 */
 		public String bigquerytype;
+
+		public String typesrc;
 
 		
 		/**
@@ -1486,7 +1488,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (meta.level < level) {
 						//２段階下がるとエラー
 						if (meta.level + 1 < level) {
-							throw new ParseException("Wrong Indentation:" + line, 0);	
+							throw new ParseException("Wrong Indentation:" + line, 0);
 						}
 						meta.isrecord = true;
 						classname = packagename + "." + meta.getSelf();
@@ -1526,7 +1528,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					metalist.add(meta);
 				}
 
-				if (l<=1) {
+				if (l <= 1) {
 					canattr = true;
 				}
 				else {
@@ -1535,12 +1537,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 						if (meta.hasChild()) throw new ParseException("Can't specify attribute($) to.:" + meta.name, 0);
 					}
 					if (!meta.self.startsWith("_$")) {
-						if (meta.level<level) {
+						if (meta.level < level) {
 							canattr = true;
-						}else {
+						} else {
 							canattr = false;
 						}
-					}else {
+					} else {
 						canattr = true;
 					}
 				}
@@ -1556,14 +1558,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.aclW = null;
 				
 				// for BugQuery Schema
-				if (matcherf.group(5)!=null&&!matcherf.group(5).equals("")) {
+				if (matcherf.group(5) != null && !matcherf.group(5).equals("")) {
 					meta.repeated = true;
-				}else {
+				} else {
 					meta.repeated = false;
 				}
 				
 				meta.bigquerytype = "STRING";
-				if (matcherf.group(4)!=null) {
+				if (matcherf.group(4) != null) {
 					switch(matcherf.group(4)) {
 						case "int" :
 						case "long" :
@@ -1598,7 +1600,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					meta.name = fldname + "." + meta.self;
 				}
 				if (exists(metalist, meta.name)) throw new ParseException("Dupricated properties in Entry:" + meta.name, 0);
-				if (meta.self.startsWith("_")&&meta.level == 1) 
+				if (meta.self.startsWith("_") && meta.level == 1) 
 					throw new ParseException("Can't use '_' as prefix.:" + meta.name, 0);
 
 				if (meta.self.length() < 2) throw new ParseException("Property name is too short.:" + meta.name, 0);
@@ -1613,6 +1615,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
 					String typestr = matcherf.group(4).toLowerCase(Locale.ENGLISH);
+					meta.typesrc = typestr;
 					if (typestr.equals("date")) {
 						meta.type = "Date";
 					} else if (typestr.equals("int")) {
