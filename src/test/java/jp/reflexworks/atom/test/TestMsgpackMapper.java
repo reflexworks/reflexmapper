@@ -36,9 +36,11 @@ import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.api.EntryUtil;
+import jp.reflexworks.atom.entry.Author;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.FeedBase;
+import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.mapper.BQJSONSerializer;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateConst;
@@ -246,14 +248,14 @@ public class TestMsgpackMapper {
 		" category",
 		" color",
 		" size=^[a-zA-Z0-9]{1,2}$",
-		" sale_boolean(tmp_boolean)",
-		" stock_int(tmp_int)",
-		" stock_long(tmp_long)",
-		" stock_float(tmp_float)",
-		" stock_double(tmp_double)",
-		" stock_string(tmp_string)",
-		" stock_date(tmp_date)",
-		" aaa(tmp_desc)",
+		" sale_boolean(rdb_boolean)",
+		" stock_int(rdb_int)",
+		" stock_long(rdb_long)",
+		" stock_float(rdb_float)",
+		" stock_double(rdb_double)",
+		" stock_string(rdb_string)",
+		" stock_date(rdb_date)",
+		" aaa(rdb_desc)",
 		"comment{}",
 		" $$text",
 		" nickname",
@@ -801,6 +803,48 @@ public class TestMsgpackMapper {
 
 		int idx = xml.indexOf("<test2:");
 		assertTrue(idx == -1);
+	}
+
+	@Test
+	public void testStaticPackages3() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		String PACKAGE_VT = "jp.reflexworks.testvt.model";
+		String NAMESPACE_VT = "vt=http://reflexworks.jp/test/1.0";
+
+		Map<String, String> MODEL_PACKAGE = new HashMap<String, String>();
+		MODEL_PACKAGE.put(AtomConst.ATOM_PACKAGE_ENTRY, AtomConst.ATOM_NAMESPACE);
+		MODEL_PACKAGE.put(PACKAGE_VT, NAMESPACE_VT);
+
+		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
+
+		jp.reflexworks.testvt.model.Column column = new jp.reflexworks.testvt.model.Column();
+		column.vt$color = "red";
+		column.vt$size = "M";
+		column.vt$memo = "名前空間テスト";
+		jp.reflexworks.testvt.model.Entry entry = new jp.reflexworks.testvt.model.Entry();
+		entry.column = column;
+		entry.vt$item1 = "Tシャツ";
+		entry.vt$item2 = "半ズボン";
+		Author author = new Author();
+		author.uri = "urn:vte.cx:created:12";
+		entry.author = new ArrayList<Author>();
+		entry.author.add(author);
+		entry.id = "/12/item/001,1";
+		Link link = new Link();
+		link._$rel = Link.REL_SELF;
+		link._$href = "/12/item/001";
+		entry.addLink(link);
+		
+		jp.reflexworks.testvt.model.Feed feed = new jp.reflexworks.testvt.model.Feed();
+		feed.addEntry(entry);
+		
+		System.out.println("[testStaticPackages3] 名前空間テスト start");
+		System.out.println("[testStaticPackages3] 名前空間テスト Entry XML 出力");
+		System.out.println(mp.toXML(entry));
+		System.out.println("[testStaticPackages3] 名前空間テスト Feed XML 出力");
+		System.out.println(mp.toXML(feed));
+		System.out.println("[testStaticPackages3] 名前空間テスト end");
+
 	}
 
 	private jp.reflexworks.test2.model.Feed createTest2Feed() {
@@ -3444,7 +3488,7 @@ public class TestMsgpackMapper {
 		
 		System.out.println("[testType] print type : ");
 		for (Meta meta : metalist) {
-			System.out.println("  name = " + meta.name + ", type = " + meta.type);
+			System.out.println("  name = " + meta.name + ", type = " + meta.type + ", typesrc = " + meta.typesrc);
 		}
 
 		// stock_int をテスト
