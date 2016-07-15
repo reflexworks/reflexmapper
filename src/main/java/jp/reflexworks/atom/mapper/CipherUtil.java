@@ -36,7 +36,11 @@ public final class CipherUtil {
 	 * コンストラクタ
 	 */
 	public CipherUtil() {
-		this.cipher = getInstance();
+		try {
+			this.cipher = Cipher.getInstance(ALGORITHM);
+		} catch (GeneralSecurityException e) {
+			logger.log(Level.WARNING, e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -47,17 +51,16 @@ public final class CipherUtil {
 		if (cipher != null) {
 			this.cipher = cipher;
 		} else {
-			this.cipher = getInstance();
+			try {
+				this.cipher = Cipher.getInstance(ALGORITHM);
+			} catch (GeneralSecurityException e) {
+				logger.log(Level.WARNING, e.getMessage(), e);
+			}
 		}
 	}
 	
-	public static Cipher getInstance() {
-		try {
-			return Cipher.getInstance(ALGORITHM);
-		} catch (GeneralSecurityException e) {
-			logger.log(Level.WARNING, e.getMessage(), e);
-		}
-		return null;
+	public Cipher getInstance() {
+		return this.cipher;
 	}
 	
 	/**

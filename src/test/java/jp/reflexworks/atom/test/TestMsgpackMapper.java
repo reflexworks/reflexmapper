@@ -1177,7 +1177,7 @@ public class TestMsgpackMapper {
 		contributor.uri = getAclUrn("889", "CRUD");
 		contributor.name = "てすと";
 
-		Cipher cipher = CipherUtil.getInstance();
+		Cipher cipher = (new CipherUtil()).getInstance();
 		System.out.println("---(before encrypted)---");
 		System.out.println(mp.toXML(entry));
 		System.out.println("--------------");
