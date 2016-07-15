@@ -164,7 +164,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private ReflectionTemplateBuilder builder;
 	private ClassPool pool;
 	private Loader loader;
-	protected String packagename;
+	private String packagename;
 	private boolean isDefaultTemplate;
 	private String folderpath;
 	private String secretkey;
