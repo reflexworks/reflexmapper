@@ -133,6 +133,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		"updated",
 	};	
 
+	private static final String SERIALIZABLE = "java.io.Serializable";
 	private static final String ENTRYBASE = "jp.reflexworks.atom.entry.EntryBase";
 	private static final String FEEDBASE = "jp.reflexworks.atom.entry.FeedBase";
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
@@ -992,7 +993,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		CtClass[] ci;
 		try {
-			ci = new CtClass[] { pool.get(SOFTSCHEMA) };
+			ci = new CtClass[] { pool.get(SOFTSCHEMA), pool.get(SERIALIZABLE) };
 		} catch (NotFoundException e1) {
 			throw new CannotCompileException(e1);
 		} 
