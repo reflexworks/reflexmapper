@@ -317,6 +317,39 @@ public class TestMsgpackMapper {
 		" address"
 	};
 
+	public static String entitytemplf[] = {
+			// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+			"default{2}",        //  0行目はパッケージ名(service名)
+			"Idx 	",			  
+			"email(string){5~30}",	// 5文字~30文字の範囲
+			"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
+			"name",
+			"given_name",
+			"family_name",
+			"error",
+			" errors{}",				// 多重度(n)、*がないと多重度(1)、繰り返し最大{1}
+			"  domain",
+			"  reason",
+			"  message",
+			"  locationType",
+			"  location",
+			" code(float){1~100}",			// 1~100の範囲			
+			" message",
+			"subInfo",
+			" favorite",
+			"  food!=^.{3}$",	// 必須項目、正規表現つき
+			"  music=^.{5}$",			// 配列(要素数max3)
+			" favorite2",
+			"  food",
+			"   food1",
+			" favorite3",
+			"  food",
+			"  updated(date)",
+			" hobby{}",
+			"  $$text",				// テキストノード
+			"seq(desc)"
+		};
+
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
 	private static String SECRETKEY = "testsecret123";
@@ -357,6 +390,21 @@ public class TestMsgpackMapper {
 		System.out.println(json2);
 
 		assertEquals(json, json2);
+	}
+
+	@Test
+	public void testJSONEntryFloat() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplf, entityAcls, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
 	}
 
 	@Test
