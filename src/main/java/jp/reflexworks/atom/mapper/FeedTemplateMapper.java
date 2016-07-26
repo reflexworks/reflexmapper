@@ -1880,8 +1880,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 							else if (e.getValue().isIntegerValue()) {
 								if (f.getType().getName().equals("java.lang.Integer")) f.set(parent, e.getValue().asIntegerValue().getInt());
 								if (f.getType().getName().equals("java.lang.Long")) f.set(parent, e.getValue().asIntegerValue().getLong());
-								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
-								if (f.getType().getName().equals("java.lang.Double")) f.set(parent, e.getValue().asFloatValue().getDouble());
+								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, (float) e.getValue().asIntegerValue().getInt());
+								if (f.getType().getName().equals("java.lang.Double")) f.set(parent, (double) e.getValue().asIntegerValue().getLong());
 							}
 							else if (e.getValue().isFloatValue()) {
 								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
