@@ -20,11 +20,11 @@ import org.junit.Test;
 
 import jp.sourceforge.reflex.util.FileUtil;
 import jp.sourceforge.reflex.util.StringUtils;
+import jp.reflexworks.atom.api.EntryUtil;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.CipherUtil;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
-import jp.reflexworks.atom.util.EntryUtil;
 import jp.reflexworks.atom.wrapper.Condition;
 
 public class TemplateChecker {

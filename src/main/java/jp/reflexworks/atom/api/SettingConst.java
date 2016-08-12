@@ -1,4 +1,4 @@
-package jp.reflexworks.atom;
+package jp.reflexworks.atom.api;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,13 @@ public interface SettingConst {
 	public static final String EMAIL_SEND_ONESELF = "_email.send.oneself";
 	/** サービス設定 : EMail情報 */
 	public static final String MAIL_PREFIX = "_mail.";
-	
+	/** 登録反映(apply)処理後、元のデータを削除するまでの待ち時間(秒) */
+	public static final String APPLY_DELETE_WAITSEC = "_apply.delete.waitsec";
+	/** IPアドレスホワイトリスト設定(サービス管理者) **/
+	public static final String WHITE_REMOTEADDR_PREFIX = "_white.remoteaddress.";
+	/** ユーザキャッシュの有効期間(分) **/
+	public static final String USERCACHE_MINUTE = "_usercache.minute";
+
 	/** 
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
 	 * <p>

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.msgpack.annotation.Index;
 
-import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 /**
@@ -546,9 +546,9 @@ public abstract class EntryBase implements Serializable {
 	 * @param id ID
 	 * @return リビジョン
 	 */
-	public static int getRevisionFromId(String id) {
+	public static int getRevisionById(String id) {
 		int rev = 0;
-		String[] uriAndRev = getUriAndRevisionFromId(id);
+		String[] uriAndRev = getUriAndRevisionById(id);
 		if (uriAndRev != null && uriAndRev.length >= 2) {
 			try {
 				rev = Integer.parseInt(uriAndRev[1]);
@@ -562,9 +562,9 @@ public abstract class EntryBase implements Serializable {
 	 * @param id ID
 	 * @return IDから抽出したURI
 	 */
-	public static String getUriFromId(String id) {
+	public static String getUriById(String id) {
 		String url = null;
-		String[] uriAndRev = getUriAndRevisionFromId(id);
+		String[] uriAndRev = getUriAndRevisionById(id);
 		if (uriAndRev != null && uriAndRev.length >= 1) {
 			url = uriAndRev[0];
 		}
@@ -576,7 +576,7 @@ public abstract class EntryBase implements Serializable {
 	 * @param id ID
 	 * @return [0]URI、[1]リビジョン
 	 */
-	public static String[] getUriAndRevisionFromId(String id) {
+	public static String[] getUriAndRevisionById(String id) {
 		if (id != null) {
 			String[] temp = id.split(",");
 			try {
@@ -618,7 +618,7 @@ public abstract class EntryBase implements Serializable {
 			StringBuilder buf = new StringBuilder();
 			buf.append(AtomConst.SVC_PREFIX);
 			buf.append(svcname);
-			String[] uriAndRev = getUriAndRevisionFromId(id);
+			String[] uriAndRev = getUriAndRevisionById(id);
 			if (!isSlash(uriAndRev[0])) {
 				buf.append(id);
 			} else {
@@ -646,7 +646,7 @@ public abstract class EntryBase implements Serializable {
 		String serviceTopUri = AtomConst.SVC_PREFIX + svcname;
 		if (id != null && id.startsWith(serviceTopUri)) {
 			//_id = _id.substring(svcname.length() + 2);
-			String[] uriAndRev = getUriAndRevisionFromId(id);
+			String[] uriAndRev = getUriAndRevisionById(id);
 			if (!isTop(uriAndRev[0])) {
 				if (id.indexOf(serviceTopUri+"/")<0) {
 					id = "/"+id.substring(serviceTopUri.length());

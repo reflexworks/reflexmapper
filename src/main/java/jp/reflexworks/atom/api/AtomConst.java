@@ -1,8 +1,6 @@
-package jp.reflexworks.atom;
+package jp.reflexworks.atom.api;
 
 import java.util.Map;
-
-import jp.sourceforge.reflex.util.BinaryUtil;
 
 public interface AtomConst {
 	
@@ -16,32 +14,8 @@ public interface AtomConst {
 	/** ATOM : Entry package */
 	public static final String ATOM_PACKAGE_ENTRY = "jp.reflexworks.atom.entry";
 	
-	/** ATOM : Source package */
-	//public static final String ATOM_PACKAGE_SOURCE = "jp.reflexworks.atom.source";
-	/** ATOM : Package map */
-	//public static final Map<String, String> ATOM_PACKAGE;
-	//static {
-	//	ATOM_PACKAGE = new HashMap<String, String>();
-	//	ATOM_PACKAGE.put(ATOM_PACKAGE_FEED, "");
-	//	ATOM_PACKAGE.put(ATOM_PACKAGE_ENTRY, "");
-	//}
 	public static final Map<String, String> ATOM_PACKAGE = 
 			AtomConstSupporter.createModelPackage();
-	
-	/** MessagePack Entry byte配列 16進数表記 */
-	public static final String MSGPACK_BYTES_HEX_ENTRY = 
-			"DC0010C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
-	/** MessagePack Entry byte配列 */
-	public static final byte[] MSGPACK_BYTES_ENTRY = 
-			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_ENTRY);
-	/** MessagePack Feed byte配列 16進数表記 */
-	public static final String MSGPACK_BYTES_HEX_FEED = 
-			"9FC0C0C0C0C0C0C0C0C0C0C0C0C0C0C0";
-	/** MessagePack Feed byte配列 */
-	public static final byte[] MSGPACK_BYTES_FEED = 
-			BinaryUtil.hex2bin(MSGPACK_BYTES_HEX_FEED);
-	/** MessagePack byte配列 最初の1バイト (Feedの場合) */
-	public static final byte MSGPACK_PREFIX = MSGPACK_BYTES_FEED[0];
 	
 	/** MessaaePack Entry class */
 	public static final boolean MSGPACK_ENTRY = false;
@@ -148,10 +122,7 @@ public interface AtomConst {
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
 	/** URI : settings - adduserByAdmin */
 	public static final String URI_SETTINGS_ADDUSER_BYADMIN = URI_SETTINGS + "/adduserByAdmin";
-	/** URI : settings - errorpage */
-	//public static final String URI_SETTINGS_ERRORPAGE = URI_SETTINGS + "/error.html";
 	/** URI : user init (value) */
-	//public static final String URI_USERINIT_VAL = "userinit";
 	public static final String URI_USERINIT_VAL = "userinit.xml";
 	/** URI : settings - user init */
 	public static final String URI_SETTINGS_USERINIT = URI_SETTINGS + "/" + URI_USERINIT_VAL;

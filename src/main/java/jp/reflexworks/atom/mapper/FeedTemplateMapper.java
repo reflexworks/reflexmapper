@@ -56,7 +56,8 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 
 
 
-import jp.reflexworks.atom.AtomConst;
+
+import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.sourceforge.reflex.core.ResourceMapper;
@@ -80,7 +81,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
 public class FeedTemplateMapper extends ResourceMapper {
 
 	private Logger logger = Logger.getLogger(this.getClass().getName());
-	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
+	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z_]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
 	private static final String ARRAY = "[";
@@ -132,6 +133,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		"updated",
 	};	
 
+	private static final String SERIALIZABLE = "java.io.Serializable";
 	private static final String ENTRYBASE = "jp.reflexworks.atom.entry.EntryBase";
 	private static final String FEEDBASE = "jp.reflexworks.atom.entry.FeedBase";
 	private static final String SOFTSCHEMA = "jp.reflexworks.atom.entry.SoftSchema";
@@ -162,7 +164,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private ReflectionTemplateBuilder builder;
 	private ClassPool pool;
 	private Loader loader;
-	protected String packagename;
+	private String packagename;
 	private boolean isDefaultTemplate;
 	private String folderpath;
 	private String secretkey;
@@ -170,63 +172,94 @@ public class FeedTemplateMapper extends ResourceMapper {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String secretkey) 
-			throws ParseException {
-		this(jo_packages, null, 0, false, false, false, null, secretkey);
+	public FeedTemplateMapper(String[] template, String secretkey) 
+	throws ParseException {
+		this(template, null, 0, null, false, false, false, null, secretkey);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
+	 * @param secretkey
+	 * @param jo_packages 既存クラスパッケージ指定
+	 * @throws ParseException
+	 */
+	public FeedTemplateMapper(String[] template, String secretkey, Object jo_packages) 
+	throws ParseException {
+		this(template, null, 0, jo_packages, false, false, false, null, secretkey);
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param template
 	 * @param compatible
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, boolean compatible, String secretkey) 
-			throws ParseException {
-		this(jo_packages, null, 0, false, false, compatible, null, secretkey);
+	public FeedTemplateMapper(String[] template, boolean compatible, String secretkey) 
+	throws ParseException {
+		this(template, null, 0, null, false, false, compatible, null, secretkey);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
 	 * @param propAcls
 	 * @param indexmax
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
 			String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, false, null, secretkey);
+	throws ParseException {
+		this(template, propAcls, indexmax, null, false, false, false, null, secretkey);
+	}
+
+	/**
+	 * コンストラクタ.
+	 * 既存クラスのパッケージを指定する場合はこのコンストラクタを使用してください。
+	 * 
+	 * @param template
+	 * @param propAcls
+	 * @param indexmax
+	 * @param secretkey
+	 * @throws ParseException
+	 */
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
+			String secretkey, Object jo_package) 
+	throws ParseException {
+		this(template, propAcls, indexmax, jo_package, false, false, false, null, 
+				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
 	 * @param propAcls
 	 * @param indexmax
 	 * @param compatible
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
 			boolean compatible, String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, null, secretkey);
+	throws ParseException {
+		this(template, propAcls, indexmax, null, false, false, compatible, null, 
+				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
 	 * @param propAcls
 	 * @param indexmax
 	 * @param compatible
@@ -234,17 +267,17 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
 			boolean compatible, String folderpath, String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, false, false, compatible, folderpath, 
+	throws ParseException {
+		this(template, propAcls, indexmax, null, false, false, compatible, folderpath, 
 				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
 	 * @param propAcls
 	 * @param indexmax
 	 * @param isCamel
@@ -253,19 +286,20 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
 			boolean isCamel, boolean compatible, String folderpath, String secretkey) 
-					throws ParseException {
-		this(jo_packages, propAcls, indexmax, isCamel, false, compatible, folderpath, 
+	throws ParseException {
+		this(template, propAcls, indexmax, null, isCamel, false, compatible, folderpath, 
 				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param jo_packages
+	 * @param template
 	 * @param propAcls
 	 * @param indexmax
+	 * @param jo_packages
 	 * @param isCamel
 	 * @param useSingleQuote
 	 * @param compatible
@@ -274,10 +308,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(Object jo_packages, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean useSingleQuote, boolean compatible, String folderpath, String secretkey) 
-					throws ParseException {
-		super(getJo_packages(jo_packages), isCamel, useSingleQuote, compatible);
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
+			Object jo_packages, boolean isCamel, boolean useSingleQuote, 
+			boolean compatible, String folderpath, String secretkey) 
+	throws ParseException {
+		super(getJo_packages(template, jo_packages), isCamel, useSingleQuote, compatible);
 
 		this.folderpath = folderpath;
 		this.secretkey = secretkey;
@@ -303,22 +338,24 @@ public class FeedTemplateMapper extends ResourceMapper {
 		registry = new TemplateRegistry(null);
 		builder = new ReflectionTemplateBuilder(registry); // msgpack準備(Javassistで動的に作成したクラスはReflectionTemplateBuilderを使わないとエラーになる)
 
-		if (jo_packages instanceof String[]) {
-
-			// Entityテンプレートからメタ情報を作成する
-			metalist = getMetalist(mergeAtomEntry((String[])jo_packages));
+		// Entityテンプレートからメタ情報を作成する
+		if (template != null) {
+			metalist = getMetalist(mergeAtomEntry(template));
 			if (propAcls != null) {
-				addPropAcls(propAcls,indexmax);
+				addPropAcls(propAcls, indexmax);
 			}
+		} else {
+			metalist = getMetalistFromPropAcls(propAcls);
+		}
 
+		if (jo_packages == null && template != null) {
+			// テンプレートからクラスを生成
 			registerClasses();
-			if (((String[])jo_packages).length == 1) {
+			if (template.length == 1) {
 				isDefaultTemplate = true;
 			}
 
 		} else if (jo_packages instanceof Map | jo_packages instanceof String) {
-
-			metalist = getMetalistFromPropAcls(propAcls);
 			// package名からregistClass
 			// パッケージ名からクラス一覧を取得
 			Set<String> classnames = null;  
@@ -592,6 +629,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * root entry
 	 */
 	private String getRootEntry(boolean isFeed) {
+		return getRootEntry(packagename, isFeed);
+	}
+
+	/*
+	 * root entry
+	 */
+	private static String getRootEntry(String packagename, boolean isFeed) {
 		return isFeed ? packagename + ".Feed":packagename + ".Entry";
 	}
 
@@ -622,13 +666,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param jo_packages
 	 * @return
 	 */
-	private static Map<String, String> getJo_packages(Object jo_packages) {
+	private static Map<String, String> getJo_packages(String[] template, 
+			Object jo_packages) {
+		if (jo_packages != null) {
+			if (jo_packages instanceof Map) {
+				return (Map)jo_packages;
+			} else if (jo_packages instanceof String) {
+				Map result_packages = new LinkedHashMap<String,String>();
+				result_packages.put((String)jo_packages, "");
+				return result_packages;
+			}
+		}
 		Map result_packages = new LinkedHashMap<String,String>();
 		result_packages.putAll(ATOM_PACKAGE);
-		if (jo_packages instanceof String[]) {
-			result_packages.put(parseLine0(((String[]) jo_packages)[0]), "");
-		} else if (jo_packages instanceof Map) {
-			return (Map)jo_packages;
+		if (template != null) {
+			result_packages.put(parseLine0((template)[0]), "");
 		}
 		return result_packages;
 	}
@@ -637,7 +689,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * Entityメタ情報インナークラス
 	 *
 	 */
-	public class Meta {
+	public static class Meta {
 
 		/**
 		 * 階層のレベル
@@ -739,6 +791,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 */
 		public String bigquerytype;
 
+		public String typesrc;
+
 		
 		/**
 		 * Camelケースで名前を返す
@@ -777,7 +831,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		}
 	}
 
-	private Class getClass(String classname) throws ClassNotFoundException {
+	public Class getClass(String classname) throws ClassNotFoundException {
 		// ATOMの優先すべき項目名の場合はATOMクラスを読む
 		int dot = classname.lastIndexOf(".");
 		if (dot > 0) {
@@ -939,7 +993,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		CtClass[] ci;
 		try {
-			ci = new CtClass[] { pool.get(SOFTSCHEMA) };
+			ci = new CtClass[] { pool.get(SOFTSCHEMA), pool.get(SERIALIZABLE) };
 		} catch (NotFoundException e1) {
 			throw new CannotCompileException(e1);
 		} 
@@ -1448,6 +1502,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 			return "";
 		}
 	}
+	
+	private List<Meta> getMetalist(String[] entitytmpl) 
+	throws ParseException {
+		// 先頭のパッケージ名を退避してentryに置き換える
+		this.packagename = parseLine0(entitytmpl[0]);
+		return getMetalist(entitytmpl, packagename);
+	}
 
 	/**
 	 * Entity Templateからメタ情報を作成する
@@ -1456,10 +1517,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @return メタ情報
 	 * @throws ParseException
 	 */
-	private List<Meta> getMetalist(String[] entitytmpl) throws ParseException {
-
-		// 先頭のパッケージ名を退避してentryに置き換える
-		this.packagename = parseLine0(entitytmpl[0]);
+	public static List<Meta> getMetalist(String[] entitytmpl, String packagename) 
+	throws ParseException {
 
 		List<Meta> metalist = new ArrayList<Meta>();
 
@@ -1468,7 +1527,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		Meta meta = new Meta();
 		Matcher matcherf;
 		Stack<String> stack = new Stack<String>();
-		String classname = getRootEntry(true);
+		String classname = getRootEntry(packagename, true);
 		stack.push(classname);
 		int level = 0;
 		String fldname = "";
@@ -1486,7 +1545,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (meta.level < level) {
 						//２段階下がるとエラー
 						if (meta.level + 1 < level) {
-							throw new ParseException("Wrong Indentation:" + line, 0);	
+							throw new ParseException("Wrong Indentation:" + line, 0);
 						}
 						meta.isrecord = true;
 						classname = packagename + "." + meta.getSelf();
@@ -1526,7 +1585,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					metalist.add(meta);
 				}
 
-				if (l<=1) {
+				if (l <= 1) {
 					canattr = true;
 				}
 				else {
@@ -1535,12 +1594,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 						if (meta.hasChild()) throw new ParseException("Can't specify attribute($) to.:" + meta.name, 0);
 					}
 					if (!meta.self.startsWith("_$")) {
-						if (meta.level<level) {
+						if (meta.level < level) {
 							canattr = true;
-						}else {
+						} else {
 							canattr = false;
 						}
-					}else {
+					} else {
 						canattr = true;
 					}
 				}
@@ -1556,14 +1615,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.aclW = null;
 				
 				// for BugQuery Schema
-				if (matcherf.group(5)!=null&&!matcherf.group(5).equals("")) {
+				if (matcherf.group(5) != null && !matcherf.group(5).equals("")) {
 					meta.repeated = true;
-				}else {
+				} else {
 					meta.repeated = false;
 				}
 				
 				meta.bigquerytype = "STRING";
-				if (matcherf.group(4)!=null) {
+				if (matcherf.group(4) != null) {
 					switch(matcherf.group(4)) {
 						case "int" :
 						case "long" :
@@ -1598,7 +1657,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					meta.name = fldname + "." + meta.self;
 				}
 				if (exists(metalist, meta.name)) throw new ParseException("Dupricated properties in Entry:" + meta.name, 0);
-				if (meta.self.startsWith("_")&&meta.level == 1) 
+				if (meta.self.startsWith("_") && meta.level == 1) 
 					throw new ParseException("Can't use '_' as prefix.:" + meta.name, 0);
 
 				if (meta.self.length() < 2) throw new ParseException("Property name is too short.:" + meta.name, 0);
@@ -1613,6 +1672,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.isDesc = false;
 				if (matcherf.group(4) != null) {
 					String typestr = matcherf.group(4).toLowerCase(Locale.ENGLISH);
+					meta.typesrc = typestr;
 					if (typestr.equals("date")) {
 						meta.type = "Date";
 					} else if (typestr.equals("int")) {
@@ -1656,7 +1716,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return metalist;
 	}
 
-	private boolean exists(List<Meta> metalist, String name) {
+	private static boolean exists(List<Meta> metalist, String name) {
 		for (int i = 0; i < metalist.size(); i++) {
 			if (name.equals(metalist.get(i).name)) return true;
 		}
@@ -1831,7 +1891,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 							try {
 								f = cc.getField("_"+fld);
 							}catch(NoSuchFieldException ns2) {
-								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is required.");
+								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is not defined.");
 							}
 						}
 					}
@@ -1877,8 +1937,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 							else if (e.getValue().isIntegerValue()) {
 								if (f.getType().getName().equals("java.lang.Integer")) f.set(parent, e.getValue().asIntegerValue().getInt());
 								if (f.getType().getName().equals("java.lang.Long")) f.set(parent, e.getValue().asIntegerValue().getLong());
-								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
-								if (f.getType().getName().equals("java.lang.Double")) f.set(parent, e.getValue().asFloatValue().getDouble());
+								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, (float) e.getValue().asIntegerValue().getInt());
+								if (f.getType().getName().equals("java.lang.Double")) f.set(parent, (double) e.getValue().asIntegerValue().getLong());
 							}
 							else if (e.getValue().isFloatValue()) {
 								if (f.getType().getName().equals("java.lang.Float")) f.set(parent, e.getValue().asFloatValue().getFloat());
@@ -1904,6 +1964,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}
 			return parent;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new JSONException(e);
 		}
 	}
@@ -1937,8 +1998,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public boolean precheckTemplate(String[] jo_packages_old,String[] jo_packages_new) throws ParseException {
-		List<Meta> metalistprev = getMetalist(mergeAtomEntry(jo_packages_old));
-		List<Meta> metalistnew = getMetalist(mergeAtomEntry(jo_packages_new));
+		List<Meta> metalistprev = getMetalist(mergeAtomEntry(jo_packages_old), packagename);
+		List<Meta> metalistnew = getMetalist(mergeAtomEntry(jo_packages_new), packagename);
 
 		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
 			if (j>=metalistprev.size()) return true;	// チェック完了(OK)
@@ -1991,7 +2052,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			String[] aclfile = null;
 			if (args.length==5&&args[4]!=null) aclfile = readtemplatefile(args[4]);
 
-			new FeedTemplateMapper(entitytempl,aclfile,30,false,args[2],args[3]);		
+			new FeedTemplateMapper(entitytempl,aclfile,30,false,args[2],args[3]);
 		}
 	}
 
@@ -2017,7 +2078,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return (String[]) tempfile.toArray(new String[0]);
 	}
 
-	private  String addUnderscore(String prop) {
+	private static String addUnderscore(String prop) {
 		String[] words = new String[] {
 				"abstract",
 				"boolean",

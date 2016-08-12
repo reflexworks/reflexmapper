@@ -17,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeBodyPart;
 
+import jp.reflexworks.atom.api.MailConst;
 import jp.sourceforge.reflex.util.StringUtils;
 
 public class MailUtil implements MailConst {

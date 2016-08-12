@@ -9,6 +9,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,17 +34,20 @@ import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
-import jp.reflexworks.atom.AtomConst;
+import jp.reflexworks.atom.api.AtomConst;
+import jp.reflexworks.atom.api.EntryUtil;
+import jp.reflexworks.atom.entry.Author;
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
 import jp.reflexworks.atom.entry.FeedBase;
+import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.mapper.BQJSONSerializer;
-import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.CipherUtil;
+import jp.reflexworks.atom.mapper.FeedTemplateConst;
+import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.mapper.SizeLimitExceededException;
 import jp.reflexworks.atom.wrapper.Condition;
-import jp.reflexworks.atom.util.EntryUtil;
 
 public class TestMsgpackMapper {
 
@@ -222,6 +227,7 @@ public class TestMsgpackMapper {
 		" stock_int(int)",
 		" stock_long(long)",
 		" stock_float(float)",
+		//" stock_double(double){0~9999.99}",	// TODO issue #327 テスト用
 		" stock_double(double)",
 		" stock_string(string)",
 		" stock_date(date)",
@@ -233,6 +239,116 @@ public class TestMsgpackMapper {
 		" secret",
 		"deleteFlg",
 	};
+
+	public static String entitytempl4tmptype[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" name!",
+		" category",
+		" color",
+		" size=^[a-zA-Z0-9]{1,2}$",
+		" sale_boolean(rdb_boolean)",
+		" stock_int(rdb_int)",
+		" stock_long(rdb_long)",
+		" stock_float(rdb_float)",
+		" stock_double(rdb_double)",
+		" stock_string(rdb_string)",
+		" stock_date(rdb_date)",
+		" aaa(rdb_desc)",
+		"comment{}",
+		" $$text",
+		" nickname",
+		" secret",
+		"deleteFlg",
+	};
+
+	public static String entitytempl5[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" name!",
+		" category",
+		" color",
+		" size=^[a-zA-Z0-9]{1,2}$",
+		" sale_boolean(boolean)",
+		" stock_int(int)",
+		" stock_long(long)",
+		" stock_float(float)",
+		" stock_double(double)",
+		" stock_string(string)",
+		" stock_date(date)",
+		" aaa(desc)",
+		"comment{}",
+		" $$text",
+		" nickname",
+		" secret",
+		"deleteFlg",
+		"layer_a1{}",
+		" layer_a1_name",
+		" layer_a2{}",
+		"  layer_a2_name",
+		"  layer_a2_value",
+		"layer_b1_list",
+		" layer_b1{}",
+		"  layer_b1_name",
+		"  layer_b2_list",
+		"   layer_b2{}",
+		"    layer_b2_name",
+		"    layer_b2_value",
+	};
+
+	public static String entitytempl6[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"mypackage{100}",        //  0行目はパッケージ名(service名)
+		"info",
+		" item_1",
+		" item_2",
+		" item_3",
+		"email",
+		" before_message{}",
+		"  message_no",
+		"  before_message_text",
+		" after_message{}",
+		"  message_no",
+		"  after_message_text",
+		"addresss",
+		" zip",
+		" address"
+	};
+
+	public static String entitytemplf[] = {
+			// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+			"default{2}",        //  0行目はパッケージ名(service名)
+			"Idx 	",			  
+			"email(string){5~30}",	// 5文字~30文字の範囲
+			"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
+			"name",
+			"given_name",
+			"family_name",
+			"error",
+			" errors{}",				// 多重度(n)、*がないと多重度(1)、繰り返し最大{1}
+			"  domain",
+			"  reason",
+			"  message",
+			"  locationType",
+			"  location",
+			" code(float){1~100}",			// 1~100の範囲			
+			" message",
+			"subInfo",
+			" favorite",
+			"  food!=^.{3}$",	// 必須項目、正規表現つき
+			"  music=^.{5}$",			// 配列(要素数max3)
+			" favorite2",
+			"  food",
+			"   food1",
+			" favorite3",
+			"  food",
+			"  updated(date)",
+			" hobby{}",
+			"  $$text",				// テキストノード
+			"seq(desc)"
+		};
 
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
@@ -274,6 +390,21 @@ public class TestMsgpackMapper {
 		System.out.println(json2);
 
 		assertEquals(json, json2);
+	}
+
+	@Test
+	public void testJSONEntryFloat() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplf, entityAcls, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
 	}
 
 	@Test
@@ -609,7 +740,7 @@ public class TestMsgpackMapper {
 		//MODEL_PACKAGE.put("jp.reflexworks.atom.source", NAMESPACE_ATOM);
 		MODEL_PACKAGE.put("jp.reflexworks.test.model", NAMESPACE_VT);
 
-		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(new String[]{"jp.reflexworks.test.model"});		
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
@@ -692,7 +823,7 @@ public class TestMsgpackMapper {
 		MODEL_PACKAGE.putAll(AtomConst.ATOM_PACKAGE);
 		// 名前空間の指定なし
 		MODEL_PACKAGE.put("jp.reflexworks.test2.model", "");
-		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE, SECRETKEY);
+		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
 
 		jp.reflexworks.test2.model.Feed feed = createTest2Feed();
 		String xml = mp.toXML(feed);
@@ -720,6 +851,48 @@ public class TestMsgpackMapper {
 
 		int idx = xml.indexOf("<test2:");
 		assertTrue(idx == -1);
+	}
+
+	@Test
+	public void testStaticPackages3() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		String PACKAGE_VT = "jp.reflexworks.testvt.model";
+		String NAMESPACE_VT = "vt=http://reflexworks.jp/test/1.0";
+
+		Map<String, String> MODEL_PACKAGE = new HashMap<String, String>();
+		MODEL_PACKAGE.put(AtomConst.ATOM_PACKAGE_ENTRY, AtomConst.ATOM_NAMESPACE);
+		MODEL_PACKAGE.put(PACKAGE_VT, NAMESPACE_VT);
+
+		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
+
+		jp.reflexworks.testvt.model.Column column = new jp.reflexworks.testvt.model.Column();
+		column.vt$color = "red";
+		column.vt$size = "M";
+		column.vt$memo = "名前空間テスト";
+		jp.reflexworks.testvt.model.Entry entry = new jp.reflexworks.testvt.model.Entry();
+		entry.column = column;
+		entry.vt$item1 = "Tシャツ";
+		entry.vt$item2 = "半ズボン";
+		Author author = new Author();
+		author.uri = "urn:vte.cx:created:12";
+		entry.author = new ArrayList<Author>();
+		entry.author.add(author);
+		entry.id = "/12/item/001,1";
+		Link link = new Link();
+		link._$rel = Link.REL_SELF;
+		link._$href = "/12/item/001";
+		entry.addLink(link);
+		
+		jp.reflexworks.testvt.model.Feed feed = new jp.reflexworks.testvt.model.Feed();
+		feed.addEntry(entry);
+		
+		System.out.println("[testStaticPackages3] 名前空間テスト start");
+		System.out.println("[testStaticPackages3] 名前空間テスト Entry XML 出力");
+		System.out.println(mp.toXML(entry));
+		System.out.println("[testStaticPackages3] 名前空間テスト Feed XML 出力");
+		System.out.println(mp.toXML(feed));
+		System.out.println("[testStaticPackages3] 名前空間テスト end");
+
 	}
 
 	private jp.reflexworks.test2.model.Feed createTest2Feed() {
@@ -902,8 +1075,8 @@ public class TestMsgpackMapper {
 		System.out.println(array);
 
 //		FeedBase feed2 = (FeedBase) mp.fromMessagePack(msgpack,FEED);
-		FeedBase feed2 = (FeedBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_FEED,FEED);
-		EntryBase entry2 = (EntryBase) mp.fromMessagePack(AtomConst.MSGPACK_BYTES_ENTRY,ENTRY);
+		FeedBase feed2 = (FeedBase) mp.fromMessagePack(FeedTemplateConst.MSGPACK_BYTES_FEED,FEED);
+		EntryBase entry2 = (EntryBase) mp.fromMessagePack(FeedTemplateConst.MSGPACK_BYTES_ENTRY,ENTRY);
 
 		System.out.println(mp.toJSON(mp.fromXML(xml)));
 		System.out.println(json);
@@ -993,7 +1166,8 @@ public class TestMsgpackMapper {
 		//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl);		// ATOM Feed/Entryのみ。パッケージは_
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls, 30, SECRETKEY);
 
-		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		//String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
+		String json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/1/new,1\",\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"2014/10/03\"}],\"category\" : [{\"$term\":\"term1\"},{\"$scheme\":\"scheme1\"},{\"$label\":\"label1\"}],\"link\" : [{\"$href\" : \"/0762678511-/allA/759188985520\",\"$rel\" : \"self\"},{\"$href\" : \"/transferring/all/0762678511-/759188985520\",\"$rel\" : \"alternate\",\"$type\" : \"index1\"},{\"$href\" : \"/0762678511-/@/spool/759188985520\",\"$rel\" : \"alternate\"},{\"$href\" : \"/0762678511-/historyA/759188985520\",\"$rel\" : \"alternate\",\"$type\" : \"index3\"}],\"title\" : \"タイトル\",\"public\" : {\"int\":\"email1\"},\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"},{\"domain\": \"com.google.auth2\",\"reason\": \"invalidAuthentication2\",\"message\": \"invalid header2\",\"locationType\": \"header2\",\"location\": \"Authorization2\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"},\"favorite3\" : {\"food\" : \"うどん\",\"updated\" : \"2013-09-30T14:06:30+09:00\"}}}]}}";
 
 		//		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"123\"}]}}";
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
@@ -1021,10 +1195,20 @@ public class TestMsgpackMapper {
 		System.out.println("subInfo.favorite3.updated value="+entry.getValue("subInfo.favorite3.updated"));
 		System.out.println("title(ATOM Entry) value="+entry.getValue("title"));
 		System.out.println("link(ATOM Entry) $href value="+entry.getValue("link.$href"));
+		System.out.println("link(ATOM Entry) $type value="+entry.getValue("link.$type"));
 		System.out.println("link(ATOM Entry) email value="+entry.getValue("contributor.email"));
 		System.out.println("link(ATOM Entry) uri value="+entry.getValue("contributor.uri"));
 		System.out.println("link(ATOM Entry) name value="+entry.getValue("contributor.name"));
 
+		Object objLinkHref = entry.getValue("link.$href");
+		System.out.println("[EntryBase#getValue] link.$href class = " + objLinkHref.getClass().getName());
+		Object objLink = entry.getValue("link");
+		if (objLink != null) {
+			System.out.println("[EntryBase#getValue] link class = " + objLink.getClass().getName());
+		} else {
+			System.out.println("[EntryBase#getValue] link object is null.");
+		}
+		
 		System.out.println("entry size="+entry.getsize());
 		String bqjson = BQJSONSerializer.toJSON(mp, entry);
 //		String bqjson = mp.toJSON(entry);
@@ -1041,7 +1225,7 @@ public class TestMsgpackMapper {
 		contributor.uri = getAclUrn("889", "CRUD");
 		contributor.name = "てすと";
 
-		Cipher cipher = CipherUtil.getInstance();
+		Cipher cipher = (new CipherUtil()).getInstance();
 		System.out.println("---(before encrypted)---");
 		System.out.println(mp.toXML(entry));
 		System.out.println("--------------");
@@ -1159,7 +1343,7 @@ public class TestMsgpackMapper {
 			System.out.println("len:"+mbytes.length);
 			
 			
-			byte[] testBytes = AtomConst.MSGPACK_BYTES_FEED;
+			byte[] testBytes = FeedTemplateConst.MSGPACK_BYTES_FEED;
 			assertTrue(EntryUtil.isMessagePack(testBytes));
 			
 			System.out.println("array:"+ mp.toArray(mbytes));
@@ -1914,6 +2098,8 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
 		List<Meta> metalist = mp.getMetalist(serviceName);
 		boolean existsMetalist = printMetalist(metalist);
+		System.out.println("--- printMetalist2 ---");
+		existsMetalist = printMetalist2(metalist);
 		assertTrue(existsMetalist);
 
 		System.out.println("--- Package Metalist ---");
@@ -1921,10 +2107,18 @@ public class TestMsgpackMapper {
 		modelPackage.putAll(AtomConst.ATOM_PACKAGE);
 		modelPackage.put("jp.reflexworks.test2.model", "");
 
-		mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);
+		//mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);
+		mp = new FeedTemplateMapper(null, entityAcls5, 30, SECRETKEY, modelPackage);
 		metalist = mp.getMetalist(serviceName);
 		existsMetalist = printMetalist(metalist);
 		assertTrue(existsMetalist);
+		
+		System.out.println("--- Package Metalist (template & package) ---");
+		mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY, modelPackage);
+		metalist = mp.getMetalist(serviceName);
+		existsMetalist = printMetalist(metalist);
+		assertTrue(existsMetalist);
+
 	}
 	
 	private boolean printMetalist(List<Meta> metalist) {
@@ -1954,6 +2148,35 @@ public class TestMsgpackMapper {
 		return existsMetalist;
 	}
 	
+	private boolean printMetalist2(List<Meta> metalist) {
+		boolean existsMetalist = false;
+		StringBuilder prn = new StringBuilder();
+		if (metalist != null && metalist.size() > 0) {
+			existsMetalist = true;
+			prn.append("[name]\t[level]\t[type]\t[parent]\t[self]\t[index]\t[repeated]\t[isrecord]\n");
+			for (Meta meta : metalist) {
+				prn.append(meta);
+				prn.append("\t");
+				prn.append(meta.level);
+				prn.append("\t");
+				prn.append(meta.type);
+				prn.append("\t");
+				prn.append(meta.parent);
+				prn.append("\t");
+				prn.append(meta.self);
+				prn.append("\t");
+				prn.append(meta.index);
+				prn.append("\t");
+				prn.append(meta.repeated);
+				prn.append("\t");
+				prn.append(meta.isrecord);
+				prn.append("\n");
+			}
+		}
+		System.out.println(prn.toString());
+		return existsMetalist;
+	}
+
 	@Test
 	public void testGetMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
@@ -2088,6 +2311,9 @@ public class TestMsgpackMapper {
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
 
+		System.out.println("[testDate] json = " + mp4.toJSON(feed));
+		System.out.println("[testDate] xml = " + mp4.toXML(feed));
+		
 	}
 	
 	private String getDateJson(String date) {
@@ -3192,6 +3418,148 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
+	}
+
+	@Test
+	public void testCreateObject() 
+	throws ParseException, ClassNotFoundException, IllegalAccessException, InstantiationException,
+			NoSuchMethodException, InvocationTargetException {
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl5, entityAcls5, 30, SECRETKEY);
+		
+		EntryBase entry = EntryUtil.createEntry(mapper);
+
+		// 内部のクラスを生成したい。
+		String pkg = entitytempl5[0].substring(0, entitytempl5[0].indexOf("{"));
+		String clsName = "_" + pkg + "." + "Info";
+		
+		try {
+			Class cls = Class.forName(clsName);
+			System.out.println("Class.forName - OK : " + cls.getName());
+			assertTrue(false);
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("Class.forName - ClassNotFoundException : " + e.getMessage());
+		}
+
+		// javassistのクラスローダーからクラスを取得
+		Class cls = mapper.getClass(clsName);
+		
+		// インスタンス生成
+		Object obj = cls.newInstance();
+		
+		// setterで値を設定
+		String field = "name";
+		String value = "名前1";
+		//Class type = String.class;
+		String typeName = "java.lang.String";
+		Class type = Class.forName(typeName);
+
+		String setter = FieldMapper.getSetter(field, type);
+		Method method = cls.getMethod(setter, type);
+		method.invoke(obj, value);
+		
+		System.out.println(mapper.toXML(obj));
+	}
+	
+	@Test
+	public void testMaskprop3() throws ParseException {
+		// パッケージ指定mapperの動作方法
+		// 1. TestMsgpackGenerterFilesクラスでエンティティクラスを生成する。
+		// 2. 生成されたパッケージフォルダを、/target/test-classes 配下にコピーする。
+		// 3. 実行する。
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		//FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY, packages);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"feed\": {\"entry\": [");
+		sb.append("{\"info\": {\"item_1\": \"51000007\"},");
+		sb.append("\"email\": {");
+		sb.append("\"before_message\": [");
+		sb.append("{\"message_no\": \"2\",\"before_message_text\": \"予定Eメール2\"},");
+		sb.append("{\"message_no\": \"3\",\"before_message_text\": \"予定Eメール3\"}],");
+		sb.append("\"after_message\": [");
+		sb.append("{\"message_no\": \"4\",\"after_message_text\": \"完了Eメール4\"},");
+		sb.append("{\"message_no\": \"5\",\"after_message_text\": \"完了Eメール5\"}]},");
+		sb.append("\"id\": \"/11000001/send/51000007,1\",");
+		sb.append("\"link\": [{\"___href\": \"/11000001/send/51000007\",\"___rel\": \"self\"}]");
+		sb.append("}]}}");
+		
+		String json = sb.toString();
+		System.out.println(json);
+		
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		
+		// maskprop
+		String uid = "11";
+		List<String> groups = new ArrayList<String>();
+		groups.add("/@mypackage/_group/$admin");
+		groups.add("/@mypackage/_group/$content");
+		groups.add("/@mypackage/_group/$useradmin");
+		
+		EntryBase entry = feed.entry.get(0);
+		entry.maskprop(uid, groups);
+		
+		String name = "info";
+		Object obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+		
+		name = "info.item_1";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		name = "email";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		name = "email.before_message";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		name = "email.before_message.before_message_text";
+		obj = entry.getValue(name);
+		System.out.println("[getValue] " + name + " : " + obj);
+
+		System.out.println("testMaskprop3 end");
+	}
+
+	@Test
+	public void testType() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4tmptype, entityAcls5, 30, SECRETKEY);
+
+		List<Meta> metalist = mp.getMetalist("myservice");
+		
+		System.out.println("[testType] print type : ");
+		for (Meta meta : metalist) {
+			System.out.println("  name = " + meta.name + ", type = " + meta.type + ", typesrc = " + meta.typesrc);
+		}
+
+		// stock_int をテスト
+		// 数値が正数の場合
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333,\"stock_double\" : 4444.5555}}]}}";
+		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333}}]}}";
+		FeedBase feed = (FeedBase)mp.fromJSON(json);
+		EntryBase entry = feed.entry.get(0);
+		
+
+		/*
+		// 数値が負数の場合
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333,\"stock_double\" : -4444.5555}}]}}";
+		//json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : -1000,\"stock_long\" : -1000000,\"stock_float\" : -222.333}}]}}";
+		feed = (FeedBase)mp.fromJSON(json);
+		entry = feed.entry.get(0);
+
+		checkNegativeInteger(entry);
+		checkNegativeLong(entry);
+		checkNegativeFloat(entry);
+		checkNegativeDouble(entry);
+		*/
+
 	}
 
 }
