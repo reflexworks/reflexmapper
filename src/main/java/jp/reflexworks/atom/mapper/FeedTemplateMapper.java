@@ -1891,7 +1891,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 							try {
 								f = cc.getField("_"+fld);
 							}catch(NoSuchFieldException ns2) {
-								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is required.");
+								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is not defined.");
 							}
 						}
 					}
