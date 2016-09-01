@@ -3561,5 +3561,33 @@ public class TestMsgpackMapper {
 		*/
 
 	}
+	
+	@Test
+	public void testSurrogate() throws ParseException {
+		// 第三水準・第四水準文字（サロゲートペア）のテスト
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
+		
+		// JSON
+		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"あ𠀋あ\"}]}}";
+		System.out.println(json);
+		
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		
+		System.out.println("[testSurrogate] (fromJSON) title = " + feed.entry.get(0).title);
+		
+		// XML
+		String xml = "<feed><entry><title>あ𠀋あ</title></entry></feed>";
+		System.out.println(xml);
+		
+		feed = (FeedBase)mapper.fromXML(xml);
+		
+		System.out.println("[testSurrogate] (fromXML) title = " + feed.entry.get(0).title);
+
+	}
 
 }
