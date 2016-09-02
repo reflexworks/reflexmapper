@@ -3,7 +3,7 @@ package jp.reflexworks.atom.util;
 public class SurrogateConverter {
 
 	private String src;
-	private String tgt = "";
+	private String tgt;
 	private int idx;
 	private int ucs;
 	private char c1;
@@ -14,6 +14,7 @@ public class SurrogateConverter {
 
 	public SurrogateConverter(String src) {
 		this.src = src;
+		this.tgt = "";
 	}
 
 	public String convertUcs() {
