@@ -47,6 +47,7 @@ import jp.reflexworks.atom.mapper.FeedTemplateConst;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.mapper.SizeLimitExceededException;
+import jp.reflexworks.atom.util.SurrogateConverter;
 import jp.reflexworks.atom.wrapper.Condition;
 
 public class TestMsgpackMapper {
@@ -3579,13 +3580,29 @@ public class TestMsgpackMapper {
 		FeedBase feed = (FeedBase)mapper.fromJSON(json);
 		
 		System.out.println("[testSurrogate] (fromJSON) title = " + feed.entry.get(0).title);
+		System.out.println("[testSurrogate] (fromJSON) title = " + new SurrogateConverter(feed.entry.get(0).title).convertUcs());
 		
+		String message1 = "";
+		byte[] bytes = feed.entry.get(0).title.getBytes();
+		for (int i = 0; i < bytes.length; i++) {
+	        message1 += " "+Integer.toHexString(bytes[i] & 0xff);
+	    }
+		System.out.println(message1);
+
 		// XML
 		String xml = "<feed><entry><title>あ𠀋あ</title></entry></feed>";
 		System.out.println(xml);
 		
 		feed = (FeedBase)mapper.fromXML(xml);
-		
+
+		bytes = feed.entry.get(0).title.getBytes();		
+
+		message1 = "";
+		for (int i = 0; i < bytes.length; i++) {
+	        message1 += " "+Integer.toHexString(bytes[i] & 0xff);
+	    }
+		System.out.println(message1);
+
 		System.out.println("[testSurrogate] (fromXML) title = " + feed.entry.get(0).title);
 
 	}
