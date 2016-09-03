@@ -3570,40 +3570,45 @@ public class TestMsgpackMapper {
 		packages.putAll(AtomConst.ATOM_PACKAGE);
 		packages.put("_mypackage", null);
 		
+		// 文字列
+		String testStr = "あ𠀋あ";
+		
 		// テンプレート指定
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
 		
 		// JSON
-		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"あ𠀋あ\"}]}}";
+		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"" + testStr + "\"}]}}";
 		System.out.println(json);
 		
 		FeedBase feed = (FeedBase)mapper.fromJSON(json);
 		
 		System.out.println("[testSurrogate] (fromJSON) title = " + feed.entry.get(0).title);
+		assertTrue(testStr.equals(feed.entry.get(0).title));
 		System.out.println("[testSurrogate] (fromJSON) title = " + new SurrogateConverter(feed.entry.get(0).title).convertUcs());
 		
 		String message1 = "";
 		byte[] bytes = feed.entry.get(0).title.getBytes();
 		for (int i = 0; i < bytes.length; i++) {
-	        message1 += " "+Integer.toHexString(bytes[i] & 0xff);
-	    }
+			message1 += " "+Integer.toHexString(bytes[i] & 0xff);
+		}
 		System.out.println(message1);
 
 		// XML
-		String xml = "<feed><entry><title>あ𠀋あ</title></entry></feed>";
+		String xml = "<feed><entry><title>" + testStr + "</title></entry></feed>";
 		System.out.println(xml);
 		
 		feed = (FeedBase)mapper.fromXML(xml);
 
-		bytes = feed.entry.get(0).title.getBytes();		
+		bytes = feed.entry.get(0).title.getBytes();
 
 		message1 = "";
 		for (int i = 0; i < bytes.length; i++) {
-	        message1 += " "+Integer.toHexString(bytes[i] & 0xff);
-	    }
+			message1 += " "+Integer.toHexString(bytes[i] & 0xff);
+		}
 		System.out.println(message1);
 
 		System.out.println("[testSurrogate] (fromXML) title = " + feed.entry.get(0).title);
+		assertTrue(testStr.equals(feed.entry.get(0).title));
 
 		byte[] msg = mapper.toMessagePack(feed);
 		FeedBase feed2 = (FeedBase)mapper.fromMessagePack(msg);
