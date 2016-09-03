@@ -3564,7 +3564,7 @@ public class TestMsgpackMapper {
 	}
 	
 	@Test
-	public void testSurrogate() throws ParseException {
+	public void testSurrogate() throws ParseException, IOException, ClassNotFoundException {
 		// 第三水準・第四水準文字（サロゲートペア）のテスト
 		Map<String, String> packages = new HashMap<String, String>();
 		packages.putAll(AtomConst.ATOM_PACKAGE);
@@ -3604,6 +3604,11 @@ public class TestMsgpackMapper {
 		System.out.println(message1);
 
 		System.out.println("[testSurrogate] (fromXML) title = " + feed.entry.get(0).title);
+
+		byte[] msg = mapper.toMessagePack(feed);
+		FeedBase feed2 = (FeedBase)mapper.fromMessagePack(msg);
+
+		System.out.println("[testSurrogate] (fromMessagePck) title = " + feed2.entry.get(0).title);
 
 	}
 
