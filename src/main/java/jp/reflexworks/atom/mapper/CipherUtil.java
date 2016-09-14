@@ -54,7 +54,7 @@ public final class CipherUtil {
 			try {
 				this.cipher = Cipher.getInstance(ALGORITHM);
 			} catch (GeneralSecurityException e) {
-				logger.log(Level.WARNING, e.getMessage(), e);
+				logger.log(Level.WARNING, e.getClass().getName(), e);
 			}
 		}
 	}
@@ -331,7 +331,7 @@ public final class CipherUtil {
 			String enc = new String(Base64.encodeBase64(encByte), AtomConst.ENCODING);
 			return enc;
 		} catch (UnsupportedEncodingException e) {
-			// Do nothing.
+			logger.log(Level.WARNING, e.getClass().getName(), e);
 		}
 		return null;
 	}
@@ -364,7 +364,7 @@ public final class CipherUtil {
 			String enc = new String(encByte, AtomConst.ENCODING);
 			return enc;
 		} catch (UnsupportedEncodingException e) {
-			// Do nothing.
+			logger.log(Level.WARNING, e.getClass().getName(), e);
 		}
 		return null;
 	}
@@ -397,7 +397,7 @@ public final class CipherUtil {
 		try {
 			return cp.encryptProc(value, key);
 		} catch (GeneralSecurityException e) {
-			// do nothing
+			logger.log(Level.WARNING, e.getClass().getName(), e);
 			return null;
 		}
 	}
@@ -417,7 +417,7 @@ public final class CipherUtil {
 		try {
 			return cp.decryptProc(value, key);
 		} catch (GeneralSecurityException e) {
-			// do nothing
+			logger.log(Level.WARNING, e.getClass().getName(), e);
 			return null;
 		}
 	}
