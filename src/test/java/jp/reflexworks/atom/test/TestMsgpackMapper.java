@@ -3624,7 +3624,7 @@ public class TestMsgpackMapper {
 		
 		// JSON
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"\\\\\"}]}}";
-		System.out.println("[testBackSlash] (fromJson) " + json);
+		System.out.println("[testBackSlash] (fromJSON) " + json);
 		
 		FeedBase feed = (FeedBase)mapper.fromJSON(json);
 		
@@ -3633,8 +3633,8 @@ public class TestMsgpackMapper {
 		feed.entry.get(0).title = "\\";
 		String toJson = mapper.toJSON(feed);
 		
-		System.out.println("[testBackSlash] (toJson) title = " + feed.entry.get(0).title);
-		System.out.println("[testBackSlash] (toJson) " + toJson);
+		System.out.println("[testBackSlash] (toJSON) title = " + feed.entry.get(0).title);
+		System.out.println("[testBackSlash] (toJSON) " + toJson);
 		
 		// XML
 		String xml = "<feed><entry><title>\\</title></entry></feed>";
