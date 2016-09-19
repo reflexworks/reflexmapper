@@ -3616,5 +3616,39 @@ public class TestMsgpackMapper {
 		System.out.println("[testSurrogate] (fromMessagePck) title = " + feed2.entry.get(0).title);
 
 	}
+	
+	@Test
+	public void testBackSlash() throws ParseException {
+		// \のテスト
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
+		
+		// JSON
+		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"\\\\\"}]}}";
+		System.out.println("[testBackSlash] (fromJSON) " + json);
+		
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		
+		System.out.println("[testBackSlash] (fromJSON) title = " + feed.entry.get(0).title);
+		
+		feed.entry.get(0).title = "\\";
+		String toJson = mapper.toJSON(feed);
+		
+		System.out.println("[testBackSlash] (toJSON) title = " + feed.entry.get(0).title);
+		System.out.println("[testBackSlash] (toJSON) " + toJson);
+		
+		// XML
+		String xml = "<feed><entry><title>\\</title></entry></feed>";
+		System.out.println(xml);
+		
+		feed = (FeedBase)mapper.fromXML(xml);
+		
+		System.out.println("[testBackSlash] (fromXML) title = " + feed.entry.get(0).title);
+
+	}
 
 }

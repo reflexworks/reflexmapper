@@ -552,7 +552,7 @@ public abstract class EntryBase implements Serializable {
 		if (uriAndRev != null && uriAndRev.length >= 2) {
 			try {
 				rev = Integer.parseInt(uriAndRev[1]);
-			} catch (Exception e) {}	// Do nothing.
+			} catch (Exception e) {}	// 数値でない場合はrevisionとして0を返す。
 		}
 		return rev;
 	}
@@ -588,7 +588,7 @@ public abstract class EntryBase implements Serializable {
 					String rev = temp[1].substring(0, idx);
 					return new String[]{temp[0], rev};
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {}	// フォーマット不正の場合はnullを返す。
 		}
 		return null;
 
