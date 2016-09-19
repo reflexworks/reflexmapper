@@ -1956,7 +1956,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 									}
 								} else {
 									v = new SurrogateConverter(v).convertUcs();
-									v = v.replaceAll("\\\\n", "\n").replaceAll("\\\\\"", "\"");
+									v = v.replaceAll("\\\\n", "\n").replaceAll("\\\\\"", "\"").replaceAll("\\\\\\\\","\\\\");
 									f.set(parent, v);
 								}
 							}
