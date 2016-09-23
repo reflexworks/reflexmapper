@@ -619,13 +619,17 @@ public abstract class EntryBase implements Serializable {
 			buf.append(AtomConst.SVC_PREFIX);
 			buf.append(svcname);
 			String[] uriAndRev = getUriAndRevisionById(id);
-			if (!isSlash(uriAndRev[0])) {
-				buf.append(id);
-			} else {
-				buf.append(",");
-				buf.append(uriAndRev[1]);
+			if (uriAndRev!=null) {
+				if (!isSlash(uriAndRev[0])) {
+					buf.append(id);
+				} else {
+					buf.append(",");
+					buf.append(uriAndRev[1]);
+				}
+				id = buf.toString();
+			}else {
+				throw new IllegalArgumentException("Request format is invalid: ID.");
 			}
-			id = buf.toString();
 		}
 		if (link != null) {
 			for (Link l : link) {

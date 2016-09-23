@@ -3651,4 +3651,25 @@ public class TestMsgpackMapper {
 
 	}
 
+	@Test
+	public void testaddsvcname() throws ParseException {
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);		
+		EntryBase entry = EntryUtil.createEntry(mapper);
+		// id正常
+		entry.setId("abc,1");
+		entry.addSvcname("xx");
+		// id不正
+		try {
+			entry.setId("abc");
+			entry.addSvcname("xx");
+		}catch(Exception e) {
+			System.out.println("test ok:"+e.getMessage());
+		}
+	}
+
 }
