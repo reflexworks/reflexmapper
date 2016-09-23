@@ -613,13 +613,14 @@ public abstract class EntryBase implements Serializable {
 		if (svcname == null || svcname.length() == 0) {
 			return;
 		}
-		if (id != null && !id.startsWith(AtomConst.SVC_PREFIX)) {
+		if (id != null && !id.startsWith(AtomConst.SVC_PREFIX) &&
+				id.startsWith("/")) {
 			//_id = "/@" + svcname + _id;
-			StringBuilder buf = new StringBuilder();
-			buf.append(AtomConst.SVC_PREFIX);
-			buf.append(svcname);
 			String[] uriAndRev = getUriAndRevisionById(id);
-			if (uriAndRev!=null) {
+			if (uriAndRev != null && uriAndRev.length > 1) {
+				StringBuilder buf = new StringBuilder();
+				buf.append(AtomConst.SVC_PREFIX);
+				buf.append(svcname);
 				if (!isSlash(uriAndRev[0])) {
 					buf.append(id);
 				} else {
@@ -627,8 +628,6 @@ public abstract class EntryBase implements Serializable {
 					buf.append(uriAndRev[1]);
 				}
 				id = buf.toString();
-			}else {
-				throw new IllegalArgumentException("Request format is invalid: ID.");
 			}
 		}
 		if (link != null) {
@@ -651,18 +650,20 @@ public abstract class EntryBase implements Serializable {
 		if (id != null && id.startsWith(serviceTopUri)) {
 			//_id = _id.substring(svcname.length() + 2);
 			String[] uriAndRev = getUriAndRevisionById(id);
-			if (!isTop(uriAndRev[0])) {
-				if (id.indexOf(serviceTopUri+"/")<0) {
-					id = "/"+id.substring(serviceTopUri.length());
-				}else {
-					id = id.substring(serviceTopUri.length());
+			if (uriAndRev != null && uriAndRev.length > 1) {
+				if (!isTop(uriAndRev[0])) {
+					if (id.indexOf(serviceTopUri+"/")<0) {
+						id = "/"+id.substring(serviceTopUri.length());
+					} else {
+						id = id.substring(serviceTopUri.length());
+					}
+				} else {
+					StringBuilder buf = new StringBuilder();
+					buf.append(serviceTopUri);
+					buf.append(",");
+					buf.append(uriAndRev[1]);
+					id = buf.toString();
 				}
-			} else {
-				StringBuilder buf = new StringBuilder();
-				buf.append(serviceTopUri);
-				buf.append(",");
-				buf.append(uriAndRev[1]);
-				id = buf.toString();
 			}
 		}
 		if (link != null) {

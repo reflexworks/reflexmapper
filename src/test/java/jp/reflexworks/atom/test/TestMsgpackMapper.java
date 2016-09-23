@@ -3661,15 +3661,27 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);		
 		EntryBase entry = EntryUtil.createEntry(mapper);
 		// id正常
-		entry.setId("abc,1");
+		entry.setId("/abc,1");
+		System.out.println("[addsvcname] 1 id before : " + entry.id);
 		entry.addSvcname("xx");
-		// id不正
-		try {
-			entry.setId("abc");
-			entry.addSvcname("xx");
-		}catch(Exception e) {
-			System.out.println("test ok:"+e.getMessage());
-		}
+		System.out.println("[addsvcname] 1 id after : " + entry.id);
+		entry.cutSvcname("xx");
+		System.out.println("[cutsvcname] 1 id after : " + entry.id);
+		// id不正1
+		entry.setId("abc,1");
+		System.out.println("[addsvcname] 2 id before : " + entry.id);
+		entry.addSvcname("xx");
+		System.out.println("[addsvcname] 2 id after : " + entry.id);
+		entry.cutSvcname("xx");
+		System.out.println("[cutsvcname] 2 id after : " + entry.id);
+		// id不正2
+		entry.setId("abc");
+		System.out.println("[addsvcname] 3 id before : " + entry.id);
+		entry.addSvcname("xx");
+		System.out.println("[addsvcname] 3 id after : " + entry.id);
+		entry.cutSvcname("xx");
+		System.out.println("[cutsvcname] 3 id after : " + entry.id);
+		
 	}
 
 }
