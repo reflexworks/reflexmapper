@@ -47,6 +47,7 @@ import jp.reflexworks.atom.mapper.FeedTemplateConst;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.mapper.SizeLimitExceededException;
+import jp.reflexworks.atom.util.SurrogateConverter;
 import jp.reflexworks.atom.wrapper.Condition;
 
 public class TestMsgpackMapper {
@@ -3560,6 +3561,127 @@ public class TestMsgpackMapper {
 		checkNegativeDouble(entry);
 		*/
 
+	}
+	
+	@Test
+	public void testSurrogate() throws ParseException, IOException, ClassNotFoundException {
+		// 第三水準・第四水準文字（サロゲートペア）のテスト
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		
+		// 文字列
+		String testStr = "あ𠀋あ";
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
+		
+		// JSON
+		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"" + testStr + "\"}]}}";
+		System.out.println(json);
+		
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		
+		System.out.println("[testSurrogate] (fromJSON) title = " + feed.entry.get(0).title);
+		assertTrue(testStr.equals(feed.entry.get(0).title));
+		System.out.println("[testSurrogate] (fromJSON) title = " + new SurrogateConverter(feed.entry.get(0).title).convertUcs());
+		
+		String message1 = "";
+		byte[] bytes = feed.entry.get(0).title.getBytes();
+		for (int i = 0; i < bytes.length; i++) {
+			message1 += " "+Integer.toHexString(bytes[i] & 0xff);
+		}
+		System.out.println(message1);
+
+		// XML
+		String xml = "<feed><entry><title>" + testStr + "</title></entry></feed>";
+		System.out.println(xml);
+		
+		feed = (FeedBase)mapper.fromXML(xml);
+
+		bytes = feed.entry.get(0).title.getBytes();
+
+		message1 = "";
+		for (int i = 0; i < bytes.length; i++) {
+			message1 += " "+Integer.toHexString(bytes[i] & 0xff);
+		}
+		System.out.println(message1);
+
+		System.out.println("[testSurrogate] (fromXML) title = " + feed.entry.get(0).title);
+		assertTrue(testStr.equals(feed.entry.get(0).title));
+
+		byte[] msg = mapper.toMessagePack(feed);
+		FeedBase feed2 = (FeedBase)mapper.fromMessagePack(msg);
+
+		System.out.println("[testSurrogate] (fromMessagePck) title = " + feed2.entry.get(0).title);
+
+	}
+	
+	@Test
+	public void testBackSlash() throws ParseException {
+		// \のテスト
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
+		
+		// JSON
+		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"\\\\\"}]}}";
+		System.out.println("[testBackSlash] (fromJSON) " + json);
+		
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		
+		System.out.println("[testBackSlash] (fromJSON) title = " + feed.entry.get(0).title);
+		
+		feed.entry.get(0).title = "\\";
+		String toJson = mapper.toJSON(feed);
+		
+		System.out.println("[testBackSlash] (toJSON) title = " + feed.entry.get(0).title);
+		System.out.println("[testBackSlash] (toJSON) " + toJson);
+		
+		// XML
+		String xml = "<feed><entry><title>\\</title></entry></feed>";
+		System.out.println(xml);
+		
+		feed = (FeedBase)mapper.fromXML(xml);
+		
+		System.out.println("[testBackSlash] (fromXML) title = " + feed.entry.get(0).title);
+
+	}
+
+	@Test
+	public void testaddsvcname() throws ParseException {
+		Map<String, String> packages = new HashMap<String, String>();
+		packages.putAll(AtomConst.ATOM_PACKAGE);
+		packages.put("_mypackage", null);
+		
+		// テンプレート指定
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);		
+		EntryBase entry = EntryUtil.createEntry(mapper);
+		// id正常
+		entry.setId("/abc,1");
+		System.out.println("[addsvcname] 1 id before : " + entry.id);
+		entry.addSvcname("xx");
+		System.out.println("[addsvcname] 1 id after : " + entry.id);
+		entry.cutSvcname("xx");
+		System.out.println("[cutsvcname] 1 id after : " + entry.id);
+		// id不正1
+		entry.setId("abc,1");
+		System.out.println("[addsvcname] 2 id before : " + entry.id);
+		entry.addSvcname("xx");
+		System.out.println("[addsvcname] 2 id after : " + entry.id);
+		entry.cutSvcname("xx");
+		System.out.println("[cutsvcname] 2 id after : " + entry.id);
+		// id不正2
+		entry.setId("abc");
+		System.out.println("[addsvcname] 3 id before : " + entry.id);
+		entry.addSvcname("xx");
+		System.out.println("[addsvcname] 3 id after : " + entry.id);
+		entry.cutSvcname("xx");
+		System.out.println("[cutsvcname] 3 id after : " + entry.id);
+		
 	}
 
 }

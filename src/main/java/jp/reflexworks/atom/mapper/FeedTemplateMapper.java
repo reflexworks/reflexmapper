@@ -60,6 +60,7 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
+import jp.reflexworks.atom.util.SurrogateConverter;
 import jp.sourceforge.reflex.core.ResourceMapper;
 import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DateUtil;
@@ -1954,7 +1955,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 										throw new ParseException(de.getMessage() + " / " + v, 0);
 									}
 								} else {
-									v = v.replaceAll("\\\\n", "\n").replaceAll("\\\\\"", "\"");
+									v = new SurrogateConverter(v).convertUcs();
+									v = v.replaceAll("\\\\n", "\n").replaceAll("\\\\\"", "\"").replaceAll("\\\\\\\\","\\\\");
 									f.set(parent, v);
 								}
 							}

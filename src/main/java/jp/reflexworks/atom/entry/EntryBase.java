@@ -552,7 +552,7 @@ public abstract class EntryBase implements Serializable {
 		if (uriAndRev != null && uriAndRev.length >= 2) {
 			try {
 				rev = Integer.parseInt(uriAndRev[1]);
-			} catch (Exception e) {}	// Do nothing.
+			} catch (Exception e) {}	// 数値でない場合はrevisionとして0を返す。
 		}
 		return rev;
 	}
@@ -588,7 +588,7 @@ public abstract class EntryBase implements Serializable {
 					String rev = temp[1].substring(0, idx);
 					return new String[]{temp[0], rev};
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {}	// フォーマット不正の場合はnullを返す。
 		}
 		return null;
 
@@ -613,19 +613,22 @@ public abstract class EntryBase implements Serializable {
 		if (svcname == null || svcname.length() == 0) {
 			return;
 		}
-		if (id != null && !id.startsWith(AtomConst.SVC_PREFIX)) {
+		if (id != null && !id.startsWith(AtomConst.SVC_PREFIX) &&
+				id.startsWith("/")) {
 			//_id = "/@" + svcname + _id;
-			StringBuilder buf = new StringBuilder();
-			buf.append(AtomConst.SVC_PREFIX);
-			buf.append(svcname);
 			String[] uriAndRev = getUriAndRevisionById(id);
-			if (!isSlash(uriAndRev[0])) {
-				buf.append(id);
-			} else {
-				buf.append(",");
-				buf.append(uriAndRev[1]);
+			if (uriAndRev != null && uriAndRev.length > 1) {
+				StringBuilder buf = new StringBuilder();
+				buf.append(AtomConst.SVC_PREFIX);
+				buf.append(svcname);
+				if (!isSlash(uriAndRev[0])) {
+					buf.append(id);
+				} else {
+					buf.append(",");
+					buf.append(uriAndRev[1]);
+				}
+				id = buf.toString();
 			}
-			id = buf.toString();
 		}
 		if (link != null) {
 			for (Link l : link) {
@@ -647,18 +650,20 @@ public abstract class EntryBase implements Serializable {
 		if (id != null && id.startsWith(serviceTopUri)) {
 			//_id = _id.substring(svcname.length() + 2);
 			String[] uriAndRev = getUriAndRevisionById(id);
-			if (!isTop(uriAndRev[0])) {
-				if (id.indexOf(serviceTopUri+"/")<0) {
-					id = "/"+id.substring(serviceTopUri.length());
-				}else {
-					id = id.substring(serviceTopUri.length());
+			if (uriAndRev != null && uriAndRev.length > 1) {
+				if (!isTop(uriAndRev[0])) {
+					if (id.indexOf(serviceTopUri+"/")<0) {
+						id = "/"+id.substring(serviceTopUri.length());
+					} else {
+						id = id.substring(serviceTopUri.length());
+					}
+				} else {
+					StringBuilder buf = new StringBuilder();
+					buf.append(serviceTopUri);
+					buf.append(",");
+					buf.append(uriAndRev[1]);
+					id = buf.toString();
 				}
-			} else {
-				StringBuilder buf = new StringBuilder();
-				buf.append(serviceTopUri);
-				buf.append(",");
-				buf.append(uriAndRev[1]);
-				id = buf.toString();
 			}
 		}
 		if (link != null) {
