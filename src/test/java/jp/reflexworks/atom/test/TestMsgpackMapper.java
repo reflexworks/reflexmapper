@@ -3720,7 +3720,7 @@ public class TestMsgpackMapper {
 		System.out.println("*  (xml)after : " + entryXml.title);
 		System.out.println("* (json)after : " + entryJson.title);
 		assertEquals(entry.title, entryXml.title);
-		assertEquals(entry.title, entryJson.title);	// TODO 
+		assertEquals(entry.title, entryJson.title);
 
 		System.out.println("3. 本物タブ(\\t)");
 		entry.title = "return\tcode";
@@ -3734,7 +3734,7 @@ public class TestMsgpackMapper {
 		System.out.println("*  (xml)after : " + entryXml.title);
 		System.out.println("* (json)after : " + entryJson.title);
 		assertEquals(entry.title, entryXml.title);
-		assertEquals(entry.title, entryJson.title);	// TODO
+		assertEquals(entry.title, entryJson.title);
 
 		System.out.println("4. タブ文字列(\\\\t)");
 		entry.title = "return\\tcode";
@@ -3748,7 +3748,7 @@ public class TestMsgpackMapper {
 		System.out.println("*  (xml)after : " + entryXml.title);
 		System.out.println("* (json)after : " + entryJson.title);
 		assertEquals(entry.title, entryXml.title);
-		//assertEquals(entry.title, entryJson.title);	// TODO
+		assertEquals(entry.title, entryJson.title);	
 
 		
 	}
