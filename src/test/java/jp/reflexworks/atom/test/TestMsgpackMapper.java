@@ -3683,5 +3683,74 @@ public class TestMsgpackMapper {
 		System.out.println("[cutsvcname] 3 id after : " + entry.id);
 		
 	}
+	
+	@Test
+	public void testControlCharactor() throws ParseException {
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
+		EntryBase entry = EntryUtil.createEntry(mapper);
+		
+		String xml = null;
+		String json = null;
+		EntryBase entryXml = null;
+		EntryBase entryJson = null;
+
+		System.out.println("1. 本物リターンコード(\\n)");
+		entry.title = "return\ncode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);
+
+		System.out.println("2. リターンコード文字列(\\\\n)");
+		entry.title = "return\\\\ncode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);	// TODO 
+
+		System.out.println("3. 本物タブ(\\t)");
+		entry.title = "return\tcode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);	// TODO
+
+		System.out.println("4. タブ文字列(\\\\t)");
+		entry.title = "return\\tcode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		assertEquals(entry.title, entryXml.title);
+		//assertEquals(entry.title, entryJson.title);	// TODO
+
+		
+	}
 
 }
