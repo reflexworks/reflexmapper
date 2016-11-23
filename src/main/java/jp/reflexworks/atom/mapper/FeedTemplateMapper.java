@@ -1923,7 +1923,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 								} else if (v.isRawValue()) {
 									Element element = new Element();
 									element._$$text = v.toString().substring(1,v.toString().length()-1);
-									element._$$text = element._$$text.replace("\\\\n", "\n").replaceAll("\\\\\"", "\"");
+									element._$$text = new SurrogateConverter(element._$$text).convertUcs();
+									element._$$text = element._$$text.replaceAll("\\\\\\\\","\1\1").replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t").replaceAll("\\\\\"", "\"").replaceAll("\1\1","\\\\");
 									child.add(element);
 									f.set(parent, child);
 								}
@@ -1956,7 +1957,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 									}
 								} else {
 									v = new SurrogateConverter(v).convertUcs();
-									v = v.replaceAll("\\\\n", "\n").replaceAll("\\\\\"", "\"").replaceAll("\\\\\\\\","\\\\");
+									v = v.replaceAll("\\\\\\\\","\1\1").replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t").replaceAll("\\\\\"", "\"").replaceAll("\1\1","\\\\");
 									f.set(parent, v);
 								}
 							}
