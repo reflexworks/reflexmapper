@@ -4,7 +4,7 @@
 
   <groupId>jp.reflexworks</groupId>
   <artifactId>reflexmapper</artifactId>
-  <version>4.0.22</version>
+  <version>4.1.9</version>
   <packaging>jar</packaging>
 
   <description>Reflex Mapper</description>
