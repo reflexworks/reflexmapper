@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;
@@ -14,6 +16,8 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 
 public class GenerateEntity {
+
+	private static Logger logger = Logger.getLogger(GenerateEntity.class.getName());
 
 	public static void main(String[] args) throws ParseException, IOException {
 
@@ -81,11 +85,16 @@ public class GenerateEntity {
 				tempfile.add(line);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (logger.isLoggable(Level.INFO)) {
+				logger.log(Level.INFO, e.getClass().getName(), e);
+			}
 		} finally {
 			try {
 				br.close();
 			} catch (IOException e) {
+				if (logger.isLoggable(Level.INFO)) {
+					logger.log(Level.INFO, e.getClass().getName(), e);
+				}
 			}
 		}
 		return tempfile;

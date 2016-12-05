@@ -65,6 +65,7 @@ import jp.sourceforge.reflex.core.ResourceMapper;
 import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
+import jp.sourceforge.reflex.util.StringUtils;
 
 /**
  * FeedTemplateMapper
@@ -81,7 +82,7 @@ import jp.sourceforge.reflex.util.FieldMapper;
  */
 public class FeedTemplateMapper extends ResourceMapper {
 
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private static Logger logger = Logger.getLogger(FeedTemplateMapper.class.getName());
 	public static final String FIELDPATTERN = "^( *)([a-zA-Z_$][0-9a-zA-Z_$]{0,127})(\\(([a-zA-Z_]+)\\))?((?:\\[([0-9]+)?\\]|\\{([\\-0-9]*)~?([\\-0-9]+)?\\})?)(\\!?)(?:=(.+))?(?:[ \\t]*)$";
 
 	private static final String MANDATORY = "!";
@@ -1251,17 +1252,17 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 			if (!isFeed(classname)) {
 				if (isEntry(classname)) {
-					ismatch.append(ismatchFuncE2);				
+					ismatch.append(ismatchFuncE2);
 					encrypt.append(endFuncE);
 					decrypt.append(endFuncE);
 					maskprop.append(endFuncE);
 					getsize.append(getsizeFuncE);
 				} else {
-					ismatch.append("context.parent=parent;"+endFuncE);				
-					encrypt.append("context.parent=parent;"+endFuncE);				
-					decrypt.append("context.parent=parent;"+endFuncE);				
+					ismatch.append("context.parent=parent;"+endFuncE);
+					encrypt.append("context.parent=parent;"+endFuncE);
+					decrypt.append("context.parent=parent;"+endFuncE);
 					maskprop.append("context.parent=parent;"+endFuncE);
-					getsize.append("context.parent=parent;"+endFuncE);				
+					getsize.append("context.parent=parent;"+endFuncE);
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
@@ -1271,7 +1272,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				cc.addMethod(m4);
 				CtMethod m7 = CtNewMethod.make(getsize.toString(), cc);
 				cc.addMethod(m7);
-			}else {
+			} else {
 				maskprop.append(endFuncE);
 			}
 			CtMethod m6 = CtNewMethod.make(maskprop.toString(), cc);
@@ -1287,7 +1288,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				try {
 					cc.writeFile(folderpath);
 				} catch (IOException e) {
-					e.printStackTrace();
+					if (logger.isLoggable(Level.INFO)) {
+						logger.log(Level.INFO, e.getClass().getName(), e);
+					}
 				}
 			}
 
@@ -1888,10 +1891,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 						cc = this.getClass(classname);
 						try {
 							f = cc.getField(fld);
-						}catch(NoSuchFieldException ns) {
+						} catch (NoSuchFieldException ns) {
 							try {
 								f = cc.getField("_"+fld);
-							}catch(NoSuchFieldException ns2) {
+							} catch (NoSuchFieldException ns2) {
 								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is not defined.");
 							}
 						}
@@ -1952,7 +1955,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 									try {
 										Date d = DateUtil.getDate(v);
 										f.set(parent, d);
-									} catch(Exception de) {
+									} catch (Exception de) {
 										throw new ParseException(de.getMessage() + " / " + v, 0);
 									}
 								} else {
@@ -1967,7 +1970,20 @@ public class FeedTemplateMapper extends ResourceMapper {
 			}
 			return parent;
 		} catch (Exception e) {
-			e.printStackTrace();
+			// ClassNotFoundExceptionの場合、項目が定義されていないのが原因。
+			if (e instanceof ClassNotFoundException) {
+				String msg = e.getMessage();
+				if (!StringUtils.isBlank(msg)) {
+					int idx = msg.lastIndexOf(".");
+					if (idx > 0) {
+						String tmpName = msg.substring(idx + 1);
+						String name = tmpName.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
+								tmpName.substring(1);
+						throw new JSONException("JSON parse error: " + name + " is not defined.");
+					}
+				}
+			}
+			// その他は例外を返却。
 			throw new JSONException(e);
 		}
 	}
@@ -2071,11 +2087,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 				tempfile.add(line);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (logger.isLoggable(Level.INFO)) {
+				logger.log(Level.INFO, e.getClass().getName(), e);
+			}
 		} finally {
 			try {
 				br.close();
 			} catch (IOException e) {
+				if (logger.isLoggable(Level.INFO)) {
+					logger.log(Level.INFO, e.getClass().getName(), e);
+				}
 			}
 		}
 		return (String[]) tempfile.toArray(new String[0]);

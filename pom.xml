@@ -4,7 +4,7 @@
 
   <groupId>jp.reflexworks</groupId>
   <artifactId>reflexmapper</artifactId>
-  <version>4.1.9</version>
+  <version>4.1.11</version>
   <packaging>jar</packaging>
 
   <description>Reflex Mapper</description>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>jp.sourceforge.reflex</groupId>
       <artifactId>reflexcore</artifactId>
-      <version>4.1.8</version>
+      <version>4.1.11</version>
     </dependency>
     <dependency>
 	  <groupId>javax.mail</groupId>
