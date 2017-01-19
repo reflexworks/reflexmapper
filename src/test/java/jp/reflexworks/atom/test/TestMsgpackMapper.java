@@ -3826,7 +3826,7 @@ public class TestMsgpackMapper {
 			assertEquals(entryJson.title, entryXml.title);
 		}
 
-		// No.33〜66 (0x7F〜0xA0)
+		// No.34〜67 (0x7F〜0xA0)
 		code = 0x7E;
 		for (int i = 0; i < 34; i++) {
 			num++;
@@ -3848,7 +3848,7 @@ public class TestMsgpackMapper {
 			assertEquals(entryJson.title, entryXml.title);
 		}
 		
-		// No.67 (0xAD)
+		// No.68 (0xAD)
 		num++;
 		code = 0xAD;
 		System.out.println(num + ". [code] " + Integer.toHexString(code));
