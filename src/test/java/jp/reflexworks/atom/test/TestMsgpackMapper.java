@@ -3683,5 +3683,200 @@ public class TestMsgpackMapper {
 		System.out.println("[cutsvcname] 3 id after : " + entry.id);
 		
 	}
+	
+	/**
+	 * 改行・タブ文字テスト
+	 */
+	@Test
+	public void testControlCharactor() throws ParseException, IOException, ClassNotFoundException {
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
+		EntryBase entry = EntryUtil.createEntry(mapper);
+		
+		String xml = null;
+		String json = null;
+		byte[] msgData = null;
+		EntryBase entryXml = null;
+		EntryBase entryJson = null;
+		EntryBase entryMsgpack = null;
+
+		System.out.println("1. 本物リターンコード(\\n)");
+		entry.title = "return\ncode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		msgData = mapper.toMessagePack(entry);
+		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		System.out.println("*  (msg)after : " + entryMsgpack.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);
+		assertEquals(entry.title, entryMsgpack.title);
+
+		System.out.println("2. リターンコード文字列(\\\\n)");
+		entry.title = "return\\\\ncode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		msgData = mapper.toMessagePack(entry);
+		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		System.out.println("*  (msg)after : " + entryMsgpack.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);
+		assertEquals(entry.title, entryMsgpack.title);
+
+		System.out.println("3. 本物タブ(\\t)");
+		entry.title = "return\tcode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		msgData = mapper.toMessagePack(entry);
+		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		System.out.println("*  (msg)after : " + entryMsgpack.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);
+		assertEquals(entry.title, entryMsgpack.title);
+
+		System.out.println("4. タブ文字列(\\\\t)");
+		entry.title = "return\\tcode";
+		xml = mapper.toXML(entry);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		json = mapper.toJSON(entry);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		msgData = mapper.toMessagePack(entry);
+		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
+		System.out.println(xml);
+		System.out.println(json);
+		System.out.println("*      before : " + entry.title);
+		System.out.println("*  (xml)after : " + entryXml.title);
+		System.out.println("* (json)after : " + entryJson.title);
+		System.out.println("*  (msg)after : " + entryMsgpack.title);
+		assertEquals(entry.title, entryXml.title);
+		assertEquals(entry.title, entryJson.title);
+		assertEquals(entry.title, entryMsgpack.title);
+
+	}
+	
+	/**
+	 * 制御文字テスト
+	 */
+	@Test
+	public void testControlCharactor2() throws ParseException, IOException, ClassNotFoundException {
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
+		
+		String xml = null;
+		String json = null;
+		byte[] msgData = null;
+		EntryBase entryXml = null;
+		EntryBase entryJson = null;
+		EntryBase entryMsgpack = null;
+		String startStr = "a";
+		String endStr = "b";
+		String str = null;
+		
+		String jsonStart = "{\"entry\" : {\"title\" : \"";
+		String jsonEnd = "\"}}";
+		
+		String xmlStart = "<entry><title>";
+		String xmlEnd = "</title></entry>";
+
+		String prefixJson = "[json] ";
+		String prefixXml = " [xml] ";
+		int num = 0;
+		char code = 1;
+		
+		System.out.println("--- testControlCharactor2 start ---");
+
+		// No.1〜33 (0x01〜0x20) (制御コードは0x1Fまで。0x20は!)
+		for (int i = 0; i < 33; i++) {
+			num++;
+			if (i > 0) {
+				code++;
+			}
+			System.out.println(num + ". [code] " + Integer.toHexString(code));
+			
+			str = startStr + code + endStr;
+			json = jsonStart + str + jsonEnd;
+			xml = xmlStart + str + xmlEnd;
+			
+			System.out.println(prefixJson + num + ". start = " + str);
+			entryJson = (EntryBase)mapper.fromJSON(json);
+			System.out.println(prefixJson + num + ".   ret = " + entryJson.title);
+			
+			System.out.println(prefixXml + num + ". start = " + str);
+			entryXml = (EntryBase)mapper.fromXML(xml);
+			System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
+			
+			if (num==13) {
+				String hexString = DatatypeConverter.printHexBinary(entryJson.title.getBytes());
+				assertEquals(hexString,"610D62");
+				// 0DはXMLでは0Aに変換されてしまう
+				hexString = DatatypeConverter.printHexBinary(entryXml.title.getBytes());
+				assertEquals(hexString,"610A62");				
+			}else {
+				assertEquals(entryJson.title, entryXml.title);				
+			}
+		}
+
+		// No.34〜67 (0x7F〜0xA0)
+		code = 0x7E;
+		for (int i = 0; i < 34; i++) {
+			num++;
+			code++;
+			System.out.println(num + ". [code] " + Integer.toHexString(code));
+			
+			str = startStr + code + endStr;
+			json = jsonStart + str + jsonEnd;
+			xml = xmlStart + str + xmlEnd;
+			
+			System.out.println(prefixJson + num + ". start = " + str);
+			entryJson = (EntryBase)mapper.fromJSON(json);
+			System.out.println(prefixJson + num + ".   ret = " + entryJson.title);
+			
+			System.out.println(prefixXml + num + ". start = " + str);
+			entryXml = (EntryBase)mapper.fromXML(xml);
+			System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
+			
+			assertEquals(entryJson.title, entryXml.title);
+		}
+		
+		// No.68 (0xAD)
+		num++;
+		code = 0xAD;
+		System.out.println(num + ". [code] " + Integer.toHexString(code));
+		
+		str = startStr + code + endStr;
+		json = jsonStart + str + jsonEnd;
+		xml = xmlStart + str + xmlEnd;
+		
+		System.out.println(prefixJson + num + ". start = " + str);
+		entryJson = (EntryBase)mapper.fromJSON(json);
+		System.out.println(prefixJson + num + ".   ret = " + entryJson.title);
+		
+		System.out.println(prefixXml + num + ". start = " + str);
+		entryXml = (EntryBase)mapper.fromXML(xml);
+		System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
+
+		assertEquals(entryJson.title, entryXml.title);
+
+		System.out.println("--- testControlCharactor2 end ---");
+		
+	}
 
 }
