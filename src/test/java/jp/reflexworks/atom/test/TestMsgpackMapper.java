@@ -3823,7 +3823,15 @@ public class TestMsgpackMapper {
 			entryXml = (EntryBase)mapper.fromXML(xml);
 			System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
 			
-			assertEquals(entryJson.title, entryXml.title);
+			if (num==13) {
+				String hexString = DatatypeConverter.printHexBinary(entryJson.title.getBytes());
+				assertEquals(hexString,"610D62");
+				// 0DはXMLでは0Aに変換されてしまう
+				hexString = DatatypeConverter.printHexBinary(entryXml.title.getBytes());
+				assertEquals(hexString,"610A62");				
+			}else {
+				assertEquals(entryJson.title, entryXml.title);				
+			}
 		}
 
 		// No.34〜67 (0x7F〜0xA0)
