@@ -40,9 +40,9 @@ public interface RequestType {
 	/** URLパラメータ : BlobstoreへのアップロードURLを取得 */
 	public static final String PARAM_UPLOADURL = "_uploadurl";
 	/** URLパラメータ : link rel="related"の情報を取得 */
-	public static final String PARAM_RELATED = "_related";
+	//public static final String PARAM_RELATED = "_related";
 	/** URLパラメータ : Blobstoreの情報をリダイレクトで取得する場合付加 */
-	public static final String PARAM_REDIRECT = "_redirect";
+	//public static final String PARAM_REDIRECT = "_redirect";
 	/** URLパラメータ : 自動採番 */
 	public static final String PARAM_ALLOCIDS = "_allocids";
 	/** URLパラメータ : 自動採番の加算 */
@@ -127,8 +127,11 @@ public interface RequestType {
 	public static final String PARAM_SID = "_sid";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
-	public static final String SIGN_RELATED = "+";
+	//public static final String SIGN_RELATED = "+";
 	/** URLパラメータ : redirectパラメータと同様の意味を持つ（キャッシュ対応） */
-	public static final String SIGN_REDIRECT = "!";
+	//public static final String SIGN_REDIRECT = "!";
+	
+	/** URLパラメータ : ワイルドカード */
+	public static final String WILDCARD = "*";
 
 }

@@ -35,6 +35,7 @@ import jp.sourceforge.reflex.util.DeflateUtil;
 import jp.sourceforge.reflex.util.FieldMapper;
 import jp.sourceforge.reflex.util.FileUtil;
 import jp.reflexworks.atom.api.AtomConst;
+import jp.reflexworks.atom.api.Condition;
 import jp.reflexworks.atom.api.EntryUtil;
 import jp.reflexworks.atom.entry.Author;
 import jp.reflexworks.atom.entry.EntryBase;
@@ -48,7 +49,6 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.mapper.SizeLimitExceededException;
 import jp.reflexworks.atom.util.SurrogateConverter;
-import jp.reflexworks.atom.wrapper.Condition;
 
 public class TestMsgpackMapper {
 

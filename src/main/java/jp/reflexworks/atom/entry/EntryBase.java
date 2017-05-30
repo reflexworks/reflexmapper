@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.api.AtomConst;
-import jp.reflexworks.atom.wrapper.base.ConditionBase;
+import jp.reflexworks.atom.api.Condition;
 
 /**
  * Entryの親クラス.
@@ -684,7 +684,7 @@ public abstract class EntryBase implements Serializable {
 
 	public abstract void decrypt(Object cipher);
 
-	public abstract boolean isMatch(ConditionBase[] conditions);
+	public abstract boolean isMatch(Condition[] conditions);
 
 	public abstract int getsize();
 

@@ -143,7 +143,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String CIPHERCONTEXT = "jp.reflexworks.atom.mapper.CipherContext";
 	private static final String MASKPROPCONTEXT = "jp.reflexworks.atom.mapper.MaskpropContext";
 	private static final String SIZECONTEXT = "jp.reflexworks.atom.mapper.SizeContext";
-	private static final String CONDITIONBASE = "jp.reflexworks.atom.wrapper.base.ConditionBase";
+	private static final String CONDITION = "jp.reflexworks.atom.api.Condition";
 	private static final String CIPHERUTIL = "jp.reflexworks.atom.mapper.CipherUtil";
 	private static final String ATOMCONST = "jp.reflexworks.atom.AtomConst";
 
@@ -327,7 +327,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(CIPHERCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(MASKPROPCONTEXT);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SIZECONTEXT);			// 既存classは先に読めるようにする
-		loader.delegateLoadingOf(CONDITIONBASE);			// 既存classは先に読めるようにする
+		loader.delegateLoadingOf(CONDITION);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(SOFTSCHEMA);			// 既存classは先に読めるようにする
 		loader.delegateLoadingOf(CIPHERUTIL);
 		loader.delegateLoadingOf(ATOMCONST);
@@ -1328,7 +1328,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String decryptFuncS4 = "public void decrypt(Object cipher) {";
 
 	private final String ismatchFuncS = "public void isMatch(jp.reflexworks.atom.mapper.ConditionContext context) {";
-	private final String ismatchFuncS2 = "public boolean isMatch(jp.reflexworks.atom.wrapper.base.ConditionBase[] conditions) {" +
+	private final String ismatchFuncS2 = "public boolean isMatch(jp.reflexworks.atom.api.Condition[] conditions) {" +
 			"jp.reflexworks.atom.mapper.ConditionContext context = new jp.reflexworks.atom.mapper.ConditionContext(conditions);";
 	private final String ismatchFuncE2 = "return context.isMatch();}";
 
