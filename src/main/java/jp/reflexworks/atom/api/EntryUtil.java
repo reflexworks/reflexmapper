@@ -13,6 +13,7 @@ import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.mapper.FeedTemplateConst;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
+import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 
 public class EntryUtil {
 
@@ -411,6 +412,23 @@ public class EntryUtil {
 			contributors.add(contributor);
 			entry.setContributor(contributors);
 		}
+	}
+	
+	/**
+	 * Metalistから指定された項目名のmeta情報を取得します.
+	 * @param metalist フィールド情報リスト
+	 * @param name フィールド名
+	 * @return フィールド情報
+	 */
+	public static Meta getMeta(List<Meta> metalist, String name) {
+		if (metalist != null && !StringUtils.isBlank(name)) {
+			for (Meta meta : metalist) {
+				if (name.equals(meta.name)) {
+					return meta;
+				}
+			}
+		}
+		return null;
 	}
 
 }
