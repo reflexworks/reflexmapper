@@ -181,9 +181,9 @@ public class Condition {
 	public String toString() {
 		StringBuilder buf = new StringBuilder();
 		buf.append(prop);
-		buf.append(" ");
+		buf.append("-");
 		buf.append(equations);
-		buf.append(" ");
+		buf.append("-");
 		buf.append(value);
 		return buf.toString();
 	}
