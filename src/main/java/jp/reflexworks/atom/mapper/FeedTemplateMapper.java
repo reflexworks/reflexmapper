@@ -426,10 +426,24 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return result;
 	}
 	
+	/**
+	 * Metalistを取得.
+	 * 指定されたサービス名を先頭に付加する。
+	 * @param svc サービス名
+	 * @return 編集したMetalist
+	 */
 	public List<Meta> getMetalist(String svc) {
 		for (Meta meta:metalist) {
 			meta.index = convertIndex(meta.index, svc);
 		}
+		return metalist;
+	}
+	
+	/**
+	 * Metalistを取得
+	 * @return Metalist
+	 */
+	public List<Meta> getMetalist() {
 		return metalist;
 	}
 

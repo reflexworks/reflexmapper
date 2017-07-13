@@ -22,17 +22,13 @@ public class Condition {
 	/** 演算子 : 正規表現 */
 	public static final String REGEX = "rg";
 	/** 演算子 : 前方一致 */
-	public static final String FOWARD_MATCH = "fm";
+	public static final String FORWARD_MATCH = "fm";
 	/** 演算子 : 後方一致 */
 	public static final String BACKWARD_MATCH = "bm";
 
 	// 互換性のためfinalにしない。(継承クラスで編集)
 	/** 演算子の接続文字 */
 	public static String DELIMITER = "-";
-	
-	//public static final String PREFIX_MATCHING  = "*";
-	//public static final String PREFIX_MATCHING_END = "\ufffd";
-	//public static final String PREFIX_MATCHING_SLASH  = PREFIX_MATCHING + "/";
 	
 	/** 項目名 */
 	protected String prop;
@@ -43,16 +39,6 @@ public class Condition {
 	/** 値 (デコード済) */
 	protected String value;
 	
-	// デコード前の入力値
-	//protected String originalValue;
-	
-	// 前方一致かどうか
-	//protected boolean isPrefixMatching;
-
-	// isPrefixMatching(前方一致かどうか)は、後ろのlike検索。
-	// 前にlike指定されているかどうかのフラグ
-	//protected boolean isLikeForward;
-
 	/**
 	 * コンストラクタ
 	 * @param cond 条件
@@ -106,72 +92,50 @@ public class Condition {
 		}
 		
 		if (idxFilter >= condLen) {
-			//this.originalValue = "";
 			this.value = "";
 		} else {
-			//String value = cond.substring(idxFilter);
-			//if (value.endsWith(PREFIX_MATCHING)) {
-			//	if (EQUAL.equals(this.equations)) {
-			//		this.equations = GREATER_THAN_OR_EQUAL;
-			//	}
-			//	this.originalValue = value.substring(0, value.length() - 1);
-			//	this.isPrefixMatching = true;
-			//} else {
-			//	this.originalValue = value;
-			//}
-			//setDecodeValue();
 			this.value = cond.substring(idxFilter);
 		}
 	}
 	
+	/**
+	 * 条件をフィールドに設定
+	 * @param prop 項目
+	 * @param value 値
+	 */
 	protected void setCondition(String prop, String value) {
 		if (value == null || "".equals(value)) {
 			setCondition(prop);
 		} else {
 			this.prop = prop;
-			//if (value.endsWith(PREFIX_MATCHING)) {
-			//	this.equations = GREATER_THAN_OR_EQUAL;
-			//	this.originalValue = value.substring(0, value.length() - 1);
-			//	this.isPrefixMatching = true;
-			//} else {
-			//	this.equations = EQUAL;
-			//	this.originalValue = value;
-			//}
-			//setDecodeValue();
 			this.equations = EQUAL;
 			this.value = value;
 		}
 	}
-	
-	//private void setDecodeValue() {
-	//	if (this.originalValue != null) {
-	//		this.value = URLDecoderPlus.urlDecode(this.originalValue);
-	//	}
-	//}
 
+	/**
+	 * 項目名を取得
+	 * @return 項目名
+	 */
 	public String getProp() {
 		return prop;
 	}
 
+	/**
+	 * 演算子を取得
+	 * @return 演算子
+	 */
 	public String getEquations() {
 		return equations;
 	}
 
+	/**
+	 * 値を取得
+	 * @return 値
+	 */
 	public String getValue() {
 		return value;
 	}
-
-	//public String getOriginalValue() {
-	//	return originalValue;
-	//}
-
-	//public boolean isPrefixMatching() {
-	//	return isPrefixMatching;
-	//}
-
-	//public boolean isLikeForward() {
-	//	return isLikeForward;
-	//}
 
 	/**
 	 * 文字列表現

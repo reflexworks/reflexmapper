@@ -89,7 +89,7 @@ public class ConditionContext {
 		}
 		else 
 		//if (!cond.isPrefixMatching() && !cond.isLikeForward()) {
-		if (!Condition.FOWARD_MATCH.equals(equal) && !Condition.BACKWARD_MATCH.equals(equal)) {
+		if (!Condition.FORWARD_MATCH.equals(equal) && !Condition.BACKWARD_MATCH.equals(equal)) {
 			int compare = src.compareTo(value);
 			
 			if (Condition.EQUAL.equals(equal) && compare != 0) {
@@ -113,7 +113,7 @@ public class ConditionContext {
 		//	}
 
 		//} else if (cond.isPrefixMatching() && !cond.isLikeForward()) {
-		} else if (Condition.FOWARD_MATCH.equals(equal)) {
+		} else if (Condition.FORWARD_MATCH.equals(equal)) {
 			// 前方一致検索
 			if (!src.startsWith(value)) {
 				return false;
