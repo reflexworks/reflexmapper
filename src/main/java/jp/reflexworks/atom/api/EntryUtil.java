@@ -208,11 +208,18 @@ public class EntryUtil {
 	 * @return 最後のスラッシュを除去したURI
 	 */
 	public static String removeLastSlash(String myUri) {
-		String uri = editSlash(myUri);
-		if (uri.length() > 1) {
-			uri = uri.substring(0, uri.length() - 1);
+		if (myUri == null || myUri.length() < 2) {
+			return myUri;
 		}
-		return uri;
+		// 最後にスラッシュが2個以上設定されている場合はそのまま返す。
+		if (myUri.endsWith("//")) {
+			return myUri;
+		}
+		if (myUri.endsWith("/")) {
+			// スラッシュを除去する。
+			return myUri.substring(0, myUri.length() - 1);
+		}
+		return myUri;
 	}
 
 	/**

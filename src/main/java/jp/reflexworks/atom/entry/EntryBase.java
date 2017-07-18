@@ -330,51 +330,29 @@ public abstract class EntryBase implements Serializable {
 	 * 引数の値を、<link rel="self">タグのhref属性に設定します.
 	 * </p>
 	 * 
-	 * @param uri
-	 *            キー
+	 * @param uri キー
 	 */
 	public void setMyUri(String uri) {
-		String tmpUri = uri;
-		// uriをparentとselfidに分割
-		if (uri != null && uri.length() > 0) {
-			if ("/".equals(uri)) { // root layer
-				// Do nothing.
+		setLinkSelf(uri);
+		
+		//String tmpUri = uri;
+		//// uriをparentとselfidに分割
+		//if (uri != null && uri.length() > 0) {
+			//if ("/".equals(uri)) { // root layer
+			//	// Do nothing.
+			//
+			//} else {
+			//	if ("/".equals(tmpUri.substring(tmpUri.length() - 1))) {
+			//		tmpUri = tmpUri.substring(0, tmpUri.length() - 1);
+			//	}
+			//}
 
-			} else {
-				if ("/".equals(tmpUri.substring(tmpUri.length() - 1))) {
-					tmpUri = tmpUri.substring(0, tmpUri.length() - 1);
-				}
-			}
-
-		} else {
-			// root layer
-			tmpUri = "/";
-		}
-
-		setLinkSelf(tmpUri);
-	}
-
-	public static String getMyUri(String uri) {
-		String tmpUri = uri;
-		if (uri != null && uri.length() > 0) {
-			if ("/".equals(uri)) {
-				// root layer
-
-			} else if (TOP.equals(uri)) {
-				// rootの親階層
-
-			} else {
-				if ("/".equals(tmpUri.substring(tmpUri.length() - 1))) {
-					tmpUri = tmpUri.substring(0, tmpUri.length() - 1);
-				}
-			}
-
-		} else {
-			// root layer
-			tmpUri = "/";
-		}
-
-		return tmpUri;
+		//} else {
+		//	// root layer
+		//	tmpUri = "/";
+		//}
+		//
+		//setLinkSelf(tmpUri);
 	}
 
 	private void setLinkSelf(String uri) {
