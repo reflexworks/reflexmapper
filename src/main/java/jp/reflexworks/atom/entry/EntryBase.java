@@ -439,7 +439,7 @@ public abstract class EntryBase implements Serializable {
 				aliases.add(li.get$href());
 			}
 		}
-		if (aliases.size() == 0) {
+		if (aliases.isEmpty()) {
 			return null;
 		}
 		return aliases;

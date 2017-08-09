@@ -107,7 +107,7 @@ public class EntryUtil {
 	 * @return Feedにデータが存在する場合true
 	 */
 	public static boolean isExistData(FeedBase feed) {
-		if (feed != null && feed.entry != null && feed.entry.size() > 0) {
+		if (feed != null && feed.entry != null && !feed.entry.isEmpty()) {
 			return true;
 		}
 		return false;
@@ -122,7 +122,7 @@ public class EntryUtil {
 	 * @return 最初のエントリー
 	 */
 	public static EntryBase getFirstEntry(FeedBase feed) {
-		if (feed == null || feed.entry == null || feed.entry.size() == 0) {
+		if (feed == null || feed.entry == null || feed.entry.isEmpty()) {
 			return null;
 		}
 		return feed.entry.get(0);
