@@ -117,14 +117,14 @@ public interface RequestType {
 	public static final String PARAM_REVOKEUSER = "_revokeuser";
 	/** URLパラメータ : ユーザを有効にする */
 	public static final String PARAM_ACTIVATEUSER = "_activateuser";
-	/** URLパラメータ : RDB登録反映 */
-	//public static final String PARAM_APPLYRDB = "_applyrdb";
 	/** URLパラメータ : RDB */
 	public static final String PARAM_RDB = "_rdb";
 	/** URLパラメータ : キャッシュ */
 	public static final String PARAM_CACHE = "_cache";
 	/** URLパラメータ : SID */
-	public static final String PARAM_SID = "_sid";
+	//public static final String PARAM_SID = "_sid";
+	/** URLパラメータ : RXID取得 */
+	public static final String PARAM_GETRXID = "_getrxid";
 
 	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
 	//public static final String SIGN_RELATED = "+";
