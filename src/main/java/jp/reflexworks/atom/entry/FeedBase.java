@@ -195,6 +195,17 @@ public abstract class FeedBase implements Serializable, Cloneable {
 		}
 		entry.add(addingEntry);
 	}
+	
+	/**
+	 * エントリーリストを追加します.
+	 * @param addingEntries エントリーリスト
+	 */
+	public void addEntries(List<EntryBase> addingEntries) {
+		if (entry == null) {
+			entry = new ArrayList<EntryBase>();
+		}
+		entry.addAll(addingEntries);
+	}
 
 	/**
 	 * 項目チェック.
