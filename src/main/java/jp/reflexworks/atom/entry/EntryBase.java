@@ -577,11 +577,21 @@ public abstract class EntryBase implements Serializable {
 		return "Entry [myUri=" + getMyUri() + ", title=" + title + "]";
 	}
 
+	/**
+	 * IDからUIDを取得.
+	 * @return UID
+	 */
 	public String getMyself() {
 		if (id != null) {
 			String token[] = id.split("/");
-			if (token.length > 2) { // /@{サービス名}/{uid}
-				return token[2];
+			if (token.length > 1) {
+				if (token[1].startsWith("@")) {
+					if (token.length > 2) {
+						return token[2]; // /@{サービス名}/{uid}
+					}
+				} else {
+					return token[1];	// /{uid}
+				}
 			}
 		}
 		return null;
