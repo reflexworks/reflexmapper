@@ -13,6 +13,7 @@ import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.mapper.FeedTemplateConst;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
+import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 
 public class EntryUtil {
 
@@ -106,7 +107,7 @@ public class EntryUtil {
 	 * @return Feedにデータが存在する場合true
 	 */
 	public static boolean isExistData(FeedBase feed) {
-		if (feed != null && feed.entry != null && feed.entry.size() > 0) {
+		if (feed != null && feed.entry != null && !feed.entry.isEmpty()) {
 			return true;
 		}
 		return false;
@@ -121,7 +122,7 @@ public class EntryUtil {
 	 * @return 最初のエントリー
 	 */
 	public static EntryBase getFirstEntry(FeedBase feed) {
-		if (feed == null || feed.entry == null || feed.entry.size() == 0) {
+		if (feed == null || feed.entry == null || feed.entry.isEmpty()) {
 			return null;
 		}
 		return feed.entry.get(0);
@@ -207,11 +208,18 @@ public class EntryUtil {
 	 * @return 最後のスラッシュを除去したURI
 	 */
 	public static String removeLastSlash(String myUri) {
-		String uri = editSlash(myUri);
-		if (uri.length() > 1) {
-			uri = uri.substring(0, uri.length() - 1);
+		if (myUri == null || myUri.length() < 2) {
+			return myUri;
 		}
-		return uri;
+		// 最後にスラッシュが2個以上設定されている場合はそのまま返す。
+		if (myUri.endsWith("//")) {
+			return myUri;
+		}
+		if (myUri.endsWith("/")) {
+			// スラッシュを除去する。
+			return myUri.substring(0, myUri.length() - 1);
+		}
+		return myUri;
 	}
 
 	/**
@@ -411,6 +419,23 @@ public class EntryUtil {
 			contributors.add(contributor);
 			entry.setContributor(contributors);
 		}
+	}
+	
+	/**
+	 * Metalistから指定された項目名のmeta情報を取得します.
+	 * @param metalist フィールド情報リスト
+	 * @param name フィールド名
+	 * @return フィールド情報
+	 */
+	public static Meta getMeta(List<Meta> metalist, String name) {
+		if (metalist != null && !StringUtils.isBlank(name)) {
+			for (Meta meta : metalist) {
+				if (name.equals(meta.name)) {
+					return meta;
+				}
+			}
+		}
+		return null;
 	}
 
 }

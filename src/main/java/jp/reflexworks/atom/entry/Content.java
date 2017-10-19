@@ -23,6 +23,10 @@ import jp.reflexworks.atom.mapper.SizeContext;
 public class Content implements Serializable, Cloneable, SoftSchema {
 
 	private static final long serialVersionUID = 1L;
+	
+	/** 項目ACLチェックパターン */
+	//private Pattern PATTERN = Pattern.compile("^/@[^/]+/_group/\\$content$");
+	private static Pattern PATTERN = Pattern.compile("^/_group/\\$content$|^/@[^/]+/_group/\\$content$");
 
 	@Index(0)
 	public String _$src;
@@ -59,7 +63,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	public String toString() {
 		return "Content [" + _$$text + "]";
 	}
-	
+
 	public boolean validate(String uid, List<String> groups, String myself) 
 	throws java.text.ParseException {
 		
@@ -68,8 +72,8 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 				boolean ex = false;
 				for (int i = 0; i < groups.size(); i++) {
 					// $contentグループでなければ更新できない -> /@{サービス名}/_group/$content
-					Pattern p = Pattern.compile("^/@[^/]+/_group/\\$content$");
-					Matcher m = p.matcher(groups.get(i));
+					// -> サービス名階層は廃止。コンテンツ更新グループは"/_group/$content"
+					Matcher m = PATTERN.matcher(groups.get(i));
 					if (m.find()) ex=true;
 				}
 				if (_$type!=null&&(_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif"))) ex=true;

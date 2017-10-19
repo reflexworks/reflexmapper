@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.api.AtomConst;
-import jp.reflexworks.atom.wrapper.base.ConditionBase;
+import jp.reflexworks.atom.api.Condition;
 
 /**
  * Entryの親クラス.
@@ -330,51 +330,29 @@ public abstract class EntryBase implements Serializable {
 	 * 引数の値を、<link rel="self">タグのhref属性に設定します.
 	 * </p>
 	 * 
-	 * @param uri
-	 *            キー
+	 * @param uri キー
 	 */
 	public void setMyUri(String uri) {
-		String tmpUri = uri;
-		// uriをparentとselfidに分割
-		if (uri != null && uri.length() > 0) {
-			if ("/".equals(uri)) { // root layer
-				// Do nothing.
+		setLinkSelf(uri);
+		
+		//String tmpUri = uri;
+		//// uriをparentとselfidに分割
+		//if (uri != null && uri.length() > 0) {
+			//if ("/".equals(uri)) { // root layer
+			//	// Do nothing.
+			//
+			//} else {
+			//	if ("/".equals(tmpUri.substring(tmpUri.length() - 1))) {
+			//		tmpUri = tmpUri.substring(0, tmpUri.length() - 1);
+			//	}
+			//}
 
-			} else {
-				if ("/".equals(tmpUri.substring(tmpUri.length() - 1))) {
-					tmpUri = tmpUri.substring(0, tmpUri.length() - 1);
-				}
-			}
-
-		} else {
-			// root layer
-			tmpUri = "/";
-		}
-
-		setLinkSelf(tmpUri);
-	}
-
-	public static String getMyUri(String uri) {
-		String tmpUri = uri;
-		if (uri != null && uri.length() > 0) {
-			if ("/".equals(uri)) {
-				// root layer
-
-			} else if (TOP.equals(uri)) {
-				// rootの親階層
-
-			} else {
-				if ("/".equals(tmpUri.substring(tmpUri.length() - 1))) {
-					tmpUri = tmpUri.substring(0, tmpUri.length() - 1);
-				}
-			}
-
-		} else {
-			// root layer
-			tmpUri = "/";
-		}
-
-		return tmpUri;
+		//} else {
+		//	// root layer
+		//	tmpUri = "/";
+		//}
+		//
+		//setLinkSelf(tmpUri);
 	}
 
 	private void setLinkSelf(String uri) {
@@ -461,7 +439,7 @@ public abstract class EntryBase implements Serializable {
 				aliases.add(li.get$href());
 			}
 		}
-		if (aliases.size() == 0) {
+		if (aliases.isEmpty()) {
 			return null;
 		}
 		return aliases;
@@ -599,11 +577,21 @@ public abstract class EntryBase implements Serializable {
 		return "Entry [myUri=" + getMyUri() + ", title=" + title + "]";
 	}
 
+	/**
+	 * IDからUIDを取得.
+	 * @return UID
+	 */
 	public String getMyself() {
 		if (id != null) {
 			String token[] = id.split("/");
-			if (token.length > 2) { // /@{サービス名}/{uid}
-				return token[2];
+			if (token.length > 1) {
+				if (token[1].startsWith("@")) {
+					if (token.length > 2) {
+						return token[2]; // /@{サービス名}/{uid}
+					}
+				} else {
+					return token[1];	// /{uid}
+				}
 			}
 		}
 		return null;
@@ -684,7 +672,7 @@ public abstract class EntryBase implements Serializable {
 
 	public abstract void decrypt(Object cipher);
 
-	public abstract boolean isMatch(ConditionBase[] conditions);
+	public abstract boolean isMatch(Condition[] conditions);
 
 	public abstract int getsize();
 

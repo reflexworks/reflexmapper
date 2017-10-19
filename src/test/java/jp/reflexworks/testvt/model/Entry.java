@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
 
+import jp.reflexworks.atom.api.Condition;
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 public class Entry extends EntryBase implements Serializable {
 
@@ -81,7 +81,7 @@ public class Entry extends EntryBase implements Serializable {
 	public void decrypt(Object cipher) {
 		// TODO
 	}
-	public boolean isMatch(ConditionBase[] conditions) {
+	public boolean isMatch(Condition[] conditions) {
 		// TODO
 		return false;
 	}

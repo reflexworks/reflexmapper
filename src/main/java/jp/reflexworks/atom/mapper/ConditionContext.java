@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.reflexworks.atom.api.Condition;
 import jp.reflexworks.atom.entry.Element;
-import jp.reflexworks.atom.wrapper.base.ConditionBase;
 import jp.sourceforge.reflex.util.DateUtil;
 import jp.sourceforge.reflex.util.StringUtils;
 
@@ -19,7 +19,7 @@ import jp.sourceforge.reflex.util.StringUtils;
  */
 public class ConditionContext {
 
-	public ConditionBase[] conditions;
+	public Condition[] conditions;
 	public String fldname;
 	public String type;
 	public Object obj;
@@ -27,7 +27,7 @@ public class ConditionContext {
 	public Map<String,Boolean> isMatchs;
 	private Boolean[] isFetchs;		// 項目名が一致したか
 	
-	public ConditionContext(ConditionBase[] conditions) {
+	public ConditionContext(Condition[] conditions) {
 		this.conditions = conditions;
 		this.isMatchs = new HashMap<String, Boolean>();
 		this.isFetchs = new Boolean[conditions.length];
@@ -56,7 +56,7 @@ public class ConditionContext {
 	 */
 	public static void checkCondition(ConditionContext context) {
 		for (int i=0;i<context.conditions.length;i++) {
-			ConditionBase cond = context.conditions[i];
+			Condition cond = context.conditions[i];
 			if (cond.getProp().equals(context.fldname)) { // 項目名が一致するかどうか
 				Boolean value = context.isMatchs.get(context.fldname+"-"+cond.getEquations()+"-"+i);
 				if (value == null || !value) {
@@ -76,11 +76,11 @@ public class ConditionContext {
 	 * @param type
 	 * @return 合致していればtrue
 	 */
-	private static boolean checkConditionString(String src,ConditionBase cond,String type) {
+	private static boolean checkConditionString(String src,Condition cond,String type) {
 		String value = cond.getValue();
 		String equal = cond.getEquations();
 
-		if (ConditionBase.REGEX.equals(equal)) {
+		if (Condition.REGEX.equals(equal)) {
 			Pattern pattern = Pattern.compile(value);
 			Matcher matcher = pattern.matcher(src);
 			if (!matcher.find()) {
@@ -88,30 +88,32 @@ public class ConditionContext {
 			}
 		}
 		else 
-		if (!cond.isPrefixMatching() && !cond.isLikeForward()) {
+		//if (!cond.isPrefixMatching() && !cond.isLikeForward()) {
+		if (!Condition.FORWARD_MATCH.equals(equal) && !Condition.BACKWARD_MATCH.equals(equal)) {
 			int compare = src.compareTo(value);
 			
-			if (ConditionBase.EQUAL.equals(equal) && compare != 0) {
+			if (Condition.EQUAL.equals(equal) && compare != 0) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && compare == 0) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && compare == 0) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN.equals(equal) && compare <= 0) {
+			} else if (Condition.GREATER_THAN.equals(equal) && compare <= 0) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && compare < 0) {
+			} else if (Condition.GREATER_THAN_OR_EQUAL.equals(equal) && compare < 0) {
 				return false;
-			} else if (ConditionBase.LESS_THAN.equals(equal) && compare >= 0) {
+			} else if (Condition.LESS_THAN.equals(equal) && compare >= 0) {
 				return false;
-			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && compare > 0) {
-				return false;
-			}
-
-		} else if (cond.isPrefixMatching() && cond.isLikeForward()) {
-			// あいまい検索
-			if (src.indexOf(value) < 0) {
+			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && compare > 0) {
 				return false;
 			}
 
-		} else if (cond.isPrefixMatching() && !cond.isLikeForward()) {
+		//} else if (cond.isPrefixMatching() && cond.isLikeForward()) {
+		//	// あいまい検索
+		//	if (src.indexOf(value) < 0) {
+		//		return false;
+		//	}
+
+		//} else if (cond.isPrefixMatching() && !cond.isLikeForward()) {
+		} else if (Condition.FORWARD_MATCH.equals(equal)) {
 			// 前方一致検索
 			if (!src.startsWith(value)) {
 				return false;
@@ -135,7 +137,7 @@ public class ConditionContext {
 	 * @param type
 	 * @return 合致していればtrue
 	 */
-	private static boolean checkCondition(Object obj, ConditionBase cond, String type) {
+	private static boolean checkCondition(Object obj, Condition cond, String type) {
 		String equal = cond.getEquations();
 
 		if (obj==null) return false;
@@ -154,17 +156,17 @@ public class ConditionContext {
 			int src = (Integer)obj;
 			int value = StringUtils.intValue(cond.getValue());
 
-			if (ConditionBase.EQUAL.equals(equal) && src != value) {
+			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN.equals(equal) && src <= value) {
+			} else if (Condition.GREATER_THAN.equals(equal) && src <= value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
+			} else if (Condition.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN.equals(equal) && src >= value) {
+			} else if (Condition.LESS_THAN.equals(equal) && src >= value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
+			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
 				return false;
 			}
 
@@ -172,17 +174,17 @@ public class ConditionContext {
 			long src = (Long)obj;
 			long value = StringUtils.longValue(cond.getValue());
 
-			if (ConditionBase.EQUAL.equals(equal) && src != value) {
+			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN.equals(equal) && src <= value) {
+			} else if (Condition.GREATER_THAN.equals(equal) && src <= value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
+			} else if (Condition.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN.equals(equal) && src >= value) {
+			} else if (Condition.LESS_THAN.equals(equal) && src >= value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
+			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
 				return false;
 			}
 
@@ -190,17 +192,17 @@ public class ConditionContext {
 			float src = (Float)obj;
 			float value = StringUtils.floatValue(cond.getValue());
 			
-			if (ConditionBase.EQUAL.equals(equal) && src != value) {
+			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN.equals(equal) && src <= value) {
+			} else if (Condition.GREATER_THAN.equals(equal) && src <= value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
+			} else if (Condition.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN.equals(equal) && src >= value) {
+			} else if (Condition.LESS_THAN.equals(equal) && src >= value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
+			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
 				return false;
 			}
 
@@ -208,17 +210,17 @@ public class ConditionContext {
 			double src = (Double)obj;
 			double value = StringUtils.doubleValue(cond.getValue());
 			
-			if (ConditionBase.EQUAL.equals(equal) && src != value) {
+			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN.equals(equal) && src <= value) {
+			} else if (Condition.GREATER_THAN.equals(equal) && src <= value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
+			} else if (Condition.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN.equals(equal) && src >= value) {
+			} else if (Condition.LESS_THAN.equals(equal) && src >= value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
+			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
 				return false;
 			}
 		
@@ -231,17 +233,17 @@ public class ConditionContext {
 				value = 0;
 			}
 			
-			if (ConditionBase.EQUAL.equals(equal) && src != value) {
+			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN.equals(equal) && src <= value) {
+			} else if (Condition.GREATER_THAN.equals(equal) && src <= value) {
 				return false;
-			} else if (ConditionBase.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
+			} else if (Condition.GREATER_THAN_OR_EQUAL.equals(equal) && src < value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN.equals(equal) && src >= value) {
+			} else if (Condition.LESS_THAN.equals(equal) && src >= value) {
 				return false;
-			} else if (ConditionBase.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
+			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
 				return false;
 			}
 
@@ -249,11 +251,11 @@ public class ConditionContext {
 			boolean src = (Boolean) obj;
 			boolean value = cond.getValue().equals("true"); 
 			
-			if (ConditionBase.EQUAL.equals(equal) && src != value) {
+			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
-			} else if (ConditionBase.NOT_EQUAL.equals(equal) && src == value) {
+			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
-			} 		
+			}
 		}
 		
 		return true;

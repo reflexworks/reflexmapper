@@ -3,8 +3,8 @@ package jp.reflexworks.test.model;
 import java.text.ParseException;
 import java.util.List;
 
+import jp.reflexworks.atom.api.Condition;
 import jp.reflexworks.atom.entry.EntryBase;
-import jp.reflexworks.atom.wrapper.base.ConditionBase;
 
 public class Entry extends EntryBase {
 
@@ -27,7 +27,7 @@ public class Entry extends EntryBase {
 	}
 
 	@Override
-	public boolean isMatch(ConditionBase[] conditions) {
+	public boolean isMatch(Condition[] conditions) {
 		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}

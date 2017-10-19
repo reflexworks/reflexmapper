@@ -241,7 +241,7 @@ public final class CipherUtil {
 			sourceEntry.rights = decryptStr;
 		}
 		// contributor uri
-		if (sourceEntry.contributor != null && sourceEntry.contributor.size() > 0) {
+		if (sourceEntry.contributor != null && !sourceEntry.contributor.isEmpty()) {
 			SecretKey key = createSecretKey(createSecretKeyStr(
 					Contributor.URI_SECRETKEY, sourceEntry.id));
 			for (Contributor contributor : sourceEntry.contributor) {
@@ -282,7 +282,7 @@ public final class CipherUtil {
 			int nextIdx = idx;
 			if (FieldMapper.isCollection(obj)) {
 				Collection collection = (Collection)obj;
-				if (collection.size() > 0) {
+				if (!collection.isEmpty()) {
 					Iterator it = collection.iterator();
 					while (it.hasNext()) {
 						Object partObj = it.next();
