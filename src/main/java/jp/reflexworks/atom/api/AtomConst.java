@@ -99,10 +99,10 @@ public interface AtomConst {
 
 	/** サービスステータス : 新規作成中 */
 	public static final String SERVICE_STATUS_CREATING = "creating";
-	/** サービスステータス : 非公開 */
-	public static final String SERVICE_STATUS_INACTIVE = "inactive";
+	/** サービスステータス : 非公開(開発中) */
+	public static final String SERVICE_STATUS_STAGING = "staging";
 	/** サービスステータス : 公開中 */
-	public static final String SERVICE_STATUS_RUNNING = "running";
+	public static final String SERVICE_STATUS_PRODUCTION = "production";
 	/** サービスステータス : 強制停止 */
 	public static final String SERVICE_STATUS_BLOCKED = "blocked";
 	/** サービスステータス : リセット中 */
