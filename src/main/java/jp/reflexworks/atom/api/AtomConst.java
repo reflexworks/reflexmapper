@@ -91,7 +91,9 @@ public interface AtomConst {
 	public static final String ACL_USER_LOGGEDIN = "+";
 	/** selfまたはエイリアスのユーザトップエントリーのuidがログイン情報のuidと等しい */
 	public static final String ACL_USER_SELFALIAS = "-";
-	
+	/** ACL Delimiter */
+	public static final String ACL_DELIMITER = ",";
+
 	/** サービスエントリーの先頭文字の値 */
 	public static final String SVC_PREFIX_VAL = "@";
 	/** サービスエントリーの先頭 */
