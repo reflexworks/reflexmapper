@@ -36,7 +36,7 @@ public class MailUtil implements MailConst {
 	 * テキストメール送信
 	 * @param title 題名
 	 * @param textMessage テキストメッセージ
-	 * @param to 送信先アドレス
+	 * @param to 送信先アドレス(複数の場合カンマ区切り)
 	 * @param from 送信元アドレス(認証にも使用)
 	 * @param password 認証パスワード
 	 * @param host SMTPサーバ
@@ -60,7 +60,7 @@ public class MailUtil implements MailConst {
 	 * @param htmlMessage HTMLメッセージ
 	 * @param inlineImages インライン画像
 	 * @param attachments 添付ファイル
-	 * @param to 送信先アドレス
+	 * @param to 送信先アドレス(複数の場合カンマ区切り)
 	 * @param toPersonal 送信先名
 	 * @param from 送信元アドレス
 	 * @param fromPersonal 送信元名
@@ -106,7 +106,7 @@ public class MailUtil implements MailConst {
 	 * @param htmlMessage HTMLメッセージ
 	 * @param inlineImages インライン画像
 	 * @param attachments 添付ファイル
-	 * @param to 送信先アドレス
+	 * @param to 送信先アドレス(複数の場合カンマ区切り)
 	 * @param toPersonal 送信先名
 	 * @param from 送信元アドレス
 	 * @param fromPersonal 送信元名
@@ -127,15 +127,37 @@ public class MailUtil implements MailConst {
 		
 		Transport transport = null;
 		try {
-			InternetAddress iaTo = new InternetAddress(to, toPersonal, CHARSET);
+			//InternetAddress iaTo = new InternetAddress(to, toPersonal, CHARSET);
 			InternetAddress iaFrom = new InternetAddress(from, fromPersonal, CHARSET);
+			
+			String[] toParts = to.split(TO_DELIMITER);
+			String[] toParsonalParts = null;
+			if (toPersonal != null) {
+				toParsonalParts = toPersonal.split(TO_DELIMITER);
+			}
+			int toLen = toParts.length;
+			int personalLen = 0;
+			if (toParsonalParts != null) {
+				personalLen = toParsonalParts.length;
+			}
+			InternetAddress[] iaTos = new InternetAddress[toLen];
+			for (int i = 0; i < toLen; i++) {
+				String tmpTo = toParts[i];
+				String tmpToPersonal = null;
+				if (i < personalLen) {
+					tmpToPersonal = toParsonalParts[i];
+				}
+				iaTos[i] = new InternetAddress(StringUtils.trim(tmpTo), 
+						tmpToPersonal, CHARSET);
+			}
 			
 			MimeMessage msg = new MimeMessage(session);
 			
 			// From
 			msg.setFrom(iaFrom);
 			// To
-			msg.setRecipient(Message.RecipientType.TO, iaTo);
+			//msg.setRecipient(Message.RecipientType.TO, iaTo);
+			msg.setRecipients(Message.RecipientType.TO, iaTos);
 			// Subject
 			msg.setSubject(title, CHARSET);
 			// Date

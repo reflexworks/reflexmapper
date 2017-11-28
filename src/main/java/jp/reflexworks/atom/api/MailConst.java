@@ -53,5 +53,7 @@ public interface MailConst {
 	public static final String MIXED = "mixed";
 	/** MimeMultipart : related */
 	public static final String RELATED = "related";
+	/** メールアドレス区切り文字 */
+	public static final String TO_DELIMITER = ",";
 
 }
