@@ -84,10 +84,10 @@ public class MailUtil implements MailConst {
 		props.put(PROP_HOST, host);
 		props.put(PROP_FROM, from);
 		props.put(PROP_SMTP_PORT, port);  // サブミッションポート
-		if (isStarttls != null && isAuth) {
+		if (isAuth == null || isAuth) {
 			props.put(PROP_SMTP_AUTH, "true");   // SMTP 認証を行う
 		}
-		if (isStarttls != null && isStarttls) {
+		if (isStarttls == null || isStarttls) {
 			props.put(PROP_SMTP_STARTTLS, "true");   // STARTTLS
 		}
 		if (debug) {
