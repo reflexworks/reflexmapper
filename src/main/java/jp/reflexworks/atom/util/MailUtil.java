@@ -36,7 +36,7 @@ public class MailUtil implements MailConst {
 	 * テキストメール送信
 	 * @param title 題名
 	 * @param textMessage テキストメッセージ
-	 * @param to 送信先アドレス(複数の場合カンマ区切り)
+	 * @param to 送信先アドレス
 	 * @param from 送信元アドレス(認証にも使用)
 	 * @param password 認証パスワード
 	 * @param host SMTPサーバ
@@ -60,7 +60,7 @@ public class MailUtil implements MailConst {
 	 * @param htmlMessage HTMLメッセージ
 	 * @param inlineImages インライン画像
 	 * @param attachments 添付ファイル
-	 * @param to 送信先アドレス(複数の場合カンマ区切り)
+	 * @param to 送信先アドレス
 	 * @param toPersonal 送信先名
 	 * @param from 送信元アドレス
 	 * @param fromPersonal 送信元名
@@ -76,6 +76,47 @@ public class MailUtil implements MailConst {
 	public static void send(String title, String textMessage, String htmlMessage,
 			Map<String, DataSource> inlineImages, List<DataSource> attachments,
 			String to, String toPersonal, String from, String fromPersonal, 
+			String user, String password,  String host, String port, String protocol, 
+			Boolean isStarttls, Boolean isAuth, boolean debug) 
+	throws IOException {
+		String[] tos = new String[]{to};
+		String[] toPersonals = null;
+		if (!StringUtils.isBlank(toPersonal)) {
+			toPersonals = new String[]{toPersonal};
+		}
+		send(title, textMessage, htmlMessage, inlineImages, attachments,
+				tos, toPersonals, null, null, null, null, from, fromPersonal,
+				user, password, host, port, protocol, isStarttls, isAuth, debug);
+	}
+
+	/**
+	 * メール送信
+	 * @param title 題名
+	 * @param textMessage テキストメッセージ
+	 * @param htmlMessage HTMLメッセージ
+	 * @param inlineImages インライン画像
+	 * @param attachments 添付ファイル
+	 * @param to 送信先アドレス配列
+	 * @param toPersonal 送信先名配列
+	 * @param cc CC送信先アドレス配列
+	 * @param ccPersonal CC送信先名配列
+	 * @param bcc BCC送信先アドレス配列
+	 * @param bccPersonal BCC送信先名配列
+	 * @param from 送信元アドレス
+	 * @param fromPersonal 送信元名
+	 * @param user 認証ユーザ(指定のない場合は送信元アドレスが認証ユーザとなる。)
+	 * @param password 認証パスワード
+	 * @param host SMTPホスト
+	 * @param port SMTPポート番号
+	 * @param protocol プロトコル(smtpまたはsmtps)
+	 * @param isStarttls STARTTLSを行う場合true(デフォルトはtrue)
+	 * @param isAuth 認証を行う場合true(デフォルトはtrue)
+	 * @param debug デバッグログを出力する場合true
+	 */
+	public static void send(String title, String textMessage, String htmlMessage,
+			Map<String, DataSource> inlineImages, List<DataSource> attachments,
+			String[] to, String[] toPersonal, String[] cc, String[] ccPersonal, 
+			String[] bcc, String[] bccPersonal, String from, String fromPersonal, 
 			String user, String password,  String host, String port, String protocol, 
 			Boolean isStarttls, Boolean isAuth, boolean debug) 
 	throws IOException {
@@ -95,8 +136,8 @@ public class MailUtil implements MailConst {
 		}
 		
 		send(title, textMessage, htmlMessage, inlineImages, attachments, 
-				to, toPersonal, from, fromPersonal, user, password, props, 
-				protocol, debug);
+				to, toPersonal, cc, ccPersonal, bcc, bccPersonal,
+				from, fromPersonal, user, password, props, protocol, debug);
 	}
 
 	/**
@@ -106,7 +147,7 @@ public class MailUtil implements MailConst {
 	 * @param htmlMessage HTMLメッセージ
 	 * @param inlineImages インライン画像
 	 * @param attachments 添付ファイル
-	 * @param to 送信先アドレス(複数の場合カンマ区切り)
+	 * @param to 送信先アドレス
 	 * @param toPersonal 送信先名
 	 * @param from 送信元アドレス
 	 * @param fromPersonal 送信元名
@@ -122,42 +163,64 @@ public class MailUtil implements MailConst {
 			String from, String fromPersonal, String user, String password, 
 			Properties props, String protocol, boolean debug) 
 	throws IOException {
+		String[] tos = new String[]{to};
+		String[] toPersonals = null;
+		if (!StringUtils.isBlank(toPersonal)) {
+			toPersonals = new String[]{toPersonal};
+		}
+		send(title, textMessage, htmlMessage, inlineImages, attachments, 
+				tos, toPersonals, null, null, null, null, from, fromPersonal,
+				user, password, props, protocol, debug);
+	}
+
+	/**
+	 * メール送信
+	 * @param title 題名
+	 * @param textMessage テキストメッセージ
+	 * @param htmlMessage HTMLメッセージ
+	 * @param inlineImages インライン画像
+	 * @param attachments 添付ファイル
+	 * @param to 送信先アドレス
+	 * @param toPersonal 送信先名
+	 * @param from 送信元アドレス
+	 * @param fromPersonal 送信元名
+	 * @param user 認証ユーザ(指定のない場合は送信元アドレスが認証ユーザとなる。)
+	 * @param password 認証パスワード
+	 * @param props プロパティ
+	 * @param protocol プロトコル(smtpまたはsmtps)
+	 * @param debug デバッグログを出力する場合true
+	 */
+	public static void send(String title, String textMessage, String htmlMessage,
+			Map<String, DataSource> inlineImages, List<DataSource> attachments,
+			String[] to, String[] toPersonal, String[] cc, String[] ccPersonal,
+			String[] bcc, String[] bccPersonal,
+			String from, String fromPersonal, String user, String password, 
+			Properties props, String protocol, boolean debug) 
+	throws IOException {
 		Session session = Session.getInstance(props);
 		session.setDebug(debug);
 		
 		Transport transport = null;
 		try {
-			//InternetAddress iaTo = new InternetAddress(to, toPersonal, CHARSET);
 			InternetAddress iaFrom = new InternetAddress(from, fromPersonal, CHARSET);
-			
-			String[] toParts = to.split(TO_DELIMITER);
-			String[] toParsonalParts = null;
-			if (toPersonal != null) {
-				toParsonalParts = toPersonal.split(TO_DELIMITER);
-			}
-			int toLen = toParts.length;
-			int personalLen = 0;
-			if (toParsonalParts != null) {
-				personalLen = toParsonalParts.length;
-			}
-			InternetAddress[] iaTos = new InternetAddress[toLen];
-			for (int i = 0; i < toLen; i++) {
-				String tmpTo = toParts[i];
-				String tmpToPersonal = null;
-				if (i < personalLen) {
-					tmpToPersonal = toParsonalParts[i];
-				}
-				iaTos[i] = new InternetAddress(StringUtils.trim(tmpTo), 
-						tmpToPersonal, CHARSET);
-			}
+			InternetAddress[] iaTos = createInternetAddresses(to, toPersonal);
+			InternetAddress[] iaCcs = createInternetAddresses(cc, ccPersonal);
+			InternetAddress[] iaBccs = createInternetAddresses(bcc, bccPersonal);
 			
 			MimeMessage msg = new MimeMessage(session);
 			
 			// From
 			msg.setFrom(iaFrom);
 			// To
-			//msg.setRecipient(Message.RecipientType.TO, iaTo);
 			msg.setRecipients(Message.RecipientType.TO, iaTos);
+			// Cc
+			if (iaCcs != null) {
+				msg.setRecipients(Message.RecipientType.CC, iaCcs);
+			}
+			// Bcc
+			if (iaBccs != null) {
+				msg.setRecipients(Message.RecipientType.BCC, iaBccs);
+			}
 			// Subject
 			msg.setSubject(title, CHARSET);
 			// Date
@@ -317,6 +380,35 @@ public class MailUtil implements MailConst {
 			Map<String, DataSource> inlineImages, List<DataSource> attachments) {
 		return isSendInlineImages(htmlMessage, inlineImages) && 
 				isSendAttachments(attachments);
+	}
+	
+	/**
+	 * InternetAddress配列を生成
+	 * @param to 送信先配列
+	 * @param toPersonal 送信先名配列
+	 * @return InternetAddress配列
+	 */
+	private static InternetAddress[] createInternetAddresses(String[] to, String[] toPersonal) 
+	throws IOException {
+		if (to == null || to.length == 0) {
+			return null;
+		}
+		int toLen = to.length;
+		int toPersonalLen = 0;
+		if (toPersonal != null) {
+			toPersonalLen = toPersonal.length;
+		}
+		InternetAddress[] iaTos = new InternetAddress[toLen];
+		for (int i = 0; i < toLen; i++) {
+			String tmpTo = to[i];
+			String tmpToPersonal = null;
+			if (i < toPersonalLen) {
+				tmpToPersonal = toPersonal[i];
+			}
+			iaTos[i] = new InternetAddress(StringUtils.trim(tmpTo), 
+					tmpToPersonal, CHARSET);
+		}
+		return iaTos;
 	}
 	
 	/**
