@@ -444,11 +444,13 @@ public final class CipherUtil {
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance(HASH); //128ビットのハッシュ
+			md.update(str.getBytes(AtomConst.ENCODING));
 		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 
-		md.update(str.getBytes());
 		return md.digest();
 	}
 
