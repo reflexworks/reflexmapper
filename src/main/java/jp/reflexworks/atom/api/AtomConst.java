@@ -111,6 +111,8 @@ public interface AtomConst {
 	public static final String SERVICE_STATUS_RESETTING = "resetting";
 	/** サービスステータス : 削除中 */
 	public static final String SERVICE_STATUS_DELETING = "deleting";
+	/** サービスステータス : 削除済み */
+	public static final String SERVICE_STATUS_DELETED = "deleted";
 	/** サービスステータス : 登録失敗 */
 	public static final String SERVICE_STATUS_FAILURE = "failure";
 
