@@ -1,5 +1,8 @@
 package jp.reflexworks.atom.api;
 
+/**
+ * リクエストパラメータに使用する定数.
+ */
 public interface RequestType {
 
 	/** Servlet path */
@@ -33,16 +36,10 @@ public interface RequestType {
 	public static final String PARAM_LOGIN = "_login";
 	/** URLパラメータ : ログアウト */
 	public static final String PARAM_LOGOUT = "_logout";
-	/** URLパラメータ : 認証後にディスパッチする */
-	//public static final String PARAM_LOGIN_DISPATCH = "_logindispatch";
 	/** URLパラメータ : 強制ログイン */
 	public static final String PARAM_LOGINF = "_loginf";
 	/** URLパラメータ : BlobstoreへのアップロードURLを取得 */
 	public static final String PARAM_UPLOADURL = "_uploadurl";
-	/** URLパラメータ : link rel="related"の情報を取得 */
-	//public static final String PARAM_RELATED = "_related";
-	/** URLパラメータ : Blobstoreの情報をリダイレクトで取得する場合付加 */
-	//public static final String PARAM_REDIRECT = "_redirect";
 	/** URLパラメータ : 自動採番 */
 	public static final String PARAM_ALLOCIDS = "_allocids";
 	/** URLパラメータ : 自動採番の加算 */
@@ -121,15 +118,20 @@ public interface RequestType {
 	public static final String PARAM_RDB = "_rdb";
 	/** URLパラメータ : キャッシュ */
 	public static final String PARAM_CACHE = "_cache";
-	/** URLパラメータ : SID */
-	//public static final String PARAM_SID = "_sid";
 	/** URLパラメータ : RXID取得 */
 	public static final String PARAM_GETRXID = "_getrxid";
-
-	/** URLパラメータ : relatedパラメータと同様の意味を持つ（キャッシュ対応） */
-	//public static final String SIGN_RELATED = "+";
-	/** URLパラメータ : redirectパラメータと同様の意味を持つ（キャッシュ対応） */
-	//public static final String SIGN_REDIRECT = "!";
+	/** URLパラメータ : Feed形式キャッシュ */
+	public static final String PARAM_CACHEFEED = "_cachefeed";
+	/** URLパラメータ : Entry形式キャッシュ */
+	public static final String PARAM_CACHEENTRY = "_cacheentry";
+	/** URLパラメータ : 文字列形式キャッシュ */
+	public static final String PARAM_CACHESTRING = "_cachestring";
+	/** URLパラメータ : 数値形式キャッシュ */
+	public static final String PARAM_CACHELONG = "_cachelong";
+	/** URLパラメータ : 数値形式キャッシュのインクリメント */
+	public static final String PARAM_CACHEINCR = "_cacheincr";
+	/** URLパラメータ : 有効時間 */
+	public static final String PARAM_EXPIRE = "_expire";
 	
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
