@@ -3879,4 +3879,138 @@ public class TestMsgpackMapper {
 		
 	}
 
+	/**
+	 * 制御文字テスト
+	 */
+	@Test
+	public void testMaximumLength() throws ParseException, IOException, ClassNotFoundException {
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
+		
+		String jsonStart = "{\"entry\" : {\"title\" : \"";
+		String jsonEnd = "\"}}";
+		
+		String TEST_STR = "abcdefghijklmnopqrstuvwxyz0123456789";
+		
+		String uid = null;
+		List<String> groups = null;
+		
+		StringBuilder sb = null;
+		int l = 0;
+		EntryBase entry = null;
+		
+		// 正常
+		entry = null;
+		l = 1024 * 10;
+		sb = new StringBuilder();
+		for (int i = 0; i < l; i++) {
+			sb.append(TEST_STR);
+		}
+		try {
+			String title = sb.toString();
+			String json = jsonStart + title + jsonEnd;
+			int len = title.length();
+			System.out.println("[testMaximumLength] fromJSON start. title.length = " + len);
+			entry = (EntryBase)mapper.fromJSON(json);
+			System.out.println("[testMaximumLength] fromJSON succeeded.");
+			entry.validate(uid, groups);
+			System.out.println("[testMaximumLength] entry.validate succeeded.");
+			
+			FeedBase feed = EntryUtil.createFeed(mapper);
+			feed.addEntry(entry);
+			feed.validate(uid, groups);
+			System.out.println("[testMaximumLength] feed.validate succeeded.");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertTrue(false);
+		}
+		
+		// Maximum length of 'title' exceeded.
+		entry = null;
+		l = 1024 * 100;
+		sb = new StringBuilder();
+		for (int i = 0; i < l; i++) {
+			sb.append(TEST_STR);
+		}
+		try {
+			String title = sb.toString();
+			String json = jsonStart + title + jsonEnd;
+			int len = title.length();
+			System.out.println("[testMaximumLength] fromJSON start. title.length = " + len);
+			entry = (EntryBase)mapper.fromJSON(json);
+			System.out.println("[testMaximumLength] fromJSON succeeded.");
+			entry.validate(uid, groups);
+			System.out.println("[testMaximumLength] validate succeeded. (failed)");
+			assertTrue(false);
+			
+		} catch (ParseException e) {
+			if ("Maximum length of 'title' exceeded.".equals(e.getMessage())) {
+				// OK
+				System.out.println("[testMaximumLength] entry.validate failed. (OK)");
+				
+				FeedBase feed = EntryUtil.createFeed(mapper);
+				feed.addEntry(entry);
+				try {
+					feed.validate(uid, groups);
+					System.out.println("[testMaximumLength] feed.validate succeeded. (failed)");
+					assertTrue(false);
+				} catch (ParseException pe) {
+					if ("Maximum length of 'title' exceeded.".equals(e.getMessage())) {
+						System.out.println("[testMaximumLength] feed.validate failed. (OK)");
+					} else {
+						pe.printStackTrace();
+						assertTrue(false);
+					}
+				}
+			} else {
+				e.printStackTrace();
+				assertTrue(false);
+			}
+		}
+		
+		// Maximum length of 'title' exceeded.
+		entry = null;
+		l = 1024 * 2000;
+		sb = new StringBuilder();
+		for (int i = 0; i < l; i++) {
+			sb.append(TEST_STR);
+		}
+		try {
+			String title = sb.toString();
+			String json = jsonStart + title + jsonEnd;
+			int len = title.length();
+			System.out.println("[testMaximumLength] fromJSON start. title.length = " + len);
+			entry = (EntryBase)mapper.fromJSON(json);
+			System.out.println("[testMaximumLength] fromJSON succeeded.");
+			entry.validate(uid, groups);
+			System.out.println("[testMaximumLength] validate succeeded. (failed)");
+			assertTrue(false);
+			
+		} catch (ParseException e) {
+			if ("Maximum length of 'title' exceeded.".equals(e.getMessage())) {
+				// OK
+				System.out.println("[testMaximumLength] entry.validate failed. (OK)");
+				
+				FeedBase feed = EntryUtil.createFeed(mapper);
+				feed.addEntry(entry);
+				try {
+					feed.validate(uid, groups);
+					System.out.println("[testMaximumLength] feed.validate succeeded. (failed)");
+					assertTrue(false);
+				} catch (ParseException pe) {
+					if ("Maximum length of 'title' exceeded.".equals(e.getMessage())) {
+						System.out.println("[testMaximumLength] feed.validate failed. (OK)");
+					} else {
+						pe.printStackTrace();
+						assertTrue(false);
+					}
+				}
+			} else {
+				e.printStackTrace();
+				assertTrue(false);
+			}
+		}
+
+	}
+
 }
