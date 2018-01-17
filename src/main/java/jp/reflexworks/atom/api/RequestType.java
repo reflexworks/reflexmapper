@@ -68,6 +68,8 @@ public interface RequestType {
 	public static final String PARAM_GETMULTI = "_getmulti";
 	/** URLパラメータ : ユーザ番号取得 */
 	public static final String PARAM_UID = "_uid";
+	/** URLパラメータ : アカウント取得 */
+	public static final String PARAM_ACCOUNT = "_account";
 	/** URLパラメータ : 署名 */
 	public static final String PARAM_SIGNATURE = "_signature";
 	/** URLパラメータ : 指定されたページ数分のカーソル一覧を返却するオプション */
