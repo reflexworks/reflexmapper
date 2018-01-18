@@ -141,6 +141,21 @@ public class TestMsgpackMapper {
 		"comment.secret#"
 	};
 
+	// entitytempl3 用
+	public static String entityAcls6[] = {
+		"title:^/$|^/@[^/]*$",					// ルートおよびサービス直下のtitleのIndex指定(任意のサービス名)
+		"contributor=@+RW,/_group/$admin+RW",	// contributorは自身と/_group/$adminグループのRW権限
+		"contributor.uri#",						// contributor.uriの暗号指定  
+		"rights#=@+RW,/_group/$admin+RW",		// rightsの暗号指定、自身と/_group/$adminグループのRW権限
+		
+		//"name=/mygroup1+RW,@+RW",
+		"name=@+RW,/mygroup1+RW",
+		"brand=/mygroup1+R,@+RW",
+		"color=101+RW,@+RW",
+		"size=101+R,@+RW",
+		"price=101+W,@+RW"
+	};
+
 	public static String entitytempl2[] = {
 		// {}がMap, []がArray　, {} [] は末尾に一つだけ付けられる。*が必須項目
 		"import{2}",        //  0行目はパッケージ名(service名)
@@ -213,7 +228,8 @@ public class TestMsgpackMapper {
 		"brand",
 		"size",
 		"color",
-		"price"
+		"price",
+		"description"
 	};
 
 	public static String entitytempl4[] = {
@@ -4011,6 +4027,123 @@ public class TestMsgpackMapper {
 			}
 		}
 
+	}
+
+	@Test
+	public void testFieldAcl() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp3 = new FeedTemplateMapper(entitytempl3, entityAcls6, 30, SECRETKEY);
+
+		// 項目ACLテスト グループのR権限しかない項目に値を設定してvalidate
+		System.out.println("[testFieldAcl] 項目ACLテスト グループのR権限しかない項目に値を設定してvalidate");
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"feed\" : {\"entry\" : [");
+		sb.append("{");
+		
+		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
+		sb.append(",\"title\" : \"Field ACL test\"");
+		sb.append(",\"name\" : \"ティーカップ\"");
+		sb.append(",\"brand\" : \"Flower campany\"");
+		sb.append(",\"size\" : \"Free\"");
+		sb.append(",\"color\" : \"White\"");
+		sb.append(",\"price\" : \"1500\"");
+		sb.append(",\"description\" : \"贈り物に最適\"");
+		
+		sb.append("}");
+		sb.append("]}}");
+		
+		String json = sb.toString();
+		
+		System.out.println(json);
+		
+		FeedBase feed = (FeedBase)mp3.fromJSON(json);
+		
+		String uid = "101";
+		List<String> groups = new ArrayList<String>();
+		groups.add("/mygroup1");
+		
+		try {
+			feed.validate(uid, groups);
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+			assertTrue("Property 'brand' is not writeable.".equals(e.getMessage()));
+		}
+		
+		// 項目ACLテスト UIDのR権限しかない項目に値を設定してvalidate
+		System.out.println("[testFieldAcl] 項目ACLテスト UIDのR権限しかない項目に値を設定してvalidate");
+		
+		sb = new StringBuilder();
+		sb.append("{\"feed\" : {\"entry\" : [");
+		sb.append("{");
+		
+		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
+		sb.append("\"title\" : \"Field ACL test\"");
+		sb.append(",\"name\" : \"ティーカップ\"");
+		//sb.append(",\"brand\" : \"Flower campany\"");
+		sb.append(",\"size\" : \"Free\"");
+		sb.append(",\"color\" : \"White\"");
+		sb.append(",\"price\" : \"1500\"");
+		sb.append(",\"description\" : \"贈り物に最適\"");
+		
+		sb.append("}");
+		sb.append("]}}");
+
+		json = sb.toString();
+		
+		System.out.println(json);
+		
+		feed = (FeedBase)mp3.fromJSON(json);
+		
+		try {
+			feed.validate(uid, groups);
+			System.out.println("feed.validate succeeded. (failed)");
+			assertTrue(false);
+			
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+			assertTrue("Property 'size' is not writeable.".equals(e.getMessage()));
+		}
+
+		// 項目ACLテスト グループリストを空にしてvalidate
+		System.out.println("[testFieldAcl] 項目ACLテスト グループリストを空にしてvalidate");
+
+		groups = new ArrayList<String>();
+		try {
+			feed.validate(uid, groups);
+			System.out.println("feed.validate succeeded. (failed)");
+			assertTrue(false);
+			
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+			assertTrue("Property 'name' is not writeable.".equals(e.getMessage()));
+		}
+
+		// 項目ACLテスト グループリストをnullにしてvalidate
+		System.out.println("[testFieldAcl] 項目ACLテスト グループリストを空にしてvalidate");
+
+		groups = null;
+		try {
+			feed.validate(uid, groups);
+			System.out.println("feed.validate succeeded.");
+			
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+			assertTrue(false);
+		}
+		
+		// 項目ACLテスト 自分自身のキーでvalidate
+		System.out.println("[testFieldAcl] 項目ACLテスト 自分自身のキーでvalidate");
+		uid = "201";
+		groups = new ArrayList<String>();
+		try {
+			feed.validate(uid, groups);
+			System.out.println("feed.validate succeeded.");
+			
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+			assertTrue(false);
+		}
+		
 	}
 
 }
