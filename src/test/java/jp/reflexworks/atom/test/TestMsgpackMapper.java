@@ -3985,6 +3985,8 @@ public class TestMsgpackMapper {
 		}
 		
 		// Maximum length of 'title' exceeded.
+		// mavenで java.lang.OutOfMemoryError: Java heap space になるためコメントアウト
+		/*
 		entry = null;
 		l = 1024 * 2000;
 		sb = new StringBuilder();
@@ -4026,6 +4028,7 @@ public class TestMsgpackMapper {
 				assertTrue(false);
 			}
 		}
+		*/
 
 	}
 
@@ -4041,6 +4044,9 @@ public class TestMsgpackMapper {
 		sb.append("{");
 		
 		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
+		// 項目ACLの自分自身はidから取得する。
+		sb.append(",\"id\" : \"/201/folders/gifts,3\"");
+		
 		sb.append(",\"title\" : \"Field ACL test\"");
 		sb.append(",\"name\" : \"ティーカップ\"");
 		sb.append(",\"brand\" : \"Flower campany\"");
@@ -4077,6 +4083,9 @@ public class TestMsgpackMapper {
 		sb.append("{");
 		
 		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
+		// 項目ACLの自分自身はidから取得する。
+		sb.append(",\"id\" : \"/201/folders/gifts,3\"");
+		
 		sb.append("\"title\" : \"Field ACL test\"");
 		sb.append(",\"name\" : \"ティーカップ\"");
 		//sb.append(",\"brand\" : \"Flower campany\"");
@@ -4093,6 +4102,9 @@ public class TestMsgpackMapper {
 		System.out.println(json);
 		
 		feed = (FeedBase)mp3.fromJSON(json);
+		// ログ出力
+		EntryBase entry = feed.entry.get(0);
+		System.out.println("entry.getMyself = " + entry.getMyself());
 		
 		try {
 			feed.validate(uid, groups);

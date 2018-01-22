@@ -678,6 +678,9 @@ public abstract class EntryBase implements Serializable {
 
 	/**
 	 * 項目チェック.
+	 * バリデーションチェック、項目ACLチェックを行います。
+	 * 注) 項目ACLの@指定ではuidとgetMyself()メソッドの値を比較します。
+	 *     id設定後に実行してください。
 	 * @param uid UID
 	 * @param groups 参加グループリスト.<br>
 	 *               nullの場合、項目ACLチェックを行いません。<br>
