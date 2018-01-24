@@ -209,6 +209,9 @@ public abstract class FeedBase implements Serializable, Cloneable {
 
 	/**
 	 * 項目チェック.
+	 * バリデーションチェック、項目ACLチェックを行います。
+	 * 注) 項目ACLの@指定ではuidとEntryBase.getMyself()メソッドの値を比較します。
+	 *     Entryのid設定後に実行してください。
 	 * @param uid UID
 	 * @param groups 参加グループリスト.<br>
 	 *               nullの場合、項目ACLチェックを行いません。<br>
