@@ -582,15 +582,14 @@ public abstract class EntryBase implements Serializable {
 	 * @return UID
 	 */
 	public String getMyself() {
-		if (id != null) {
-			String token[] = id.split("/");
-			if (token.length > 1) {
-				if (token[1].startsWith("@")) {
-					if (token.length > 2) {
-						return token[2]; // /@{サービス名}/{uid}
+		
+		if (author != null) {
+			for (Author anAuthor : author) {
+				if (anAuthor.uri!=null) {
+					String[] temp = anAuthor.uri.split(":");
+					if (temp.length>3&&temp[2].equals("created")) {
+						return temp[3];
 					}
-				} else {
-					return token[1];	// /{uid}
 				}
 			}
 		}
