@@ -1395,7 +1395,7 @@ public class TestMsgpackMapper {
 	public void testMaskprop() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, entityAcls2, 30, SECRETKEY);
 
-		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"http://xyz\"},{\"name\":\"fuga\"}]}]}}";
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"content\" : {\"$$text\":\"あああ\"},\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"author\" : [{\"email\":\"xyz@def\"},{\"uri\":\"urn:vte.cx:created:7\"},{\"name\":\"fuga\"}]}]}}";
 
 		FeedBase feed = (FeedBase)mp.fromJSON(json);
 		String xml = null;
@@ -1639,7 +1639,7 @@ public class TestMsgpackMapper {
 
 		// validate test (1) : validateエラーあり
 		System.out.println("testValidate (1) validate start.");
-		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
+		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
 		
 		boolean errorFlg = false;
@@ -1655,7 +1655,7 @@ public class TestMsgpackMapper {
 
 		// validate test (2) : validateエラー無し、content追加
 		System.out.println("testValidate (2) content start.");
-		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"content\" : {\"$$text\":\"あああ\"},\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"content\" : {\"$$text\":\"あああ\"},\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
 
 		errorFlg = false;
@@ -1685,7 +1685,7 @@ public class TestMsgpackMapper {
 
 		// validate test (4) : validateエラー無し、right追加
 		System.out.println("testValidate (4) admin right (Another user) start.");
-		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"rights\" : \"暗号化される\",\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
 		errorFlg = false;
 		try {
@@ -1762,7 +1762,7 @@ public class TestMsgpackMapper {
 
 		// validate test (9) : validateエラー無し、contributor追加
 		System.out.println("testValidate (9) admin contributor start.");
-		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"contributor\" : [{\"email\":\"abc@example.com\"},{\"uri\":\"urn:vte.cx:abc@example.com,CRUD\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"contributor\" : [{\"email\":\"abc@example.com\"},{\"uri\":\"urn:vte.cx:abc@example.com,CRUD\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
 		// groupsをnullにする。
 		groups = null;
@@ -1824,7 +1824,7 @@ public class TestMsgpackMapper {
 
 		// validate test (13) : validateエラー無し、info.category追加
 		System.out.println("testValidate (13) admin info.category start.");
-		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
 		// groupsはcontentとadminに参加中。
 		errorFlg = false;
@@ -1885,7 +1885,7 @@ public class TestMsgpackMapper {
 
 		// validate test (17) : validateエラー無し、項目ACLにUID設定
 		System.out.println("testValidate (17) field acl uid start.");
-		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"},\"comment\" : [{\"nickname\" : \"foo\",\"$$text\" : \"コメント。\"},{\"nickname\" : \"aaa\",\"$$text\" : \"あいうえお\"}]}]}}";
+		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"category\" : \"Tops\",\"color\" : \"red\",\"size\" : \"M\"},\"comment\" : [{\"nickname\" : \"foo\",\"$$text\" : \"コメント。\"},{\"nickname\" : \"aaa\",\"$$text\" : \"あいうえお\"}]}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
 		// info権限のグループを設定
 		groups = new ArrayList<String>();
@@ -4075,7 +4075,7 @@ public class TestMsgpackMapper {
 		sb = new StringBuilder();
 		sb.append("{\"feed\" : {\"entry\" : [");
 		sb.append("{");
-		
+		sb.append("\"author\" : [{\"uri\" : \"urn:vte.cx:created:201\"}],");
 		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
 		sb.append("\"title\" : \"Field ACL test\"");
 		sb.append(",\"name\" : \"ティーカップ\"");
