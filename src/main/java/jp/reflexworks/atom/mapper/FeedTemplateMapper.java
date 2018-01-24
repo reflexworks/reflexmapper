@@ -1347,12 +1347,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String ismatchFuncE2 = "return context.isMatch();}";
 
 	private final String validateFuncS = "public boolean validate(String uid, java.util.List groups, String myself) throws java.text.ParseException {";
-	private final String validateFuncS2 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = getMyself();";
+	private final String validateFuncS2 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = getCreatorUid();";
 	private final String validateFuncS3 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = null;";
 
 	private final String validateFuncE = "return true;}";
 	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
-	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getMyself());";
+	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getCreatorUid());";
 	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
 
 	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext context) {";

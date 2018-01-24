@@ -4104,7 +4104,7 @@ public class TestMsgpackMapper {
 		feed = (FeedBase)mp3.fromJSON(json);
 		// ログ出力
 		EntryBase entry = feed.entry.get(0);
-		System.out.println("entry.getMyself = " + entry.getMyself());
+		System.out.println("entry.getCreatorUid = " + entry.getCreatorUid());
 		
 		try {
 			feed.validate(uid, groups);

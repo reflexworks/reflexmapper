@@ -581,7 +581,7 @@ public abstract class EntryBase implements Serializable {
 	 * IDからUIDを取得.
 	 * @return UID
 	 */
-	public String getMyself() {
+	public String getCreatorUid() {
 		
 		if (author != null) {
 			for (Author anAuthor : author) {

@@ -23,7 +23,7 @@ public class EntryMyselfPrint extends EntryBase{
 		
 		entry.setAuthor(authors);
 		
-		System.out.println("id="+entry.getMyself());
+		System.out.println("id="+entry.getCreatorUid());
 
 	}
 
