@@ -116,6 +116,8 @@ public interface RequestType {
 	public static final String PARAM_REVOKEUSER = "_revokeuser";
 	/** URLパラメータ : ユーザを有効にする */
 	public static final String PARAM_ACTIVATEUSER = "_activateuser";
+	/** URLパラメータ : ユーザを削除する */
+	public static final String PARAM_DELETEUSER = "_deleteuser";
 	/** URLパラメータ : RDB */
 	public static final String PARAM_RDB = "_rdb";
 	/** URLパラメータ : キャッシュ */
