@@ -612,7 +612,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					}
 				}
 			}
-			if (!isExist) throw new ParseException("Not found property '" + k[0] + "' in the template.",0);
+			if (!isExist) throw new ParseException("Not found property '" + k[0] + "' in the schema template.",0);
 		}
 	}
 
@@ -1909,7 +1909,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 							try {
 								f = cc.getField("_"+fld);
 							} catch (NoSuchFieldException ns2) {
-								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is not defined.");
+								throw new NoSuchFieldException("JSON parse error: "+ns2.getMessage().substring(1)+" is not defined in the schema template.");
 							}
 						}
 					}
@@ -1991,7 +1991,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						String tmpName = msg.substring(idx + 1);
 						String name = tmpName.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
 								tmpName.substring(1);
-						throw new JSONException("JSON parse error: " + name + " is not defined.");
+						throw new JSONException("JSON parse error: " + name + " is not defined in the schema template.");
 					}
 				}
 			}
