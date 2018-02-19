@@ -136,6 +136,8 @@ public interface RequestType {
 	public static final String PARAM_CACHEINCR = "_cacheincr";
 	/** URLパラメータ : 有効時間 */
 	public static final String PARAM_EXPIRE = "_expire";
+	/** URLパラメータ : 一括処理 */
+	public static final String PARAM_BULK = "_bulk";
 	
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
