@@ -138,7 +138,17 @@ public interface RequestType {
 	public static final String PARAM_EXPIRE = "_expire";
 	/** URLパラメータ : 一括処理 */
 	public static final String PARAM_BULK = "_bulk";
-	
+	/** URLパラメータ : エイリアス追加 */
+	public static final String PARAM_ADDALIAS = "_addalias";
+	/** URLパラメータ : エイリアス削除 */
+	public static final String PARAM_REMOVEALIAS = "_removealias";
+	/** URLパラメータ : ACL追加 */
+	public static final String PARAM_ADDACL = "_addacl";
+	/** URLパラメータ : ACL削除 */
+	public static final String PARAM_REMOVEACL = "_removeacl";
+	/** URLパラメータ : エイリアスカーソル指定 */
+	public static final String PARAM_NEXTALIAS = "_nextalias";
+
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
 
