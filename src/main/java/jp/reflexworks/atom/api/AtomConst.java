@@ -186,8 +186,5 @@ public interface AtomConst {
 	
 	/** ACLグループのワイルドカード */
 	public static final String GROUP_WILDCARD = "*";
-	
-	/** type alias */
-	public static final String ALIAS = "alias";
 
 }
