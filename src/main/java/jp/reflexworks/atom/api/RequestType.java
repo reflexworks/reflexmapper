@@ -146,6 +146,8 @@ public interface RequestType {
 	public static final String PARAM_ADDACL = "_addacl";
 	/** URLパラメータ : ACL削除 */
 	public static final String PARAM_REMOVEACL = "_removeacl";
+	/** URLパラメータ : Meta情報を取得しない */
+	public static final String PARAM_NOMETA = "_nometa";
 
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
