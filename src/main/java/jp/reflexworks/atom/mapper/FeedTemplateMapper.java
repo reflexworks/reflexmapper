@@ -2076,13 +2076,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public boolean precheckTemplate(String[] jo_packages_old,String[] jo_packages_new) throws ParseException {
-		List<Meta> metalistprev = getMetalist(mergeAtomEntry(jo_packages_old), packagename);
-		List<Meta> metalistnew = getMetalist(mergeAtomEntry(jo_packages_new), packagename);
+		List<Meta> metalistprev = getMetalist(jo_packages_old, packagename);
+		List<Meta> metalistnew = getMetalist(jo_packages_new, packagename);
 
 		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
 			if (j>=metalistprev.size()) return true;	// チェック完了(OK)
 			if (i>=metalistnew.size()) return false;	// チェック完了(NG)
-
+			if (metalistnew.get(i).hasChild()&&isReservedWord(metalistnew.get(i).self)) return false;
 			// 同じ階層でかつ同じタイプであればOK
 			if (metalistnew.get(i).level == metalistprev.get(j).level) {
 				if (metalistnew.get(i).type.equals(metalistprev.get(j).type)){
@@ -2103,6 +2103,17 @@ public class FeedTemplateMapper extends ResourceMapper {
 		return false;
 	}
 
+	private boolean isReservedWord(String word) {
+		if (word.equals("author")) return true;
+		if (word.equals("category")) return true;
+		if (word.equals("contributor")) return true;
+		if (word.equals("content")) return true;
+		if (word.equals("element")) return true;
+		if (word.equals("generator")) return true;
+		if (word.equals("link")) return true;
+		return false;
+	}
+	
 	public String getSecretkey() {
 		return secretkey;
 	}
