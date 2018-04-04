@@ -1341,6 +1341,9 @@ public class TestMsgpackMapper {
 		String[] tmpl2 = new String[]{"androidservice{100}", "info", " name", " category", " color", " size", "comment{}", " $$text", " nickname", "deleteFlg", "deleteFlg2"};
 
 		precheck = mp0.precheckTemplate(tmpl1, tmpl2);
+		
+		// 新規登録
+		precheck = mp0.precheckTemplate(null, tmpl2);
 
 		assertTrue(precheck);
 	}
