@@ -1542,6 +1542,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		Pattern patternf = Pattern.compile(FIELDPATTERN);
 
+		if (entitytmpl==null) {
+			entitytmpl = new String[] {"_empty_"};
+		}
 		Meta meta = new Meta();
 		Matcher matcherf;
 		Stack<String> stack = new Stack<String>();
@@ -2076,6 +2079,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws ParseException
 	 */
 	public boolean precheckTemplate(String[] jo_packages_old,String[] jo_packages_new) throws ParseException {
+		
 		List<Meta> metalistprev = getMetalist(jo_packages_old, packagename);
 		List<Meta> metalistnew = getMetalist(jo_packages_new, packagename);
 

@@ -1330,7 +1330,10 @@ public class TestMsgpackMapper {
 		};
 
 		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
-		boolean precheck = mp0.precheckTemplate(entitytempl, entitytempl_new);
+		boolean precheck = mp0.precheckTemplate(null,entitytempl);
+		System.out.println("precheck:"+precheck);
+
+		precheck = mp0.precheckTemplate(entitytempl, entitytempl_new);
 		System.out.println("precheck:"+precheck);
 
 		// 全く同じ内容のテスト
