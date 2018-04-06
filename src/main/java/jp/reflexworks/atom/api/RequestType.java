@@ -110,6 +110,10 @@ public interface RequestType {
 	public static final String PARAM_SERVICE = "_service";
 	/** URLパラメータ : サービスのステータス取得・更新 */
 	public static final String PARAM_SERVICESTATUS = "_servicestatus";
+	/** URLパラメータ : サービスステータスを公開にする */
+	public static final String PARAM_PRODUCTIONSERVICE = "_productionservice";
+	/** URLパラメータ : サービスステータスを開発にする */
+	public static final String PARAM_STAGINGSERVICE = "_stagingservice";
 	/** URLパラメータ : ユーザステータス取得 */
 	public static final String PARAM_USERSTATUS = "_userstatus";
 	/** URLパラメータ : ユーザを無効にする */
