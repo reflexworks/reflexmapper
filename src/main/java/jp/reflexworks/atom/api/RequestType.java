@@ -111,9 +111,9 @@ public interface RequestType {
 	/** URLパラメータ : サービスのステータス取得・更新 */
 	public static final String PARAM_SERVICESTATUS = "_servicestatus";
 	/** URLパラメータ : サービスステータスを公開にする */
-	public static final String PARAM_PRODUCTIONSERVICE = "_productionservice";
+	public static final String PARAM_SERVICETOPRODUCTION = "_servicetoproduction";
 	/** URLパラメータ : サービスステータスを開発にする */
-	public static final String PARAM_STAGINGSERVICE = "_stagingservice";
+	public static final String PARAM_SERVICETOSTAGING = "_servicetostaging";
 	/** URLパラメータ : ユーザステータス取得 */
 	public static final String PARAM_USERSTATUS = "_userstatus";
 	/** URLパラメータ : ユーザを無効にする */
