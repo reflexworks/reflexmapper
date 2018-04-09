@@ -2086,7 +2086,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
 			if (j>=metalistprev.size()) return true;	// チェック完了(OK)
 			if (i>=metalistnew.size()) return false;	// チェック完了(NG)
-			if (metalistnew.get(i).hasChild()&&isReservedWord(metalistnew.get(i).self)) return false;
+			if (metalistnew.get(i).hasChild()&&isReservedWord(metalistnew.get(i).self)) {
+				throw new ParseException(metalistnew.get(i).self+" is a reserved word.",0);
+			}
 			// 同じ階層でかつ同じタイプであればOK
 			if (metalistnew.get(i).level == metalistprev.get(j).level) {
 				if (metalistnew.get(i).type.equals(metalistprev.get(j).type)){
