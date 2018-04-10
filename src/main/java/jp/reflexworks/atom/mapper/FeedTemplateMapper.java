@@ -558,7 +558,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				key = k3[0];
 				index = k3[1];
 				i++;
-				if (i >= indexmax) throw new ParseException("Custom property index limit exceeded.'" + k[0] + "'",0);
+				if (i > indexmax) throw new ParseException("Custom property index limit exceeded.'" + k[0] + "'",0);
 			}
 			if (keys.contains(key)) throw new ParseException("Already specified.'" + k[0] + "'",0);
 			keys.add(key);
