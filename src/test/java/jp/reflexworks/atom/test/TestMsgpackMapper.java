@@ -156,6 +156,41 @@ public class TestMsgpackMapper {
 		"price=101+W,@+RW"
 	};
 
+	// maxテスト 用
+	public static String entityAclsMaxTest[] = {
+		"title:^/$",					// ルートのtitleのIndex指定(任意のサービス名)
+		"info10.item1:^/.*al.*$",
+		"info10.item2:^/.*al.*$",
+		"info10.item3:^/.*al.*$",
+		"info10.item4:^/.*al.*$",
+		"info10.item5:^/.*al.*$",
+		"info10.item6:^/.*al.*$",
+		"info10.item7:^/.*al.*$",
+		"info10.item8:^/.*al.*$",
+		"info10.item9:^/.*al.*$",
+		"info10.item10:^/.*al.*$",
+		"info20.item1:^/.*al.*$",
+		"info20.item2:^/.*al.*$",
+		"info20.item3:^/.*al.*$",
+		"info20.item4:^/.*al.*$",
+		"info20.item5:^/.*al.*$",
+		"info20.item6:^/.*al.*$",
+		"info20.item7:^/.*al.*$",
+		"info20.item8:^/.*al.*$",
+		"info20.item9:^/.*al.*$",
+		"info20.item10:^/.*al.*$",
+		"info20.item11:^/.*al.*$",
+		"info20.item12:^/.*al.*$",
+		"info20.item13:^/.*al.*$",
+		"info20.item14:^/.*al.*$",
+		"info20.item15:^/.*al.*$",
+		"info20.item16:^/.*al.*$",
+		"info20.item17:^/.*al.*$",
+		"info20.item18:^/.*al.*$",
+		"info20.item19:^/.*al.*$",
+		"info20.item20:^/.*al.*$"
+	};
+
 	public static String entitytempl2[] = {
 		// {}がMap, []がArray　, {} [] は末尾に一つだけ付けられる。*が必須項目
 		"import{2}",        //  0行目はパッケージ名(service名)
@@ -335,37 +370,74 @@ public class TestMsgpackMapper {
 	};
 
 	public static String entitytemplf[] = {
-			// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
-			"default{2}",        //  0行目はパッケージ名(service名)
-			"Idx 	",			  
-			"email(string){5~30}",	// 5文字~30文字の範囲
-			"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
-			"name",
-			"given_name",
-			"family_name",
-			"error",
-			" errors{}",				// 多重度(n)、*がないと多重度(1)、繰り返し最大{1}
-			"  domain",
-			"  reason",
-			"  message",
-			"  locationType",
-			"  location",
-			" code(float){1~100}",			// 1~100の範囲			
-			" message",
-			"subInfo",
-			" favorite",
-			"  food!=^.{3}$",	// 必須項目、正規表現つき
-			"  music=^.{5}$",			// 配列(要素数max3)
-			" favorite2",
-			"  food",
-			"   food1",
-			" favorite3",
-			"  food",
-			"  updated(date)",
-			" hobby{}",
-			"  $$text",				// テキストノード
-			"seq(desc)"
-		};
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"default{2}",        //  0行目はパッケージ名(service名)
+		"Idx 	",			  
+		"email(string){5~30}",	// 5文字~30文字の範囲
+		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
+		"name",
+		"given_name",
+		"family_name",
+		"error",
+		" errors{}",				// 多重度(n)、*がないと多重度(1)、繰り返し最大{1}
+		"  domain",
+		"  reason",
+		"  message",
+		"  locationType",
+		"  location",
+		" code(float){1~100}",			// 1~100の範囲			
+		" message",
+		"subInfo",
+		" favorite",
+		"  food!=^.{3}$",	// 必須項目、正規表現つき
+		"  music=^.{5}$",			// 配列(要素数max3)
+		" favorite2",
+		"  food",
+		"   food1",
+		" favorite3",
+		"  food",
+		"  updated(date)",
+		" hobby{}",
+		"  $$text",				// テキストノード
+		"seq(desc)"
+	};
+	
+	public static String entitytemplMaxTest[] = {
+		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
+		"maxtest{100}",        //  0行目はパッケージ名(service名)
+		"info10",
+		" item1",
+		" item2",
+		" item3",
+		" item4",
+		" item5",
+		" item6",
+		" item7",
+		" item8",
+		" item9",
+		" item10",
+		"info20",
+		" item1",
+		" item2",
+		" item3",
+		" item4",
+		" item5",
+		" item6",
+		" item7",
+		" item8",
+		" item9",
+		" item10",
+		" item11",
+		" item12",
+		" item13",
+		" item14",
+		" item15",
+		" item16",
+		" item17",
+		" item18",
+		" item19",
+		" item20"
+	};
 
 	private static boolean FEED = true;
 	private static boolean ENTRY = false;
@@ -4162,6 +4234,40 @@ public class TestMsgpackMapper {
 			assertTrue(false);
 		}
 		
+	}
+	
+	/**
+	 * Index数制限チェック
+	 */
+	@Test
+	public void testMaxIndexes() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		System.out.println("[testMaxIndexes] indexes size = " + entityAclsMaxTest.length);
+		int indexmax = 0;
+		FeedTemplateMapper mp = null;
+		
+		// maximum number 32
+		indexmax = entityAclsMaxTest.length + 1;
+		System.out.println("[testMaxIndexes] indexmax = " + indexmax);
+		mp = new FeedTemplateMapper(entitytemplMaxTest, entityAclsMaxTest, indexmax, SECRETKEY);
+		
+		// max indexes 31
+		indexmax = entityAclsMaxTest.length;
+		System.out.println("[testMaxIndexes] indexmax = " + indexmax);
+		mp = new FeedTemplateMapper(entitytemplMaxTest, entityAclsMaxTest, indexmax, SECRETKEY);
+		
+		// max indexes 30 -> error
+		indexmax = entityAclsMaxTest.length - 1;
+		System.out.println("[testMaxIndexes] indexmax = " + indexmax);
+		try {
+			mp = new FeedTemplateMapper(entitytemplMaxTest, entityAclsMaxTest, indexmax, SECRETKEY);
+			assertTrue(false);	// エラーにならない場合エラー
+		} catch (ParseException e) {
+			if (e.getMessage().startsWith("Custom property index limit exceeded.")) {
+				System.out.println("[testMaxIndexes] ParseException: " + e.getMessage());
+			} else {
+				throw e;
+			}
+		}
 	}
 
 }
