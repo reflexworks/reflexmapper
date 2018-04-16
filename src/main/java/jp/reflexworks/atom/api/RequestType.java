@@ -142,6 +142,8 @@ public interface RequestType {
 	public static final String PARAM_EXPIRE = "_expire";
 	/** URLパラメータ : 一括処理 */
 	public static final String PARAM_BULK = "_bulk";
+	/** URLパラメータ : 一括処理 */
+	public static final String PARAM_BULKSERIAL = "_bulkserial";
 	/** URLパラメータ : エイリアス追加 */
 	public static final String PARAM_ADDALIAS = "_addalias";
 	/** URLパラメータ : エイリアス削除 */
