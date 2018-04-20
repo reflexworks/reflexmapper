@@ -532,7 +532,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private static final String aclpattern = "([/0-9a-zA-Z_$*@]+\\+(?:R|W|RW),?)+";
-	private static final String STRMAXLENGTH = "1048576";	// 1MB
+	private static final String STRMAXLENGTH = "10485760";	// 10MB
 	
 	private void addPropAcls(String[] propAcls, int indexmax) throws ParseException {
 

@@ -4021,7 +4021,7 @@ public class TestMsgpackMapper {
 		
 		// Maximum length of 'title' exceeded.
 		entry = null;
-		l = 1024 * 100;
+		l = 1024 * 1000;
 		sb = new StringBuilder();
 		for (int i = 0; i < l; i++) {
 			sb.append(TEST_STR);
