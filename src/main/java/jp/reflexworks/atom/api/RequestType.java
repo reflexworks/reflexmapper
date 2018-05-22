@@ -144,6 +144,8 @@ public interface RequestType {
 	public static final String PARAM_BULK = "_bulk";
 	/** URLパラメータ : 一括処理 */
 	public static final String PARAM_BULKSERIAL = "_bulkserial";
+	/** URLパラメータ : 非同期処理 */
+	public static final String PARAM_ASYNC = "_async";
 	/** URLパラメータ : エイリアス追加 */
 	public static final String PARAM_ADDALIAS = "_addalias";
 	/** URLパラメータ : エイリアス削除 */
