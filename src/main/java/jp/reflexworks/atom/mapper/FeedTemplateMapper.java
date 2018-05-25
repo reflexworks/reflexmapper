@@ -1677,7 +1677,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else {
 					meta.name = fldname + "." + meta.self;
 				}
-				if (exists(metalist, meta.name)) throw new ParseException("Dupricated properties in Entry:" + meta.name, 0);
+				if (exists(metalist, meta.name)) throw new ParseException("Duplicated properties in Entry:" + meta.name, 0);
 				if (meta.self.startsWith("_") && meta.level == 1) 
 					throw new ParseException("Can't use '_' as prefix.:" + meta.name, 0);
 
