@@ -458,7 +458,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 				result.append(token[i]);
 			}else {
 				int p = token[i].indexOf("/");
-				result.append(token[i].substring(0,p)+"/@"+svc+token[i].substring(p));
+				if (p>=0) {
+					result.append(token[i].substring(0,p)+"/@"+svc+token[i].substring(p));					
+				}
 			}
 			if (i+1<token.length) {
 				result.append("|");
