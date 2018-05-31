@@ -425,48 +425,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 		}
 		return result;
 	}
-	
-	/**
-	 * Metalistを取得.
-	 * 指定されたサービス名を先頭に付加する。
-	 * @param svc サービス名
-	 * @return 編集したMetalist
-	 */
-	public List<Meta> getMetalist(String svc) {
-		for (Meta meta:metalist) {
-			meta.index = convertIndex(meta.index, svc);
-		}
-		return metalist;
-	}
-	
+		
 	/**
 	 * Metalistを取得
 	 * @return Metalist
 	 */
 	public List<Meta> getMetalist() {
 		return metalist;
-	}
-
-	private String convertIndex(String propAcl,String svc) {
-		if (propAcl==null) return null;
-		String token[] = propAcl.split("\\|");
-		StringBuilder result = new StringBuilder();
-		
-		for (int i=0;i<token.length;i++) {
-			// サービス名が指定されている場合はそのまま
-			if (token[i].indexOf("/@")>=0||token[i].indexOf("^/$")>=0||svc==null) {
-				result.append(token[i]);
-			}else {
-				int p = token[i].indexOf("/");
-				if (p>=0) {
-					result.append(token[i].substring(0,p)+"/@"+svc+token[i].substring(p));					
-				}
-			}
-			if (i+1<token.length) {
-				result.append("|");
-			}
-		}
-		return result.toString();
 	}
 
 	private List<String> getClassNamesFromPackage(String packagename) throws ClassNotFoundException {

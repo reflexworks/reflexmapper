@@ -2182,39 +2182,6 @@ public class TestMsgpackMapper {
 
 	}
 
-	@Test
-	public void testMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-
-		//String serviceName = "testservice";
-		//String serviceName = null;
-		String serviceName = "";
-
-		System.out.println("--- Template Metalist ---");
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
-		List<Meta> metalist = mp.getMetalist(serviceName);
-		boolean existsMetalist = printMetalist(metalist);
-		System.out.println("--- printMetalist2 ---");
-		existsMetalist = printMetalist2(metalist);
-		assertTrue(existsMetalist);
-
-		System.out.println("--- Package Metalist ---");
-		Map<String, String> modelPackage = new HashMap<String, String>();
-		modelPackage.putAll(AtomConst.ATOM_PACKAGE);
-		modelPackage.put("jp.reflexworks.test2.model", "");
-
-		//mp = new FeedTemplateMapper(modelPackage, entityAcls5, 30, SECRETKEY);
-		mp = new FeedTemplateMapper(null, entityAcls5, 30, SECRETKEY, modelPackage);
-		metalist = mp.getMetalist(serviceName);
-		existsMetalist = printMetalist(metalist);
-		assertTrue(existsMetalist);
-		
-		System.out.println("--- Package Metalist (template & package) ---");
-		mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY, modelPackage);
-		metalist = mp.getMetalist(serviceName);
-		existsMetalist = printMetalist(metalist);
-		assertTrue(existsMetalist);
-
-	}
 	
 	private boolean printMetalist(List<Meta> metalist) {
 		boolean existsMetalist = false;
@@ -2293,7 +2260,7 @@ public class TestMsgpackMapper {
 			}
 		}
 		
-		List<Meta> metalist = mp4.getMetalist(serviceName);
+		List<Meta> metalist = mp4.getMetalist();
 		System.out.println("[Metalist Index]");
 		for (Meta meta : metalist) {
 			if (meta.index != null && meta.index.length() > 0) {
@@ -3627,7 +3594,7 @@ public class TestMsgpackMapper {
 
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4tmptype, entityAcls5, 30, SECRETKEY);
 
-		List<Meta> metalist = mp.getMetalist("myservice");
+		List<Meta> metalist = mp.getMetalist();
 		
 		System.out.println("[testType] print type : ");
 		for (Meta meta : metalist) {
