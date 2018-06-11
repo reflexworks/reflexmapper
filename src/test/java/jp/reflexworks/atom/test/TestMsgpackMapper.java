@@ -2215,13 +2215,15 @@ public class TestMsgpackMapper {
 		StringBuilder prn = new StringBuilder();
 		if (metalist != null && metalist.size() > 0) {
 			existsMetalist = true;
-			prn.append("[name]\t[level]\t[type]\t[parent]\t[self]\t[index]\t[repeated]\t[isrecord]\n");
+			prn.append("[name]\t[level]\t[type]\t[bigquerytype]\t[parent]\t[self]\t[index]\t[repeated]\t[isrecord]\n");
 			for (Meta meta : metalist) {
 				prn.append(meta);
 				prn.append("\t");
 				prn.append(meta.level);
 				prn.append("\t");
 				prn.append(meta.type);
+				prn.append("\t");
+				prn.append(meta.bigquerytype);
 				prn.append("\t");
 				prn.append(meta.parent);
 				prn.append("\t");
@@ -4235,6 +4237,18 @@ public class TestMsgpackMapper {
 				throw e;
 			}
 		}
+	}
+
+	@Test
+	public void printTemplateMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, entityAcls, 30, SECRETKEY);
+		printMetalist2(mp.getMetalist());
+	}
+
+	@Test
+	public void printTemplateMetalist4() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
+		printMetalist2(mp.getMetalist());
 	}
 
 }

@@ -1616,10 +1616,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 						case "long" :
 							meta.bigquerytype = "INTEGER";
 							break;
-						case "Boolean" :
+						case "boolean" :
 							meta.bigquerytype = "BOOLEAN";
 							break;
-						case "Float" :
+						case "float" :
 						case "double" :
 							meta.bigquerytype = "FLOAT";
 							break;
