@@ -191,4 +191,19 @@ public interface AtomConst {
 	/** ACLグループのワイルドカード */
 	public static final String GROUP_WILDCARD = "*";
 
+	/** テンプレートのMeta情報のType : String */
+	public static final String META_TYPE_STRING = "String";
+	/** テンプレートのMeta情報のType : Boolean */
+	public static final String META_TYPE_BOOLEAN = "Boolean";
+	/** テンプレートのMeta情報のType : Integer */
+	public static final String META_TYPE_INTEGER = "Integer";
+	/** テンプレートのMeta情報のType : Long */
+	public static final String META_TYPE_LONG = "Long";
+	/** テンプレートのMeta情報のType : Float */
+	public static final String META_TYPE_FLOAT = "Float";
+	/** テンプレートのMeta情報のType : Double */
+	public static final String META_TYPE_DOUBLE = "Double";
+	/** テンプレートのMeta情報のType : Date */
+	public static final String META_TYPE_DATE = "Date";
+	
 }
