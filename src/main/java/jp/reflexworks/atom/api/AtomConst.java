@@ -205,5 +205,16 @@ public interface AtomConst {
 	public static final String META_TYPE_DOUBLE = "Double";
 	/** テンプレートのMeta情報のType : Date */
 	public static final String META_TYPE_DATE = "Date";
-	
+
+	/** テンプレートのMeta情報のBigQueryType : String */
+	public static final String META_BIGQUERYTYPE_STRING = "STRING";
+	/** テンプレートのMeta情報のBigQueryType : Boolean */
+	public static final String META_BIGQUERYTYPE_BOOLEAN = "BOOLEAN";
+	/** テンプレートのMeta情報のBigQueryType : Integer */
+	public static final String META_BIGQUERYTYPE_INTEGER = "INTEGER";
+	/** テンプレートのMeta情報のBigQueryType : Float */
+	public static final String META_BIGQUERYTYPE_FLOAT = "FLOAT";
+	/** テンプレートのMeta情報のBigQueryType : Date */
+	public static final String META_BIGQUERYTYPE_DATE = "TIMESTAMP";
+
 }
