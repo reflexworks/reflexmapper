@@ -1,16 +1,17 @@
 package jp.reflexworks.atom.test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.jupiter.api.Test;
 
 import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.util.MailReceiver;
 
-import org.junit.Test;
 
 public class MailReceiverTest {
 	

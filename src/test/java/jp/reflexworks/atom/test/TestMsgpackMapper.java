@@ -1,10 +1,15 @@
 package jp.reflexworks.atom.test;
 
-import static org.junit.Assert.*;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -25,7 +30,7 @@ import java.util.zip.Deflater;
 import javax.crypto.Cipher;
 import javax.xml.bind.DatatypeConverter;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.carrotsearch.sizeof.ObjectTree;
 

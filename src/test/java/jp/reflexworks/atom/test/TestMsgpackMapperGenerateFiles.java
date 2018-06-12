@@ -3,10 +3,10 @@ package jp.reflexworks.atom.test;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 
+import org.junit.jupiter.api.Test;
+
 import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.sourceforge.reflex.util.FileUtil;
-
-import org.junit.Test;
 
 public class TestMsgpackMapperGenerateFiles {
 

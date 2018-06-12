@@ -1,10 +1,11 @@
 package jp.reflexworks.atom.test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import jp.reflexworks.atom.util.SurrogateConverter;
 
-import org.junit.Test;
 
 public class SurrogateConverterTest {
 	

@@ -1,6 +1,6 @@
 package jp.reflexworks.atom.test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import jp.sourceforge.reflex.util.FileUtil;
 import jp.sourceforge.reflex.util.StringUtils;
