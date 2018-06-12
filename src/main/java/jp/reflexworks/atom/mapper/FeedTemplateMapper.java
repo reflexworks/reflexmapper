@@ -1624,7 +1624,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 							meta.bigquerytype = "FLOAT";
 							break;
 						case "date" :
-							meta.bigquerytype = "TIMESTAMP";
+							meta.bigquerytype = "DATETIME";
 							break;
 						default:
 							meta.bigquerytype = "STRING";
