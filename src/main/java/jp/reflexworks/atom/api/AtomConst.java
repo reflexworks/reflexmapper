@@ -215,6 +215,6 @@ public interface AtomConst {
 	/** テンプレートのMeta情報のBigQueryType : Float */
 	public static final String META_BIGQUERYTYPE_FLOAT = "FLOAT";
 	/** テンプレートのMeta情報のBigQueryType : Date */
-	public static final String META_BIGQUERYTYPE_DATE = "TIMESTAMP";
+	public static final String META_BIGQUERYTYPE_DATE = "DATETIME";
 
 }
