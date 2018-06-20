@@ -52,6 +52,11 @@ import jp.reflexworks.atom.util.SurrogateConverter;
 
 public class TestMsgpackMapper {
 
+	public static String entitytemplone[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"sample"			  
+	};
+
 	public static String entitytempl[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
@@ -463,6 +468,22 @@ public class TestMsgpackMapper {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void testOneItem() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplone, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"sample\" : \"abcd\"}}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
+		assertEquals(json, json2);
 	}
 
 	@Test
