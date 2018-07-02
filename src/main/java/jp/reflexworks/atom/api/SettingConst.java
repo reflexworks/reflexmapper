@@ -32,6 +32,12 @@ public interface SettingConst {
 	public static final String WHITE_REMOTEADDR_PREFIX = "_white.remoteaddress.";
 	/** ユーザキャッシュの有効期間(分) **/
 	public static final String USERCACHE_MINUTE = "_usercache.minute";
+	/** BigQueryのプロジェクトID */
+	public static final String BIGQUERY_PROJECTID = "_bigquery.projectid";
+	/** BigQueryのデータセット名 */
+	public static final String BIGQUERY_DATASET = "_bigquery.dataset";
+	/** BigQueryのロケーション*/
+	public static final String BIGQUERY_LOCATION = "_bigquery.location";
 
 	/** 
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
@@ -41,7 +47,8 @@ public interface SettingConst {
 	 * </p>
 	 */
 	public static final List<String> IGNORE_SYSTEM_IF_EXIST_SERVICE_INFO =
-			Arrays.asList(new String[]{MAIL_PREFIX});
+			Arrays.asList(new String[]{MAIL_PREFIX, BIGQUERY_PROJECTID, BIGQUERY_DATASET, 
+					BIGQUERY_LOCATION});
 	
 	/** ユーザ初期エントリー設定 : ユーザ番号に置き換える記号 */
 	public static final String SETTING_USERINIT_UID = "#";
