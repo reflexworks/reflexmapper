@@ -2054,6 +2054,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (metalistnew.get(i).hasChild()&&isReservedWord(metalistnew.get(i).self)) {
 				throw new ParseException(metalistnew.get(i).self+" is a reserved word.",0);
 			}
+			if (metalistnew.get(i).hasChild()&&isUsedWord(metalistnew,i)) {
+				throw new ParseException(metalistnew.get(i).self+" is already used word as the parent.",0);
+			}
 		}
 		
 		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
@@ -2075,6 +2078,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 				continue;
 			}
 			return false;
+		}
+		return false;
+	}
+
+	private boolean isUsedWord(List<Meta> metalistnew, int i) {
+
+		for(int j = 0; j < metalistnew.size(); j++) {
+			if (i!=j&&metalistnew.get(i).self.equals(metalistnew.get(j).self)&&metalistnew.get(j).hasChild()&&metalistnew.get(i).level!=metalistnew.get(j).level) {
+				return true;
+			}
 		}
 		return false;
 	}

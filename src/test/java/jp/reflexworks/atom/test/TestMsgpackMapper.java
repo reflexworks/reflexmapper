@@ -57,6 +57,15 @@ public class TestMsgpackMapper {
 			"sample"			  
 	};
 
+	public static String entitytempldup[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"parent",			  
+			" child1",
+			" parent",
+			"  child1",
+			"  child2"
+	};
+
 	public static String entitytempl[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
@@ -484,6 +493,21 @@ public class TestMsgpackMapper {
 		System.out.println(json2);
 
 		assertEquals(json, json2);
+	}
+
+	@Test
+	public void testDuplicateItems() throws ParseException, JSONException {
+		
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		try {
+			boolean precheck = mp0.precheckTemplate(null,entitytempldup);
+			System.out.println("precheck:"+precheck);
+			assert(false);
+		}catch(ParseException e) {
+			System.out.println(e.getMessage());
+			assert(true);
+		}
+
 	}
 
 	@Test
