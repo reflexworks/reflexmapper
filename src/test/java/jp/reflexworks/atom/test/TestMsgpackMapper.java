@@ -57,11 +57,17 @@ public class TestMsgpackMapper {
 			"sample"			  
 	};
 
-	public static String entitytempldup[] = {
+	public static String entitytempldup1[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"parent",			  
+			" child1"
+	};
+
+	public static String entitytempldup2[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
 			"parent",			  
 			" child1",
-			" parent",
+			" parent{}",
 			"  child1",
 			"  child2"
 	};
@@ -500,12 +506,12 @@ public class TestMsgpackMapper {
 		
 		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
 		try {
-			boolean precheck = mp0.precheckTemplate(null,entitytempldup);
+			boolean precheck = mp0.precheckTemplate(entitytempldup1,entitytempldup2);
 			System.out.println("precheck:"+precheck);
-			assert(false);
+			assertTrue(false);
 		}catch(ParseException e) {
 			System.out.println(e.getMessage());
-			assert(true);
+			assertTrue(true);
 		}
 
 	}
