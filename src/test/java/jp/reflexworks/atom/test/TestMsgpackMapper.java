@@ -63,6 +63,12 @@ public class TestMsgpackMapper {
 			" child1"
 	};
 
+	public static String entitytempldesc[] = {
+			"default{}",        
+			"item(int)",			  
+			"item_desc(desc)"			  
+	};
+
 	public static String entitytempldup2[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
 			"parent",			  
@@ -514,6 +520,22 @@ public class TestMsgpackMapper {
 			assertTrue(true);
 		}
 
+	}
+
+	@Test
+	public void testIntDesc() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"item\" : 1}}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
+		assertEquals(json, json2);
 	}
 
 	@Test
