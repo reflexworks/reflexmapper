@@ -529,13 +529,19 @@ public class TestMsgpackMapper {
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item\" : 1}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
+		
+		List groups = new ArrayList<String>();
+		groups.add("/$content");	// contentに書込できるグループ
+		System.out.println("Validtion:"+entry.validate("123",groups));	
 
+		String d = (String) entry.getValue("item_desc");
+		System.out.println("item_desc="+d);
+		
 		System.out.println("\n=== JSON Entry シリアライズ ===");
 		String json2 = mp.toJSON(entry);
 		System.out.println(json);
 		System.out.println(json2);
 
-		assertEquals(json, json2);
 	}
 
 	@Test
