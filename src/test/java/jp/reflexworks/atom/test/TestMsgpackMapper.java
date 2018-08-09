@@ -532,7 +532,7 @@ public class TestMsgpackMapper {
 		
 		List groups = new ArrayList<String>();
 		groups.add("/$content");	// contentに書込できるグループ
-		System.out.println("Validtion:"+entry.validate("123",groups));	
+//		System.out.println("Validtion:"+entry.validate("123",groups));	
 
 		String d = (String) entry.getValue("item_desc");
 		System.out.println("item_desc="+d);
@@ -714,7 +714,8 @@ public class TestMsgpackMapper {
 
 		assertNotSame(json, mp.toJSON(feed));
 		
-		// descにLongを超える文字を入れる
+		// descにLongを超える文字を入れる 仕様変更により削除
+		/*
 		boolean isParseException = false;
 		json = "{ \"feed\" : {\"entry\" : [{\"id\" : \"/@svc/123/new,1\",\"link\" : [{\"$title\" : \"署名\",\"$href\" : \"/@svc/123/allA/759188985520\",\"$rel\" : \"alternate\"}],\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}},\"seq\" :\"9223372036854775904\"}]}}";
 		feed = (FeedBase) mp.fromJSON(json);
@@ -724,6 +725,7 @@ public class TestMsgpackMapper {
 			isParseException = true;
 		}
 		assertTrue(isParseException);
+		*/
 	}
 
 	@Test

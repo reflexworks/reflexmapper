@@ -1186,7 +1186,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 					}
 				} else {
 					// getValueで返せるようにする
-					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) return " + meta.self + ";");
+					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) {");
+					if (meta.isDesc) {
+						String metaorg = meta.self.replace("_desc", "");
+						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o.replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
+					}					
+					getvalue.append("return " + meta.self + ";}");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");
 					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
 					ismatch.append("else if (\"" + meta.name + "\".indexOf(context.parent)>=0)");
@@ -1401,10 +1406,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private String getValidatorLogic(Meta meta) {
 		String line = "";
-		String metaorg = meta.self.replace("_desc", "");
-		if (meta.isDesc) {
-			line = "if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o.replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"; 
-		}
+		/* getValue() で返すように修正 */
+//		String metaorg = meta.self.replace("_desc", "");
+//		if (meta.isDesc) {
+//			line = "if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o.replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"; 
+//		}
 
 		if (meta.isMandatory) {
 			line = "if (" + meta.self + "==null) throw new java.text.ParseException(\"Required property '" + meta.self + "' not specified.\",0);";
