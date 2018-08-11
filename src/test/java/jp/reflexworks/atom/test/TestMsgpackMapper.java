@@ -555,6 +555,8 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testStrDesc() throws ParseException, JSONException {
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		mp0.precheckTemplate(null,entitytempldesc2);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc2, null, 30, SECRETKEY);
 
 		System.out.println("JSON Entry デシリアライズ");

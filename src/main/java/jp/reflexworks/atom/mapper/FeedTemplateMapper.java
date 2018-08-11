@@ -2063,6 +2063,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (metalistnew.get(i).hasChild()&&isUsedWord(metalistnew,i)) {
 				throw new ParseException(metalistnew.get(i).self+" is already used word as the parent.",0);
 			}
+			if (metalistnew.get(i).name.indexOf("_desc")>0) {
+				String orgname = metalistnew.get(i).name.replace("_desc","");
+				boolean desccheck = false;
+				for(int j=0;j<metalistnew.size();j++) {
+					if (metalistnew.get(j).name.equals(orgname)) {
+						if (metalistnew.get(j).level == metalistnew.get(i).level) {
+							desccheck = true;
+						}
+					}
+				}
+				if (!desccheck) throw new ParseException(orgname+" is required.",0);
+			}
 		}
 		
 		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
