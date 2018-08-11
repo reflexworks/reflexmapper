@@ -1189,7 +1189,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) {");
 					if (meta.isDesc) {
 						String metaorg = meta.self.replace("_desc", "");
-						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o.replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
+						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String o2 = o.replaceAll(\"[^0-9]+\", \"\");if (o2.length()>19) {o2 =o2.substring(o2.length() - 19);};String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o2));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
 					}					
 					getvalue.append("return " + meta.self + ";}");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");

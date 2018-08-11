@@ -69,6 +69,12 @@ public class TestMsgpackMapper {
 			"item_desc(desc)"			  
 	};
 
+	public static String entitytempldesc2[] = {
+			"default{}",        
+			"item2",			  
+			"item2_desc(desc)"			  
+	};
+
 	public static String entitytempldup2[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
 			"parent",			  
@@ -539,6 +545,25 @@ public class TestMsgpackMapper {
 
 		String d = (String) entry.getValue("item_desc");
 		System.out.println("(validate後) item_desc="+d);
+		
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
+	}
+
+	@Test
+	public void testStrDesc() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc2, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"item2\" : \"2018-06-20T17:53:56.016+09:00\"}}";
+//		String json = "{\"entry\" : {\"item2\" : \"09:00\"}}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+		
+		String d0 = (String) entry.getValue("item2_desc");
+		System.out.println("item2_desc="+d0);
 		
 		System.out.println("\n=== JSON Entry シリアライズ ===");
 		String json2 = mp.toJSON(entry);
