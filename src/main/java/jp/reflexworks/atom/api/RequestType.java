@@ -160,7 +160,9 @@ public interface RequestType {
 	public static final String PARAM_NOMETA = "_nometa";
 	/** URLパラメータ : APIKey */
 	public static final String PARAM_APIKEY = "_apikey";
-
+	/** URLパラメータ : サービスキー */
+	public static final String PARAM_SERVICEKEY = "_servicekey";
+	
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
 

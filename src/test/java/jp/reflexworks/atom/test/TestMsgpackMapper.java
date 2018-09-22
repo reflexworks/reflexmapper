@@ -4385,4 +4385,44 @@ public class TestMsgpackMapper {
 		printMetalist2(mp.getMetalist());
 	}
 
+	@Test
+	public void testPrecheckInvalid() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		String[] entitytempl_invalid = null;
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		
+		// 項目の長さチェック1
+		entitytempl_invalid = new String[]{
+				// {}がMap, #がIndex , []がArray　, {} # [] は末尾に一つだけ付けられる。*が必須項目
+				"invalidtest{100}",        //  0行目はパッケージ名(service名)
+				"info",
+				" z",
+		};
+		try { 
+			boolean precheck = mp0.precheckTemplate(null, entitytempl_invalid);
+			System.out.println("(NG) precheck:" + precheck );
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("(OK) ParseException: " + e.getMessage());
+		}
+
+		// 項目の長さチェック2
+		entitytempl_invalid = new String[]{
+				// {}がMap, #がIndex , []がArray　, {} # [] は末尾に一つだけ付けられる。*が必須項目
+				"invalidtest{100}",        //  0行目はパッケージ名(service名)
+				"info",
+				" aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeee",
+				" aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllll",
+				" aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmm",
+				" aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmmm",
+		};
+		
+		try { 
+			boolean precheck = mp0.precheckTemplate(null, entitytempl_invalid);
+			System.out.println("(NG) precheck:" + precheck );
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("(OK) ParseException: " + e.getMessage());
+		}
+	}
+
 }
