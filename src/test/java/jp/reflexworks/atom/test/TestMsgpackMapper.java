@@ -84,6 +84,12 @@ public class TestMsgpackMapper {
 			"  child2"
 	};
 
+	public static String entitytemplnull[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"parent{}",			  
+			" child"
+	};
+
 	public static String entitytempl[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
@@ -505,6 +511,23 @@ public class TestMsgpackMapper {
 		String json = "{\"entry\" : {\"sample\" : \"abcd\"}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
+		assertEquals(json, json2);
+	}
+
+	@Test
+	public void testParentNull() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplnull, null, 30, SECRETKEY);
+		
+		System.out.println("JSON Entry デシリアライズ");
+//		String json = "{\"entry\" : {\"parent\" : [{\"child\":\"xxxx\"}]}}";
+		String json = "{\"entry\" : {\"parent\" : [{}]}}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+		
 		System.out.println("\n=== JSON Entry シリアライズ ===");
 		String json2 = mp.toJSON(entry);
 		System.out.println(json);
