@@ -1908,6 +1908,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 								isCreated = true;
 							}
 							List child = new ArrayList();
+							f.set(parent, child);
 							for (Value v : e.getValue().asArrayValue().getElementArray()) {
 								if (v.isMapValue()) {
 									String childclsname = packagename + "." + toCamelcase(fld);

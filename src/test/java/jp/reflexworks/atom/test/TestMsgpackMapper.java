@@ -524,12 +524,20 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplnull, null, 30, SECRETKEY);
 		
 		System.out.println("JSON Entry デシリアライズ");
-//		String json = "{\"entry\" : {\"parent\" : [{\"child\":\"xxxx\"}]}}";
-		String json = "{\"entry\" : {\"parent\" : [{}]}}";
+		String json = "{\"entry\" : {\"parent\" : []}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		System.out.println("\n=== JSON Entry シリアライズ ===");
 		String json2 = mp.toJSON(entry);
+		System.out.println(json);
+		System.out.println(json2);
+
+//		json = "{\"entry\" : {\"parent\" : [{\"child\" :\"xxx\"}]}}";
+		json = "{\"entry\" : {\"parent\" : [{}]}}";
+		entry = (EntryBase) mp.fromJSON(json);
+
+		System.out.println("\n=== JSON Entry シリアライズ ===");
+		json2 = mp.toJSON(entry);
 		System.out.println(json);
 		System.out.println(json2);
 
