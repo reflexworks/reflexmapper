@@ -525,7 +525,7 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplnull, null, 30, SECRETKEY);
 		
 		System.out.println("JSON Entry デシリアライズ");
-		String json = "{\"entry\" : {\"parent\" :\"test\",\"parent\" : []}}";
+		String json = "{\"entry\" : {\"item\" :\"test\",\"parent\" : []}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
 		System.out.println("\n=== JSON Entry シリアライズ ===");
