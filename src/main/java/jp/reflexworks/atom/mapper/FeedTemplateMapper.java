@@ -412,6 +412,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		if (propAcls==null) return result;
 		
 		for (String propacl : propAcls) {
+			propacl = propacl.replaceAll("[^(\\x20-\\x7F)]", ""); // 半角文字のみ（特殊文字を削除)
 			String token[] = propacl.split("=");
 			String token2[] = token[0].split(":");	// Index項目
 			if (token2.length > 1) {
