@@ -711,9 +711,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 		public boolean isMandatory; 
 
 		/**
-		 * 降順
+		 * 降順(数字)
 		 */
 		public boolean isDesc; 
+
+		/**
+		 * 降順(文字列)
+		 */
+		public boolean isDescstr; 
 
 		/**
 		 * バリーデーション用正規表現
@@ -1192,6 +1197,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 						String metaorg = meta.self.replace("_desc", "");
 						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String o2 = o.replaceAll(\"[^0-9]+\", \"\");if (o2.length()==0) o2=\"0\";if (o2.length()>19) {o2 =o2.substring(o2.length() - 19);};String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o2));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
 					}					
+					if (meta.isDescstr) {
+						String metaorg = meta.self.replace("_desc", "");
+						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 
+					}					
 					getvalue.append("return " + meta.self + ";}");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");
 					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
@@ -1665,6 +1674,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				//				}
 
 				meta.isDesc = false;
+				meta.isDescstr = false;
 				if (matcherf.group(4) != null) {
 					String typestr = matcherf.group(4).toLowerCase(Locale.ENGLISH);
 					meta.typesrc = typestr;
@@ -1684,6 +1694,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} else if (typestr.equals("desc")) {
 						meta.type = "String";
 						meta.isDesc = true;
+					} else if (typestr.equals("descstr")) {
+						meta.type = "String";
+						meta.isDescstr = true;
 					} else {
 						meta.type = "String"; // その他
 					}
