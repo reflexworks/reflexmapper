@@ -419,7 +419,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				Meta meta = new Meta();
 				meta.name = token2[0]; // key
 //				meta.index = convertIndex(token2[1],svc); // index
-				meta.index = token2[1]; // index
+				meta.index = token2[1].trim(); // index
 				result.add(meta);
 			}
 			
@@ -1379,7 +1379,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private String getValidatorPropR(Meta meta) {
 		String line = ""; 
-		if (meta.isDesc) {
+		if (meta.isDesc||meta.isDescstr) {
 			// desc項目は表示しない
 			line += meta.self +"=null;";
 		}
