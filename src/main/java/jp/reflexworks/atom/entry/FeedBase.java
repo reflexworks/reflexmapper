@@ -16,8 +16,9 @@ import org.msgpack.annotation.Index;
  */
 public abstract class FeedBase implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 1L;	
+	private static boolean startArrayBracket = false;
+	
 	/**
 	 * デフォルトの名前空間
 	 */
@@ -60,6 +61,14 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	@Index(14)
 	public List<EntryBase> entry;
 
+	public boolean getStartArrayBracket() {
+		return startArrayBracket;
+	}
+	
+	public void setStartArrayBracket(boolean startArrayBracket) {
+		FeedBase.startArrayBracket=startArrayBracket;
+	}
+	
 	public List<Author> getAuthor() {
 		return author;
 	}

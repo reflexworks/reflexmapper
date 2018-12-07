@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -51,6 +53,8 @@ import org.msgpack.template.builder.ReflectionTemplateBuilder;
 import org.msgpack.type.Value;
 import org.msgpack.util.json.JSONBufferUnpacker;
 
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
 //import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
 
@@ -60,7 +64,9 @@ import org.msgpack.util.json.JSONBufferUnpacker;
 import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.entry.Element;
 import jp.reflexworks.atom.entry.EntryBase;
+import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.util.SurrogateConverter;
+import jp.sourceforge.reflex.core.JSONSerializer;
 import jp.sourceforge.reflex.core.ResourceMapper;
 import jp.sourceforge.reflex.exception.JSONException;
 import jp.sourceforge.reflex.util.DateUtil;
@@ -914,6 +920,51 @@ public class FeedTemplateMapper extends ResourceMapper {
 			throws IOException, ClassNotFoundException {
 		if (msg==null) return null;
 		else return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
+	}
+
+	public String toJSON(Object entity) {
+		if (entity==null) return null;
+		Writer writer = new StringWriter();
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+			JSONSerializer jsonc = new JSONSerializer(false);
+			jsonc.marshal(((FeedBase)entity).entry, writer); 			
+			return writer.toString();
+		}else {
+			return super.toJSON(entity);
+		}
+	}
+
+	public String toJSON(Object entity,boolean dispChildNum) {
+		if (entity==null) return null;
+		Writer writer = new StringWriter();
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+			JSONSerializer jsonc = new JSONSerializer(false);
+			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum); 			
+			return writer.toString();
+		}else {
+			return super.toJSON(entity,dispChildNum);
+		}
+	}
+
+	public void toJSON(Object entity, Writer writer) {
+		if (entity==null) return;
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+			JSONSerializer jsonc = new JSONSerializer(false);
+			jsonc.marshal(((FeedBase)entity).entry, writer); 			
+		}else {
+			super.toJSON(entity);
+		}
+	}
+
+	public void toJSON(Object entity, Writer writer,boolean dispChildNum) {
+		if (entity==null) return;
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+			JSONSerializer jsonc = new JSONSerializer(false);
+			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum); 			
+		}else {
+			super.toJSON(entity,dispChildNum);
+		}
+
 	}
 
 	/* (非 Javadoc)
