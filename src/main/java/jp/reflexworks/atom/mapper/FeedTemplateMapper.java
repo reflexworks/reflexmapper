@@ -952,7 +952,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			JSONSerializer jsonc = new JSONSerializer(false);
 			jsonc.marshal(((FeedBase)entity).entry, writer); 			
 		}else {
-			super.toJSON(entity);
+			super.toJSON(entity,writer);
 		}
 	}
 
@@ -962,7 +962,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			JSONSerializer jsonc = new JSONSerializer(false);
 			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum); 			
 		}else {
-			super.toJSON(entity,dispChildNum);
+			super.toJSON(entity,writer,dispChildNum);
 		}
 
 	}
