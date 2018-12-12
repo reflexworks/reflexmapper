@@ -4473,8 +4473,17 @@ public class TestMsgpackMapper {
 			System.out.println("[before] " + json);
 			
 			FeedBase feed = (FeedBase)mapper.fromJSON(json);
+			String outJson1 = mapper.toJSON(feed);
 			
-			System.out.println(" [after] " + mapper.toJSON(feed));
+			System.out.println("[after1] " + outJson1);
+			
+			StringWriter writer = new StringWriter();
+			mapper.toJSON(feed, writer);
+			String outJson2 = writer.toString();
+			
+			System.out.println("[after2] " + outJson2);
+			
+			assertTrue(outJson1.equals(outJson2));
 			
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
