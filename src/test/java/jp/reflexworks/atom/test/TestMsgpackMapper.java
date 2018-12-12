@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -4484,6 +4485,69 @@ public class TestMsgpackMapper {
 			System.out.println("[after2] " + outJson2);
 			
 			assertTrue(outJson1.equals(outJson2));
+			
+			// なお、desc項目は maskprop メソッドで値がクリアされる。
+			
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * XMLテスト
+	 */
+	@Test
+	public void testXML() {
+		String[] template = {
+				"default{}",        //  0行目はパッケージ名(service名)
+				"foo",
+				" bar",
+				" bar_desc(desc)",
+				" mydesc(desc)",
+		};
+		
+		String[] rights = {
+				"foo.bar:/footest/123",
+				"foo.mydesc:/footest/abc|/footest/123",
+				"foo.bar_desc:/footest/abc|/footest/123",
+		};
+		
+		final String XMLHEAD = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+		
+		try {
+			FeedTemplateMapper mapper = new FeedTemplateMapper(template, rights, 30, SECRETKEY);
+			
+			// データ
+			StringBuilder sb = new StringBuilder();
+			sb.append("{\"feed\": {\"entry\": [");
+			sb.append("{\"summary\": \"/_user/72\",\"title\": \"/_user#title/black@myexample.com72\"},");
+			sb.append("{\"summary\": \"/footest/123/test001\",\"title\": \"/footest/123#foo.bar/60001test001\"},");
+			sb.append("{\"summary\": \"/footest/123/test003\",\"title\": \"/footest/123#foo.bar/60003test003\"},");
+			sb.append("{\"summary\": \"/footest/123/test004\",\"title\": \"/footest/123#foo.bar/60004test004\"},");
+			sb.append("{\"summary\": \"/footest/123/test002\",\"title\": \"/footest/123#foo.bar/60022test002\"}");
+			sb.append("]}}");
+			
+			String json = sb.toString();
+			System.out.println("[before] " + json);
+			
+			FeedBase feed = (FeedBase)mapper.fromJSON(json);
+			String outXML1 = XMLHEAD + mapper.toXML(feed, false);
+			
+			System.out.println("[after1] " + outXML1);
+			
+			StringWriter sw = new StringWriter();
+			PrintWriter writer = new PrintWriter(sw);
+			try {
+				writer.print(XMLHEAD);
+				mapper.toXML(feed, writer, false);
+			} finally {
+				writer.close();
+			}
+			String outXML2 = sw.toString();
+			
+			System.out.println("[after2] " + outXML2);
+			
+			assertTrue(outXML1.equals(outXML2));
 			
 			// なお、desc項目は maskprop メソッドで値がクリアされる。
 			
