@@ -4438,5 +4438,47 @@ public class TestMsgpackMapper {
 			System.out.println("(OK) ParseException: " + e.getMessage());
 		}
 	}
+	
+	/**
+	 * JSONテスト
+	 */
+	@Test
+	public void testJson() {
+		String[] template = {
+				"default{}",        //  0行目はパッケージ名(service名)
+				"foo",
+				" bar",
+				" bar_desc(desc)",
+				" mydesc(desc)",
+		};
+		
+		String[] rights = {
+				"foo.bar:/footest/123",
+				"foo.mydesc:/footest/abc|/footest/123",
+				"foo.bar_desc:/footest/abc|/footest/123",
+		};
+		
+		try {
+			FeedTemplateMapper mapper = new FeedTemplateMapper(template, rights, 30, SECRETKEY);
+			
+			// データ
+			StringBuilder sb = new StringBuilder();
+			sb.append("{\"feed\": {\"entry\": [");
+			sb.append("{\"foo\": {\"bar\": \"60001\",\"bar_desc\": \"70001\",\"mydesc\": \"20001\"},\"id\": \"/footest/abc/test001,5\"},");
+			sb.append("{\"foo\": {\"bar\": \"60022\",\"bar_desc\": \"70022\",\"mydesc\": \"20022\"},\"id\": \"/footest/abc/test002,4\"},");
+			sb.append("{\"foo\": {\"bar\": \"60003\",\"bar_desc\": \"70003\",\"mydesc\": \"20003\"},\"id\": \"/footest/abc/test003,4\"}");
+			sb.append("]}}");
+			
+			String json = sb.toString();
+			System.out.println("[before] " + json);
+			
+			FeedBase feed = (FeedBase)mapper.fromJSON(json);
+			
+			System.out.println(" [after] " + mapper.toJSON(feed));
+			
+		} catch (ParseException e) {
+			System.out.println("ParseException: " + e.getMessage());
+		}
+	}
 
 }

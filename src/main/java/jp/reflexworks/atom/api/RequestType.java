@@ -10,6 +10,8 @@ public interface RequestType {
 
 	/** URLパラメータ : 戻り値の形式をXMLに指定 (デフォルトはJSON) */
 	public static final String PARAM_XML = "x";
+	/** URLパラメータ : 戻り値の形式をJSONに指定 */
+	public static final String PARAM_JSON = "j";
 	/** URLパラメータ : 戻り値の形式をMessagePackに指定 */
 	public static final String PARAM_MESSAGEPACK = "m";
 	/** URLパラメータ : 最大件数を指定 */
