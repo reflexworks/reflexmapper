@@ -4485,6 +4485,8 @@ public class TestMsgpackMapper {
 			
 			assertTrue(outJson1.equals(outJson2));
 			
+			// なお、desc項目は maskprop メソッドで値がクリアされる。
+			
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 		}
