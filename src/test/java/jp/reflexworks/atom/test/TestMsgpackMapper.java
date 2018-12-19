@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -4553,6 +4554,128 @@ public class TestMsgpackMapper {
 			
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * desc項目のソートテスト.
+	 */
+	@Test
+	public void testDescSortString() throws ParseException, JSONException {
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		mp0.precheckTemplate(null, entitytempldesc2);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc2, null, 30, SECRETKEY);
+		
+		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
+		
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"item2\" : \"pie\"}}";
+		EntryBase entry = (EntryBase)mp.fromJSON(json);
+		Object item2 = entry.getValue("item2");
+		String item2_desc = (String)entry.getValue("item2_desc");
+		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
+		treeMap.put(item2_desc, item2);
+		
+		json = "{\"entry\" : {\"item2\" : \"apple\"}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item2 = entry.getValue("item2");
+		item2_desc = (String)entry.getValue("item2_desc");
+		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
+		treeMap.put(item2_desc, item2);
+		
+		json = "{\"entry\" : {\"item2\" : \"ax\"}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item2 = entry.getValue("item2");
+		item2_desc = (String)entry.getValue("item2_desc");
+		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
+		treeMap.put(item2_desc, item2);
+		
+		print("item2(string)", treeMap);
+	}
+
+	/**
+	 * desc項目のソートテスト.
+	 */
+	@Test
+	public void testDescSortInt() throws ParseException, JSONException {
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		mp0.precheckTemplate(null, entitytempldesc);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc, null, 30, SECRETKEY);
+		
+		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
+		
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"item\" : 150}}";
+		EntryBase entry = (EntryBase)mp.fromJSON(json);
+		Object item = entry.getValue("item");
+		String item_desc = (String)entry.getValue("item_desc");
+		System.out.println("item=" + item + ", item_desc=" + item_desc);
+		treeMap.put(item_desc, item);
+		
+		json = "{\"entry\" : {\"item\" : 1100440055}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item = entry.getValue("item");
+		item_desc = (String)entry.getValue("item_desc");
+		System.out.println("item=" + item + ", item_desc=" + item_desc);
+		treeMap.put(item_desc, item);
+		
+		json = "{\"entry\" : {\"item\" : 1000440055}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item = entry.getValue("item");
+		item_desc = (String)entry.getValue("item_desc");
+		System.out.println("item=" + item + ", item_desc=" + item_desc);
+		treeMap.put(item_desc, item);
+		
+		print("item(int)", treeMap);
+	}
+
+	/**
+	 * desc項目のソートテスト.
+	 */
+	@Test
+	public void testDescSortIntMinus() throws ParseException, JSONException {
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		mp0.precheckTemplate(null, entitytempldesc);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc, null, 30, SECRETKEY);
+		
+		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
+		
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"item\" : -150}}";
+		EntryBase entry = (EntryBase)mp.fromJSON(json);
+		Object item = entry.getValue("item");
+		String item_desc = (String)entry.getValue("item_desc");
+		System.out.println("item=" + item + ", item_desc=" + item_desc);
+		treeMap.put(item_desc, item);
+		
+		json = "{\"entry\" : {\"item\" : -1100440055}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item = entry.getValue("item");
+		item_desc = (String)entry.getValue("item_desc");
+		System.out.println("item=" + item + ", item_desc=" + item_desc);
+		treeMap.put(item_desc, item);
+		
+		json = "{\"entry\" : {\"item\" : -1000440055}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item = entry.getValue("item");
+		item_desc = (String)entry.getValue("item_desc");
+		System.out.println("item=" + item + ", item_desc=" + item_desc);
+		treeMap.put(item_desc, item);
+		
+		print("item(int)", treeMap);
+	}
+
+	
+	private void print(String fldName, TreeMap<String, Object> treeMap) {
+		if (treeMap == null || treeMap.isEmpty()) {
+			System.out.println("The TreeMap is empty.");
+			return;
+		}
+		
+		// Mapを取り出し
+		System.out.println("--- sort " + fldName + " ---");
+		for (Map.Entry<String, Object> mapEntry : treeMap.entrySet()) {
+			System.out.println(mapEntry.getKey() + " : " + mapEntry.getValue());
 		}
 	}
 
