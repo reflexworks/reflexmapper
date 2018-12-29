@@ -67,14 +67,20 @@ public class TestMsgpackMapper {
 
 	public static String entitytempldesc[] = {
 			"default{}",        
-			"item(int)",			  
-			"item_desc(desc)"			  
+			"item(int)",
+			"item_desc(desc)" 
 	};
 
 	public static String entitytempldesc2[] = {
 			"default{}",        
-			"item2",			  
-			"item2_desc(desc)"			  
+			"item2",
+			"item2_desc(desc)" 
+	};
+
+	public static String entitytempldescstr[] = {
+			"default{}",        
+			"item2",
+			"item2_desc(descstr)"
 	};
 
 	public static String entitytempldup2[] = {
@@ -4565,6 +4571,42 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
 		mp0.precheckTemplate(null, entitytempldesc2);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc2, null, 30, SECRETKEY);
+		
+		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
+		
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"item2\" : \"pie\"}}";
+		EntryBase entry = (EntryBase)mp.fromJSON(json);
+		Object item2 = entry.getValue("item2");
+		String item2_desc = (String)entry.getValue("item2_desc");
+		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
+		treeMap.put(item2_desc, item2);
+		
+		json = "{\"entry\" : {\"item2\" : \"apple\"}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item2 = entry.getValue("item2");
+		item2_desc = (String)entry.getValue("item2_desc");
+		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
+		treeMap.put(item2_desc, item2);
+		
+		json = "{\"entry\" : {\"item2\" : \"ax\"}}";
+		entry = (EntryBase)mp.fromJSON(json);
+		item2 = entry.getValue("item2");
+		item2_desc = (String)entry.getValue("item2_desc");
+		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
+		treeMap.put(item2_desc, item2);
+		
+		print("item2(string)", treeMap);
+	}
+
+	/**
+	 * desc項目のソートテスト.
+	 */
+	@Test
+	public void testDescstrSort() throws ParseException, JSONException {
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		mp0.precheckTemplate(null, entitytempldescstr);
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldescstr, null, 30, SECRETKEY);
 		
 		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
 		
