@@ -549,6 +549,11 @@ public class EntryUtil {
 		return null;
 	}
 
+	/**
+	 * 降順ソートのための文字列に変換します.
+	 * @param obj オリジナルの値
+	 * @return 変換後文字列
+	 */
 	public static String getDescStr(Object obj) {
 		if (obj instanceof String) {
 			char[] c = ((String) obj).toCharArray();
