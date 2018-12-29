@@ -1,6 +1,7 @@
 package jp.reflexworks.atom.api;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,6 +19,116 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 public class EntryUtil {
 
 	private static Logger logger = Logger.getLogger(EntryUtil.class.getName());
+
+	/** shortの最大桁数 */
+	private static final int SHORT_MAX_LEN = String.valueOf(Short.MAX_VALUE).length();
+	/** intの最大桁数 */
+	private static final int INT_MAX_LEN = String.valueOf(Integer.MAX_VALUE).length();
+	/** longの最大桁数 */
+	private static final int LONG_MAX_LEN = String.valueOf(Long.MAX_VALUE).length();
+
+	/** floatの最大桁数 (整数部) */
+	private static final int FLOAT_MAX_LEN_INTEGER = INT_MAX_LEN;
+	/** floatの最大桁数 (小数部) */
+	private static final int FLOAT_MAX_LEN_DECIMAL = INT_MAX_LEN;
+	/** doubleの最大桁数 (整数部) */
+	private static final int DOUBLE_MAX_LEN_INTEGER = LONG_MAX_LEN;
+	/** doubleの最大桁数 (小数部) */
+	private static final int DOUBLE_MAX_LEN_DECIMAL = LONG_MAX_LEN;
+	
+	/**
+	 * インデックスの値が数値の場合の編集
+	 * @param num 数値
+	 * @return 編集した文字列
+	 */
+	public static String editNumberIndexValue(Number num) {
+		return editNumberIndexValue(num,false);
+	}
+	
+	public static String editNumberIndexValue(Number num,boolean isDesc) {
+		String indexValueStr = null;
+		boolean isMinus = false;
+		int maxLen = 0;
+		int maxLenDecimal = 0;
+		if (num instanceof Long) {
+			isMinus = num.longValue() < 0;
+			maxLen = LONG_MAX_LEN;
+		} else if (num instanceof Integer) {
+			isMinus = num.intValue() < 0;
+			maxLen = INT_MAX_LEN;
+		} else if (num instanceof Short) {	// Short
+			isMinus = num.shortValue() < 0;
+			maxLen = SHORT_MAX_LEN;
+		} else if (num instanceof Double) {
+			isMinus = num.doubleValue() < 0;
+			maxLen = DOUBLE_MAX_LEN_INTEGER;
+			maxLenDecimal = DOUBLE_MAX_LEN_DECIMAL;
+		} else {	// Float
+			isMinus = num.floatValue() < 0;
+			maxLen = FLOAT_MAX_LEN_INTEGER;
+			maxLenDecimal = FLOAT_MAX_LEN_DECIMAL;
+		}
+		
+		int maxLen1 = maxLen + 1;
+		String tmpNumStr = null;
+		if (maxLenDecimal <= 0) {
+			// 整数
+			String format = "%0" + maxLen1 + "d";
+			tmpNumStr = String.format(format, num);
+			if (isDesc) {
+				tmpNumStr = tmpNumStr.replace("-", "");
+			}
+			
+		} else {
+			// 小数あり
+			BigDecimal bigDecimal = new BigDecimal(String.valueOf(num));
+			String tmpUnformatNum = bigDecimal.toPlainString();
+			if (isMinus) {
+				tmpUnformatNum = tmpUnformatNum.substring(1);
+			}
+			String[] tmpNumParts = tmpUnformatNum.split("\\.");
+			StringBuilder sb = new StringBuilder();
+			int integerLen = tmpNumParts[0].length();	// 整数部の桁数
+			if (isMinus) {
+				sb.append("-");
+				integerLen++;
+			}
+			for (int i = maxLen1; i > integerLen; i--) {
+				sb.append("0");
+			}
+			sb.append(tmpNumParts[0]);
+			sb.append(".");
+			int decimalLen = 0;
+			if (tmpNumParts.length > 1) {
+				sb.append(tmpNumParts[1]);	// 小数部
+				decimalLen = tmpNumParts[1].length();
+			}
+			for (int i = maxLenDecimal; i > decimalLen; i--) {
+				sb.append("0");
+			}
+			tmpNumStr = sb.toString();
+		}
+		
+		if (isMinus^isDesc) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("-");
+			int len = tmpNumStr.length();
+			for (int m = 1; m < len; m++) {
+				String n = tmpNumStr.substring(m, m + 1);
+				if (".".equals(n)) {
+					sb.append(n);
+				} else {
+					int k = Integer.parseInt(n);
+					sb.append(9 - k);
+				}
+			}
+			indexValueStr = sb.toString();
+			
+		} else {
+			indexValueStr = tmpNumStr;
+		}
+		return indexValueStr;
+	}
 
 	/**
 	 * キーを親階層と自身の階層に分割します

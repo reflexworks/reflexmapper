@@ -1244,13 +1244,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else {
 					// getValueで返せるようにする
 					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) {");
+					/*
 					if (meta.isDesc) {
 						String metaorg = meta.self.replace("_desc", "");
-						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String o2 = o.replaceAll(\"[^0-9]+\", \"\");if (o2.length()==0) o2=\"0\";if (o2.length()>19) {o2 =o2.substring(o2.length() - 19);};String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o2));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
-					}					
-					if (meta.isDescstr) {
+						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";System.out.println(\"test!!!\"+testGetValue(\"take\"));String o2 = o.replaceAll(\"[^0-9]+\", \"\");if (o2.length()==0) o2=\"0\";if (o2.length()>19) {o2 =o2.substring(o2.length() - 19);};String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o2));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
+					}
+					*/					
+					if (meta.isDesc) {
 						String metaorg = meta.self.replace("_desc", "");
-						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 
+//						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 
+						getvalue.append("if (" + metaorg + "!=null) { String o=getDescStr(" + metaorg + ");System.out.println(\"o=\"+o);"+ meta.self +"=o;}"); 
 					}					
 					getvalue.append("return " + meta.self + ";}");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");
