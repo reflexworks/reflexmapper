@@ -666,25 +666,6 @@ public abstract class EntryBase implements Serializable {
 		}
 	}
 	
-	public String getDescStr(Object obj) {
-		if (obj instanceof String) {
-			char[] c = ((String) obj).toCharArray();
-			String result = "";
-			for(int i = 0; i < c.length; i++) {
-				result += (char)(65535 - c[i]);
-			}
-			return result;
-		}
-		if (obj instanceof Long ||
-				obj instanceof Integer ||
-				obj instanceof Short ||
-				obj instanceof Float ||
-				obj instanceof Double) {	
-			return EntryUtil.editNumberIndexValue((Number)obj, true);
-		}
-		return "";
-	}
-
 	public abstract Object getValue(String fieldname);
 
 	public abstract void encrypt(Object cipher);

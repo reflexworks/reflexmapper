@@ -1252,8 +1252,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 					*/					
 					if (meta.isDesc) {
 						String metaorg = meta.self.replace("_desc", "");
-//						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 
-						getvalue.append("if (" + metaorg + "!=null) { String o=getDescStr(" + metaorg + ");System.out.println(\"o=\"+o);"+ meta.self +"=o;}"); 
+//						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 						
+						getvalue.append("if (" + metaorg + "!=null) { String o=jp.reflexworks.atom.api.EntryUtil.getDescStr(" + metaorg + ");"+ meta.self +"=o;}"); 
 					}					
 					getvalue.append("return " + meta.self + ";}");
 					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");

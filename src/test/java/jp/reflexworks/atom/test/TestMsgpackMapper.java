@@ -80,7 +80,7 @@ public class TestMsgpackMapper {
 	public static String entitytempldescstr[] = {
 			"default{}",        
 			"item2",
-			"item2_desc(descstr)"
+			"item2_desc(desc)"
 	};
 
 	public static String entitytempldup2[] = {
