@@ -786,7 +786,12 @@ public class TestMsgpackMapper {
 		
 		feed.setStartArrayBracket(true);
 		System.out.println("Start ArrayBracket:"+mp.toJSON(feed));	
-
+		
+		feed.entry.clear();;
+		System.out.println("Start ArrayBracket (entry.size=0):"+mp.toJSON(feed));	
+		
+		feed.entry = null;
+		System.out.println("Start ArrayBracket (entry is null):"+mp.toJSON(feed));	
 		
 		// descにLongを超える文字を入れる 仕様変更により削除
 		/*
