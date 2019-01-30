@@ -36,8 +36,10 @@ public interface SettingConst {
 	public static final String BIGQUERY_PROJECTID = "_bigquery.projectid";
 	/** BigQueryのデータセット名 */
 	public static final String BIGQUERY_DATASET = "_bigquery.dataset";
-	/** BigQueryのロケーション*/
+	/** BigQueryのロケーション */
 	public static final String BIGQUERY_LOCATION = "_bigquery.location";
+	/** JSON出力においてfeed.entryを省略するかどうか */
+	public static final String JSON_STARTARRAYBRACKET = "_json.startarraybracket";
 
 	/** 
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
