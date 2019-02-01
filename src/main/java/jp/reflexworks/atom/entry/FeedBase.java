@@ -63,7 +63,7 @@ public abstract class FeedBase implements Serializable, Cloneable {
 	private Boolean startArrayBracket;
 
 	public boolean getStartArrayBracket() {
-		if (startArrayBracket==null) return true;
+		if (startArrayBracket==null) return false;
 		return startArrayBracket;
 	}
 	
