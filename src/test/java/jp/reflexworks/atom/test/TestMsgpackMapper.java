@@ -790,7 +790,8 @@ public class TestMsgpackMapper {
 		assertNotSame(json, mp.toJSON(feed));
 		
 		feed.setStartArrayBracket(true);
-		System.out.println("Start ArrayBracket:"+mp.toJSON(feed.getEntry().get(0)));	
+		System.out.println("Start ArrayBracket:"+mp.toJSON(feed));	
+		System.out.println("Start ArrayBracket(Entry):"+mp.toJSON(feed.getEntry().get(0)));	
 		
 		feed.entry.clear();;
 		System.out.println("Start ArrayBracket (entry.size=0):"+mp.toJSON(feed));	
