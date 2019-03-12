@@ -3934,8 +3934,10 @@ public class TestMsgpackMapper {
 		entry.title = "return\ncode";
 		xml = mapper.toXML(entry);
 		entryXml = (EntryBase)mapper.fromXML(xml);
-		json = mapper.toJSON(entry);
+		System.out.println(xml);
+		json = "{ \"entry\":"+mapper.toJSON(entry)+"}";
 		entryJson = (EntryBase)mapper.fromJSON(json);
+		json = mapper.toJSON(entryJson);
 		msgData = mapper.toMessagePack(entry);
 		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
 		System.out.println(xml);
@@ -3952,7 +3954,7 @@ public class TestMsgpackMapper {
 		entry.title = "return\\\\ncode";
 		xml = mapper.toXML(entry);
 		entryXml = (EntryBase)mapper.fromXML(xml);
-		json = mapper.toJSON(entry);
+		json = "{ \"entry\":"+mapper.toJSON(entry)+"}";
 		entryJson = (EntryBase)mapper.fromJSON(json);
 		msgData = mapper.toMessagePack(entry);
 		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
@@ -3970,7 +3972,7 @@ public class TestMsgpackMapper {
 		entry.title = "return\tcode";
 		xml = mapper.toXML(entry);
 		entryXml = (EntryBase)mapper.fromXML(xml);
-		json = mapper.toJSON(entry);
+		json = "{ \"entry\":"+mapper.toJSON(entry)+"}";
 		entryJson = (EntryBase)mapper.fromJSON(json);
 		msgData = mapper.toMessagePack(entry);
 		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
@@ -3988,7 +3990,7 @@ public class TestMsgpackMapper {
 		entry.title = "return\\tcode";
 		xml = mapper.toXML(entry);
 		entryXml = (EntryBase)mapper.fromXML(xml);
-		json = mapper.toJSON(entry);
+		json = "{ \"entry\":"+mapper.toJSON(entry)+"}";
 		entryJson = (EntryBase)mapper.fromJSON(json);
 		msgData = mapper.toMessagePack(entry);
 		entryMsgpack = (EntryBase)mapper.fromMessagePack(msgData, false);
