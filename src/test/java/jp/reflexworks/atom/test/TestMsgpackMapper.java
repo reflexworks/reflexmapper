@@ -1873,6 +1873,36 @@ public class TestMsgpackMapper {
 		return buf.toString();
 	}
 
+	private String createJsonTempl4_blankarray() {
+		StringBuilder buf = new StringBuilder();
+		buf.append("{\"feed\" : {");
+		buf.append("\"entry\" : [");
+		buf.append("{");
+		buf.append("\"comment\" : [{}],");
+		buf.append("\"deleteFlg\" : \"delete update\",");
+		buf.append("\"info\" : {");
+		buf.append("\"category\" : \"カテゴリ修正\",");
+		buf.append("\"color\" : \"色修正\",");
+		buf.append("\"name\" : \"名前修正\",");
+		buf.append("},");
+		buf.append("\"link\" : [{\"$href\" : \"/1/item/100001\",\"$rel\" : \"self\"}],");
+		buf.append("\"title\" : \"商品100001\"");
+		buf.append("},");
+		buf.append("{");
+		buf.append("\"comment\" : [{}],");
+		buf.append("\"deleteFlg\" : \"0\",");
+		buf.append("\"info\" : {");
+		buf.append("\"category\" : \"文房具\",");
+		buf.append("\"color\" : \"緑\",");
+		buf.append("\"name\" : \"えんぴつ\",");
+		buf.append("},");
+		buf.append("\"link\" : [{\"$href\" : \"/1/item/100002\",\"$rel\" : \"self\"}],");
+		buf.append("\"title\" : \"商品100002\"");
+		buf.append("}");
+		buf.append("]}}");
+		return buf.toString();
+	}
+
 	@Test
 	public void testValidate() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
@@ -4733,6 +4763,21 @@ public class TestMsgpackMapper {
 		for (Map.Entry<String, Object> mapEntry : treeMap.entrySet()) {
 			System.out.println(mapEntry.getKey() + " : " + mapEntry.getValue());
 		}
+	}
+
+	@Test
+	public void testValidateBlankarray() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
+
+		String json = createJsonTempl4_blankarray();
+		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		
+		String uid = "75";
+		List<String> groups = new ArrayList<String>();
+		groups.add("/_group/@admin");
+		
+		feed.validate(uid, groups);
+		
 	}
 
 }
