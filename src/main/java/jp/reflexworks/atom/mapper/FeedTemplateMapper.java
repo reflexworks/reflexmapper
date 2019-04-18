@@ -1273,9 +1273,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (meta.hasChild()) {
 						if (meta.isMap) {
 							if (!isFeed(classname)) {
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(uid,groups,myself);}"); 
+								// TODO + meta.self + ".get(i)のnull check
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(uid,groups,myself);}"); 
 							} else {
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(uid,groups);}"); 
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(uid,groups);}"); 
 							}
 						} else {
 							if (!isFeed(classname)) {
