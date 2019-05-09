@@ -427,14 +427,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 //				meta.index = convertIndex(token2[1],svc); // index
 				meta.index = token2[1].trim(); // index
 				result.add(meta);
+			}else {
+				String token3[] = token[0].split(";");	// 全文検索項目
+				if (token3.length > 1) {
+					Meta meta = new Meta();
+					meta.name = token3[0]; // key
+					meta.search = token3[1].trim(); // 全文検索(search)
+					result.add(meta);
+				}		
 			}
-			String token3[] = token[0].split(";");	// 全文検索項目
-			if (token3.length > 1) {
-				Meta meta = new Meta();
-				meta.name = token3[0]; // key
-				meta.search = token3[1].trim(); // 全文検索(search)
-				result.add(meta);
-			}			
 		}
 		return result;
 	}
