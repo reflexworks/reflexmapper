@@ -428,7 +428,13 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.index = token2[1].trim(); // index
 				result.add(meta);
 			}
-			
+			String token3[] = token[0].split(";");	// 全文検索項目
+			if (token3.length > 1) {
+				Meta meta = new Meta();
+				meta.name = token3[0]; // key
+				meta.search = token3[1].trim(); // 全文検索(search)
+				result.add(meta);
+			}			
 		}
 		return result;
 	}
@@ -680,6 +686,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 *
 	 */
 	public static class Meta {
+
+		public String search;
 
 		/**
 		 * 階層のレベル
