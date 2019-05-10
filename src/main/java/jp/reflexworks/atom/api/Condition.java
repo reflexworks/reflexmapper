@@ -25,6 +25,8 @@ public class Condition {
 	public static final String FORWARD_MATCH = "fm";
 	/** 演算子 : 後方一致 */
 	public static final String BACKWARD_MATCH = "bm";
+	/** 演算子 : 全文検索 */
+	public static final String FULL_TEXT_SEARCH = "ft";
 
 	// 互換性のためfinalにしない。(継承クラスで編集)
 	/** 演算子の接続文字 */
