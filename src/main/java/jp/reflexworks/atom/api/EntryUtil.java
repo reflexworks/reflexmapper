@@ -254,7 +254,11 @@ public class EntryUtil {
 	 * @return IDから抽出したURI
 	 */
 	public static String getUriById(String id) {
-		return EntryBase.getUriById(id);
+		String uri = EntryBase.getUriById(id);
+		if (uri != null) {
+			return uri;
+		}
+		return id;
 	}
 
 	/**

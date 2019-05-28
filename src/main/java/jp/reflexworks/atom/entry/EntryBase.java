@@ -8,7 +8,6 @@ import org.msgpack.annotation.Index;
 
 import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.api.Condition;
-import jp.reflexworks.atom.api.EntryUtil;
 
 /**
  * Entryの親クラス.
