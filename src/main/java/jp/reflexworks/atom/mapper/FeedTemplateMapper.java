@@ -1253,14 +1253,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else {
 					// getValueで返せるようにする
 					getvalue.append("if (fldname.equals(\"" + meta.name + "\")) {");
-					/*
 					if (meta.isDesc) {
-						String metaorg = meta.self.replace("_desc", "");
-						getvalue.append("if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";System.out.println(\"test!!!\"+testGetValue(\"take\"));String o2 = o.replaceAll(\"[^0-9]+\", \"\");if (o2.length()==0) o2=\"0\";if (o2.length()>19) {o2 =o2.substring(o2.length() - 19);};String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o2));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"); 
-					}
-					*/					
-					if (meta.isDesc) {
-						String metaorg = meta.self.replace("_desc", "");
+//						String metaorg = meta.self.replace("_desc", "");
+						String metaorg = meta.self;
+						if (meta.self.length()>5) {
+							metaorg = meta.self.substring(0,meta.self.length()-5);
+						} 
 //						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 						
 						getvalue.append("if (" + metaorg + "!=null) { String o=jp.reflexworks.atom.api.EntryUtil.getDescStr(" + metaorg + ");"+ meta.self +"=o;}"); 
 					}					
@@ -2142,17 +2140,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (metalistnew.get(i).hasChild()&&isUsedWord(metalistnew,i)) {
 				throw new ParseException(metalistnew.get(i).self+" is already used word as the parent.",0);
 			}
-			if (metalistnew.get(i).name.indexOf("_desc")>0) {
-				String orgname = metalistnew.get(i).name.replace("_desc","");
-				boolean desccheck = false;
-				for(int j=0;j<metalistnew.size();j++) {
-					if (metalistnew.get(j).name.equals(orgname)) {
-						if (metalistnew.get(j).level == metalistnew.get(i).level) {
-							desccheck = true;
+			int len = metalistnew.get(i).name.length();
+			if (len>5) {
+				String desc = metalistnew.get(i).name.substring(len-5);
+				if (desc.equals("_desc")) {
+					String orgname = metalistnew.get(i).name.substring(0,len-5);					
+					boolean desccheck = false;
+					for(int j=0;j<metalistnew.size();j++) {
+						if (metalistnew.get(j).name.equals(orgname)) {
+							if (metalistnew.get(j).level == metalistnew.get(i).level) {
+								desccheck = true;
+							}
 						}
 					}
+					if (!desccheck) throw new ParseException(orgname+" is required.",0);
 				}
-				if (!desccheck) throw new ParseException(orgname+" is required.",0);
 			}
 		}
 		
