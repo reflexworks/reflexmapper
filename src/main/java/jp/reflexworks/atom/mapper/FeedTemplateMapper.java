@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -53,8 +54,7 @@ import org.msgpack.template.builder.ReflectionTemplateBuilder;
 import org.msgpack.type.Value;
 import org.msgpack.util.json.JSONBufferUnpacker;
 
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-
+//import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 //import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 
 
@@ -518,17 +518,22 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private void addPropAcls(String[] propAcls, int indexmax) throws ParseException {
 
 		Pattern patternp = Pattern.compile(aclpattern);
-		List<String> keys = new ArrayList<String>();
+		//List<String> keys = new ArrayList<String>();
+		Map<String, List<String>> keys = new HashMap<String, List<String>>();
 
 		int i = 0;
 		for (String propacl : propAcls) {
 			String k[] = propacl.split("=");
 			int k2 = k[0].indexOf("#");	// 暗号化項目
 			String k3[] = k[0].split(":");	// Index項目
+			String k4[] = k[0].split(";");	// 全文検索項目
 			String key = null;
 			String privatekey = null;
 			String index = null;
-			if (k2 >= 0 && k3.length > 1) throw new ParseException("Only one of these(:,#) to be specified.'" + k[0] + "'",0);
+			boolean isSearch = false;
+			if (k2 >= 0 && k3.length > 1) throw new ParseException("Only one of these(:,;,#) to be specified.'" + k[0] + "'",0);
+			if (k2 >= 0 && k4.length > 1) throw new ParseException("Only one of these(:,;,#) to be specified.'" + k[0] + "'",0);
+			if (k3.length > 1 && k4.length > 1) throw new ParseException("Only one of these(:,;,#) to be specified.'" + k[0] + "'",0);
 			key = k[0];
 			if (k2 >= 0) {
 				key = k[0].substring(0, k2);
@@ -541,8 +546,52 @@ public class FeedTemplateMapper extends ResourceMapper {
 				i++;
 				if (i > indexmax) throw new ParseException("Custom property index limit exceeded.'" + k[0] + "'",0);
 			}
-			if (keys.contains(key)) throw new ParseException("Already specified.'" + k[0] + "'",0);
-			keys.add(key);
+			if (k4.length > 1) {
+				key = k4[0];
+				index = k4[1];
+				isSearch = true;
+				i++;
+				if (i > indexmax) throw new ParseException("Custom property index limit exceeded.'" + k[0] + "'",0);
+			}
+			String attribute = null;
+			if (index != null) {
+				if (isSearch) {
+					attribute = "search";
+				} else {
+					attribute = "index";
+				}
+			}
+			if (keys.containsKey(key)) {
+				List<String> attributes = keys.get(key);
+				boolean isAlreadySpecified = false;
+				if (index != null) {
+					String allow = null;
+					if (isSearch) {
+						allow = "index";
+					} else {
+						allow = "search";
+					}
+					if (attributes == null || attributes.isEmpty()) {
+						isAlreadySpecified = true;
+					} else {
+						for (String attr : attributes) {
+							if (!allow.equals(attr)) {
+								isAlreadySpecified = true;
+							}
+						}
+					}
+				} else {
+					isAlreadySpecified = true;
+				}
+				if (isAlreadySpecified) {
+					throw new ParseException("Already specified.'" + k[0] + "'",0);
+				}
+				attributes.add(attribute);
+			} else {
+				List<String> attributes = new ArrayList<String>();
+				attributes.add(attribute);
+				keys.put(key, attributes);
+			}
 
 			List<String> aclR = null;
 			List<String> aclW = null;
@@ -588,7 +637,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (index != null) {
 						if (meta.isArray || meta.isMap) throw new ParseException("Can't specify index to '" + key + "'.",0);
 						if (meta.privatekey != null) throw new ParseException("Can't specify index for the encription property.'" + k[0] + "'",0);
-						meta.index = index;
+						if (!isSearch) {
+							meta.index = index;
+						} else {
+							meta.search = index;
+						}
 						isExist = true;
 					}
 				}
@@ -688,8 +741,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 */
 	public static class Meta {
 
-		public String search;
-
 		/**
 		 * 階層のレベル
 		 */
@@ -719,7 +770,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 * インデックス
 		 */
 		public String index; 
-
+		
+		/**
+		 * 全文検索インデックス
+		 */
+		public String search;
+		
 		/**
 		 * 必須項目
 		 */
@@ -768,7 +824,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		/**
 		 * 最大
 		 */
-		public String max;	
+		public String max;
 
 		/**
 		 * 名前

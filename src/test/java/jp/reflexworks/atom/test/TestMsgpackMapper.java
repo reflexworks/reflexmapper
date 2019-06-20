@@ -203,7 +203,7 @@ public class TestMsgpackMapper {
 		"price=101+W,@+RW"
 	};
 
-	public static String entityAclsFulltextsearch[] = {
+	public static String entityAclsFulltextsearch1[] = {
 		"title:^/$|^/@XXXX$",
 		"contributor=/_group/$admin+RW",
 		"contributor.uri#",
@@ -214,6 +214,146 @@ public class TestMsgpackMapper {
 		"info.stock_float:^/index[^/]*$",
 		"info.stock_double:^/index[^/]*$",
 		"info.stock_string;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch2[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch3error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string:^/aaa[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch4error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/aaa[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch5[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch6error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string;^/bbb[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch7error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string;^/bbb[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch8error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string;^/bbb[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch9error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string#",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch10error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string#",
+		"info.stock_string:^/index[^/]*$",
 		"comment.secret#"
 	};
 
@@ -2427,7 +2567,7 @@ public class TestMsgpackMapper {
 		StringBuilder prn = new StringBuilder();
 		if (metalist != null && metalist.size() > 0) {
 			existsMetalist = true;
-			prn.append("[name]\t[level]\t[type]\t[bigquerytype]\t[parent]\t[self]\t[index]\t[repeated]\t[isrecord]\n");
+			prn.append("[name]\t[level]\t[type]\t[bigquerytype]\t[parent]\t[self]\t[index]\t[search]\t[repeated]\t[isrecord]\n");
 			for (Meta meta : metalist) {
 				prn.append(meta);
 				prn.append("\t");
@@ -2442,6 +2582,8 @@ public class TestMsgpackMapper {
 				prn.append(meta.self);
 				prn.append("\t");
 				prn.append(meta.index);
+				prn.append("\t");
+				prn.append(meta.search);
 				prn.append("\t");
 				prn.append(meta.repeated);
 				prn.append("\t");
@@ -4796,17 +4938,68 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testFulltextsearchIndex() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch, 30, SECRETKEY);
+		
+		System.out.println("[testFulltextsearchIndex] start");
+		
+		// OK
+		FeedTemplateMapper mp1 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch1, 30, SECRETKEY);
+		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch2, 30, SECRETKEY);
+		FeedTemplateMapper mp5 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch5, 30, SECRETKEY);
+		
+		// NG
+		try {
+			FeedTemplateMapper mp3 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch3error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch4error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp6 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch6error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp7 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch7error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp8 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch8error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp9 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch9error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp10 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch10error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
 
-		String json = createJsonTempl4_blankarray();
-		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		printMetalist2(mp5.getMetalist());
 		
-		String uid = "75";
-		List<String> groups = new ArrayList<String>();
-		groups.add("/_group/@admin");
-		
-		feed.validate(uid, groups);
-		
+		System.out.println("[testFulltextsearchIndex] end");
 	}
 
 }
