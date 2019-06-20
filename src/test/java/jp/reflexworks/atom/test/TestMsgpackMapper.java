@@ -203,6 +203,20 @@ public class TestMsgpackMapper {
 		"price=101+W,@+RW"
 	};
 
+	public static String entityAclsFulltextsearch[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
 	// maxテスト 用
 	public static String entityAclsMaxTest[] = {
 		"title:^/$",					// ルートのtitleのIndex指定(任意のサービス名)
@@ -4768,6 +4782,21 @@ public class TestMsgpackMapper {
 	@Test
 	public void testValidateBlankarray() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
+
+		String json = createJsonTempl4_blankarray();
+		FeedBase feed = (FeedBase)mp4.fromJSON(json);
+		
+		String uid = "75";
+		List<String> groups = new ArrayList<String>();
+		groups.add("/_group/@admin");
+		
+		feed.validate(uid, groups);
+		
+	}
+
+	@Test
+	public void testFulltextsearchIndex() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch, 30, SECRETKEY);
 
 		String json = createJsonTempl4_blankarray();
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
