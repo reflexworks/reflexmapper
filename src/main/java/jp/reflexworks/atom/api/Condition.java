@@ -33,6 +33,10 @@ public class Condition {
 	public static final String OR_START = OR + "(";
 	/** 演算子 : OR終了 */
 	public static final String OR_END = ")";
+	/** ソート演算子 : 昇順 */
+	public static final String ASC = "asc";
+	/** ソート演算子 : 降順 */
+	public static final String DESC = "desc";
 
 	// 互換性のためfinalにしない。(継承クラスで編集)
 	/** 演算子の接続文字 */
