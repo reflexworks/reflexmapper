@@ -15,7 +15,7 @@ import jp.sourceforge.reflex.util.StringUtils;
 
 /**
  * エンティティオブジェクトが検索条件に合致するか調べるために使われるコンテキスト
- * 
+ *
  */
 public class ConditionContext {
 
@@ -26,16 +26,16 @@ public class ConditionContext {
 	public String parent;
 	public Map<String,Boolean> isMatchs;
 	private Boolean[] isFetchs;		// 項目名が一致したか
-	
+
 	public ConditionContext(Condition[] conditions) {
 		this.conditions = conditions;
 		this.isMatchs = new HashMap<String, Boolean>();
 		this.isFetchs = new Boolean[conditions.length];
 	}
-	
+
 	/**
 	 * 検索条件に合致していたかについてのチェック結果の判定
-	 * 
+	 *
 	 * @return 合致していればtrue
 	 */
 	public boolean isMatch() {
@@ -51,7 +51,7 @@ public class ConditionContext {
 
 	/**
 	 * すべての項目の検索条件について合致しているかどうかチェックする
-	 * 
+	 *
 	 * @param context
 	 */
 	public static void checkCondition(ConditionContext context) {
@@ -60,7 +60,7 @@ public class ConditionContext {
 			if (cond.getProp().equals(context.fldname)) { // 項目名が一致するかどうか
 				Boolean value = context.isMatchs.get(context.fldname+"-"+cond.getEquations()+"-"+i);
 				if (value == null || !value) {
-					context.isMatchs.put(context.fldname+"-"+cond.getEquations()+"-"+i, 
+					context.isMatchs.put(context.fldname+"-"+cond.getEquations()+"-"+i,
 							checkCondition(context.obj, cond, context.type));
 				}
 				context.isFetchs[i] = true;
@@ -70,7 +70,7 @@ public class ConditionContext {
 
 	/**
 	 * Stringの項目について検索条件に合致しているかどうかチェックする
-	 * 
+	 *
 	 * @param obj
 	 * @param cond
 	 * @param type
@@ -83,15 +83,15 @@ public class ConditionContext {
 		if (Condition.REGEX.equals(equal)) {
 			Pattern pattern = Pattern.compile(value);
 			Matcher matcher = pattern.matcher(src);
-			if (!matcher.find()) {
+			if (!matcher.matches()) {
 				return false;
 			}
 		}
-		else 
+		else
 		//if (!cond.isPrefixMatching() && !cond.isLikeForward()) {
 		if (!Condition.FORWARD_MATCH.equals(equal) && !Condition.BACKWARD_MATCH.equals(equal)) {
 			int compare = src.compareTo(value);
-			
+
 			if (Condition.EQUAL.equals(equal) && compare != 0) {
 				return false;
 			} else if (Condition.NOT_EQUAL.equals(equal) && compare == 0) {
@@ -127,11 +127,11 @@ public class ConditionContext {
 		}
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * 個々の項目について検索条件に合致しているかどうかチェックする
-	 * 
+	 *
 	 * @param obj
 	 * @param cond
 	 * @param type
@@ -148,7 +148,7 @@ public class ConditionContext {
 					if (checkConditionString(element._$$text, cond, type)) return true;
 				}
 				return false;
-				
+
 			}else {
 					return checkConditionString((String)obj, cond, type);
 			}
@@ -191,7 +191,7 @@ public class ConditionContext {
 		} else if (type.equals("Float")) {
 			float src = (Float)obj;
 			float value = StringUtils.floatValue(cond.getValue());
-			
+
 			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
@@ -209,7 +209,7 @@ public class ConditionContext {
 		} else if (type.equals("Double")) {
 			double src = (Double)obj;
 			double value = StringUtils.doubleValue(cond.getValue());
-			
+
 			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
@@ -223,7 +223,7 @@ public class ConditionContext {
 			} else if (Condition.LESS_THAN_OR_EQUAL.equals(equal) && src > value) {
 				return false;
 			}
-		
+
 		} else if (type.equals("Date")) {
 			long src = ((Date)obj).getTime();
 			long value;
@@ -232,7 +232,7 @@ public class ConditionContext {
 			} catch (ParseException e) {
 				value = 0;
 			}
-			
+
 			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
@@ -249,16 +249,16 @@ public class ConditionContext {
 
 		} else if (type.equals("Boolean")) {
 			boolean src = (Boolean) obj;
-			boolean value = cond.getValue().equals("true"); 
-			
+			boolean value = cond.getValue().equals("true");
+
 			if (Condition.EQUAL.equals(equal) && src != value) {
 				return false;
 			} else if (Condition.NOT_EQUAL.equals(equal) && src == value) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 }
