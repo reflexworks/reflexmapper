@@ -83,6 +83,18 @@ public class TestMsgpackMapper {
 			" child1"
 	};
 
+	public static String entitytempluid[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"uid",
+			" child1"
+	};
+
+	public static String entitytemplgroups[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"groups",
+			" child1"
+	};
+
 	public static String entitytempldesc[] = {
 			"default{}",
 			"item(int)",
@@ -751,6 +763,30 @@ public class TestMsgpackMapper {
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
 
 		String d0 = (String) entry.getValue("conditions.child1");
+		System.out.println("val="+d0);
+	}
+
+	@Test
+	public void testUid() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempluid, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"uid\" : {\"child1\" : \"xxx\" }  }}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+
+		String d0 = (String) entry.getValue("uid.child1");
+		System.out.println("val="+d0);
+	}
+
+	@Test
+	public void testGroups() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplgroups, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"groups\" : {\"child1\" : \"xxx\" }  }}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+
+		String d0 = (String) entry.getValue("groups.child1");
 		System.out.println("val="+d0);
 	}
 

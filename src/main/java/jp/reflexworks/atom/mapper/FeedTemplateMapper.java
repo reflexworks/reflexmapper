@@ -1291,7 +1291,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						} else {
 							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(_cipher);}");
 							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(_cipher);}");
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}");
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(_uid,_groups);}");
 							getsize.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).getsize();}");
 						}
 					} else {
@@ -1303,7 +1303,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						if (!isFeed(classname)) {
 							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(_context);");
 						} else {
-							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(uid,groups);");
+							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(_uid,_groups);");
 						}
 					}
 				} else {
@@ -1337,15 +1337,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 						if (meta.isMap) {
 							if (!isFeed(classname)) {
 								// TODO + meta.self + ".get(i)のnull check
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(uid,groups,myself);}");
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(_uid,_groups,myself);}");
 							} else {
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(uid,groups);}");
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(_uid,_groups);}");
 							}
 						} else {
 							if (!isFeed(classname)) {
-								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(uid,groups,myself);");
+								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(_uid,_groups,myself);");
 							} else {
-								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(uid,groups);");
+								validation.append("if (" + meta.self + "!=null) " + meta.self + ".validate(_uid,_groups);");
 							}
 						}
 					}
@@ -1446,14 +1446,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 			"jp.reflexworks.atom.mapper.ConditionContext _context = new jp.reflexworks.atom.mapper.ConditionContext(_conditions);";
 	private final String ismatchFuncE2 = "return _context.isMatch();}";
 
-	private final String validateFuncS = "public boolean validate(String uid, java.util.List groups, String myself) throws java.text.ParseException {";
-	private final String validateFuncS2 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = getCreatorUid();";
-	private final String validateFuncS3 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = null;";
+	private final String validateFuncS = "public boolean validate(String _uid, java.util.List _groups, String myself) throws java.text.ParseException {";
+	private final String validateFuncS2 = "public boolean validate(String _uid, java.util.List _groups) throws java.text.ParseException {String myself = getCreatorUid();";
+	private final String validateFuncS3 = "public boolean validate(String _uid, java.util.List _groups) throws java.text.ParseException {String myself = null;";
 
 	private final String validateFuncE = "return true;}";
 	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext _context) {";
-	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext _context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getCreatorUid());";
-	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
+	private final String maskpropFuncS2 = "public void maskprop(String _uid, java.util.List _groups) {jp.reflexworks.atom.mapper.MaskpropContext _context= new jp.reflexworks.atom.mapper.MaskpropContext(_uid,_groups,getCreatorUid());";
+	private final String maskpropFuncS3 = "public void maskprop(String _uid, java.util.List _groups) {";
 
 	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext _context) {";
 	private final String getsizeFuncS2 = "public int getsize() { jp.reflexworks.atom.mapper.SizeContext _context= new jp.reflexworks.atom.mapper.SizeContext();";
@@ -1470,23 +1470,23 @@ public class FeedTemplateMapper extends ResourceMapper {
 		String line = "";
 		if (meta.aclW!=null) {
 			// ACLが設定されていて項目に値が存在している
-			line += "if (uid!=null&&groups!=null&&groups.size()>=0&&"+ meta.self + "!=null) {";
+			line += "if (_uid!=null&&_groups!=null&&_groups.size()>=0&&"+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければエラー
 			line += "boolean ex=false;";
-			line += "java.util.ArrayList groups2 = new java.util.ArrayList(groups);";
-			line += "groups2.add(\"\"+uid);";
+			line += "java.util.ArrayList _groups2 = new java.util.ArrayList(_groups);";
+			line += "_groups2.add(\"\"+_uid);";
 			for(String aclw:meta.aclW) {
-				if (aclw.equals("@")) line += "if (uid != null && uid.equals(myself)) ex=true;";
+				if (aclw.equals("@")) line += "if (_uid != null && _uid.equals(myself)) ex=true;";
 			}
-			line += "for(int i=0;i<groups2.size();i++) {";
+			line += "for(int i=0;i<_groups2.size();i++) {";
 			for(String aclw:meta.aclW) {
 				if (aclw.equals("/*")) line += "ex=true;";
 				else if (aclw.startsWith("/")) {
 					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclw.replace("$", "\\\\$") +"$|^"+aclw.replace("$", "\\\\$")+"$\");";
-					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups2.get(i));";
+					line += "java.util.regex.Matcher m = p.matcher(\"\"+_groups2.get(i));";
 					line += "if (m.find()) ex=true;";
 				}else
-					line += "if (groups2.get(i).equals(\""+aclw+"\")) ex=true;";
+					line += "if (_groups2.get(i).equals(\""+aclw+"\")) ex=true;";
 			}
 			line += "}";
 			line += "if (!ex) throw new java.text.ParseException(\"Property '" + meta.name + "' is not writeable.\",0);";
@@ -1507,20 +1507,20 @@ public class FeedTemplateMapper extends ResourceMapper {
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
 			line += "if (_context.groups==null) _context.groups = new java.util.ArrayList();";
-			line += "java.util.ArrayList groups2 = new java.util.ArrayList(_context.groups);";
-			line += "groups2.add(\"\"+_context.uid);";
+			line += "java.util.ArrayList _groups2 = new java.util.ArrayList(_context.groups);";
+			line += "_groups2.add(\"\"+_context.uid);";
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("@")) line += "if (_context.uid != null && _context.uid.equals(_context.myself)) ex=true;";
 			}
-			line += "for(int i=0;i<groups2.size();i++) {";
+			line += "for(int i=0;i<_groups2.size();i++) {";
 			for(String aclr:meta.aclR) {
 				if (aclr.equals("/*")) line += "ex=true;";
 				else if (aclr.startsWith("/")) {
 					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclr.replace("$", "\\\\$") +"$|^"+aclr.replace("$", "\\\\$")+"$\");";
-					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups2.get(i));";
+					line += "java.util.regex.Matcher m = p.matcher(\"\"+_groups2.get(i));";
 					line += "if (m.find()) ex=true;";
 				}
-				else line += "if (groups2.get(i).equals(\""+aclr+"\")) ex=true;";
+				else line += "if (_groups2.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
 			line += "}";
 			line += "if ((_context.parent==null)||(_context.parent!=null)&&(\"" + meta.name + "\".indexOf(_context.parent)>=0)) {";
