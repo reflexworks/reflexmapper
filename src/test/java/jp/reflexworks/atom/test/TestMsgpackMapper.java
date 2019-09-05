@@ -4720,10 +4720,10 @@ public class TestMsgpackMapper {
 		};
 		try {
 			boolean precheck = mp1.precheckTemplate(null, entitytempl_invalid);
-			System.out.println("(NG) precheck:" + precheck );
-			assertTrue(false);
+			System.out.println("(OK) precheck:" + precheck );
+			assertTrue(true);
 		} catch (ParseException e) {
-			System.out.println("(OK) ParseException: " + e.getMessage());
+			System.out.println("(NG) ParseException: " + e.getMessage());
 		}
 
 	}
