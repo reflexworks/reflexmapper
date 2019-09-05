@@ -56,36 +56,36 @@ public class TestMsgpackMapper {
 
 	public static String entitytemplone[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"sample"			  
+			"sample"
 	};
 
 	public static String entitytempldup1[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"parent",			  
+			"parent",
 			" child1"
 	};
 
 	public static String entitytempldesc[] = {
-			"default{}",        
+			"default{}",
 			"item(int)",
-			"item_desc(desc)" 
+			"item_desc(desc)"
 	};
 
 	public static String entitytempldesc2[] = {
-			"default{}",        
+			"default{}",
 			"item2",
-			"item2_desc(desc)" 
+			"item2_desc(desc)"
 	};
 
 	public static String entitytempldescstr[] = {
-			"default{}",        
+			"default{}",
 			"item2",
 			"item2_desc(desc)"
 	};
 
 	public static String entitytempldup2[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"parent",			  
+			"parent",
 			" child1",
 			" parent{}",
 			"  child1",
@@ -94,15 +94,15 @@ public class TestMsgpackMapper {
 
 	public static String entitytemplnull[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"item",			  
-			"parent{}",			  
+			"item",
+			"parent{}",
 			" child"
 	};
 
 	public static String entitytempl[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
-		"Idx 	",			  
+		"Idx 	",
 		"email(string){5~30}",	// 5文字~30文字の範囲
 		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
 		"name",
@@ -115,7 +115,7 @@ public class TestMsgpackMapper {
 		"  message",
 		"  locationType",
 		"  location",
-		" code(int){1~100}",			// 1~100の範囲			
+		" code(int){1~100}",			// 1~100の範囲
 		" message",
 		"subInfo",
 		" favorite",
@@ -192,9 +192,9 @@ public class TestMsgpackMapper {
 	public static String entityAcls6[] = {
 		"title:^/$|^/@[^/]*$",					// ルートおよびサービス直下のtitleのIndex指定(任意のサービス名)
 		"contributor=@+RW,/_group/$admin+RW",	// contributorは自身と/_group/$adminグループのRW権限
-		"contributor.uri#",						// contributor.uriの暗号指定  
+		"contributor.uri#",						// contributor.uriの暗号指定
 		"rights#=@+RW,/_group/$admin+RW",		// rightsの暗号指定、自身と/_group/$adminグループのRW権限
-		
+
 		//"name=/mygroup1+RW,@+RW",
 		"name=@+RW,/mygroup1+RW",
 		"brand=/mygroup1+R,@+RW",
@@ -395,7 +395,7 @@ public class TestMsgpackMapper {
 	public static String entitytempl2[] = {
 		// {}がMap, []がArray　, {} [] は末尾に一つだけ付けられる。*が必須項目
 		"import{2}",        //  0行目はパッケージ名(service名)
-		"Idx",			  
+		"Idx",
 		"email",
 		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
 		"name",
@@ -408,7 +408,7 @@ public class TestMsgpackMapper {
 		"  message",
 		"  locationType",
 		"  location",
-		" code(int){1~100}",			// 1~100の範囲			
+		" code(int){1~100}",			// 1~100の範囲
 		" message",
 		" test",						// 追加項目
 		"subInfo",
@@ -427,7 +427,7 @@ public class TestMsgpackMapper {
 	public static String entitytemplp[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
-		"Idx",			  
+		"Idx",
 		"public",
 		" int",
 		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
@@ -441,7 +441,7 @@ public class TestMsgpackMapper {
 		"  message",
 		"  locationType",
 		"  location",
-		" code(int){1~100}",			// 1~100の範囲			
+		" code(int){1~100}",			// 1~100の範囲
 		" message",
 		"subInfo",
 		" favorite",
@@ -573,7 +573,7 @@ public class TestMsgpackMapper {
 	public static String entitytemplf[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"default{2}",        //  0行目はパッケージ名(service名)
-		"Idx 	",			  
+		"Idx 	",
 		"email(string){5~30}",	// 5文字~30文字の範囲
 		"verified_email(Boolean)",// Boolean型 他に（int,date,long,float,doubleがある。先小文字OK、省略時はString）
 		"name",
@@ -586,7 +586,7 @@ public class TestMsgpackMapper {
 		"  message",
 		"  locationType",
 		"  location",
-		" code(float){1~100}",			// 1~100の範囲			
+		" code(float){1~100}",			// 1~100の範囲
 		" message",
 		"subInfo",
 		" favorite",
@@ -602,7 +602,7 @@ public class TestMsgpackMapper {
 		"  $$text",				// テキストノード
 		"seq(desc)"
 	};
-	
+
 	public static String entitytemplMaxTest[] = {
 		// {}がMap, []がArray　, {} [] は末尾にどれか一つだけが付けられる。また、!を付けると必須項目となる
 		"maxtest{100}",        //  0行目はパッケージ名(service名)
@@ -652,14 +652,14 @@ public class TestMsgpackMapper {
 	private static void editTestEntry(FeedTemplateMapper mp,Object feed)  {
 		try {
 			Field f = feed.getClass().getField("entry");
-			List entrylist = (List) f.get(feed);	
-			Object entry = entrylist.get(0);	
+			List entrylist = (List) f.get(feed);
+			Object entry = entrylist.get(0);
 
 			f = entry.getClass().getField("error");
-			Object error = f.get(entry);	
+			Object error = f.get(entry);
 
 			f = error.getClass().getField("test");
-			f.set(error, "<この項目が追加された>");		
+			f.set(error, "<この項目が追加された>");
 
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -686,7 +686,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testParentNull() throws ParseException, JSONException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplnull, null, 30, SECRETKEY);
-		
+
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item\" :\"test\",\"parent\" : []}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -711,8 +711,8 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testDuplicateItems() throws ParseException, JSONException {
-		
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		try {
 			boolean precheck = mp0.precheckTemplate(entitytempldup1,entitytempldup2);
 			System.out.println("precheck:"+precheck);
@@ -731,17 +731,17 @@ public class TestMsgpackMapper {
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item\" : 1}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		String d0 = (String) entry.getValue("item_desc");
 		System.out.println("(validate前) item_desc="+d0);
-		
+
 		List groups = new ArrayList<String>();
 		groups.add("/$content");	// contentに書込できるグループ
-//		System.out.println("Validtion:"+entry.validate("123",groups));	
+//		System.out.println("Validtion:"+entry.validate("123",groups));
 
 		String d = (String) entry.getValue("item_desc");
 		System.out.println("(validate後) item_desc="+d);
-		
+
 		System.out.println("\n=== JSON Entry シリアライズ ===");
 		String json2 = mp.toJSON(entry);
 		System.out.println(json);
@@ -751,7 +751,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testStrDesc() throws ParseException, JSONException {
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		mp0.precheckTemplate(null,entitytempldesc2);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc2, null, 30, SECRETKEY);
 
@@ -759,10 +759,10 @@ public class TestMsgpackMapper {
 		String json = "{\"entry\" : {\"item2\" : \"2018-06-20T17:53:56.016+09:00\"}}";
 //		String json = "{\"entry\" : {\"item2\" : \"09:00\"}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		String d0 = (String) entry.getValue("item2_desc");
 		System.out.println("item2_desc="+d0);
-		
+
 		System.out.println("\n=== JSON Entry シリアライズ ===");
 		String json2 = mp.toJSON(entry);
 		System.out.println(json);
@@ -827,7 +827,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testStaticGeneratedFeed() throws ParseException {
 		// Generate
-//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30,"/Users/stakezaki/git/taggingservicecore/src/test/resources");		
+//		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl,entityAcls,30,"/Users/stakezaki/git/taggingservicecore/src/test/resources");
 		Map<String, String> MODEL_PACKAGE = new HashMap<String, String>();
 		MODEL_PACKAGE.put("jp.reflexworks.atom.feed", "http://www.w3.org/2005/Atom");
 		MODEL_PACKAGE.put("jp.reflexworks.atom.entry", "http://www.w3.org/2005/Atom");
@@ -862,7 +862,7 @@ public class TestMsgpackMapper {
 			String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"content\" : {\"$type\" : \"image/gif\",\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 			//String json = "{\"entry\" : {\"id\" : \"/123/new,1\",\"rights\" : \"暗号化される\",\"contributor\" : [{\"email\":\"abc@def\"},{\"uri\":\"http://abc\"},{\"name\":\"hoge\"}],\"content\" : {\"$$text\" : \"あああ\"},\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : {\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : [\"ポップス1\",\"ポップス2\",\"ポップス3\"]}}}}";
 			EntryBase entry = (EntryBase) mp.fromJSON(json);
-	
+
 			/*
 			Entry entry2 = new Entry();
 			entry2._id = "xxx";
@@ -873,48 +873,48 @@ public class TestMsgpackMapper {
 			entry2._subInfo = new SubInfo();
 			entry2._subInfo._favorite = new Favorite();
 			entry2._subInfo._favorite._food = "xxx";
-	
+
 			String xml =  mp.toXML(entry2);
 			System.out.println(xml);
 			 */
-	
+
 			// MessagePack test
 			System.out.println("\n=== MessagePack Entry シリアライズ ===");
 			byte[] mbytes = mp.toMessagePack(entry);
 			System.out.println("len:"+mbytes.length);
-			for(int i=0;i<mbytes.length;i++) { 
-				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
-			} 
+			for(int i=0;i<mbytes.length;i++) {
+				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" ");
+			}
 			System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
 			byte[] de = deflateUtil.deflate(mbytes);
 			System.out.println("len:"+de.length+" 圧縮率："+(de.length*100/mbytes.length)+"%");
-			for(int i=0;i<de.length;i++) { 
-				System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
-			} 
-	
+			for(int i=0;i<de.length;i++) {
+				System.out.print(Integer.toHexString(de[i]& 0xff)+" ");
+			}
+
 			System.out.println("\n=== MessagePack Entry infrate解凍 ===");
 			byte[] in = deflateUtil.inflate(de);
 			System.out.println("len:"+in.length);
-			for(int i=0;i<in.length;i++) { 
-				System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
-			} 
-	
+			for(int i=0;i<in.length;i++) {
+				System.out.print(Integer.toHexString(in[i]& 0xff)+" ");
+			}
+
 			System.out.println("\n=== MessagePack Entry デシリアライズ ===");
-	
+
 			EntryBase  muserinfo = (EntryBase) mp.fromMessagePack(in,ENTRY);	// false でEntryをデシリアライズ
 			List groups = new ArrayList<String>();
 			groups.add("/@hoge/grp2");
 			groups.add("/@hoge/grp1");
 			groups.add("1");
 			//        groups.add("/_group/$content");	// contentに書込できるグループ
-			System.out.println("Validtion:"+muserinfo.validate("123",groups));	
-	
-			System.out.println("Before Masked:"+mp.toJSON(muserinfo));	
-			muserinfo.maskprop("123",groups);	
-			System.out.println("After  Masked:"+mp.toJSON(muserinfo));	
-	
+			System.out.println("Validtion:"+muserinfo.validate("123",groups));
+
+			System.out.println("Before Masked:"+mp.toJSON(muserinfo));
+			muserinfo.maskprop("123",groups);
+			System.out.println("After  Masked:"+mp.toJSON(muserinfo));
+
 			assertNotSame(json, mp.toJSON(muserinfo));
-		
+
 		} finally {
 			deflateUtil.end();
 		}
@@ -935,24 +935,24 @@ public class TestMsgpackMapper {
 		groups.add("/grp1");
 		groups.add("1");
 		groups.add("/$content");	// contentに書込できるグループ
-		System.out.println("Validtion:"+feed.validate("123",groups));	
+		System.out.println("Validtion:"+feed.validate("123",groups));
 
-		System.out.println("Before Masked:"+mp.toJSON(feed));	
-		//        feed.maskprop("123",groups);	
-		System.out.println("After  Masked:"+mp.toJSON(feed));	
+		System.out.println("Before Masked:"+mp.toJSON(feed));
+		//        feed.maskprop("123",groups);
+		System.out.println("After  Masked:"+mp.toJSON(feed));
 
 		assertNotSame(json, mp.toJSON(feed));
-		
+
 		feed.setStartArrayBracket(true);
-		System.out.println("Start ArrayBracket:"+mp.toJSON(feed));	
-		System.out.println("Start ArrayBracket(Entry):"+mp.toJSON(feed.getEntry().get(0)));	
-		
+		System.out.println("Start ArrayBracket:"+mp.toJSON(feed));
+		System.out.println("Start ArrayBracket(Entry):"+mp.toJSON(feed.getEntry().get(0)));
+
 		feed.entry.clear();;
-		System.out.println("Start ArrayBracket (entry.size=0):"+mp.toJSON(feed));	
-		
+		System.out.println("Start ArrayBracket (entry.size=0):"+mp.toJSON(feed));
+
 		feed.entry = null;
-		System.out.println("Start ArrayBracket (entry is null):"+mp.toJSON(feed));	
-		
+		System.out.println("Start ArrayBracket (entry is null):"+mp.toJSON(feed));
+
 		// descにLongを超える文字を入れる 仕様変更により削除
 		/*
 		boolean isParseException = false;
@@ -993,7 +993,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testChangeTemplateFeed() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		// 変更前
-		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl2, SECRETKEY);	// 項目追加後	
+		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl2, SECRETKEY);	// 項目追加後
 
 		String json = "{ \"feed\" : {\"entry\" : [{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}},{\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}]}}";
 		FeedBase entry = (FeedBase) mp.fromJSON(json);
@@ -1001,13 +1001,13 @@ public class TestMsgpackMapper {
 
 		// MessagePack test
 		System.out.println("\n=== Array Feed(クラス変更後) シリアライズ ===");
-		FeedBase entry2 = (FeedBase) mp2.fromMessagePack(mbytes,FEED);		
+		FeedBase entry2 = (FeedBase) mp2.fromMessagePack(mbytes,FEED);
 		editTestEntry(mp2,entry2);
 
 		byte[] msgpack = mp2.toMessagePack(entry2);
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
 		System.out.println();
 		System.out.println(mp2.toArray(msgpack));
 
@@ -1024,7 +1024,7 @@ public class TestMsgpackMapper {
 
 	@Test
 	public void testMapEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);		
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl, SECRETKEY);
 		String json = "{ \"entry\" : {\"email\" : \"email1\",\"verified_email\" : false,\"name\" : \"管理者\",\"given_name\" : \"X\",\"family_name\" : \"管理者Y\",\"error\" : { \"errors\" : [{\"domain\": \"com.google.auth\",\"reason\": \"invalidAuthentication\",\"message\": \"invalid header\",\"locationType\": \"header\",\"location\": \"Authorization\"}],\"code\" : 100,\"message\" : \"Syntax Error\"},\"subInfo\" : {\"favorite\" : {\"food\" : \"カレー\",\"music\" : \"ポップス1\"}}}}";
 		// 正常ケース
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -1061,9 +1061,9 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(entry);
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
 
 		// 異常ケース
 		try {
@@ -1078,7 +1078,7 @@ public class TestMsgpackMapper {
 	@Test
 	public void testTextNodeEntry() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplp, SECRETKEY);		// 変更前
-		
+
 		String json = "{\"entry\" : {\"public\" : {\"int\" : \"予約語\"},\"subInfo\" : {\"hobby\" : [{\"______text\" : \"テキストノード\\\"\\n\"}]},\"link\" : [{\"___href\" : \"/0762678511-/allA/759188985520\",\"___rel\" : \"self\"},{\"___href\" : \"/transferring/all/0762678511-/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/@/spool/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/historyA/759188985520\",\"___rel\" : \"alternate\"}]}}";
 		//		String json = "{\"entry\" : {\"subInfo\" : {\"hobby\" : [{\"_$$text\" : \"テキストノード\"}]},\"link\" : [{\"_$href\" : \"/0762678511-/allA/759188985520\",\"_$rel\" : \"self\"},{\"_$href\" : \"/transferring/all/0762678511-/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/@/spool/759188985520\",\"_$rel\" : \"alternate\"},{\"_$href\" : \"/0762678511-/historyA/759188985520\",\"_$rel\" : \"alternate\"}]}}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
@@ -1092,16 +1092,16 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(entry);
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
 
 		System.out.println(xml);
 		System.out.println("====");
 		System.out.println(mp.toJSON(mp.fromXML(xml)));
 		System.out.println("====");
 		System.out.println(json);
-		
+
 		String json2 = "{\"public\" : {\"int\" : \"予約語\"},\"subInfo\" : {\"hobby\" : [{\"______text\" : \"テキストノード\\\"\\n\"}]},\"link\" : [{\"___href\" : \"/0762678511-/allA/759188985520\",\"___rel\" : \"self\"},{\"___href\" : \"/transferring/all/0762678511-/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/@/spool/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/historyA/759188985520\",\"___rel\" : \"alternate\"}]}";
 		assertEquals(json2, mp.toJSON(mp.fromXML(xml)));
 	}
@@ -1118,7 +1118,7 @@ public class TestMsgpackMapper {
 		MODEL_PACKAGE.put("jp.reflexworks.atom.feed", NAMESPACE_ATOM);
 		MODEL_PACKAGE.put("jp.reflexworks.atom.entry", NAMESPACE_ATOM);
 		MODEL_PACKAGE.put("_default", NAMESPACE_VT);
-		//		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE);		
+		//		FeedTemplateMapper mp = new FeedTemplateMapper(MODEL_PACKAGE);
 
 		String json = "{\"feed\" : {\"entry\" : [{\"subInfo\" : {\"hobby\" : [{\"______text\" : \"テキストノード\"}]},\"link\" : [{\"___href\" : \"/0762678511-/allA/759188985520\",\"___rel\" : \"self\"},{\"___href\" : \"/transferring/all/0762678511-/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/@/spool/759188985520\",\"___rel\" : \"alternate\"},{\"___href\" : \"/0762678511-/historyA/759188985520\",\"___rel\" : \"alternate\"}]}]}}";
 		FeedBase feed = (FeedBase) mp.fromJSON(json);
@@ -1130,9 +1130,9 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
 
 		System.out.println("");
 		System.out.println(mp.toJSON(mp.fromXML(xml)));
@@ -1152,27 +1152,27 @@ public class TestMsgpackMapper {
 		MODEL_PACKAGE.put("jp.reflexworks.test.model", NAMESPACE_VT);
 
 		FeedTemplateMapper mp = new FeedTemplateMapper(null, SECRETKEY, MODEL_PACKAGE);
-		//		FeedTemplateMapper mp = new FeedTemplateMapper(new String[]{"jp.reflexworks.test.model"});		
+		//		FeedTemplateMapper mp = new FeedTemplateMapper(new String[]{"jp.reflexworks.test.model"});
 		//DeflateUtil deflateUtil = new DeflateUtil();
 		DeflateUtil deflateUtil = new DeflateUtil(Deflater.BEST_SPEED, true);
 
 		try {
 			String dataXmlFile = FileUtil.getResourceFilename("feed_test.txt");
 			FileReader fi = new FileReader(dataXmlFile);
-	
+
 			// XMLにシリアライズ
 			Date d1 = new Date();
 			Object obj = mp.fromXML(fi);
-	
+
 			FeedBase feedobj = null;
 			if (obj instanceof FeedBase) {
 				feedobj = (FeedBase)obj;
 			} else {
 				System.out.println("The text is not feed : " + obj.getClass().getName());
 			}
-	
+
 			Date d2 = new Date();
-	
+
 			Date d3 = new Date();
 			String xml = mp.toXML(feedobj);
 			Date d4 = new Date();
@@ -1181,7 +1181,7 @@ public class TestMsgpackMapper {
 			System.out.println("\n=== XML Feed デシリアライズ ===");
 			System.out.println("time:"+(d2.getTime()-d1.getTime()));
 			System.out.println(xml);
-	
+
 			Date d5 = new Date();
 			String json = mp.toJSON(feedobj);
 			Date d6 = new Date();
@@ -1193,33 +1193,33 @@ public class TestMsgpackMapper {
 			Date d8 = new Date();
 			System.out.println("\n=== JSON Feed デシリアライズ ===");
 			System.out.println("time:"+(d8.getTime()-d7.getTime()));
-	
+
 			//		System.out.println("object size:"+ObjectTree.dump(feedobj));
-	
+
 			System.out.println("\n=== Messagepack Feed シリアライズ ===");
 			Date d9 = new Date();
 			byte[] msgpack = mp.toMessagePack(feedobj);
 			Date d10 = new Date();
-			//        for(int i=0;i<msgpack.length;i++) { 
-			//        	System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-			//        } 
+			//        for(int i=0;i<msgpack.length;i++) {
+			//        	System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+			//        }
 			System.out.println("\nmsgpack size:"+msgpack.length+" time:"+(d10.getTime()-d9.getTime()));
 			Date d11 = new Date();
 			FeedBase msgpack2 = (FeedBase) mp.fromMessagePack(msgpack,true);
 			Date d12 = new Date();
 			System.out.println("\n=== Messagepack Feed デシリアライズ ===");
 			System.out.println("time:"+(d12.getTime()-d11.getTime()));
-	
+
 			System.out.println("\n=== MessagePack Entry deflate圧縮 ===");
 			Date d13 = new Date();
 			byte[] de = deflateUtil.deflate(msgpack);
 			Date d14 = new Date();
 			System.out.println("defleted size:"+de.length+" 圧縮率(対msgpack)："+(de.length*100/msgpack.length)+"% 圧縮率(対json)："+(de.length*100/json.length())+"% 圧縮率(対xml)："+(de.length*100/xml.length())+"%");
-			//        for(int i=0;i<de.length;i++) { 
-			//        	System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
-			//        } 
+			//        for(int i=0;i<de.length;i++) {
+			//        	System.out.print(Integer.toHexString(de[i]& 0xff)+" ");
+			//        }
 			System.out.println("time:"+(d14.getTime()-d13.getTime()));
-			
+
 		} finally {
 			deflateUtil.end();
 		}
@@ -1293,10 +1293,10 @@ public class TestMsgpackMapper {
 		link._$rel = Link.REL_SELF;
 		link._$href = "/12/item/001";
 		entry.addLink(link);
-		
+
 		jp.reflexworks.testvt.model.Feed feed = new jp.reflexworks.testvt.model.Feed();
 		feed.addEntry(entry);
-		
+
 		System.out.println("[testStaticPackages3] 名前空間テスト start");
 		System.out.println("[testStaticPackages3] 名前空間テスト Entry XML 出力");
 		System.out.println(mp.toXML(entry));
@@ -1349,7 +1349,7 @@ public class TestMsgpackMapper {
 
 
 	@Test
-	public void testDefaultAtom() 
+	public void testDefaultAtom()
 			throws ParseException, JSONException, IOException, ClassNotFoundException {
 
 		// default
@@ -1363,19 +1363,19 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== [default] MessagePack Entry シリアライズ ===");
 		byte[] defbytes = defmp.toMessagePack(defentry);
-		for(int i=0;i<defbytes.length;i++) { 
-			//System.out.print(Integer.toHexString(defbytes[i]& 0xff)+" "); 
+		for(int i=0;i<defbytes.length;i++) {
+			//System.out.print(Integer.toHexString(defbytes[i]& 0xff)+" ");
 			//System.out.print(Integer.toHexString(defbytes[i])+" ");	// 符号(先頭ビット)が1の場合、上位ビットも1になる。
-			System.out.print(String.format("%02X", defbytes[i])); 
-		} 
+			System.out.print(String.format("%02X", defbytes[i]));
+		}
 
 		System.out.println("\n=== [default] MessagePack Feed シリアライズ ===");
 		byte[] defbytesfeed = defmp.toMessagePack(deffeed);
-		for(int i=0;i<defbytesfeed.length;i++) { 
-			//System.out.print(Integer.toHexString(defbytes[i]& 0xff)+" "); 
+		for(int i=0;i<defbytesfeed.length;i++) {
+			//System.out.print(Integer.toHexString(defbytes[i]& 0xff)+" ");
 			//System.out.print(Integer.toHexString(defbytes[i])+" ");	// 符号(先頭ビット)が1の場合、上位ビットも1になる。
-			System.out.print(String.format("%02X", defbytesfeed[i])); 
-		} 
+			System.out.print(String.format("%02X", defbytesfeed[i]));
+		}
 
 		System.out.println("\n=== [default] MessagePack Entry デシリアライズ ===");
 		EntryBase defentry2 = (EntryBase) defmp.fromMessagePack(defbytes, ENTRY);	// false でEntryをデシリアライズ
@@ -1394,9 +1394,9 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== [template] MessagePack Entry シリアライズ ===");
 		byte[] mbytes = mp.toMessagePack(entry);
-		for(int i=0;i<mbytes.length;i++) { 
-			System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<mbytes.length;i++) {
+			System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" ");
+		}
 
 		System.out.println("\n=== [template] MessagePack Entry デシリアライズ ===");
 		EntryBase muserinfo = (EntryBase) mp.fromMessagePack(mbytes, ENTRY);	// false でEntryをデシリアライズ
@@ -1425,9 +1425,9 @@ public class TestMsgpackMapper {
 
 		byte[] emptyBytes = DatatypeConverter.parseHexBinary(msgEntry16);
 		System.out.println("\n=== [template] MessagePack empty Entry デシリアライズ ===");
-		for(int i=0;i<emptyBytes.length;i++) { 
-			System.out.print(String.format("%02X", emptyBytes[i])); 
-		} 
+		for(int i=0;i<emptyBytes.length;i++) {
+			System.out.print(String.format("%02X", emptyBytes[i]));
+		}
 		EntryBase emptyEntry = (EntryBase) mp.fromMessagePack(emptyBytes, ENTRY);	// false でEntryをデシリアライズ
 		System.out.println("\n=== [template] emptyEntry=" + emptyEntry);
 
@@ -1436,9 +1436,9 @@ public class TestMsgpackMapper {
 		byte MSGPACK_PREFIX = -36;
 
 		System.out.println("\n=== [template] MessagePack empty Feed デシリアライズ ===");
-		for(int i=0;i<emptyBytes.length;i++) { 
-			System.out.print(String.format("%02X", emptyBytes[i])); 
-		} 
+		for(int i=0;i<emptyBytes.length;i++) {
+			System.out.print(String.format("%02X", emptyBytes[i]));
+		}
 		FeedBase emptyFeed = (FeedBase) mp.fromMessagePack(emptyBytes, FEED);	// true でFeedをデシリアライズ
 		System.out.println("\n=== [template] emptyFeed=" + emptyFeed);
 
@@ -1464,22 +1464,22 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== XML Entry(テキストノード+Link) シリアライズ ===");
 		String xml = mp.toXML(feed);
 		System.out.println(xml);
-		
+
 		feed.entry.get(0).title=null;
-		
+
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
 
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
-		
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
+
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		msgpack = mp.toMessagePack(feed.entry.get(0));
 
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
 
 		System.out.println("\n=== Array シリアライズ ===");
 		String array = (String) mp.toArray(msgpack).toString();
@@ -1522,9 +1522,9 @@ public class TestMsgpackMapper {
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp.toMessagePack(feed);
 
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
 		System.out.println("\n=== Array シリアライズ ===");
 		String array = (String) mp.toArray(msgpack).toString();
 		System.out.println(array);
@@ -1555,10 +1555,10 @@ public class TestMsgpackMapper {
 
 		System.out.println("\n=== Messagepack Entry シリアライズ ===");
 		byte[] msgpack = mp1.toMessagePack(entry);
-		for(int i=0;i<msgpack.length;i++) { 
-			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" "); 
-		} 
-		System.out.print("\n"+Integer.toHexString(msgpack[22]& 0xff)+" "); 
+		for(int i=0;i<msgpack.length;i++) {
+			System.out.print(Integer.toHexString(msgpack[i]& 0xff)+" ");
+		}
+		System.out.print("\n"+Integer.toHexString(msgpack[22]& 0xff)+" ");
 
 		// 2番目に0x27(本来は0x2e)を入れることでATOM標準Feedとしてデシリアライズできる
 		//msgpack[2] = 0x27;
@@ -1593,7 +1593,7 @@ public class TestMsgpackMapper {
 		groups.add("/$admin");
 		groups.add("/@default/_group/$content");
 		groups.add("1");
-		System.out.println("Validtion:"+feed2.validate("123",groups));	
+		System.out.println("Validtion:"+feed2.validate("123",groups));
 
 		EntryBase entry = feed.entry.get(0);
 		System.out.println("\n==== getValue test ====");
@@ -1619,13 +1619,13 @@ public class TestMsgpackMapper {
 		} else {
 			System.out.println("[EntryBase#getValue] link object is null.");
 		}
-		
+
 		System.out.println("entry size="+entry.getsize());
 		String bqjson = BQJSONSerializer.toJSON(mp, entry);
 //		String bqjson = mp.toJSON(entry);
 		System.out.println(bqjson);
 		System.out.println("entry json size="+bqjson.length());
-		
+
 		// TODO contributor
 		Contributor contributor = new Contributor();
 		entry.contributor.add(contributor);
@@ -1700,7 +1700,7 @@ public class TestMsgpackMapper {
 				"  message",
 				"  locationType",
 				"  location",
-				" code(int){1~100}",			// 1~100の範囲			
+				" code(int){1~100}",			// 1~100の範囲
 				" message",
 				"subInfo",
 				" favorite",
@@ -1723,7 +1723,7 @@ public class TestMsgpackMapper {
 				"test1"				// 最後尾に追加はOK
 		};
 
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		boolean precheck = mp0.precheckTemplate(null,entitytempl);
 		System.out.println("precheck:"+precheck);
 
@@ -1735,7 +1735,7 @@ public class TestMsgpackMapper {
 		String[] tmpl2 = new String[]{"androidservice{100}", "info", " name", " category", " color", " size", "comment{}", " $$text", " nickname", "deleteFlg", "deleteFlg2"};
 
 		precheck = mp0.precheckTemplate(tmpl1, tmpl2);
-		
+
 		// 新規登録
 		precheck = mp0.precheckTemplate(null, tmpl2);
 
@@ -1751,35 +1751,35 @@ public class TestMsgpackMapper {
 
 		try {
 			String json = "{\"feed\" : {\"entry\" : [{ \"verified_email\": false,\"family_name\" : \"f\",\"Idx\" : \"1\",\"title\" : \"hello\", \"subInfo\" : { \"favorite2\": { \"food\" : { \"food1\" : \"ラーメン\"}}},\"link\" : [{\"$href\" : \"/test/1\",\"$rel\" : \"self\"}] }]}}";
-	
+
 			FeedBase feed = (FeedBase) mp.fromJSON(json);
-	
+
 			// MessagePack test
 			System.out.println("\n=== MessagePack Feed シリアライズ ===");
 			byte[] mbytes = mp.toMessagePack(feed);
 			System.out.println("len:"+mbytes.length);
-			
-			
+
+
 			byte[] testBytes = FeedTemplateConst.MSGPACK_BYTES_FEED;
 			assertTrue(EntryUtil.isMessagePack(testBytes));
-			
+
 			System.out.println("array:"+ mp.toArray(mbytes));
-			for(int i=0;i<mbytes.length;i++) { 
-				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" "); 
-			} 
+			for(int i=0;i<mbytes.length;i++) {
+				System.out.print(Integer.toHexString(mbytes[i]& 0xff)+" ");
+			}
 			System.out.println("\n=== MessagePack Feed deflate圧縮 ===");
 			byte[] de = deflateUtil.deflate(mbytes);
 			System.out.println("len:"+de.length+" 圧縮率："+(de.length*100/mbytes.length)+"%");
-			for(int i=0;i<de.length;i++) { 
-				System.out.print(Integer.toHexString(de[i]& 0xff)+" "); 
-			} 
-	
+			for(int i=0;i<de.length;i++) {
+				System.out.print(Integer.toHexString(de[i]& 0xff)+" ");
+			}
+
 			System.out.println("\n=== MessagePack Feed infrate解凍 ===");
 			byte[] in = deflateUtil.inflate(de);
 			System.out.println("len:"+in.length);
-			for(int i=0;i<in.length;i++) { 
-				System.out.print(Integer.toHexString(in[i]& 0xff)+" "); 
-			} 
+			for(int i=0;i<in.length;i++) {
+				System.out.print(Integer.toHexString(in[i]& 0xff)+" ");
+			}
 
 			FeedBase muserinfo = (FeedBase) mp.fromMessagePack(in,FEED);	// false でEntryをデシリアライズ
 
@@ -1859,7 +1859,7 @@ public class TestMsgpackMapper {
 		//String uid = "1";
 		//String uid = "6";
 		List<String> groups = new ArrayList<String>();
-		
+
 		// 管理者権限
 		groups.add("/@/_group/$admin");
 		groups.add("/@/_group/$content");
@@ -1953,7 +1953,7 @@ public class TestMsgpackMapper {
 
 		// DeleteFlgとInfoNameをチェック
 		assertTrue(sDeleteFlg.equals(tDeleteFlg) && sInfoName.equals(tInfoName));
-		
+
 		// コメントをチェック
 		assertArrayEquals(sCommentText.toArray(), tCommentText.toArray());
 
@@ -2071,7 +2071,7 @@ public class TestMsgpackMapper {
 		System.out.println("testValidate (1) validate start.");
 		String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\"}}]}}";
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
-		
+
 		boolean errorFlg = false;
 		try {
 			feed.validate(uid, groups);
@@ -2331,10 +2331,10 @@ public class TestMsgpackMapper {
 			errorFlg = true;
 		}
 		assertTrue(errorFlg);
-		
+
 		// groupsが変更されていないこと
 		assertTrue(groups.size() == 1);
-		
+
 		System.out.println("testValidate (17) field acl uid OK.");
 
 		// validate test (18) : validateエラー無し、項目ACLにUID設定
@@ -2381,7 +2381,7 @@ public class TestMsgpackMapper {
 		}
 		assertTrue(errorFlg);
 		System.out.println("testValidate (20) field acl uid OK.");
-		
+
 	}
 
 	/**
@@ -2467,7 +2467,7 @@ public class TestMsgpackMapper {
 
 		// コンストラクタにnull。NullPointerExceptionがスローされなければOK。
 		FeedTemplateMapper mp1 = new FeedTemplateMapper(null, null, 0, null);
-		
+
 		// 正しくMapperを生成
 		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls3, 30, SECRETKEY);
 
@@ -2496,7 +2496,7 @@ public class TestMsgpackMapper {
 		// fromJson
 		obj = mp4.fromJSON(reader);
 		assertTrue(obj == null);
-		
+
 		FeedBase feed = null;
 		// toMessagePack
 		obj = mp4.toMessagePack(feed);
@@ -2534,7 +2534,7 @@ public class TestMsgpackMapper {
 
 	}
 
-	
+
 	private boolean printMetalist(List<Meta> metalist) {
 		boolean existsMetalist = false;
 		StringBuilder prn = new StringBuilder();
@@ -2561,7 +2561,7 @@ public class TestMsgpackMapper {
 		System.out.println(prn.toString());
 		return existsMetalist;
 	}
-	
+
 	private boolean printMetalist2(List<Meta> metalist) {
 		boolean existsMetalist = false;
 		StringBuilder prn = new StringBuilder();
@@ -2599,12 +2599,12 @@ public class TestMsgpackMapper {
 	public void testGetMetalist() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 
 		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
-		
+
 		String serviceName = "service1";
 		String testName = "info.name";
 		String sourceValue = null;
 		String targetValue = null;
-		
+
 		System.out.println("[Index]");
 		for (String acl : entityAcls5) {
 			int idx = acl.indexOf(":");
@@ -2615,7 +2615,7 @@ public class TestMsgpackMapper {
 				}
 			}
 		}
-		
+
 		List<Meta> metalist = mp4.getMetalist();
 		System.out.println("[Metalist Index]");
 		for (Meta meta : metalist) {
@@ -2626,14 +2626,14 @@ public class TestMsgpackMapper {
 				}
 			}
 		}
-		
+
 		String testLayer = "/index";
 		String sourceLayer = sourceValue.substring(sourceValue.indexOf(testLayer));
 		String targetLayer = targetValue.substring(targetValue.indexOf(testLayer));
-		
+
 		System.out.println("sourceLayer: " + sourceLayer);
 		System.out.println("targetLayer: " + targetLayer);
-		
+
 		assertEquals(sourceLayer, targetLayer);
 
 	}
@@ -2644,19 +2644,19 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp4 = new FeedTemplateMapper(entitytempl4, entityAcls5, 30, SECRETKEY);
 
 		String printFormat = "yyyy-MM-dd HH:mm:ss.SSSZ";
-		
+
 		String date = "2015-12-04 09:53:34";
 		String json = getDateJson(date);
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
 		EntryBase entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "2015-12-04 09:53:34.333";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "2015-12-04 09:53:34+0800";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
@@ -2668,7 +2668,7 @@ public class TestMsgpackMapper {
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "2015-12-04 09:53:34.333+0800";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
@@ -2680,7 +2680,7 @@ public class TestMsgpackMapper {
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "2015-12-04T09:53:34.333";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
@@ -2692,13 +2692,13 @@ public class TestMsgpackMapper {
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "2015-12-04T09:53:34+08:00";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "2015-12-04T09:53:34.333+0800";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
@@ -2722,7 +2722,7 @@ public class TestMsgpackMapper {
 		feed = (FeedBase)mp4.fromJSON(json);
 		entry = feed.entry.get(0);
 		System.out.println("[testDate] before = " + date + " | after = " + DateUtil.getDateTimeFormat((Date)entry.getValue("info.stock_date"), printFormat));
-		
+
 		date = "20151204095334333+0800";
 		json = getDateJson(date);
 		feed = (FeedBase)mp4.fromJSON(json);
@@ -2731,9 +2731,9 @@ public class TestMsgpackMapper {
 
 		System.out.println("[testDate] json = " + mp4.toJSON(feed));
 		System.out.println("[testDate] xml = " + mp4.toXML(feed));
-		
+
 	}
-	
+
 	private String getDateJson(String date) {
 		return "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_date\" : \"" + date + "\"}}]}}";
 	}
@@ -2752,7 +2752,7 @@ public class TestMsgpackMapper {
 		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333}}]}}";
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
 		EntryBase entry = feed.entry.get(0);
-		
+
 		checkPositiveInteger(entry);
 		checkPositiveLong(entry);
 		checkPositiveFloat(entry);
@@ -2770,14 +2770,14 @@ public class TestMsgpackMapper {
 		checkNegativeDouble(entry);
 
 	}
-	
+
 	private String checkResult(boolean target, boolean source) {
 		if (target == source) {
 			return " (◯) ";
 		}
 		return " (☓) ";
 	}
-	
+
 	// 正数 Integer の isMatchテスト
 	private void checkPositiveInteger(EntryBase entry) {
 		Condition[] conditions = new Condition[1];
@@ -2856,7 +2856,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_int-eq-1000");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -2978,7 +2978,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_long-eq-1000000");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3021,7 +3021,7 @@ public class TestMsgpackMapper {
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
 	}
-	
+
 	// 正数 Float の isMatchテスト
 	private void checkPositiveFloat(EntryBase entry) {
 		Condition[] conditions = new Condition[1];
@@ -3101,7 +3101,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_float-eq-222.333");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3144,7 +3144,7 @@ public class TestMsgpackMapper {
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
 	}
-	
+
 	// 正数 Double の isMatchテスト
 	private void checkPositiveDouble(EntryBase entry) {
 		Condition[] conditions = new Condition[1];
@@ -3224,7 +3224,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_double-eq-4444.5555");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3328,7 +3328,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_int-eq--99999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3351,12 +3351,12 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_int-eq--999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_int-eq--1000");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3380,7 +3380,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_int-eq-9999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3403,7 +3403,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-	
+
 		conditions[0] = new Condition("info.stock_int-eq--9999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3470,7 +3470,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_long-eq--99999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3493,12 +3493,12 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_long-eq--999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_long-eq--1000000");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3522,7 +3522,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_long-eq-99999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3545,7 +3545,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-	
+
 		conditions[0] = new Condition("info.stock_long-eq--99999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3613,7 +3613,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_float-eq--999.99");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3636,12 +3636,12 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_float-eq--11.222222");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_float-eq--222.333");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3665,7 +3665,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_float-eq-999.9999999999999999999999999999999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3688,7 +3688,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-	
+
 		conditions[0] = new Condition("info.stock_float-eq--999.9999999999999999999999999999999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3756,7 +3756,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_double-eq--999999.999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3779,12 +3779,12 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_double-eq--111.22222222");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_double-eq--4444.5555");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
@@ -3808,7 +3808,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, true) + conditions[0]);
 		assertTrue(isMatch);
-		
+
 		conditions[0] = new Condition("info.stock_double-eq-9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3831,7 +3831,7 @@ public class TestMsgpackMapper {
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
 		assertFalse(isMatch);
-	
+
 		conditions[0] = new Condition("info.stock_double-eq--9999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
 		isMatch = entry.isMatch(conditions);
 		System.out.println("** isMatch = " + isMatch + checkResult(isMatch, false) + conditions[0]);
@@ -3839,32 +3839,32 @@ public class TestMsgpackMapper {
 	}
 
 	@Test
-	public void testCreateObject() 
+	public void testCreateObject()
 	throws ParseException, ClassNotFoundException, IllegalAccessException, InstantiationException,
 			NoSuchMethodException, InvocationTargetException {
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl5, entityAcls5, 30, SECRETKEY);
-		
+
 		EntryBase entry = EntryUtil.createEntry(mapper);
 
 		// 内部のクラスを生成したい。
 		String pkg = entitytempl5[0].substring(0, entitytempl5[0].indexOf("{"));
 		String clsName = "_" + pkg + "." + "Info";
-		
+
 		try {
 			Class cls = Class.forName(clsName);
 			System.out.println("Class.forName - OK : " + cls.getName());
 			assertTrue(false);
-			
+
 		} catch (ClassNotFoundException e) {
 			System.out.println("Class.forName - ClassNotFoundException : " + e.getMessage());
 		}
 
 		// javassistのクラスローダーからクラスを取得
 		Class cls = mapper.getClass(clsName);
-		
+
 		// インスタンス生成
 		Object obj = cls.newInstance();
-		
+
 		// setterで値を設定
 		String field = "name";
 		String value = "名前1";
@@ -3875,10 +3875,10 @@ public class TestMsgpackMapper {
 		String setter = FieldMapper.getSetter(field, type);
 		Method method = cls.getMethod(setter, type);
 		method.invoke(obj, value);
-		
+
 		System.out.println(mapper.toXML(obj));
 	}
-	
+
 	@Test
 	public void testMaskprop3() throws ParseException {
 		// パッケージ指定mapperの動作方法
@@ -3889,10 +3889,10 @@ public class TestMsgpackMapper {
 		packages.putAll(AtomConst.ATOM_PACKAGE);
 		packages.put("_mypackage", null);
 		//FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY, packages);
-		
+
 		// テンプレート指定
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"feed\": {\"entry\": [");
 		sb.append("{\"info\": {\"item_1\": \"51000007\"},");
@@ -3906,26 +3906,26 @@ public class TestMsgpackMapper {
 		sb.append("\"id\": \"/11000001/send/51000007,1\",");
 		sb.append("\"link\": [{\"___href\": \"/11000001/send/51000007\",\"___rel\": \"self\"}]");
 		sb.append("}]}}");
-		
+
 		String json = sb.toString();
 		System.out.println(json);
-		
+
 		FeedBase feed = (FeedBase)mapper.fromJSON(json);
-		
+
 		// maskprop
 		String uid = "11";
 		List<String> groups = new ArrayList<String>();
 		groups.add("/@mypackage/_group/$admin");
 		groups.add("/@mypackage/_group/$content");
 		groups.add("/@mypackage/_group/$useradmin");
-		
+
 		EntryBase entry = feed.entry.get(0);
 		entry.maskprop(uid, groups);
-		
+
 		String name = "info";
 		Object obj = entry.getValue(name);
 		System.out.println("[getValue] " + name + " : " + obj);
-		
+
 		name = "info.item_1";
 		obj = entry.getValue(name);
 		System.out.println("[getValue] " + name + " : " + obj);
@@ -3951,7 +3951,7 @@ public class TestMsgpackMapper {
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4tmptype, entityAcls5, 30, SECRETKEY);
 
 		List<Meta> metalist = mp.getMetalist();
-		
+
 		System.out.println("[testType] print type : ");
 		for (Meta meta : metalist) {
 			System.out.println("  name = " + meta.name + ", type = " + meta.type + ", typesrc = " + meta.typesrc);
@@ -3963,7 +3963,7 @@ public class TestMsgpackMapper {
 		//String json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"MMM\",\"stock_int\" : 1000,\"stock_long\" : 1000000,\"stock_float\" : 222.333}}]}}";
 		FeedBase feed = (FeedBase)mp.fromJSON(json);
 		EntryBase entry = feed.entry.get(0);
-		
+
 
 		/*
 		// 数値が負数の場合
@@ -3979,30 +3979,30 @@ public class TestMsgpackMapper {
 		*/
 
 	}
-	
+
 	@Test
 	public void testSurrogate() throws ParseException, IOException, ClassNotFoundException {
 		// 第三水準・第四水準文字（サロゲートペア）のテスト
 		Map<String, String> packages = new HashMap<String, String>();
 		packages.putAll(AtomConst.ATOM_PACKAGE);
 		packages.put("_mypackage", null);
-		
+
 		// 文字列
 		String testStr = "あ𠀋あ";
-		
+
 		// テンプレート指定
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
-		
+
 		// JSON
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"" + testStr + "\"}]}}";
 		System.out.println(json);
-		
+
 		FeedBase feed = (FeedBase)mapper.fromJSON(json);
-		
+
 		System.out.println("[testSurrogate] (fromJSON) title = " + feed.entry.get(0).title);
 		assertTrue(testStr.equals(feed.entry.get(0).title));
 		System.out.println("[testSurrogate] (fromJSON) title = " + new SurrogateConverter(feed.entry.get(0).title).convertUcs());
-		
+
 		String message1 = "";
 		byte[] bytes = feed.entry.get(0).title.getBytes();
 		for (int i = 0; i < bytes.length; i++) {
@@ -4013,7 +4013,7 @@ public class TestMsgpackMapper {
 		// XML
 		String xml = "<feed><entry><title>" + testStr + "</title></entry></feed>";
 		System.out.println(xml);
-		
+
 		feed = (FeedBase)mapper.fromXML(xml);
 
 		bytes = feed.entry.get(0).title.getBytes();
@@ -4033,37 +4033,37 @@ public class TestMsgpackMapper {
 		System.out.println("[testSurrogate] (fromMessagePck) title = " + feed2.entry.get(0).title);
 
 	}
-	
+
 	@Test
 	public void testBackSlash() throws ParseException {
 		// \のテスト
 		Map<String, String> packages = new HashMap<String, String>();
 		packages.putAll(AtomConst.ATOM_PACKAGE);
 		packages.put("_mypackage", null);
-		
+
 		// テンプレート指定
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
-		
+
 		// JSON
 		String json = "{\"feed\" : {\"entry\" : [{\"title\" : \"\\\\\"}]}}";
 		System.out.println("[testBackSlash] (fromJSON) " + json);
-		
+
 		FeedBase feed = (FeedBase)mapper.fromJSON(json);
-		
+
 		System.out.println("[testBackSlash] (fromJSON) title = " + feed.entry.get(0).title);
-		
+
 		feed.entry.get(0).title = "\\";
 		String toJson = mapper.toJSON(feed);
-		
+
 		System.out.println("[testBackSlash] (toJSON) title = " + feed.entry.get(0).title);
 		System.out.println("[testBackSlash] (toJSON) " + toJson);
-		
+
 		// XML
 		String xml = "<feed><entry><title>\\</title></entry></feed>";
 		System.out.println(xml);
-		
+
 		feed = (FeedBase)mapper.fromXML(xml);
-		
+
 		System.out.println("[testBackSlash] (fromXML) title = " + feed.entry.get(0).title);
 
 	}
@@ -4073,9 +4073,9 @@ public class TestMsgpackMapper {
 		Map<String, String> packages = new HashMap<String, String>();
 		packages.putAll(AtomConst.ATOM_PACKAGE);
 		packages.put("_mypackage", null);
-		
+
 		// テンプレート指定
-		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);		
+		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl6, entityAcls3, 30, SECRETKEY);
 		EntryBase entry = EntryUtil.createEntry(mapper);
 		// id正常
 		entry.setId("/abc,1");
@@ -4098,9 +4098,9 @@ public class TestMsgpackMapper {
 		System.out.println("[addsvcname] 3 id after : " + entry.id);
 		entry.cutSvcname("xx");
 		System.out.println("[cutsvcname] 3 id after : " + entry.id);
-		
+
 	}
-	
+
 	/**
 	 * 改行・タブ文字テスト
 	 */
@@ -4108,7 +4108,7 @@ public class TestMsgpackMapper {
 	public void testControlCharactor() throws ParseException, IOException, ClassNotFoundException {
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
 		EntryBase entry = EntryUtil.createEntry(mapper);
-		
+
 		String xml = null;
 		String json = null;
 		byte[] msgData = null;
@@ -4191,14 +4191,14 @@ public class TestMsgpackMapper {
 		assertEquals(entry.title, entryMsgpack.title);
 
 	}
-	
+
 	/**
 	 * 制御文字テスト
 	 */
 	@Test
 	public void testControlCharactor2() throws ParseException, IOException, ClassNotFoundException {
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
-		
+
 		String xml = null;
 		String json = null;
 		byte[] msgData = null;
@@ -4208,10 +4208,10 @@ public class TestMsgpackMapper {
 		String startStr = "a";
 		String endStr = "b";
 		String str = null;
-		
+
 		String jsonStart = "{\"entry\" : {\"title\" : \"";
 		String jsonEnd = "\"}}";
-		
+
 		String xmlStart = "<entry><title>";
 		String xmlEnd = "</title></entry>";
 
@@ -4219,7 +4219,7 @@ public class TestMsgpackMapper {
 		String prefixXml = " [xml] ";
 		int num = 0;
 		char code = 1;
-		
+
 		System.out.println("--- testControlCharactor2 start ---");
 
 		// No.1〜33 (0x01〜0x20) (制御コードは0x1Fまで。0x20は!)
@@ -4229,27 +4229,27 @@ public class TestMsgpackMapper {
 				code++;
 			}
 			System.out.println(num + ". [code] " + Integer.toHexString(code));
-			
+
 			str = startStr + code + endStr;
 			json = jsonStart + str + jsonEnd;
 			xml = xmlStart + str + xmlEnd;
-			
+
 			System.out.println(prefixJson + num + ". start = " + str);
 			entryJson = (EntryBase)mapper.fromJSON(json);
 			System.out.println(prefixJson + num + ".   ret = " + entryJson.title);
-			
+
 			System.out.println(prefixXml + num + ". start = " + str);
 			entryXml = (EntryBase)mapper.fromXML(xml);
 			System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
-			
+
 			if (num==13) {
 				String hexString = DatatypeConverter.printHexBinary(entryJson.title.getBytes());
 				assertEquals(hexString,"610D62");
 				// 0DはXMLでは0Aに変換されてしまう
 				hexString = DatatypeConverter.printHexBinary(entryXml.title.getBytes());
-				assertEquals(hexString,"610A62");				
+				assertEquals(hexString,"610A62");
 			}else {
-				assertEquals(entryJson.title, entryXml.title);				
+				assertEquals(entryJson.title, entryXml.title);
 			}
 		}
 
@@ -4259,35 +4259,35 @@ public class TestMsgpackMapper {
 			num++;
 			code++;
 			System.out.println(num + ". [code] " + Integer.toHexString(code));
-			
+
 			str = startStr + code + endStr;
 			json = jsonStart + str + jsonEnd;
 			xml = xmlStart + str + xmlEnd;
-			
+
 			System.out.println(prefixJson + num + ". start = " + str);
 			entryJson = (EntryBase)mapper.fromJSON(json);
 			System.out.println(prefixJson + num + ".   ret = " + entryJson.title);
-			
+
 			System.out.println(prefixXml + num + ". start = " + str);
 			entryXml = (EntryBase)mapper.fromXML(xml);
 			System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
-			
+
 			assertEquals(entryJson.title, entryXml.title);
 		}
-		
+
 		// No.68 (0xAD)
 		num++;
 		code = 0xAD;
 		System.out.println(num + ". [code] " + Integer.toHexString(code));
-		
+
 		str = startStr + code + endStr;
 		json = jsonStart + str + jsonEnd;
 		xml = xmlStart + str + xmlEnd;
-		
+
 		System.out.println(prefixJson + num + ". start = " + str);
 		entryJson = (EntryBase)mapper.fromJSON(json);
 		System.out.println(prefixJson + num + ".   ret = " + entryJson.title);
-		
+
 		System.out.println(prefixXml + num + ". start = " + str);
 		entryXml = (EntryBase)mapper.fromXML(xml);
 		System.out.println(prefixXml + num + ".   ret = " + entryXml.title);
@@ -4295,7 +4295,7 @@ public class TestMsgpackMapper {
 		assertEquals(entryJson.title, entryXml.title);
 
 		System.out.println("--- testControlCharactor2 end ---");
-		
+
 	}
 
 	/**
@@ -4304,19 +4304,19 @@ public class TestMsgpackMapper {
 	@Test
 	public void testMaximumLength() throws ParseException, IOException, ClassNotFoundException {
 		FeedTemplateMapper mapper = new FeedTemplateMapper(entitytempl3, entityAcls3, 30, SECRETKEY);
-		
+
 		String jsonStart = "{\"entry\" : {\"title\" : \"";
 		String jsonEnd = "\"}}";
-		
+
 		String TEST_STR = "abcdefghijklmnopqrstuvwxyz0123456789";
-		
+
 		String uid = null;
 		List<String> groups = null;
-		
+
 		StringBuilder sb = null;
 		int l = 0;
 		EntryBase entry = null;
-		
+
 		// 正常
 		entry = null;
 		l = 1024 * 10;
@@ -4333,17 +4333,17 @@ public class TestMsgpackMapper {
 			System.out.println("[testMaximumLength] fromJSON succeeded.");
 			entry.validate(uid, groups);
 			System.out.println("[testMaximumLength] entry.validate succeeded.");
-			
+
 			FeedBase feed = EntryUtil.createFeed(mapper);
 			feed.addEntry(entry);
 			feed.validate(uid, groups);
 			System.out.println("[testMaximumLength] feed.validate succeeded.");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);
 		}
-		
+
 		// Maximum length of 'title' exceeded.
 		entry = null;
 		l = 1024 * 1000;
@@ -4361,12 +4361,12 @@ public class TestMsgpackMapper {
 			entry.validate(uid, groups);
 			System.out.println("[testMaximumLength] validate succeeded. (failed)");
 			assertTrue(false);
-			
+
 		} catch (ParseException e) {
 			if ("Maximum length of 'title' exceeded.".equals(e.getMessage())) {
 				// OK
 				System.out.println("[testMaximumLength] entry.validate failed. (OK)");
-				
+
 				FeedBase feed = EntryUtil.createFeed(mapper);
 				feed.addEntry(entry);
 				try {
@@ -4386,7 +4386,7 @@ public class TestMsgpackMapper {
 				assertTrue(false);
 			}
 		}
-		
+
 		// Maximum length of 'title' exceeded.
 		// mavenで java.lang.OutOfMemoryError: Java heap space になるためコメントアウト
 		/*
@@ -4406,12 +4406,12 @@ public class TestMsgpackMapper {
 			entry.validate(uid, groups);
 			System.out.println("[testMaximumLength] validate succeeded. (failed)");
 			assertTrue(false);
-			
+
 		} catch (ParseException e) {
 			if ("Maximum length of 'title' exceeded.".equals(e.getMessage())) {
 				// OK
 				System.out.println("[testMaximumLength] entry.validate failed. (OK)");
-				
+
 				FeedBase feed = EntryUtil.createFeed(mapper);
 				feed.addEntry(entry);
 				try {
@@ -4441,15 +4441,15 @@ public class TestMsgpackMapper {
 
 		// 項目ACLテスト グループのR権限しかない項目に値を設定してvalidate
 		System.out.println("[testFieldAcl] 項目ACLテスト グループのR権限しかない項目に値を設定してvalidate");
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"feed\" : {\"entry\" : [");
 		sb.append("{");
-		
+
 		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
 		// 項目ACLの自分自身はidから取得する。
 		sb.append(",\"id\" : \"/201/folders/gifts,3\"");
-		
+
 		sb.append(",\"title\" : \"Field ACL test\"");
 		sb.append(",\"name\" : \"ティーカップ\"");
 		sb.append(",\"brand\" : \"Flower campany\"");
@@ -4457,30 +4457,30 @@ public class TestMsgpackMapper {
 		sb.append(",\"color\" : \"White\"");
 		sb.append(",\"price\" : \"1500\"");
 		sb.append(",\"description\" : \"贈り物に最適\"");
-		
+
 		sb.append("}");
 		sb.append("]}}");
-		
+
 		String json = sb.toString();
-		
+
 		System.out.println(json);
-		
+
 		FeedBase feed = (FeedBase)mp3.fromJSON(json);
-		
+
 		String uid = "101";
 		List<String> groups = new ArrayList<String>();
 		groups.add("/mygroup1");
-		
+
 		try {
 			feed.validate(uid, groups);
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 			assertTrue("Property 'brand' is not writeable.".equals(e.getMessage()));
 		}
-		
+
 		// 項目ACLテスト UIDのR権限しかない項目に値を設定してvalidate
 		System.out.println("[testFieldAcl] 項目ACLテスト UIDのR権限しかない項目に値を設定してvalidate");
-		
+
 		sb = new StringBuilder();
 		sb.append("{\"feed\" : {\"entry\" : [");
 		sb.append("{");
@@ -4488,7 +4488,7 @@ public class TestMsgpackMapper {
 		sb.append("\"link\" : [{\"$rel\" : \"self\",\"$href\" : \"/201/folders/gifts\"}]");
 		// 項目ACLの自分自身はidから取得する。
 		sb.append(",\"id\" : \"/201/folders/gifts,3\"");
-		
+
 		sb.append("\"title\" : \"Field ACL test\"");
 		sb.append(",\"name\" : \"ティーカップ\"");
 		//sb.append(",\"brand\" : \"Flower campany\"");
@@ -4496,24 +4496,24 @@ public class TestMsgpackMapper {
 		sb.append(",\"color\" : \"White\"");
 		sb.append(",\"price\" : \"1500\"");
 		sb.append(",\"description\" : \"贈り物に最適\"");
-		
+
 		sb.append("}");
 		sb.append("]}}");
 
 		json = sb.toString();
-		
+
 		System.out.println(json);
-		
+
 		feed = (FeedBase)mp3.fromJSON(json);
 		// ログ出力
 		EntryBase entry = feed.entry.get(0);
 		System.out.println("entry.getCreatorUid = " + entry.getCreatorUid());
-		
+
 		try {
 			feed.validate(uid, groups);
 			System.out.println("feed.validate succeeded. (failed)");
 			assertTrue(false);
-			
+
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 			assertTrue("Property 'size' is not writeable.".equals(e.getMessage()));
@@ -4527,7 +4527,7 @@ public class TestMsgpackMapper {
 			feed.validate(uid, groups);
 			System.out.println("feed.validate succeeded. (failed)");
 			assertTrue(false);
-			
+
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 			assertTrue("Property 'name' is not writeable.".equals(e.getMessage()));
@@ -4540,12 +4540,12 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 			System.out.println("feed.validate succeeded.");
-			
+
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 			assertTrue(false);
 		}
-		
+
 		// 項目ACLテスト 自分自身のキーでvalidate
 		System.out.println("[testFieldAcl] 項目ACLテスト 自分自身のキーでvalidate");
 		uid = "201";
@@ -4553,14 +4553,14 @@ public class TestMsgpackMapper {
 		try {
 			feed.validate(uid, groups);
 			System.out.println("feed.validate succeeded.");
-			
+
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 			assertTrue(false);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Index数制限チェック
 	 */
@@ -4569,17 +4569,17 @@ public class TestMsgpackMapper {
 		System.out.println("[testMaxIndexes] indexes size = " + entityAclsMaxTest.length);
 		int indexmax = 0;
 		FeedTemplateMapper mp = null;
-		
+
 		// maximum number 32
 		indexmax = entityAclsMaxTest.length + 1;
 		System.out.println("[testMaxIndexes] indexmax = " + indexmax);
 		mp = new FeedTemplateMapper(entitytemplMaxTest, entityAclsMaxTest, indexmax, SECRETKEY);
-		
+
 		// max indexes 31
 		indexmax = entityAclsMaxTest.length;
 		System.out.println("[testMaxIndexes] indexmax = " + indexmax);
 		mp = new FeedTemplateMapper(entitytemplMaxTest, entityAclsMaxTest, indexmax, SECRETKEY);
-		
+
 		// max indexes 30 -> error
 		indexmax = entityAclsMaxTest.length - 1;
 		System.out.println("[testMaxIndexes] indexmax = " + indexmax);
@@ -4610,8 +4610,8 @@ public class TestMsgpackMapper {
 	@Test
 	public void testPrecheckInvalid() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		String[] entitytempl_invalid = null;
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
-		
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
+
 		// 項目の長さチェック1
 		entitytempl_invalid = new String[]{
 				// {}がMap, #がIndex , []がArray　, {} # [] は末尾に一つだけ付けられる。*が必須項目
@@ -4619,7 +4619,7 @@ public class TestMsgpackMapper {
 				"info",
 				" z",
 		};
-		try { 
+		try {
 			boolean precheck = mp0.precheckTemplate(null, entitytempl_invalid);
 			System.out.println("(NG) precheck:" + precheck );
 			assertTrue(false);
@@ -4637,16 +4637,43 @@ public class TestMsgpackMapper {
 				" aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmm",
 				" aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhhiiiiiiiiiijjjjjjjjjjkkkkkkkkkkllllllllllmmmmmmmmm",
 		};
-		
-		try { 
+
+		try {
 			boolean precheck = mp0.precheckTemplate(null, entitytempl_invalid);
 			System.out.println("(NG) precheck:" + precheck );
 			assertTrue(false);
 		} catch (ParseException e) {
 			System.out.println("(OK) ParseException: " + e.getMessage());
 		}
+
+		String[] entitytempl_current = new String[] {
+				"invalidtest{100}",        //  0行目はパッケージ名(service名)
+				"info",
+				" item1",
+				"text",
+				"comment",
+		};
+		FeedTemplateMapper mp1 = new FeedTemplateMapper(entitytempl_current, SECRETKEY);
+
+		// String項目の配下に項目を作るエラー
+		entitytempl_invalid = new String[]{
+				"invalidtest{100}",        //  0行目はパッケージ名(service名)
+				"info",
+				" item1",
+				"text",
+				" textval1",	// ☆ String項目の配下に項目
+				"comment",
+		};
+		try {
+			boolean precheck = mp1.precheckTemplate(null, entitytempl_invalid);
+			System.out.println("(NG) precheck:" + precheck );
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("(OK) ParseException: " + e.getMessage());
+		}
+
 	}
-	
+
 	/**
 	 * JSONテスト
 	 */
@@ -4659,16 +4686,16 @@ public class TestMsgpackMapper {
 				" bar_desc(desc)",
 				" mydesc(desc)",
 		};
-		
+
 		String[] rights = {
 				"foo.bar:/footest/123",
 				"foo.mydesc:/footest/abc|/footest/123",
 				"foo.bar_desc:/footest/abc|/footest/123",
 		};
-		
+
 		try {
 			FeedTemplateMapper mapper = new FeedTemplateMapper(template, rights, 30, SECRETKEY);
-			
+
 			// データ
 			StringBuilder sb = new StringBuilder();
 			sb.append("{\"feed\": {\"entry\": [");
@@ -4676,30 +4703,30 @@ public class TestMsgpackMapper {
 			sb.append("{\"foo\": {\"bar\": \"60022\",\"bar_desc\": \"70022\",\"mydesc\": \"20022\"},\"id\": \"/footest/abc/test002,4\"},");
 			sb.append("{\"foo\": {\"bar\": \"60003\",\"bar_desc\": \"70003\",\"mydesc\": \"20003\"},\"id\": \"/footest/abc/test003,4\"}");
 			sb.append("]}}");
-			
+
 			String json = sb.toString();
 			System.out.println("[before] " + json);
-			
+
 			FeedBase feed = (FeedBase)mapper.fromJSON(json);
 			String outJson1 = mapper.toJSON(feed);
-			
+
 			System.out.println("[after1] " + outJson1);
-			
+
 			StringWriter writer = new StringWriter();
 			mapper.toJSON(feed, writer);
 			String outJson2 = writer.toString();
-			
+
 			System.out.println("[after2] " + outJson2);
-			
+
 			assertTrue(outJson1.equals(outJson2));
-			
+
 			// なお、desc項目は maskprop メソッドで値がクリアされる。
-			
+
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * XMLテスト
 	 */
@@ -4712,18 +4739,18 @@ public class TestMsgpackMapper {
 				" bar_desc(desc)",
 				" mydesc(desc)",
 		};
-		
+
 		String[] rights = {
 				"foo.bar:/footest/123",
 				"foo.mydesc:/footest/abc|/footest/123",
 				"foo.bar_desc:/footest/abc|/footest/123",
 		};
-		
+
 		final String XMLHEAD = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-		
+
 		try {
 			FeedTemplateMapper mapper = new FeedTemplateMapper(template, rights, 30, SECRETKEY);
-			
+
 			// データ
 			StringBuilder sb = new StringBuilder();
 			sb.append("{\"feed\": {\"entry\": [");
@@ -4733,15 +4760,15 @@ public class TestMsgpackMapper {
 			sb.append("{\"summary\": \"/footest/123/test004\",\"title\": \"/footest/123#foo.bar/60004test004\"},");
 			sb.append("{\"summary\": \"/footest/123/test002\",\"title\": \"/footest/123#foo.bar/60022test002\"}");
 			sb.append("]}}");
-			
+
 			String json = sb.toString();
 			System.out.println("[before] " + json);
-			
+
 			FeedBase feed = (FeedBase)mapper.fromJSON(json);
 			String outXML1 = XMLHEAD + mapper.toXML(feed, false);
-			
+
 			System.out.println("[after1] " + outXML1);
-			
+
 			StringWriter sw = new StringWriter();
 			PrintWriter writer = new PrintWriter(sw);
 			try {
@@ -4751,13 +4778,13 @@ public class TestMsgpackMapper {
 				writer.close();
 			}
 			String outXML2 = sw.toString();
-			
+
 			System.out.println("[after2] " + outXML2);
-			
+
 			assertTrue(outXML1.equals(outXML2));
-			
+
 			// なお、desc項目は maskprop メソッドで値がクリアされる。
-			
+
 		} catch (ParseException e) {
 			System.out.println("ParseException: " + e.getMessage());
 		}
@@ -4768,12 +4795,12 @@ public class TestMsgpackMapper {
 	 */
 	@Test
 	public void testDescSortString() throws ParseException, JSONException {
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		mp0.precheckTemplate(null, entitytempldesc2);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc2, null, 30, SECRETKEY);
-		
+
 		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
-		
+
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item2\" : \"pie\"}}";
 		EntryBase entry = (EntryBase)mp.fromJSON(json);
@@ -4781,21 +4808,21 @@ public class TestMsgpackMapper {
 		String item2_desc = (String)entry.getValue("item2_desc");
 		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
 		treeMap.put(item2_desc, item2);
-		
+
 		json = "{\"entry\" : {\"item2\" : \"apple\"}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item2 = entry.getValue("item2");
 		item2_desc = (String)entry.getValue("item2_desc");
 		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
 		treeMap.put(item2_desc, item2);
-		
+
 		json = "{\"entry\" : {\"item2\" : \"ax\"}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item2 = entry.getValue("item2");
 		item2_desc = (String)entry.getValue("item2_desc");
 		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
 		treeMap.put(item2_desc, item2);
-		
+
 		print("item2(string)", treeMap);
 	}
 
@@ -4804,12 +4831,12 @@ public class TestMsgpackMapper {
 	 */
 	@Test
 	public void testDescstrSort() throws ParseException, JSONException {
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		mp0.precheckTemplate(null, entitytempldescstr);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldescstr, null, 30, SECRETKEY);
-		
+
 		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
-		
+
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item2\" : \"pie\"}}";
 		EntryBase entry = (EntryBase)mp.fromJSON(json);
@@ -4817,21 +4844,21 @@ public class TestMsgpackMapper {
 		String item2_desc = (String)entry.getValue("item2_desc");
 		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
 		treeMap.put(item2_desc, item2);
-		
+
 		json = "{\"entry\" : {\"item2\" : \"apple\"}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item2 = entry.getValue("item2");
 		item2_desc = (String)entry.getValue("item2_desc");
 		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
 		treeMap.put(item2_desc, item2);
-		
+
 		json = "{\"entry\" : {\"item2\" : \"ax\"}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item2 = entry.getValue("item2");
 		item2_desc = (String)entry.getValue("item2_desc");
 		System.out.println("item2=" + item2 + ", item2_desc=" + item2_desc);
 		treeMap.put(item2_desc, item2);
-		
+
 		print("item2(string)", treeMap);
 	}
 
@@ -4840,12 +4867,12 @@ public class TestMsgpackMapper {
 	 */
 	@Test
 	public void testDescSortInt() throws ParseException, JSONException {
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		mp0.precheckTemplate(null, entitytempldesc);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc, null, 30, SECRETKEY);
-		
+
 		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
-		
+
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item\" : 150}}";
 		EntryBase entry = (EntryBase)mp.fromJSON(json);
@@ -4853,21 +4880,21 @@ public class TestMsgpackMapper {
 		String item_desc = (String)entry.getValue("item_desc");
 		System.out.println("item=" + item + ", item_desc=" + item_desc);
 		treeMap.put(item_desc, item);
-		
+
 		json = "{\"entry\" : {\"item\" : 1100440055}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item = entry.getValue("item");
 		item_desc = (String)entry.getValue("item_desc");
 		System.out.println("item=" + item + ", item_desc=" + item_desc);
 		treeMap.put(item_desc, item);
-		
+
 		json = "{\"entry\" : {\"item\" : 1000440055}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item = entry.getValue("item");
 		item_desc = (String)entry.getValue("item_desc");
 		System.out.println("item=" + item + ", item_desc=" + item_desc);
 		treeMap.put(item_desc, item);
-		
+
 		print("item(int)", treeMap);
 	}
 
@@ -4876,12 +4903,12 @@ public class TestMsgpackMapper {
 	 */
 	@Test
 	public void testDescSortIntMinus() throws ParseException, JSONException {
-		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);	
+		FeedTemplateMapper mp0 = new FeedTemplateMapper(new String[] {"_"}, SECRETKEY);
 		mp0.precheckTemplate(null, entitytempldesc);
 		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempldesc, null, 30, SECRETKEY);
-		
+
 		TreeMap<String, Object> treeMap = new TreeMap<String, Object>();
-		
+
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"item\" : -150}}";
 		EntryBase entry = (EntryBase)mp.fromJSON(json);
@@ -4889,31 +4916,31 @@ public class TestMsgpackMapper {
 		String item_desc = (String)entry.getValue("item_desc");
 		System.out.println("item=" + item + ", item_desc=" + item_desc);
 		treeMap.put(item_desc, item);
-		
+
 		json = "{\"entry\" : {\"item\" : -1100440055}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item = entry.getValue("item");
 		item_desc = (String)entry.getValue("item_desc");
 		System.out.println("item=" + item + ", item_desc=" + item_desc);
 		treeMap.put(item_desc, item);
-		
+
 		json = "{\"entry\" : {\"item\" : -1000440055}}";
 		entry = (EntryBase)mp.fromJSON(json);
 		item = entry.getValue("item");
 		item_desc = (String)entry.getValue("item_desc");
 		System.out.println("item=" + item + ", item_desc=" + item_desc);
 		treeMap.put(item_desc, item);
-		
+
 		print("item(int)", treeMap);
 	}
 
-	
+
 	private void print(String fldName, TreeMap<String, Object> treeMap) {
 		if (treeMap == null || treeMap.isEmpty()) {
 			System.out.println("The TreeMap is empty.");
 			return;
 		}
-		
+
 		// Mapを取り出し
 		System.out.println("--- sort " + fldName + " ---");
 		for (Map.Entry<String, Object> mapEntry : treeMap.entrySet()) {
@@ -4927,25 +4954,25 @@ public class TestMsgpackMapper {
 
 		String json = createJsonTempl4_blankarray();
 		FeedBase feed = (FeedBase)mp4.fromJSON(json);
-		
+
 		String uid = "75";
 		List<String> groups = new ArrayList<String>();
 		groups.add("/_group/@admin");
-		
+
 		feed.validate(uid, groups);
-		
+
 	}
 
 	@Test
 	public void testFulltextsearchIndex() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
-		
+
 		System.out.println("[testFulltextsearchIndex] start");
-		
+
 		// OK
 		FeedTemplateMapper mp1 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch1, 30, SECRETKEY);
 		FeedTemplateMapper mp2 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch2, 30, SECRETKEY);
 		FeedTemplateMapper mp5 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch5, 30, SECRETKEY);
-		
+
 		// NG
 		try {
 			FeedTemplateMapper mp3 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch3error, 30, SECRETKEY);
@@ -4998,7 +5025,7 @@ public class TestMsgpackMapper {
 		}
 
 		printMetalist2(mp5.getMetalist());
-		
+
 		System.out.println("[testFulltextsearchIndex] end");
 	}
 
