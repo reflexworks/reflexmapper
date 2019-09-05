@@ -67,19 +67,19 @@ public class TestMsgpackMapper {
 
 	public static String entitytemplconditions[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"conditions",			  
+			"conditions",
 			" child1"
 	};
 
 	public static String entitytemplcipher[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"cipher",			  
+			"cipher",
 			" child1"
 	};
 
 	public static String entitytemplcontext[] = {
 			"default{}",        //  0行目はパッケージ名(service名)
-			"context",			  
+			"context",
 			" child1"
 	};
 
@@ -749,7 +749,7 @@ public class TestMsgpackMapper {
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"conditions\" : {\"child1\" : \"xxx\" }  }}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		String d0 = (String) entry.getValue("conditions.child1");
 		System.out.println("val="+d0);
 	}
@@ -761,7 +761,7 @@ public class TestMsgpackMapper {
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"cipher\" : {\"child1\" : \"xxx\" } }}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		String d0 = (String) entry.getValue("cipher.child1");
 		System.out.println("val="+d0);
 	}
@@ -773,7 +773,7 @@ public class TestMsgpackMapper {
 		System.out.println("JSON Entry デシリアライズ");
 		String json = "{\"entry\" : {\"context\" : {\"child1\" : \"xxx\" } }}";
 		EntryBase entry = (EntryBase) mp.fromJSON(json);
-		
+
 		String d0 = (String) entry.getValue("context.child1");
 		System.out.println("val="+d0);
 	}
@@ -4721,7 +4721,6 @@ public class TestMsgpackMapper {
 		try {
 			boolean precheck = mp1.precheckTemplate(null, entitytempl_invalid);
 			System.out.println("(OK) precheck:" + precheck );
-			assertTrue(true);
 		} catch (ParseException e) {
 			System.out.println("(NG) ParseException: " + e.getMessage());
 		}

@@ -84,7 +84,7 @@ import jp.sourceforge.reflex.util.StringUtils;
  * <li>動的に生成したクラスは静的なクラスとして保存できます</li>
  * <li>new FeedTemplateMapper(new String[] {"パッケージ名"}); とするとユーザ定義項目はなくATOM Feed/Entryのみとなります</li>
  * </ul>
- * 
+ *
  */
 public class FeedTemplateMapper extends ResourceMapper {
 
@@ -95,7 +95,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private static final String ARRAY = "[";
 
 	// atom クラス（順番は重要）
-	public static final String[] ATOMCLASSES = { 
+	public static final String[] ATOMCLASSES = {
 		"jp.reflexworks.atom.entry.Author",
 		"jp.reflexworks.atom.entry.Category",
 		"jp.reflexworks.atom.entry.Content",
@@ -128,7 +128,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		" $rel",
 		" $type",
 		" $title",
-		" $length", 
+		" $length",
 		"published",
 		"rights",
 		"rights_$type",
@@ -139,7 +139,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		"subtitle",
 		"subtitle_$type",
 		"updated",
-	};	
+	};
 
 	private static final String SERIALIZABLE = "java.io.Serializable";
 	private static final String ENTRYBASE = "jp.reflexworks.atom.entry.EntryBase";
@@ -179,53 +179,53 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String secretkey) 
+	public FeedTemplateMapper(String[] template, String secretkey)
 	throws ParseException {
 		this(template, null, 0, null, false, false, false, null, secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param secretkey
 	 * @param jo_packages 既存クラスパッケージ指定
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String secretkey, Object jo_packages) 
+	public FeedTemplateMapper(String[] template, String secretkey, Object jo_packages)
 	throws ParseException {
 		this(template, null, 0, jo_packages, false, false, false, null, secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param compatible
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, boolean compatible, String secretkey) 
+	public FeedTemplateMapper(String[] template, boolean compatible, String secretkey)
 	throws ParseException {
 		this(template, null, 0, null, false, false, compatible, null, secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param propAcls
 	 * @param indexmax
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
-			String secretkey) 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax,
+			String secretkey)
 	throws ParseException {
 		this(template, propAcls, indexmax, null, false, false, false, null, secretkey);
 	}
@@ -233,23 +233,23 @@ public class FeedTemplateMapper extends ResourceMapper {
 	/**
 	 * コンストラクタ.
 	 * 既存クラスのパッケージを指定する場合はこのコンストラクタを使用してください。
-	 * 
+	 *
 	 * @param template
 	 * @param propAcls
 	 * @param indexmax
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
-			String secretkey, Object jo_package) 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax,
+			String secretkey, Object jo_package)
 	throws ParseException {
-		this(template, propAcls, indexmax, jo_package, false, false, false, null, 
+		this(template, propAcls, indexmax, jo_package, false, false, false, null,
 				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param propAcls
 	 * @param indexmax
@@ -257,16 +257,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
-			boolean compatible, String secretkey) 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax,
+			boolean compatible, String secretkey)
 	throws ParseException {
-		this(template, propAcls, indexmax, null, false, false, compatible, null, 
+		this(template, propAcls, indexmax, null, false, false, compatible, null,
 				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param propAcls
 	 * @param indexmax
@@ -275,16 +275,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
-			boolean compatible, String folderpath, String secretkey) 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax,
+			boolean compatible, String folderpath, String secretkey)
 	throws ParseException {
-		this(template, propAcls, indexmax, null, false, false, compatible, folderpath, 
+		this(template, propAcls, indexmax, null, false, false, compatible, folderpath,
 				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param propAcls
 	 * @param indexmax
@@ -294,16 +294,16 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
-			boolean isCamel, boolean compatible, String folderpath, String secretkey) 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax,
+			boolean isCamel, boolean compatible, String folderpath, String secretkey)
 	throws ParseException {
-		this(template, propAcls, indexmax, null, isCamel, false, compatible, folderpath, 
+		this(template, propAcls, indexmax, null, isCamel, false, compatible, folderpath,
 				secretkey);
 	}
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param template
 	 * @param propAcls
 	 * @param indexmax
@@ -316,9 +316,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param secretkey
 	 * @throws ParseException
 	 */
-	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax, 
-			Object jo_packages, boolean isCamel, boolean useSingleQuote, 
-			boolean compatible, String folderpath, String secretkey) 
+	public FeedTemplateMapper(String[] template, String[] propAcls, int indexmax,
+			Object jo_packages, boolean isCamel, boolean useSingleQuote,
+			boolean compatible, String folderpath, String secretkey)
 	throws ParseException {
 		super(getJo_packages(template, jo_packages), isCamel, useSingleQuote, compatible);
 
@@ -341,7 +341,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		loader.delegateLoadingOf(FEEDBASE);
 
 		// XMLデシリアライザのRXMapperのClassloaderにセットする。サーブレットでのメモリ増加に注意
-		((jp.sourceforge.reflex.core.RXMapper)this.getClassMapper()).wrapped = new com.thoughtworks.xstream.mapper.DefaultMapper(this.loader); 
+		((jp.sourceforge.reflex.core.RXMapper)this.getClassMapper()).wrapped = new com.thoughtworks.xstream.mapper.DefaultMapper(this.loader);
 
 		registry = new TemplateRegistry(null);
 		builder = new ReflectionTemplateBuilder(registry); // msgpack準備(Javassistで動的に作成したクラスはReflectionTemplateBuilderを使わないとエラーになる)
@@ -366,7 +366,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		} else if (jo_packages instanceof Map | jo_packages instanceof String) {
 			// package名からregistClass
 			// パッケージ名からクラス一覧を取得
-			Set<String> classnames = null;  
+			Set<String> classnames = null;
 			if (jo_packages != null) {
 				try {
 					if (jo_packages instanceof String) {
@@ -390,7 +390,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					ParseException pe = new ParseException("ClassNotFoundException : "+e.getMessage(), 0);
 					pe.initCause(e);
 					throw pe;
-				} 
+				}
 			}
 
 			// MessagePackにクラスを登録
@@ -405,7 +405,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						ParseException pe = new ParseException("ClassNotFoundException : "+e.getMessage(), 0);
 						pe.initCause(e);
 						throw pe;
-					} 
+					}
 				}
 			}
 
@@ -413,10 +413,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private List<Meta> getMetalistFromPropAcls(String[] propAcls) {
-		
+
 		List<Meta> result = new ArrayList<Meta>();
 		if (propAcls==null) return result;
-		
+
 		for (String propacl : propAcls) {
 			propacl = propacl.replaceAll("[^(\\x20-\\x7F)]", ""); // 半角文字のみ（特殊文字を削除)
 			String token[] = propacl.split("=");
@@ -434,12 +434,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 					meta.name = token3[0]; // key
 					meta.search = token3[1].trim(); // 全文検索(search)
 					result.add(meta);
-				}		
+				}
 			}
 		}
 		return result;
 	}
-		
+
 	/**
 	 * Metalistを取得
 	 * @return Metalist
@@ -487,14 +487,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private boolean isClass(Field field) {
 		if (!Modifier.isPublic(field.getModifiers())) return false;
 		if (field.getType().isPrimitive()) return false;
-		if (field.getType().getName().equals("java.lang.String")) return false; 
+		if (field.getType().getName().equals("java.lang.String")) return false;
 		if (field.getType().getName().equals("java.lang.Integer")) return false;
 		if (field.getType().getName().equals("java.lang.Float")) return false;
 		if (field.getType().getName().equals("java.lang.Long")) return false;
 		if (field.getType().getName().equals("java.lang.Double")) return false;
 		if (field.getType().getName().equals("java.lang.Boolean")) return false;
 		if (field.getType().getName().equals("java.util.Date")) return false;
-		return true;	
+		return true;
 	}
 
 	private String[] mergeAtomEntry(String[] jo_packages){
@@ -514,7 +514,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private static final String aclpattern = "([/0-9a-zA-Z_$*@]+\\+(?:R|W|RW),?)+";
 	private static final String STRMAXLENGTH = "10485760";	// 10MB
-	
+
 	private void addPropAcls(String[] propAcls, int indexmax) throws ParseException {
 
 		Pattern patternp = Pattern.compile(aclpattern);
@@ -716,7 +716,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param jo_packages
 	 * @return
 	 */
-	private static Map<String, String> getJo_packages(String[] template, 
+	private static Map<String, String> getJo_packages(String[] template,
 			Object jo_packages) {
 		if (jo_packages != null) {
 			if (jo_packages instanceof Map) {
@@ -769,32 +769,32 @@ public class FeedTemplateMapper extends ResourceMapper {
 		/**
 		 * インデックス
 		 */
-		public String index; 
-		
+		public String index;
+
 		/**
 		 * 全文検索インデックス
 		 */
 		public String search;
-		
+
 		/**
 		 * 必須項目
 		 */
-		public boolean isMandatory; 
+		public boolean isMandatory;
 
 		/**
 		 * 降順(数字)
 		 */
-		public boolean isDesc; 
+		public boolean isDesc;
 
 		/**
 		 * 降順(文字列)
 		 */
-		public boolean isDescstr; 
+		public boolean isDescstr;
 
 		/**
 		 * バリーデーション用正規表現
 		 */
-		public String regex; 
+		public String regex;
 
 		/**
 		 * ACL(READ）
@@ -835,7 +835,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		 * XMLの属性
 		 */
 		public boolean canattr;
-		
+
 		/**
 		 * 繰り返し項目
 		 */
@@ -853,7 +853,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		public String typesrc;
 
-		
+
 		/**
 		 * Camelケースで名前を返す
 		 * @return Camelcaseの名前
@@ -946,7 +946,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Object fromMessagePack(byte[] msg) 
+	public Object fromMessagePack(byte[] msg)
 			throws IOException, ClassNotFoundException  {
 		return fromMessagePack(msg, true);
 	}
@@ -959,7 +959,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Object fromMessagePack(byte[] msg, boolean isFeed) 
+	public Object fromMessagePack(byte[] msg, boolean isFeed)
 			throws IOException, ClassNotFoundException  {
 		if (msg==null) return null;
 		else return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
@@ -968,7 +968,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	/* (非 Javadoc)
 	 * @see jp.sourceforge.reflex.core.ResourceMapper#toArray(byte[])
 	 */
-	public Object toArray(byte[] msg) 
+	public Object toArray(byte[] msg)
 			throws IOException, ClassNotFoundException {
 		return msgpack.read(msg);
 	}
@@ -981,7 +981,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Object fromMessagePack(InputStream msg, boolean isFeed) 
+	public Object fromMessagePack(InputStream msg, boolean isFeed)
 			throws IOException, ClassNotFoundException {
 		if (msg==null) return null;
 		else return msgpack.read(msg, loader.loadClass(getRootEntry(isFeed)));
@@ -990,9 +990,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public String toJSON(Object entity) {
 		if (entity==null) return null;
 		Writer writer = new StringWriter();
-		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {
 			JSONSerializer jsonc = new JSONSerializer(false);
-			jsonc.marshal(((FeedBase)entity).entry, writer); 			
+			jsonc.marshal(((FeedBase)entity).entry, writer);
 			return writer.toString();
 		}else {
 			return super.toJSON(entity);
@@ -1002,9 +1002,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	public String toJSON(Object entity,boolean dispChildNum) {
 		if (entity==null) return null;
 		Writer writer = new StringWriter();
-		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {
 			JSONSerializer jsonc = new JSONSerializer(false);
-			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum); 			
+			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum);
 			return writer.toString();
 		}else {
 			return super.toJSON(entity,dispChildNum);
@@ -1013,9 +1013,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	public void toJSON(Object entity, Writer writer) {
 		if (entity==null) return;
-		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {
 			JSONSerializer jsonc = new JSONSerializer(false);
-			jsonc.marshal(((FeedBase)entity).entry, writer); 			
+			jsonc.marshal(((FeedBase)entity).entry, writer);
 		}else {
 			super.toJSON(entity,writer);
 		}
@@ -1023,9 +1023,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	public void toJSON(Object entity, Writer writer,boolean dispChildNum) {
 		if (entity==null) return;
-		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {			
+		if ((entity instanceof FeedBase)&&(((FeedBase)entity).getStartArrayBracket())) {
 			JSONSerializer jsonc = new JSONSerializer(false);
-			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum); 			
+			jsonc.marshal(((FeedBase)entity).entry, writer,dispChildNum);
 		}else {
 			super.toJSON(entity,writer,dispChildNum);
 		}
@@ -1065,7 +1065,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			throw new JSONException(e);
 		}
 	}
-	
+
 	/* (非 Javadoc)
 	 * @see jp.sourceforge.reflex.core.ResourceMapper#fromArray(java.lang.String, boolean)
 	 */
@@ -1085,7 +1085,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	/**
 	 * メタ情報から動的クラスを生成する
-	 * 
+	 *
 	 * @return 生成したクラス名のSet
 	 * @throws CannotCompileException
 	 */
@@ -1101,7 +1101,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			ci = new CtClass[] { pool.get(SOFTSCHEMA), pool.get(SERIALIZABLE) };
 		} catch (NotFoundException e1) {
 			throw new CannotCompileException(e1);
-		} 
+		}
 
 		for (String classname : classnames) {
 			CtClass cc;
@@ -1130,7 +1130,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} catch (NotFoundException e) {
 						throw new CannotCompileException(e);
 					}
-				} 
+				}
 			}
 
 			StringBuilder getvalue = new StringBuilder();
@@ -1180,7 +1180,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (meta.isArray) {
 						try {
 							CtClass objClass = pool.get("java.util.List");
-							CtField arrayfld = new CtField(objClass, meta.self, cc); 
+							CtField arrayfld = new CtField(objClass, meta.self, cc);
 							arrayfld.setModifiers(Modifier.PUBLIC);
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(ELEMENTSIG);
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
@@ -1191,11 +1191,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 							Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
 							annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
 							attr.addAnnotation(annot);
-							// add the annotation 
+							// add the annotation
 							arrayfld.getFieldInfo().addAttribute(attr);
 
 							cc.addField(arrayfld);
-							
+
 							// getter/setterはTaggingServiceの更新処理で使用
 							CtMethod m = CtNewMethod.make("public java.util.List get" + meta.getSelf()
 									+ "() {" + "  return " + meta.self + "; }", cc);
@@ -1215,18 +1215,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 						try {
 							CtClass objClass = pool.get("java.util.List");
-							CtField arrayfld = new CtField(objClass, meta.self, cc); 
+							CtField arrayfld = new CtField(objClass, meta.self, cc);
 							arrayfld.setModifiers(Modifier.PUBLIC);
 							SignatureAttribute.ObjectType st = SignatureAttribute.toFieldSignature(getSignature(packagename+"."+meta.getSelf()));
 							arrayfld.setGenericSignature(st.encode());    // <T:Ljava/lang/Object;>Ljava/lang/Object;
-							
+
 							// create the annotation
 							ConstPool constpool = cc.getClassFile().getConstPool();
 							AnnotationsAttribute attr = new AnnotationsAttribute(constpool,AnnotationsAttribute.visibleTag);
 							Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
 							annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
 							attr.addAnnotation(annot);
-							// add the annotation 
+							// add the annotation
 							arrayfld.getFieldInfo().addAttribute(attr);
 
 							cc.addField(arrayfld);
@@ -1255,7 +1255,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 						Annotation annot = new Annotation("org.msgpack.annotation.Index", constpool);
 						annot.addMemberValue("value", new IntegerMemberValue(constpool,i));
 						attr.addAnnotation(annot);
-						// add the annotation 
+						// add the annotation
 						f2.getFieldInfo().addAttribute(attr);
 
 						cc.addField(f2);
@@ -1281,18 +1281,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 				// 子要素のgetValue/setValue
 				if (meta.hasChild()) {
 					if (meta.isMap) {
-						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { java.util.List result = new java.util.ArrayList(); for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);result.add(value);} if (result.size()>0) return result;}"); 
+						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { java.util.List result = new java.util.ArrayList(); for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);result.add(value);} if (result.size()>0) return result;}");
 						if (!isFeed(classname)) {
-							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(_context);}"); 
-							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(_context);}"); 
-							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(_context);}}"); 
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(_context);}"); 
-							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(_context);_context.arraycount++;}_context.count++;_context.mapcount++;_context.keysize+=\"+meta.self+\".length();}"); 
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(_context);}");
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(_context);}");
+							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(_context);}}");
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(_context);}");
+							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(_context);_context.arraycount++;}_context.count++;_context.mapcount++;_context.keysize+=\"+meta.self+\".length();}");
 						} else {
-							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(_cipher);}"); 
-							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(_cipher);}"); 
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
-							getsize.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).getsize();}"); 
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(_cipher);}");
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(_cipher);}");
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}");
+							getsize.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).getsize();}");
 						}
 					} else {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
@@ -1314,10 +1314,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 						String metaorg = meta.self;
 						if (meta.self.length()>5) {
 							metaorg = meta.self.substring(0,meta.self.length()-5);
-						} 
-//						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}"); 						
-						getvalue.append("if (" + metaorg + "!=null) { String o=jp.reflexworks.atom.api.EntryUtil.getDescStr(" + metaorg + ");"+ meta.self +"=o;}"); 
-					}					
+						}
+//						getvalue.append("if (" + metaorg + "!=null) { String o=\"\"+" + metaorg + ";char[] c = o.toCharArray();String r = \"\";for(int i = 0; i < c.length; i++) {r += (char)(65535 - c[i]);}"+ meta.self +"=r;}");
+						getvalue.append("if (" + metaorg + "!=null) { String o=jp.reflexworks.atom.api.EntryUtil.getDescStr(" + metaorg + ");"+ meta.self +"=o;}");
+					}
 					getvalue.append("return " + meta.self + ";}");
 					ismatch.append("if (" + meta.self + "!=null) {_context.fldname=\"" + meta.name + "\";_context.type=\"" + meta.type + "\";_context.obj=" + meta.self + ";");
 					ismatch.append("if (_context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(_context);");
@@ -1337,9 +1337,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 						if (meta.isMap) {
 							if (!isFeed(classname)) {
 								// TODO + meta.self + ".get(i)のnull check
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(uid,groups,myself);}"); 
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).validate(uid,groups,myself);}");
 							} else {
-								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(uid,groups);}"); 
+								validation.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) {if(" + meta.self + ".get(i)!=null) ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).validate(uid,groups);}");
 							}
 						} else {
 							if (!isFeed(classname)) {
@@ -1394,10 +1394,10 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 			/* 静的classFile作成 */
 			if (folderpath != null && !cc.getName().equals("Author")
-					&& !cc.getName().equals("Category") 
-					&& !cc.getName().equals("Content") 
-					&& !cc.getName().equals("Link") 
-					&& !cc.getName().equals("Element") 
+					&& !cc.getName().equals("Category")
+					&& !cc.getName().equals("Content")
+					&& !cc.getName().equals("Link")
+					&& !cc.getName().equals("Element")
 					&& !cc.getName().equals("Contributor")) {
 				try {
 					cc.writeFile(folderpath);
@@ -1424,7 +1424,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private String setparent(String classname) {
 		return "String parent=_context.parent;if (_context.parent==null) _context.parent=\""+cutPackagename(classname) + "\";else _context.parent=_context.parent+\"." + cutPackagename(classname) + "\";";
 	}
-	
+
 	private String cutPackagename(String classname) {
 		String result = classname.substring(classname.lastIndexOf(".")+1);
 		return (""+result.charAt(0)).toLowerCase(Locale.ENGLISH)+result.substring(1);
@@ -1435,7 +1435,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.CipherContext _context) {";
 	private final String encryptFuncS2 = "public void encrypt(Object _cipher) { jp.reflexworks.atom.mapper.CipherContext _context= new jp.reflexworks.atom.mapper.CipherContext(_cipher,this.id";
 	private final String encryptFuncS4 = "public void encrypt(Object _cipher) {";
-	
+
 	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.CipherContext _context) {";
 	private final String decryptFuncS2 = "public void decrypt(Object _cipher) { jp.reflexworks.atom.mapper.CipherContext _context= new jp.reflexworks.atom.mapper.CipherContext(_cipher,this.id";
 	private final String endFuncE = "}";
@@ -1467,7 +1467,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @return ロジック
 	 */
 	private String getValidatorPropW(Meta meta) {
-		String line = ""; 
+		String line = "";
 		if (meta.aclW!=null) {
 			// ACLが設定されていて項目に値が存在している
 			line += "if (uid!=null&&groups!=null&&groups.size()>=0&&"+ meta.self + "!=null) {";
@@ -1485,7 +1485,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					line += "java.util.regex.Pattern p = java.util.regex.Pattern.compile(\"^/@[^/]*"+aclw.replace("$", "\\\\$") +"$|^"+aclw.replace("$", "\\\\$")+"$\");";
 					line += "java.util.regex.Matcher m = p.matcher(\"\"+groups2.get(i));";
 					line += "if (m.find()) ex=true;";
-				}else 
+				}else
 					line += "if (groups2.get(i).equals(\""+aclw+"\")) ex=true;";
 			}
 			line += "}";
@@ -1496,7 +1496,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private String getValidatorPropR(Meta meta) {
-		String line = ""; 
+		String line = "";
 		if (meta.isDesc||meta.isDescstr) {
 			// desc項目は表示しない
 			line += meta.self +"=null;";
@@ -1537,7 +1537,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		/* getValue() で返すように修正 */
 //		String metaorg = meta.self.replace("_desc", "");
 //		if (meta.isDesc) {
-//			line = "if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o.replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}"; 
+//			line = "if (" + metaorg + "!=null) { try{ String o= \"\"+" + metaorg + ";String d = \"0000000000000000000\"+new java.lang.Long(java.lang.Long.MAX_VALUE-Long.parseLong(o.replaceAll(\"\\\\.|/|,|-\", \"\")));"+ meta.self +"=d.substring(d.length()-19);}catch(java.lang.NumberFormatException ne) {throw new java.text.ParseException(\"Property '" + metaorg + "' is not valid.(NumberFormatException, value=\"+" + metaorg + "+\")\",0);};}";
 //		}
 
 		if (meta.isMandatory) {
@@ -1548,7 +1548,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(\"" + meta.regex + "\");";
 			line += "java.util.regex.Matcher matcher = pattern.matcher(\"\"+" + meta.self + ");";
 			line += "if (!matcher.find()) throw new java.text.ParseException(\"Property '" + meta.self + "' is not valid.(regex=" + meta.regex + ", value=\"+" + meta.self + "+\")\",0);";
-			line += "}";			
+			line += "}";
 		}
 		line += getMinmax(meta);
 
@@ -1599,15 +1599,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 				} else if (meta.isArray || meta.hasChild()) {
 					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".size()) throw new java.text.ParseException(\"Maximum number of '" + meta.self + "' exceeded.\",0);";
 				} else if (meta.type.equals("String")) {
-					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";					
+					line += "if (" + meta.self + "!=null&&" + max + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";
 				}
 			}
 		}
-		
+
 		if (!meta.isArray && meta.type.equals("String")) {
-			line += "if (" + meta.self + "!=null&&" + STRMAXLENGTH + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";					
+			line += "if (" + meta.self + "!=null&&" + STRMAXLENGTH + "<" + meta.self + ".length()) throw new java.text.ParseException(\"Maximum length of '" + meta.self + "' exceeded.\",0);";
 		}
-		
+
 		return line;
 	}
 
@@ -1621,8 +1621,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 			return "";
 		}
 	}
-	
-	private List<Meta> getMetalist(String[] entitytmpl) 
+
+	private List<Meta> getMetalist(String[] entitytmpl)
 	throws ParseException {
 		// 先頭のパッケージ名を退避してentryに置き換える
 		this.packagename = parseLine0(entitytmpl[0]);
@@ -1631,12 +1631,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	/**
 	 * Entity Templateからメタ情報を作成する
-	 * 
+	 *
 	 * @param entitytmpl
 	 * @return メタ情報
 	 * @throws ParseException
 	 */
-	public static List<Meta> getMetalist(String[] entitytmpl, String packagename) 
+	public static List<Meta> getMetalist(String[] entitytmpl, String packagename)
 	throws ParseException {
 
 		List<Meta> metalist = new ArrayList<Meta>();
@@ -1735,14 +1735,14 @@ public class FeedTemplateMapper extends ResourceMapper {
 				meta.isMandatory = matcherf.group(9).equals(MANDATORY);
 				meta.aclR = null;
 				meta.aclW = null;
-				
+
 				// for BugQuery Schema
 				if (matcherf.group(5) != null && !matcherf.group(5).equals("")) {
 					meta.repeated = true;
 				} else {
 					meta.repeated = false;
 				}
-				
+
 				meta.bigquerytype = "STRING";
 				if (matcherf.group(4) != null) {
 					switch(matcherf.group(4)) {
@@ -1779,7 +1779,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					meta.name = fldname + "." + meta.self;
 				}
 				if (exists(metalist, meta.name)) throw new ParseException("Duplicated properties in Entry:" + meta.name, 0);
-				if (meta.self.startsWith("_") && meta.level == 1) 
+				if (meta.self.startsWith("_") && meta.level == 1)
 					throw new ParseException("Can't use '_' as prefix.:" + meta.name, 0);
 
 				if (meta.self.length() < 2) throw new ParseException("Property name is too short.:" + meta.name, 0);
@@ -1818,8 +1818,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 					} else {
 						meta.type = "String"; // その他
 					}
-				} 
-				
+				}
+
 				if (meta.min != null && meta.type==null) {
 					meta.isMap = true;
 				} else {
@@ -1916,7 +1916,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	/**
 	 * Entity Templateからクラスを動的に作成しmsgpackに登録する
-	 * 
+	 *
 	 * @throws ParseException
 	 */
 	private void registerClasses() throws ParseException {
@@ -1936,7 +1936,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	/**
 	 * クラスをmsgpackに登録する
-	 * 
+	 *
 	 * @param classnames
 	 * @throws CannotCompileException
 	 */
@@ -1956,15 +1956,15 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	/**
 	 * クラスをmsgpackに登録する
-	 * 
+	 *
 	 * @param classname
 	 * @throws CannotCompileException
 	 */
 	private void registerClass(String classname) throws CannotCompileException {
 		if (!isBaseclass(classname)) {
-			try {	
+			try {
 				Class<?> cls = loader.loadClass(classname);
-				System.out.println("classname="+classname);
+				//System.out.println("classname="+classname);
 				Template template = template = builder.buildTemplate(cls);
 				// 途中はregistryに登録
 				registry.register(cls, template);
@@ -1992,7 +1992,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @param classname
 	 * @param value
 	 * @return オブジェクト
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	private Object parseValue(String classname,Value value) throws JSONException  {
 
@@ -2099,7 +2099,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 					int idx = msg.lastIndexOf(".");
 					if (idx > 0) {
 						String tmpName = msg.substring(idx + 1);
-						String name = tmpName.substring(0, 1).toLowerCase(Locale.ENGLISH) + 
+						String name = tmpName.substring(0, 1).toLowerCase(Locale.ENGLISH) +
 								tmpName.substring(1);
 						throw new JSONException("JSON parse error: " + name + " is not defined in the schema template.");
 					}
@@ -2179,17 +2179,17 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * MessagePackではArrayを使っており要素名が含まれない。そのため順序を保証しなければならないが、テンプレートの変更の際に要素の最後尾に追記することでずれを防ぐことができる。途中の孫要素であっても最後の要素としてであれば追加可能。
 	 * 追加更新後に更新前と比較して型と階層が違えばエラーとする。
 	 * </p>
-	 * 
+	 *
 	 * @param jo_packages_old
 	 * @param jo_packages_new
 	 * @return 更新できればtrue
 	 * @throws ParseException
 	 */
 	public boolean precheckTemplate(String[] jo_packages_old,String[] jo_packages_new) throws ParseException {
-		
+
 		List<Meta> metalistprev = getMetalist(jo_packages_old, packagename);
 		List<Meta> metalistnew = getMetalist(jo_packages_new, packagename);
-	
+
 		for(int i = 0; i < metalistnew.size(); i++) {
 			if (metalistnew.get(i).hasChild()&&isReservedWord(metalistnew.get(i).self)) {
 				throw new ParseException(metalistnew.get(i).self+" is a reserved word.",0);
@@ -2201,7 +2201,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			if (len>5) {
 				String desc = metalistnew.get(i).name.substring(len-5);
 				if (desc.equals("_desc")) {
-					String orgname = metalistnew.get(i).name.substring(0,len-5);					
+					String orgname = metalistnew.get(i).name.substring(0,len-5);
 					boolean desccheck = false;
 					for(int j=0;j<metalistnew.size();j++) {
 						if (metalistnew.get(j).name.equals(orgname)) {
@@ -2214,7 +2214,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				}
 			}
 		}
-		
+
 		for (int i = 0, j = 0; i < metalistnew.size()+1; i++) {
 			if (j>=metalistprev.size()) return true;	// チェック完了(OK)
 			if (i>=metalistnew.size()) return false;	// チェック完了(NG)
@@ -2258,18 +2258,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 		if (word.equals("link")) return true;
 		return false;
 	}
-	
+
 	public String getSecretkey() {
 		return secretkey;
 	}
 
 	/**
 	 * テンプレートファイルからEntityBeanを生成する
-	 * 
+	 *
 	 * <pre>
 	 * Usage: Java FeedTemplateMapper templatefile folderpath (aclfile)
 	 * </pre>
-	 * 
+	 *
 	 * @param args
 	 * @throws ParseException
 	 */
@@ -2282,7 +2282,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 			String[] entitytempl = new String[entitytempl1.length+1];
 			entitytempl[0] = args[0]+"{}";
 			System.arraycopy(entitytempl1, 0, entitytempl, 1, entitytempl1.length);
-			
+
 			String[] aclfile = null;
 			if (args.length==5&&args[4]!=null) aclfile = readtemplatefile(args[4]);
 
