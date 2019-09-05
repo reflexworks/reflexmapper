@@ -28,6 +28,8 @@ public interface RequestType {
 	public static final String PARAM_ENTRY = "e"; 
 	/** URLパラメータ : Feed検索、削除 */
 	public static final String PARAM_FEED = "f";
+	/** URLパラメータ : ソート順を指定 */
+	public static final String PARAM_SORT = "s";
 	/** URLパラメータ : contentの中身を取得 */
 	public static final String PARAM_CONTENT = "_content";
 	/** URLパラメータ : contentの中身無しで返す */

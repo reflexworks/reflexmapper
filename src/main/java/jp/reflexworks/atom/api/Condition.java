@@ -6,7 +6,7 @@ import jp.sourceforge.reflex.util.StringUtils;
  * 検索条件クラス
  */
 public class Condition {
-	
+
 	/** 演算子 : equal (=) */
 	public static final String EQUAL = "eq";
 	/** 演算子 : greater than (>) */
@@ -33,20 +33,24 @@ public class Condition {
 	public static final String OR_START = OR + "(";
 	/** 演算子 : OR終了 */
 	public static final String OR_END = ")";
+	/** ソート演算子 : 昇順 */
+	public static final String ASC = "asc";
+	/** ソート演算子 : 降順 */
+	public static final String DESC = "desc";
 
 	// 互換性のためfinalにしない。(継承クラスで編集)
 	/** 演算子の接続文字 */
 	public static String DELIMITER = "-";
-	
+
 	/** 項目名 */
 	protected String prop;
-	
+
 	/** 等・不等式 */
 	protected String equations;
-	
+
 	/** 値 (デコード済) */
 	protected String value;
-	
+
 	/**
 	 * コンストラクタ
 	 * @param cond 条件
@@ -63,7 +67,7 @@ public class Condition {
 	public Condition(String prop, String value) {
 		setCondition(prop, value);
 	}
-	
+
 	/**
 	 * 条件の解析
 	 * @param cond 条件
@@ -72,7 +76,7 @@ public class Condition {
 		if (StringUtils.isBlank(cond)) {
 			return;
 		}
-		
+
 		int condLen = cond.length();
 		int idxProp = cond.indexOf(DELIMITER);
 		int idxFilter = -1;
@@ -86,7 +90,7 @@ public class Condition {
 			this.prop = cond.substring(0, idxProp);
 			idxProp++;
 		}
-		
+
 		if (idxProp >= condLen) {
 			this.equations = EQUAL;
 			idxFilter = condLen;
@@ -98,14 +102,14 @@ public class Condition {
 			this.equations = cond.substring(idxProp, idxFilter);
 			idxFilter++;
 		}
-		
+
 		if (idxFilter >= condLen) {
 			this.value = "";
 		} else {
 			this.value = cond.substring(idxFilter);
 		}
 	}
-	
+
 	/**
 	 * 条件をフィールドに設定
 	 * @param prop 項目
@@ -155,8 +159,10 @@ public class Condition {
 		buf.append(prop);
 		buf.append("-");
 		buf.append(equations);
-		buf.append("-");
-		buf.append(value);
+		if (value != null) {
+			buf.append("-");
+			buf.append(value);
+		}
 		return buf.toString();
 	}
 
