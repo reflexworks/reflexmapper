@@ -1964,7 +1964,6 @@ public class FeedTemplateMapper extends ResourceMapper {
 		if (!isBaseclass(classname)) {
 			try {	
 				Class<?> cls = loader.loadClass(classname);
-				System.out.println("classname="+classname);
 				Template template = template = builder.buildTemplate(cls);
 				// 途中はregistryに登録
 				registry.register(cls, template);
