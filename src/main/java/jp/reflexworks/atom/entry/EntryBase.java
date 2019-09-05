@@ -667,11 +667,11 @@ public abstract class EntryBase implements Serializable {
 	
 	public abstract Object getValue(String fieldname);
 
-	public abstract void encrypt(Object cipher);
+	public abstract void encrypt(Object _cipher);
 
-	public abstract void decrypt(Object cipher);
+	public abstract void decrypt(Object _cipher);
 
-	public abstract boolean isMatch(Condition[] conditions);
+	public abstract boolean isMatch(Condition[] _conditions);
 
 	public abstract int getsize();
 

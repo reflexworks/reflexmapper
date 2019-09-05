@@ -65,6 +65,24 @@ public class TestMsgpackMapper {
 			" child1"
 	};
 
+	public static String entitytemplconditions[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"conditions",			  
+			" child1"
+	};
+
+	public static String entitytemplcipher[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"cipher",			  
+			" child1"
+	};
+
+	public static String entitytemplcontext[] = {
+			"default{}",        //  0行目はパッケージ名(service名)
+			"context",			  
+			" child1"
+	};
+
 	public static String entitytempldesc[] = {
 			"default{}",        
 			"item(int)",
@@ -722,6 +740,42 @@ public class TestMsgpackMapper {
 			assertTrue(true);
 		}
 
+	}
+
+	@Test
+	public void testConditions() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplconditions, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"conditions\" : {\"child1\" : \"xxx\" }  }}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+		
+		String d0 = (String) entry.getValue("conditions.child1");
+		System.out.println("val="+d0);
+	}
+
+	@Test
+	public void testCipher() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplcipher, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"cipher\" : {\"child1\" : \"xxx\" } }}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+		
+		String d0 = (String) entry.getValue("cipher.child1");
+		System.out.println("val="+d0);
+	}
+
+	@Test
+	public void testContext() throws ParseException, JSONException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytemplcontext, null, 30, SECRETKEY);
+
+		System.out.println("JSON Entry デシリアライズ");
+		String json = "{\"entry\" : {\"context\" : {\"child1\" : \"xxx\" } }}";
+		EntryBase entry = (EntryBase) mp.fromJSON(json);
+		
+		String d0 = (String) entry.getValue("context.child1");
+		System.out.println("val="+d0);
 	}
 
 	@Test

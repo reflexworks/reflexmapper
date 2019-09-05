@@ -1274,8 +1274,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 				// 暗号化
 				if (meta.privatekey != null) {
-					encrypt.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doEncrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+context.id, context.cipher);");
-					decrypt.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doDecrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+context.id, context.cipher);");
+					encrypt.append("if (" + meta.self + "!=null) if ((_context.parent==null)||(_context.parent!=null)&&(\"" + meta.name + "\".indexOf(_context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doEncrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+_context.id, _context.cipher);");
+					decrypt.append("if (" + meta.self + "!=null) if ((_context.parent==null)||(_context.parent!=null)&&(\"" + meta.name + "\".indexOf(_context.parent)>=0))" + meta.self + "=(" + meta.type + ") jp.reflexworks.atom.mapper.CipherUtil.doDecrypt(\"\"+" + meta.self + ", \"" + meta.privatekey + "\"+_context.id, _context.cipher);");
 				}
 
 				// 子要素のgetValue/setValue
@@ -1283,25 +1283,25 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (meta.isMap) {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { java.util.List result = new java.util.ArrayList(); for (int i=0;i<" + meta.self + ".size();i++) { Object value =((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getValue(fldname);result.add(value);} if (result.size()>0) return result;}"); 
 						if (!isFeed(classname)) {
-							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(context);}"); 
-							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(context);}"); 
-							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(context);}}"); 
-							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(context);}"); 
-							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(context);context.arraycount++;}context.count++;context.mapcount++;context.keysize+=\"+meta.self+\".length();}"); 
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).encrypt(_context);}"); 
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).decrypt(_context);}"); 
+							ismatch.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).isMatch(_context);}}"); 
+							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).maskprop(_context);}"); 
+							getsize.append("if (" + meta.self + "!=null) {for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.SoftSchema)" + meta.self + ".get(i)).getsize(_context);_context.arraycount++;}_context.count++;_context.mapcount++;_context.keysize+=\"+meta.self+\".length();}"); 
 						} else {
-							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(cipher);}"); 
-							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(cipher);}"); 
+							encrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).encrypt(_cipher);}"); 
+							decrypt.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).decrypt(_cipher);}"); 
 							maskprop.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).maskprop(uid,groups);}"); 
 							getsize.append("if (" + meta.self + "!=null) for (int i=0;i<" + meta.self + ".size();i++) { ((jp.reflexworks.atom.entry.EntryBase)" + meta.self + ".get(i)).getsize();}"); 
 						}
 					} else {
 						getvalue.append("if (fldname.indexOf(\"" + meta.name + ".\")>=0&&" + meta.self + "!=null) { Object value=" + meta.self + ".getValue(fldname);if (value!=null) return value;}");
-						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(context);");
-						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(context);");
-						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(context);");
-						getsize.append("if (" + meta.self + "!=null) {" + meta.self + ".getsize(context);context.count++;context.keysize+=\"+meta.self+\".length();}");
+						encrypt.append("if (" + meta.self + "!=null) " + meta.self + ".encrypt(_context);");
+						decrypt.append("if (" + meta.self + "!=null) " + meta.self + ".decrypt(_context);");
+						ismatch.append("if (" + meta.self + "!=null) " + meta.self + ".isMatch(_context);");
+						getsize.append("if (" + meta.self + "!=null) {" + meta.self + ".getsize(_context);_context.count++;_context.keysize+=\"+meta.self+\".length();}");
 						if (!isFeed(classname)) {
-							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(context);");
+							maskprop.append("if (" + meta.self + "!=null) " + meta.self + ".maskprop(_context);");
 						} else {
 							maskprop.append("if ("+meta.self+"!=null) "+ meta.self+".maskprop(uid,groups);");
 						}
@@ -1319,11 +1319,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 						getvalue.append("if (" + metaorg + "!=null) { String o=jp.reflexworks.atom.api.EntryUtil.getDescStr(" + metaorg + ");"+ meta.self +"=o;}"); 
 					}					
 					getvalue.append("return " + meta.self + ";}");
-					ismatch.append("if (" + meta.self + "!=null) {context.fldname=\"" + meta.name + "\";context.type=\"" + meta.type + "\";context.obj=" + meta.self + ";");
-					ismatch.append("if (context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);");
-					ismatch.append("else if (\"" + meta.name + "\".indexOf(context.parent)>=0)");
-					ismatch.append("jp.reflexworks.atom.mapper.ConditionContext.checkCondition(context);}");
-					getsize.append("if (" + meta.self + "!=null) if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0)) {context.size+="+getSizeStr(meta.type,meta.self)+";context.count++;context.keysize+=\"+meta.self+\".length();}");
+					ismatch.append("if (" + meta.self + "!=null) {_context.fldname=\"" + meta.name + "\";_context.type=\"" + meta.type + "\";_context.obj=" + meta.self + ";");
+					ismatch.append("if (_context.parent==null) jp.reflexworks.atom.mapper.ConditionContext.checkCondition(_context);");
+					ismatch.append("else if (\"" + meta.name + "\".indexOf(_context.parent)>=0)");
+					ismatch.append("jp.reflexworks.atom.mapper.ConditionContext.checkCondition(_context);}");
+					getsize.append("if (" + meta.self + "!=null) if ((_context.parent==null)||(_context.parent!=null)&&(\"" + meta.name + "\".indexOf(_context.parent)>=0)) {_context.size+="+getSizeStr(meta.type,meta.self)+";_context.count++;_context.keysize+=\"+meta.self+\".length();}");
 				}
 
 				// バリデーションチェック
@@ -1372,11 +1372,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 					maskprop.append(endFuncE);
 					getsize.append(getsizeFuncE);
 				} else {
-					ismatch.append("context.parent=parent;"+endFuncE);
-					encrypt.append("context.parent=parent;"+endFuncE);
-					decrypt.append("context.parent=parent;"+endFuncE);
-					maskprop.append("context.parent=parent;"+endFuncE);
-					getsize.append("context.parent=parent;"+endFuncE);
+					ismatch.append("_context.parent=parent;"+endFuncE);
+					encrypt.append("_context.parent=parent;"+endFuncE);
+					decrypt.append("_context.parent=parent;"+endFuncE);
+					maskprop.append("_context.parent=parent;"+endFuncE);
+					getsize.append("_context.parent=parent;"+endFuncE);
 				}
 				CtMethod m5 = CtNewMethod.make(ismatch.toString(), cc);
 				cc.addMethod(m5);
@@ -1422,7 +1422,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 	}
 
 	private String setparent(String classname) {
-		return "String parent=context.parent;if (context.parent==null) context.parent=\""+cutPackagename(classname) + "\";else context.parent=context.parent+\"." + cutPackagename(classname) + "\";";
+		return "String parent=_context.parent;if (_context.parent==null) _context.parent=\""+cutPackagename(classname) + "\";else _context.parent=_context.parent+\"." + cutPackagename(classname) + "\";";
 	}
 	
 	private String cutPackagename(String classname) {
@@ -1432,33 +1432,33 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 	private final String getvalueFuncS = "public Object getValue(String fldname) {";
 	private final String getvalueFuncE = "return null;}";
-	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.CipherContext context) {";
-	private final String encryptFuncS2 = "public void encrypt(Object cipher) { jp.reflexworks.atom.mapper.CipherContext context= new jp.reflexworks.atom.mapper.CipherContext(cipher,this.id";
-	private final String encryptFuncS4 = "public void encrypt(Object cipher) {";
+	private final String encryptFuncS = "public void encrypt(jp.reflexworks.atom.mapper.CipherContext _context) {";
+	private final String encryptFuncS2 = "public void encrypt(Object _cipher) { jp.reflexworks.atom.mapper.CipherContext _context= new jp.reflexworks.atom.mapper.CipherContext(_cipher,this.id";
+	private final String encryptFuncS4 = "public void encrypt(Object _cipher) {";
 	
-	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.CipherContext context) {";
-	private final String decryptFuncS2 = "public void decrypt(Object cipher) { jp.reflexworks.atom.mapper.CipherContext context= new jp.reflexworks.atom.mapper.CipherContext(cipher,this.id";
+	private final String decryptFuncS = "public void decrypt(jp.reflexworks.atom.mapper.CipherContext _context) {";
+	private final String decryptFuncS2 = "public void decrypt(Object _cipher) { jp.reflexworks.atom.mapper.CipherContext _context= new jp.reflexworks.atom.mapper.CipherContext(_cipher,this.id";
 	private final String endFuncE = "}";
-	private final String decryptFuncS4 = "public void decrypt(Object cipher) {";
+	private final String decryptFuncS4 = "public void decrypt(Object _cipher) {";
 
-	private final String ismatchFuncS = "public void isMatch(jp.reflexworks.atom.mapper.ConditionContext context) {";
-	private final String ismatchFuncS2 = "public boolean isMatch(jp.reflexworks.atom.api.Condition[] conditions) {" +
-			"jp.reflexworks.atom.mapper.ConditionContext context = new jp.reflexworks.atom.mapper.ConditionContext(conditions);";
-	private final String ismatchFuncE2 = "return context.isMatch();}";
+	private final String ismatchFuncS = "public void isMatch(jp.reflexworks.atom.mapper.ConditionContext _context) {";
+	private final String ismatchFuncS2 = "public boolean isMatch(jp.reflexworks.atom.api.Condition[] _conditions) {" +
+			"jp.reflexworks.atom.mapper.ConditionContext _context = new jp.reflexworks.atom.mapper.ConditionContext(_conditions);";
+	private final String ismatchFuncE2 = "return _context.isMatch();}";
 
 	private final String validateFuncS = "public boolean validate(String uid, java.util.List groups, String myself) throws java.text.ParseException {";
 	private final String validateFuncS2 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = getCreatorUid();";
 	private final String validateFuncS3 = "public boolean validate(String uid, java.util.List groups) throws java.text.ParseException {String myself = null;";
 
 	private final String validateFuncE = "return true;}";
-	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext context) {";
-	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getCreatorUid());";
+	private final String maskpropFuncS = "public void maskprop(jp.reflexworks.atom.mapper.MaskpropContext _context) {";
+	private final String maskpropFuncS2 = "public void maskprop(String uid, java.util.List groups) {jp.reflexworks.atom.mapper.MaskpropContext _context= new jp.reflexworks.atom.mapper.MaskpropContext(uid,groups,getCreatorUid());";
 	private final String maskpropFuncS3 = "public void maskprop(String uid, java.util.List groups) {";
 
-	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext context) {";
-	private final String getsizeFuncS2 = "public int getsize() { jp.reflexworks.atom.mapper.SizeContext context= new jp.reflexworks.atom.mapper.SizeContext();";
+	private final String getsizeFuncS = "public void getsize(jp.reflexworks.atom.mapper.SizeContext _context) {";
+	private final String getsizeFuncS2 = "public int getsize() { jp.reflexworks.atom.mapper.SizeContext _context= new jp.reflexworks.atom.mapper.SizeContext();";
 	private final String getsizeFuncS3 = "public void getsize() {";
-	private final String getsizeFuncE = "return context.size+context.keysize+(context.count+context.mapcount)*8+context.arraycount*10+100;}";
+	private final String getsizeFuncE = "return _context.size+_context.keysize+(_context.count+_context.mapcount)*8+_context.arraycount*10+100;}";
 //	private final String getsizeFuncE = "return context.arraycount;}";
 
 	/**
@@ -1506,11 +1506,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 			line += "if ("+ meta.self + "!=null) {";
 			// 自分の属するグループが存在しなければ値をnullにする
 			line += "boolean ex=false;";
-			line += "if (context.groups==null) context.groups = new java.util.ArrayList();";
-			line += "java.util.ArrayList groups2 = new java.util.ArrayList(context.groups);";
-			line += "groups2.add(\"\"+context.uid);";
+			line += "if (_context.groups==null) _context.groups = new java.util.ArrayList();";
+			line += "java.util.ArrayList groups2 = new java.util.ArrayList(_context.groups);";
+			line += "groups2.add(\"\"+_context.uid);";
 			for(String aclr:meta.aclR) {
-				if (aclr.equals("@")) line += "if (context.uid != null && context.uid.equals(context.myself)) ex=true;";
+				if (aclr.equals("@")) line += "if (_context.uid != null && _context.uid.equals(_context.myself)) ex=true;";
 			}
 			line += "for(int i=0;i<groups2.size();i++) {";
 			for(String aclr:meta.aclR) {
@@ -1523,7 +1523,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 				else line += "if (groups2.get(i).equals(\""+aclr+"\")) ex=true;";
 			}
 			line += "}";
-			line += "if ((context.parent==null)||(context.parent!=null)&&(\"" + meta.name + "\".indexOf(context.parent)>=0)) {";
+			line += "if ((_context.parent==null)||(_context.parent!=null)&&(\"" + meta.name + "\".indexOf(_context.parent)>=0)) {";
 			line += "if (!ex) "+ meta.self +"=null;";
 			line += "}";
 			line += "}";
@@ -1964,6 +1964,7 @@ public class FeedTemplateMapper extends ResourceMapper {
 		if (!isBaseclass(classname)) {
 			try {	
 				Class<?> cls = loader.loadClass(classname);
+				System.out.println("classname="+classname);
 				Template template = template = builder.buildTemplate(cls);
 				// 途中はregistryに登録
 				registry.register(cls, template);
