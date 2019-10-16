@@ -40,8 +40,10 @@ public interface SettingConst {
 	public static final String BIGQUERY_LOCATION = "_bigquery.location";
 	/** JSON出力においてfeed.entryを省略するかどうか */
 	public static final String JSON_STARTARRAYBRACKET = "_json.startarraybracket";
+	/** バッチジョブ **/
+	public static final String BATCHJOB_PREFIX = "_batchjob.";
 
-	/** 
+	/**
 	 * サービスの情報が存在する場合、システムの情報を無視する設定一覧.
 	 * <p>
 	 * 条件を複数取得する、前方一致指定の項目に有効。
@@ -49,9 +51,9 @@ public interface SettingConst {
 	 * </p>
 	 */
 	public static final List<String> IGNORE_SYSTEM_IF_EXIST_SERVICE_INFO =
-			Arrays.asList(new String[]{MAIL_PREFIX, BIGQUERY_PROJECTID, BIGQUERY_DATASET, 
+			Arrays.asList(new String[]{MAIL_PREFIX, BIGQUERY_PROJECTID, BIGQUERY_DATASET,
 					BIGQUERY_LOCATION});
-	
+
 	/** ユーザ初期エントリー設定 : ユーザ番号に置き換える記号 */
 	public static final String SETTING_USERINIT_UID = "#";
 
