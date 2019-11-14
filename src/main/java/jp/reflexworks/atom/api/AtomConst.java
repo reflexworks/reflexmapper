@@ -3,7 +3,7 @@ package jp.reflexworks.atom.api;
 import java.util.Map;
 
 public interface AtomConst {
-	
+
 	/** エンコード */
 	public static final String ENCODING = "UTF-8";
 
@@ -13,10 +13,10 @@ public interface AtomConst {
 	public static final String ATOM_PACKAGE_FEED = "jp.reflexworks.atom.feed";
 	/** ATOM : Entry package */
 	public static final String ATOM_PACKAGE_ENTRY = "jp.reflexworks.atom.entry";
-	
-	public static final Map<String, String> ATOM_PACKAGE = 
+
+	public static final Map<String, String> ATOM_PACKAGE =
 			AtomConstSupporter.createModelPackage();
-	
+
 	/** MessaaePack Entry class */
 	public static final boolean MSGPACK_ENTRY = false;
 	/** MessaaePack Feed class */
@@ -65,7 +65,7 @@ public interface AtomConst {
 	public static final String URN_PREFIX_USERSECRET = URN_PREFIX + "usersecret:";
 	/** URN : platformtoken */
 	public static final String URN_PREFIX_PLATFORMTOKEN = URN_PREFIX + "platformtoken:";
-	
+
 	/** 登録権限 */
 	public static final String ACL_TYPE_CREATE = "C";
 	/** 参照権限 */
@@ -75,7 +75,7 @@ public interface AtomConst {
 	/** 削除権限 */
 	public static final String ACL_TYPE_DELETE = "D";
 	/** CRUD権限 */
-	public static final String ACL_TYPE_CRUD = ACL_TYPE_CREATE + ACL_TYPE_RETRIEVE + 
+	public static final String ACL_TYPE_CRUD = ACL_TYPE_CREATE + ACL_TYPE_RETRIEVE +
 			ACL_TYPE_UPDATE + ACL_TYPE_DELETE;
 	/** サービスからのみアクセス可能な権限 */
 	public static final String ACL_TYPE_EXTERNAL = "E";
@@ -155,7 +155,9 @@ public interface AtomConst {
 	/** URI : group - useradmin */
 	public static final String URI_GROUP_USERADMIN = URI_GROUP + URI_$USERADMIN;
 	/** URI : auth (layer) */
-	public static final String URI_LAYER_AUTH = "/auth";
+	public static final String URI_LAYER_AUTH_VAL = "auth";
+	/** URI : auth (layer) */
+	public static final String URI_LAYER_AUTH = "/" + URI_LAYER_AUTH_VAL;
 	/** URI : platform (layer) */
 	public static final String URI_LAYER_PLATFORM = "/platform";
 	/** URI : group (layer) */
@@ -163,7 +165,9 @@ public interface AtomConst {
 	/** URI : html */
 	public static final String URI_HTML = "/_html";
 	/** URI : user */
-	public static final String URI_USER = "/_user";
+	public static final String URI_USER_VAL = "_user";
+	/** URI : user */
+	public static final String URI_USER = "/" + URI_USER_VAL;
 
 	/** type : webhook */
 	public static final String TYPE_WEBHOOK = "webhook";
@@ -175,7 +179,7 @@ public interface AtomConst {
 	public static final String TYPE_EMAIL = "email";
 	/** type : node */
 	public static final String TYPE_NODE = "node";
-	
+
 	/** ユーザステータス : 登録なし */
 	public static final String USERSTATUS_NOTHING = "Nothing";
 	/** ユーザステータス : 仮登録 */
@@ -184,10 +188,10 @@ public interface AtomConst {
 	public static final String USERSTATUS_ACTIVATED = "Activated";
 	/** ユーザステータス : 無効 */
 	public static final String USERSTATUS_REVOKED = "Revoked";
-	
+
 	/** ログインユーザのUIDを表す記号 */
 	public static final String LOGINUSER_VAL = "~";
-	
+
 	/** ACLグループのワイルドカード */
 	public static final String GROUP_WILDCARD = "*";
 
@@ -216,7 +220,7 @@ public interface AtomConst {
 	public static final String META_BIGQUERYTYPE_FLOAT = "FLOAT";
 	/** テンプレートのMeta情報のBigQueryType : Date */
 	public static final String META_BIGQUERYTYPE_DATE = "DATETIME";
-	
+
 	/** 改行コード */
 	public static final String NEWLINE = System.lineSeparator();
 
