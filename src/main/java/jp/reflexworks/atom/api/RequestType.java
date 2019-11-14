@@ -25,7 +25,7 @@ public interface RequestType {
 	/** URLパラメータ : 件数取得 */
 	public static final String PARAM_COUNT = "c";
 	/** URLパラメータ : Entry取得 */
-	public static final String PARAM_ENTRY = "e"; 
+	public static final String PARAM_ENTRY = "e";
 	/** URLパラメータ : Feed検索、削除 */
 	public static final String PARAM_FEED = "f";
 	/** URLパラメータ : ソート順を指定 */
@@ -104,6 +104,8 @@ public interface RequestType {
 	public static final String PARAM_CHANGEPASS = "_changephash";
 	/** URLパラメータ : 管理者によるユーザ登録オプション */
 	public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
+	/** URLパラメータ : 管理者によるパスワード変更オプション */
+	public static final String PARAM_CHANGEPASS_BYADMIN = "_changephashByAdmin";
 	/** URLパラメータ : サービス作成 */
 	public static final String PARAM_CREATESERVICE = "_createservice";
 	/** URLパラメータ : サービス削除 */
@@ -166,7 +168,7 @@ public interface RequestType {
 	public static final String PARAM_APIKEY = "_apikey";
 	/** URLパラメータ : サービスキー */
 	public static final String PARAM_SERVICEKEY = "_servicekey";
-	
+
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
 
