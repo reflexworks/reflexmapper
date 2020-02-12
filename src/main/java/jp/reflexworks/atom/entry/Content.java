@@ -23,7 +23,7 @@ import jp.reflexworks.atom.mapper.SizeContext;
 public class Content implements Serializable, Cloneable, SoftSchema {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/** 項目ACLチェックパターン */
 	//private Pattern PATTERN = Pattern.compile("^/@[^/]+/_group/\\$content$");
 	private static Pattern PATTERN = Pattern.compile("^/_group/\\$content$|^/@[^/]+/_group/\\$content$");
@@ -58,15 +58,15 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	public void set$$text(String _$$text) {
 		this._$$text = _$$text;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Content [" + _$$text + "]";
 	}
 
-	public boolean validate(String uid, List<String> groups, String myself) 
+	public boolean validate(String uid, List<String> groups, String myself)
 	throws java.text.ParseException {
-		
+
 		if (this._$$text != null || this._$type != null || this._$src != null) {
 			if (uid!=null && groups != null && groups.size() >= 0) {
 				boolean ex = false;
@@ -76,12 +76,15 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 					Matcher m = PATTERN.matcher(groups.get(i));
 					if (m.find()) ex=true;
 				}
-				if (_$type!=null&&(_$type.equals("image/jpeg")||_$type.equals("image/png")||_$type.equals("image/gif"))) ex=true;
+				if (_$type!=null&&(_$type.equals("image/jpeg") ||
+						_$type.equals("image/png") ||
+						_$type.equals("image/gif") ||
+						_$type.equals("application/octet-stream"))) ex=true;
 				if (!ex) throw new java.text.ParseException(
 						"Property 'content' is not writeable.", 0);
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -94,7 +97,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 
 	public void encrypt(CipherContext context) {}
 	public void decrypt(CipherContext context) {}
-	
+
 	public void isMatch(ConditionContext context) {
 		if (_$$text != null) {
 			context.fldname = "content.$$text";
