@@ -2173,7 +2173,9 @@ public class TestMsgpackMapper {
 		assertTrue(errorFlg);
 		System.out.println("testValidate (1) validate OK.");
 
+		// 2020.02.13 contentのvalidateチェック廃止
 		// validate test (2) : validateエラー無し、content追加
+		/*
 		System.out.println("testValidate (2) content start.");
 		json = "{\"feed\" : {\"entry\" : [{\"id\" : \"/@testservice/7/folders,2\",\"author\" : [{\"uri\" : \"urn:vte.cx:created:7\"}] ,\"link\" : [{\"$href\" : \"/@testservice/7/folders\",\"$rel\" : \"self\"}],\"content\" : {\"$$text\":\"あああ\"},\"info\" : {\"name\" : \"商品1\",\"color\" : \"red\",\"size\" : \"M\"}}]}}";
 		feed = (FeedBase)mp4.fromJSON(json);
@@ -2202,6 +2204,7 @@ public class TestMsgpackMapper {
 		}
 		assertTrue(errorFlg);
 		System.out.println("testValidate (3) content OK.");
+		*/
 
 		// validate test (4) : validateエラー無し、right追加
 		System.out.println("testValidate (4) admin right (Another user) start.");

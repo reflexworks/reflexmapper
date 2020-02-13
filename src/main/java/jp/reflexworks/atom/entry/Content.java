@@ -66,7 +66,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 
 	public boolean validate(String uid, List<String> groups, String myself)
 	throws java.text.ParseException {
-
+		/*
 		if (this._$$text != null || this._$type != null || this._$src != null) {
 			if (uid!=null && groups != null && groups.size() >= 0) {
 				boolean ex = false;
@@ -84,7 +84,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 						"Property 'content' is not writeable.", 0);
 			}
 		}
-
+		*/
 		return true;
 	}
 
