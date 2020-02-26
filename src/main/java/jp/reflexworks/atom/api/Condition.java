@@ -37,6 +37,8 @@ public class Condition {
 	public static final String ASC = "asc";
 	/** ソート演算子 : 降順 */
 	public static final String DESC = "desc";
+	/** 全文検索の値AND指定 */
+	public static final String FT_AND = ",";
 
 	// 互換性のためfinalにしない。(継承クラスで編集)
 	/** 演算子の接続文字 */

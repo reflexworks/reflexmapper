@@ -387,6 +387,74 @@ public class TestMsgpackMapper {
 		"comment.secret#"
 	};
 
+	public static String entityAclsFulltextsearch11[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch12error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_aaa|info.name;^/ftindex[^/]*$",
+		"info.stock_int|info.stock_long|info.stock_double;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch13error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string|info.name:^/ftindex[^/]*$",
+		"info.stock_int|info.stock_long|info.stock_double;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsFulltextsearch14error[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string|info.name;^/ftindex[^/]*$",
+		"info.stock_int|info.stock_long|info.stock_double;^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
 	// maxテスト 用
 	public static String entityAclsMaxTest[] = {
 		"title:^/$",					// ルートのtitleのIndex指定(任意のサービス名)
@@ -516,6 +584,7 @@ public class TestMsgpackMapper {
 		" stock_date(date)",
 		//" stock_desc(desc)",
 		" aaa(desc)",
+		" disp_int(int)",
 		"comment{}",
 		" $$text",
 		" nickname",
@@ -5115,10 +5184,37 @@ public class TestMsgpackMapper {
 			// OK
 			System.out.println("(OK) " + e.getMessage());
 		}
+		try {
+			FeedTemplateMapper mp12 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch12error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp13 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch13error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
+		try {
+			FeedTemplateMapper mp14 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch14error, 30, SECRETKEY);
+			assertTrue(false);
+		} catch (ParseException e) {
+			// OK
+			System.out.println("(OK) " + e.getMessage());
+		}
 
 		printMetalist2(mp5.getMetalist());
 
 		System.out.println("[testFulltextsearchIndex] end");
+	}
+
+	@Test
+	public void testFulltextsearchIndex2() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp11 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch11, 30, SECRETKEY);
+		printMetalist2(mp11.getMetalist());
 	}
 
 }

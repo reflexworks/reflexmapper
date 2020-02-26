@@ -646,6 +646,40 @@ public class FeedTemplateMapper extends ResourceMapper {
 					}
 				}
 			}
+			if (!isExist) {
+				// 全文検索の項目OR指定
+				if (k4.length > 1) {
+					String[] keyParts = key.split("\\|");
+					Set<String> equalKeys = new HashSet<>();
+					String type = null;
+					for (String keyPart : keyParts) {
+						for (Meta meta : metalist) {
+							if (meta.name.equals(keyPart)) {
+								equalKeys.add(keyPart);
+								if (type == null) {
+									type = meta.type;
+								} else {
+									if (!type.equals(meta.type)) {
+										// 型が異なる項目はORインデックスにできない
+										throw new ParseException("Can't specify index for different type.'" + k[0] + "'",0);
+									}
+								}
+								break;
+							}
+						}
+					}
+					if (keyParts.length == equalKeys.size()) {
+						isExist = true;
+						Meta meta = new Meta();
+						meta.name = key;
+						meta.level = -1;
+						meta.search = index;
+						meta.type = type;
+						metalist.add(meta);
+					}
+				}
+
+			}
 			if (!isExist) throw new ParseException("Not found property '" + k[0] + "' in the schema template.",0);
 		}
 	}
@@ -1885,9 +1919,8 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @return
 	 */
 	private Meta getMetaByLevel(String classname, int level) {
-
 		for (Meta meta : metalist) {
-			if (meta.parent.equals(classname)) {
+			if (meta.parent != null && meta.parent.equals(classname)) {
 				level--;
 				if (level < 0) {
 					return meta;
@@ -1904,10 +1937,9 @@ public class FeedTemplateMapper extends ResourceMapper {
 	 * @return
 	 */
 	private int matches(String classname) {
-
 		int i = 0;
 		for (Meta meta : metalist) {
-			if (meta.parent.equals(classname)) {
+			if (meta.parent != null && meta.parent.equals(classname)) {
 				i++;
 			}
 		}
