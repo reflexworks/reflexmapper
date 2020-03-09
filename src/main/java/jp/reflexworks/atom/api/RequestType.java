@@ -168,6 +168,8 @@ public interface RequestType {
 	public static final String PARAM_APIKEY = "_apikey";
 	/** URLパラメータ : サービスキー */
 	public static final String PARAM_SERVICEKEY = "_servicekey";
+	/** URLパラメータ : ログエントリー登録(バッチ処理などで直接登録) */
+	public static final String PARAM_LOG = "_log";
 
 	/** URLパラメータ : ワイルドカード */
 	public static final String WILDCARD = "*";
