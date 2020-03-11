@@ -130,6 +130,8 @@ public interface AtomConst {
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
 	/** URI : settings - adduserByAdmin */
 	public static final String URI_SETTINGS_ADDUSER_BYADMIN = URI_SETTINGS + "/adduserByAdmin";
+	/** URI : settings - logalert */
+	public static final String URI_SETTINGS_LOGALERT = URI_SETTINGS + "/logalert";
 	/** URI : user init (value) */
 	public static final String URI_USERINIT_VAL = "userinit.xml";
 	/** URI : settings - user init */
