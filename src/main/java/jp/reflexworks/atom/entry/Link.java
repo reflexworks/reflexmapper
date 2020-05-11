@@ -115,7 +115,7 @@ public class Link implements Serializable, SoftSchema {
 
 	public void encrypt(CipherContext context) {}
 	public void decrypt(CipherContext context) {}
-	
+
 	public void isMatch(ConditionContext context) {
 		if (_$href != null) {
 			context.fldname = "link.$href";
@@ -148,7 +148,7 @@ public class Link implements Serializable, SoftSchema {
 			ConditionContext.checkCondition(context);
 		}
 	}
-	
+
 	public String getUid() {
 		if (_$href != null) {
 			String token[] = _$href.split("/");
@@ -159,18 +159,20 @@ public class Link implements Serializable, SoftSchema {
 		return null;
 	}
 
-	public boolean validate(String uid, List<String> groups, String myself) 
+	public boolean validate(String uid, List<String> groups, String myself)
 	throws java.text.ParseException {
+		/* link._$title のvalidateチェックはここでは行わない。必要に応じて呼び出し元で行う。
 		if (_$title != null) {
-			if (uid == null) 
+			if (uid == null)
 				throw new java.text.ParseException("Property 'link#title' is not writeable.", 0);
 			if (myself != null) {
-				if (_$rel.equals("self") && !uid.equals(myself)) 
+				if (_$rel.equals("self") && !uid.equals(myself))
 					throw new java.text.ParseException("Property 'link#title' is not writeable.", 0);
-				if (_$rel.equals("alternate") && !uid.equals(getUid())) 
+				if (_$rel.equals("alternate") && !uid.equals(getUid()))
 					throw new java.text.ParseException("Property 'link#title' is not writeable.", 0);
 			}
 		}
+		*/
 		return true;
 	}
 
