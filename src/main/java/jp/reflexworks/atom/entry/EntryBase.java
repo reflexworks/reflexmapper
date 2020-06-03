@@ -49,7 +49,7 @@ public abstract class EntryBase implements Serializable {
 	 * 認証・認可情報定義.
 	 * <p>
 	 * <b>WSSE指定</b><br>
-	 * /_user/{username} をキーとするエントリーのｃontributorタグのuriタグに、以下の書式で認証情報を設定します。
+	 * /_user/{username} をキーとするエントリーのcontributorタグのuriタグに、以下の書式で認証情報を設定します。
 	 * <ul>
 	 * <li>urn:virtual-tech.net:auth:{username},{password}</li>
 	 * </ul>
@@ -309,7 +309,7 @@ public abstract class EntryBase implements Serializable {
 	 * <p>
 	 * <link rel="self">タグのhrefの値を返却します.
 	 * </p>
-	 * 
+	 *
 	 * @return キー
 	 */
 	public String getMyUri() {
@@ -329,12 +329,12 @@ public abstract class EntryBase implements Serializable {
 	 * <p>
 	 * 引数の値を、<link rel="self">タグのhref属性に設定します.
 	 * </p>
-	 * 
+	 *
 	 * @param uri キー
 	 */
 	public void setMyUri(String uri) {
 		setLinkSelf(uri);
-		
+
 		//String tmpUri = uri;
 		//// uriをparentとselfidに分割
 		//if (uri != null && uri.length() > 0) {
@@ -376,7 +376,7 @@ public abstract class EntryBase implements Serializable {
 
 	/**
 	 * エイリアスに指定されたURLを追加します。
-	 * 
+	 *
 	 * @param uri
 	 *            エイリアス
 	 */
@@ -472,7 +472,7 @@ public abstract class EntryBase implements Serializable {
 		}
 		contributor.add(cont);
 	}
-	
+
 	/**
 	 * Contentに文字列を設定します.
 	 * @param text 文字列
@@ -483,7 +483,7 @@ public abstract class EntryBase implements Serializable {
 		}
 		content._$$text = text;
 	}
-	
+
 	/**
 	 * Contentの文字列を取得します.
 	 * @return Contentの文字列
@@ -548,7 +548,7 @@ public abstract class EntryBase implements Serializable {
 		}
 		return url;
 	}
-	
+
 	/**
 	 * IDからURIとリビジョンを取得します.
 	 * @param id ID
@@ -582,7 +582,7 @@ public abstract class EntryBase implements Serializable {
 	 * @return UID
 	 */
 	public String getCreatorUid() {
-		
+
 		if (author != null) {
 			for (Author anAuthor : author) {
 				if (anAuthor.uri!=null) {
@@ -664,7 +664,7 @@ public abstract class EntryBase implements Serializable {
 			}
 		}
 	}
-	
+
 	public abstract Object getValue(String fieldname);
 
 	public abstract void encrypt(Object _cipher);
