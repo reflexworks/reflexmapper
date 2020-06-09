@@ -420,20 +420,29 @@ public class FeedTemplateMapper extends ResourceMapper {
 		for (String propacl : propAcls) {
 			propacl = propacl.replaceAll("[^(\\x20-\\x7F)]", ""); // 半角文字のみ（特殊文字を削除)
 			String token[] = propacl.split("=");
-			String token2[] = token[0].split(":");	// Index項目
-			if (token2.length > 1) {
+			// 最初にDISTKEYの設定抽出
+			String token4[] = token[0].split("::");	// DISTKEY項目
+			if (token4.length > 1) {
 				Meta meta = new Meta();
-				meta.name = token2[0]; // key
-//				meta.index = convertIndex(token2[1],svc); // index
-				meta.index = token2[1].trim(); // index
+				meta.name = token4[0]; // key
+				meta.distkey = token4[1].trim(); // distkey
 				result.add(meta);
-			}else {
-				String token3[] = token[0].split(";");	// 全文検索項目
-				if (token3.length > 1) {
+			} else {
+				String token2[] = token[0].split(":");	// Index項目
+				if (token2.length > 1) {
 					Meta meta = new Meta();
-					meta.name = token3[0]; // key
-					meta.search = token3[1].trim(); // 全文検索(search)
+					meta.name = token2[0]; // key
+					//meta.index = convertIndex(token2[1],svc); // index
+					meta.index = token2[1].trim(); // index
 					result.add(meta);
+				}else {
+					String token3[] = token[0].split(";");	// 全文検索項目
+					if (token3.length > 1) {
+						Meta meta = new Meta();
+						meta.name = token3[0]; // key
+						meta.search = token3[1].trim(); // 全文検索(search)
+						result.add(meta);
+					}
 				}
 			}
 		}
@@ -523,14 +532,21 @@ public class FeedTemplateMapper extends ResourceMapper {
 
 		int i = 0;
 		for (String propacl : propAcls) {
-			String k[] = propacl.split("=");
+			String[] k = propacl.split("=");
 			int k2 = k[0].indexOf("#");	// 暗号化項目
-			String k3[] = k[0].split(":");	// Index項目
-			String k4[] = k[0].split(";");	// 全文検索項目
+			String[] k5 = k[0].split("::");	// DISTKEY項目
+			String[] k3 = null;
+			if (k5.length > 1) {
+				k3 = new String[] {k[0]};
+			} else {
+				k3 = k[0].split(":");	// Index項目
+			}
+			String[] k4 = k[0].split(";");	// 全文検索項目
 			String key = null;
 			String privatekey = null;
 			String index = null;
 			boolean isSearch = false;
+			boolean isDistkey = false;
 			if (k2 >= 0 && k3.length > 1) throw new ParseException("Only one of these(:,;,#) to be specified.'" + k[0] + "'",0);
 			if (k2 >= 0 && k4.length > 1) throw new ParseException("Only one of these(:,;,#) to be specified.'" + k[0] + "'",0);
 			if (k3.length > 1 && k4.length > 1) throw new ParseException("Only one of these(:,;,#) to be specified.'" + k[0] + "'",0);
@@ -553,9 +569,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 				i++;
 				if (i > indexmax) throw new ParseException("Custom property index limit exceeded.'" + k[0] + "'",0);
 			}
+			if (k5.length > 1) {
+				key = k5[0];
+				index = k5[1];
+				isDistkey = true;
+				i++;
+				if (i > indexmax) throw new ParseException("Custom property index limit exceeded.'" + k[0] + "'",0);
+			}
 			String attribute = null;
 			if (index != null) {
-				if (isSearch) {
+				if (isDistkey) {
+					attribute = "distkey";
+				} else if (isSearch) {
 					attribute = "search";
 				} else {
 					attribute = "index";
@@ -566,16 +591,18 @@ public class FeedTemplateMapper extends ResourceMapper {
 				boolean isAlreadySpecified = false;
 				if (index != null) {
 					String allow = null;
-					if (isSearch) {
-						allow = "index";
-					} else {
-						allow = "search";
+					if (!isDistkey) {
+						if (isSearch) {
+							allow = "index";
+						} else {
+							allow = "search";
+						}
 					}
 					if (attributes == null || attributes.isEmpty()) {
 						isAlreadySpecified = true;
 					} else {
 						for (String attr : attributes) {
-							if (!allow.equals(attr)) {
+							if (attr != null && !attr.equals(allow)) {
 								isAlreadySpecified = true;
 							}
 						}
@@ -637,10 +664,12 @@ public class FeedTemplateMapper extends ResourceMapper {
 					if (index != null) {
 						if (meta.isArray || meta.isMap) throw new ParseException("Can't specify index to '" + key + "'.",0);
 						if (meta.privatekey != null) throw new ParseException("Can't specify index for the encription property.'" + k[0] + "'",0);
-						if (!isSearch) {
-							meta.index = index;
-						} else {
+						if (isDistkey) {
+							meta.distkey = index;
+						} else if (isSearch) {
 							meta.search = index;
+						} else {
+							meta.index = index;
 						}
 						isExist = true;
 					}
@@ -886,6 +915,11 @@ public class FeedTemplateMapper extends ResourceMapper {
 		public String bigquerytype;
 
 		public String typesrc;
+
+		/**
+		 * DISTKEY
+		 */
+		public String distkey;
 
 
 		/**

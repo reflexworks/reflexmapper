@@ -490,6 +490,109 @@ public class TestMsgpackMapper {
 		"info20.item20:^/.*al.*$"
 	};
 
+	public static String entityAclsDistkey1[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"info.stock_long::^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsDistkeyError2[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"info.stock_long::^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsDistkeyError3[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string;^/ftindex[^/]*$",
+		"info.stock_string:^/index[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"info.stock_string::^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsDistkey4[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"info.stock_long::^/ftindex[^/]*$",
+		"info.stock_string::^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsDistkeyError5[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"info.stock_string::^/ftindex[^/]*$",
+		"info.stock_string::^/ftalias[^/]*$",
+		"comment.secret#"
+	};
+
+	public static String entityAclsDistkeyError6[] = {
+		"title:^/$|^/@XXXX$",
+		"contributor=/_group/$admin+RW",
+		"contributor.uri#",
+		"rights#=@+RW,/_group/$admin+RW",
+		"info.name:^/index[^/]*$",
+		"info.stock_int:^/index[^/]*$",
+		"info.stock_long:^/index[^/]*$",
+		"info.stock_float:^/index[^/]*$",
+		"info.stock_double:^/index[^/]*$",
+		"info.stock_double:^/alias[^/]*$",
+		"info.stock_string|info.name|info.category;^/ftindex[^/]*$",
+		"info.stock_int|info.disp_int;^/ftindex[^/]*$",
+		"info.stock_string::^/ftindex[^/]*$",
+		"comment.secret#"
+	};
+
 	public static String entitytempl2[] = {
 		// {}がMap, []がArray　, {} [] は末尾に一つだけ付けられる。*が必須項目
 		"import{2}",        //  0行目はパッケージ名(service名)
@@ -2729,7 +2832,7 @@ public class TestMsgpackMapper {
 		StringBuilder prn = new StringBuilder();
 		if (metalist != null && metalist.size() > 0) {
 			existsMetalist = true;
-			prn.append("[name]\t[level]\t[type]\t[bigquerytype]\t[parent]\t[self]\t[index]\t[search]\t[repeated]\t[isrecord]\n");
+			prn.append("[name]\t[level]\t[type]\t[bigquerytype]\t[parent]\t[self]\t[index]\t[search]\t[repeated]\t[isrecord]\t[distkey]\n");
 			for (Meta meta : metalist) {
 				prn.append(meta);
 				prn.append("\t");
@@ -2750,6 +2853,8 @@ public class TestMsgpackMapper {
 				prn.append(meta.repeated);
 				prn.append("\t");
 				prn.append(meta.isrecord);
+				prn.append("\t");
+				prn.append(meta.distkey);
 				prn.append("\n");
 			}
 		}
@@ -5215,6 +5320,50 @@ public class TestMsgpackMapper {
 	public void testFulltextsearchIndex2() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
 		FeedTemplateMapper mp11 = new FeedTemplateMapper(entitytempl4, entityAclsFulltextsearch11, 30, SECRETKEY);
 		printMetalist2(mp11.getMetalist());
+	}
+
+	@Test
+	public void testDistkey1() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp11 = new FeedTemplateMapper(entitytempl4, entityAclsDistkey1, 30, SECRETKEY);
+		printMetalist2(mp11.getMetalist());
+	}
+
+	@Test
+	public void testDistkey4() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		FeedTemplateMapper mp11 = new FeedTemplateMapper(entitytempl4, entityAclsDistkey4, 30, SECRETKEY);
+		printMetalist2(mp11.getMetalist());
+	}
+
+	@Test
+	public void testDistkeyError() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		try {
+			new FeedTemplateMapper(entitytempl4, entityAclsDistkeyError2, 30, SECRETKEY);
+			System.out.println("[testDistkeyError] new FeedTemplateMapper -> NG");
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("[testDistkeyError] ParseException(OK) : " + e.getMessage());
+		}
+		try {
+			new FeedTemplateMapper(entitytempl4, entityAclsDistkeyError3, 30, SECRETKEY);
+			System.out.println("[testDistkeyError] new FeedTemplateMapper -> NG");
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("[testDistkeyError] ParseException(OK) : " + e.getMessage());
+		}
+		try {
+			new FeedTemplateMapper(entitytempl4, entityAclsDistkeyError5, 30, SECRETKEY);
+			System.out.println("[testDistkeyError] new FeedTemplateMapper -> NG");
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("[testDistkeyError] ParseException(OK) : " + e.getMessage());
+		}
+		try {
+			new FeedTemplateMapper(entitytempl4, entityAclsDistkeyError6, 30, SECRETKEY);
+			System.out.println("[testDistkeyError] new FeedTemplateMapper -> NG");
+			assertTrue(false);
+		} catch (ParseException e) {
+			System.out.println("[testDistkeyError] ParseException(OK) : " + e.getMessage());
+		}
 	}
 
 }
