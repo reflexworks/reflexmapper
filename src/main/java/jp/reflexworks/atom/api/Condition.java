@@ -71,6 +71,18 @@ public class Condition {
 	}
 
 	/**
+	 * コンストラクタ
+	 * @param prop 項目
+	 * @param equations 等・不等式
+	 * @param value 値
+	 */
+	public Condition(String prop, String equations, String value) {
+		this.prop = prop;
+		this.equations = equations;
+		this.value = value;
+	}
+
+	/**
 	 * 条件の解析
 	 * @param cond 条件
 	 */
