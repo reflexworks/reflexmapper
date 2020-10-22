@@ -173,7 +173,7 @@ public class Condition {
 		buf.append(prop);
 		buf.append("-");
 		buf.append(equations);
-		if (value != null) {
+		if (!ASC.equals(equations) && !DESC.equals(equations) && value != null) {
 			buf.append("-");
 			buf.append(value);
 		}
