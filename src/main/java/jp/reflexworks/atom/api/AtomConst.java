@@ -130,6 +130,8 @@ public interface AtomConst {
 	public static final String URI_SETTINGS_PASSRESET = URI_SETTINGS + "/passreset";
 	/** URI : settings - adduserByAdmin */
 	public static final String URI_SETTINGS_ADDUSER_BYADMIN = URI_SETTINGS + "/adduserByAdmin";
+	/** URI : settings - changeaccount */
+	public static final String URI_SETTINGS_CHANGEACCOUNT = URI_SETTINGS + "/changeaccount";
 	/** URI : settings - logalert */
 	public static final String URI_SETTINGS_LOGALERT = URI_SETTINGS + "/logalert";
 	/** URI : user init (value) */
@@ -190,6 +192,8 @@ public interface AtomConst {
 	public static final String USERSTATUS_ACTIVATED = "Activated";
 	/** ユーザステータス : 無効 */
 	public static final String USERSTATUS_REVOKED = "Revoked";
+	/** ユーザステータス : 退会 */
+	public static final String USERSTATUS_CANCELLED = "Cancelled";
 
 	/** ログインユーザのUIDを表す記号 */
 	public static final String LOGINUSER_VAL = "~";

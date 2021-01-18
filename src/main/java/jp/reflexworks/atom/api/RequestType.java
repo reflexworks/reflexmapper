@@ -102,6 +102,10 @@ public interface RequestType {
 	public static final String PARAM_PASSRESET = "_passreset";
 	/** URLパラメータ : パスワード変更オプション */
 	public static final String PARAM_CHANGEPASS = "_changephash";
+	/** URLパラメータ : アカウント変更メール送信オプション */
+	public static final String PARAM_CHANGEACCOUNT = "_changeaccount";
+	/** URLパラメータ : アカウント変更オプション */
+	public static final String PARAM_CHANGEACCOUNT_VERIFY = "_changeaccount_verify";
 	/** URLパラメータ : 管理者によるユーザ登録オプション */
 	public static final String PARAM_ADDUSER_BYADMIN = "_adduserByAdmin";
 	/** URLパラメータ : 管理者によるパスワード変更オプション */
@@ -130,6 +134,8 @@ public interface RequestType {
 	public static final String PARAM_ACTIVATEUSER = "_activateuser";
 	/** URLパラメータ : ユーザを削除する */
 	public static final String PARAM_DELETEUSER = "_deleteuser";
+	/** URLパラメータ : ユーザを退会する */
+	public static final String PARAM_CANCELUSER = "_canceluser";
 	/** URLパラメータ : RDB */
 	public static final String PARAM_RDB = "_rdb";
 	/** URLパラメータ : キャッシュ */
