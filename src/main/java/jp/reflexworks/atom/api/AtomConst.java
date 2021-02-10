@@ -99,23 +99,6 @@ public interface AtomConst {
 	/** サービスエントリーの先頭 */
 	public static final String SVC_PREFIX = "/" + SVC_PREFIX_VAL;
 
-	/** サービスステータス : 新規作成中 */
-	public static final String SERVICE_STATUS_CREATING = "creating";
-	/** サービスステータス : 非公開(開発中) */
-	public static final String SERVICE_STATUS_STAGING = "staging";
-	/** サービスステータス : 公開中 */
-	public static final String SERVICE_STATUS_PRODUCTION = "production";
-	/** サービスステータス : 強制停止 */
-	public static final String SERVICE_STATUS_BLOCKED = "blocked";
-	/** サービスステータス : リセット中 */
-	public static final String SERVICE_STATUS_RESETTING = "resetting";
-	/** サービスステータス : 削除中 */
-	public static final String SERVICE_STATUS_DELETING = "deleting";
-	/** サービスステータス : 削除済み */
-	public static final String SERVICE_STATUS_DELETED = "deleted";
-	/** サービスステータス : 登録失敗 */
-	public static final String SERVICE_STATUS_FAILURE = "failure";
-
 	/** URI : settings (value) */
 	public static final String URI_SETTINGS_VAL = "_settings";
 	/** URI : settings */
