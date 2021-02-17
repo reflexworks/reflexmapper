@@ -2,8 +2,6 @@ package jp.reflexworks.atom.entry;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.msgpack.annotation.Index;
 
@@ -25,8 +23,7 @@ public class Content implements Serializable, Cloneable, SoftSchema {
 	private static final long serialVersionUID = 1L;
 
 	/** 項目ACLチェックパターン */
-	//private Pattern PATTERN = Pattern.compile("^/@[^/]+/_group/\\$content$");
-	private static Pattern PATTERN = Pattern.compile("^/_group/\\$content$|^/@[^/]+/_group/\\$content$");
+	//private static Pattern PATTERN = Pattern.compile("^/_group/\\$content$|^/@[^/]+/_group/\\$content$");
 
 	@Index(0)
 	public String _$src;
