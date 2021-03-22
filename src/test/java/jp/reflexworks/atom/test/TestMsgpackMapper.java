@@ -5366,4 +5366,39 @@ public class TestMsgpackMapper {
 		}
 	}
 
+	@Test
+	public void testMaskprop4() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException {
+		// テンプレート
+		String[] template = new String[]{"_"};
+		String[] rights = new String[] {
+				"contributor=@+RW,/_group/$admin+RW,/_group/$useradmin+RW",
+				"contributor.uri#",
+				"rights#=@+RW,/_group/$admin+RW",
+				"title:^/_user$"
+		};
+		int indexLimit = 5000;
+		String secretKey = "aaaaaa";
+		FeedTemplateMapper mapper = new FeedTemplateMapper(template, rights, indexLimit, secretKey);
+
+		// Entry
+		String json = "{\"feed\" : {\"entry\" : [{\"author\" : [{\"uri\" : \"urn:vte.cx:created:13\"},{\"uri\" : \"urn:vte.cx:updated:13\"}],\"contributor\" : [{\"uri\" : \"urn:vte.cx:acl:/_group/$admin,CRUD\"},{\"uri\" : \"urn:vte.cx:acl:13,R\"}],\"id\" : \"/_service/alphatest5,3\",\"link\" : [{\"___href\" : \"/_service/alphatest5\",\"___rel\" : \"self\"},{\"___href\" : \"/_user/13/service/alphatest5\",\"___rel\" : \"alternate\"}],\"published\" : \"2021-03-22T11:23:36.738+09:00\",\"rights\" : \"13\",\"subtitle\" : \"staging\",\"updated\" : \"2021-03-22T11:24:15.738+09:00\"}]}}";
+		FeedBase feed = (FeedBase)mapper.fromJSON(json);
+		System.out.println("[testMaskprop4] before: ");
+		System.out.println(mapper.toXML(feed));
+
+		// maskprop
+		String uid = "13";
+		List<String> groups = new ArrayList<>();
+		feed.maskprop(uid, groups);
+		System.out.println("[testMaskprop4] maskprop uid=" + uid + ": ");
+		System.out.println(mapper.toXML(feed));
+
+		uid = "14";
+		groups = new ArrayList<>();
+		feed.maskprop(uid, groups);
+		System.out.println("[testMaskprop4] maskprop uid=" + uid + ": ");
+		System.out.println(mapper.toXML(feed));
+
+	}
+
 }
