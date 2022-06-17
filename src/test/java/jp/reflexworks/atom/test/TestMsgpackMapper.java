@@ -2,16 +2,17 @@ package jp.reflexworks.atom.test;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 
@@ -29,19 +28,12 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.junit.Test;
 
-import com.carrotsearch.sizeof.ObjectTree;
-
-import jp.sourceforge.reflex.exception.JSONException;
-import jp.sourceforge.reflex.util.DateUtil;
-import jp.sourceforge.reflex.util.DeflateUtil;
-import jp.sourceforge.reflex.util.FieldMapper;
-import jp.sourceforge.reflex.util.FileUtil;
 import jp.reflexworks.atom.api.AtomConst;
 import jp.reflexworks.atom.api.Condition;
 import jp.reflexworks.atom.api.EntryUtil;
 import jp.reflexworks.atom.entry.Author;
-import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.Contributor;
+import jp.reflexworks.atom.entry.EntryBase;
 import jp.reflexworks.atom.entry.FeedBase;
 import jp.reflexworks.atom.entry.Link;
 import jp.reflexworks.atom.mapper.BQJSONSerializer;
@@ -51,6 +43,11 @@ import jp.reflexworks.atom.mapper.FeedTemplateMapper;
 import jp.reflexworks.atom.mapper.FeedTemplateMapper.Meta;
 import jp.reflexworks.atom.mapper.SizeLimitExceededException;
 import jp.reflexworks.atom.util.SurrogateConverter;
+import jp.sourceforge.reflex.exception.JSONException;
+import jp.sourceforge.reflex.util.DateUtil;
+import jp.sourceforge.reflex.util.DeflateUtil;
+import jp.sourceforge.reflex.util.FieldMapper;
+import jp.sourceforge.reflex.util.FileUtil;
 
 public class TestMsgpackMapper {
 
@@ -5399,6 +5396,20 @@ public class TestMsgpackMapper {
 		System.out.println("[testMaskprop4] maskprop uid=" + uid + ": ");
 		System.out.println(mapper.toXML(feed));
 
+	}
+
+	@Test
+	public void testEncryptBlank() throws ParseException, JSONException, IOException, DataFormatException, ClassNotFoundException, GeneralSecurityException {
+		FeedTemplateMapper mp = new FeedTemplateMapper(entitytempl4, entityAclsDistkey1, 30, SECRETKEY);
+		
+		// 空のリスト「"category": [{}]」がある状態で、CipherUtil#encryptが正しく動作することを確認する。
+		String json = "{\"feed\":{\"entry\":[{\"info\": {\"name\": \"data 0000001\",\"category\": \"カテゴリ0000001\",\"color\": \"色0000001\"},\"category\": [{}],\"link\": [{\"___href\": \"/singleindex/0000001\",\"___rel\": \"self\"},{\"___href\": \"/doubledisp/0000001\",\"___rel\": \"alternate\"}]}]}}";
+
+		FeedBase feed = (FeedBase)mp.fromJSON(json);
+		
+		CipherUtil cipherUtil = new CipherUtil();
+		cipherUtil.encrypt(feed);
+		
 	}
 
 }
